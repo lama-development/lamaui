@@ -1,36 +1,43 @@
 ---
 import type { Status } from "@/types";
 import Icon from "@/components/ui/Icon.astro";
+import type { IconName } from "@/components/ui/Icon.astro";
 interface Props {
   variant?: Exclude<Status, "neutral">;
   title?: string;
   dismissible?: boolean;
+  icon?: IconName;
+  color?: string;
+  background?: string;
+  borderColor?: string;
   class?: string;
 }
 const {
   variant = "info",
   title,
   dismissible = false,
+  icon,
+  color,
+  background,
+  borderColor,
   class: className,
 } = Astro.props;
-const styles = {
-  info: "bg-(--info-subtle) text-(--info)",
-  success: "bg-(--success-subtle) text-(--success)",
-  warning: "bg-(--warning-subtle) text-(--warning)",
-  destructive: "bg-(--destructive-subtle) text-(--destructive)",
+const colors = {
+  info: ["var(--info)", "var(--info-subtle)"],
+  success: ["var(--success)", "var(--success-subtle)"],
+  warning: ["var(--warning)", "var(--warning-subtle)"],
+  destructive: ["var(--destructive)", "var(--destructive-subtle)"],
 };
-const icons = { info: "feedback", success: "check", warning: "feedback", destructive: "close" } as const;
+const icons = { info: "feedback", success: "check", warning: "warning", destructive: "close" } as const;
+const alertStyle = `color:${color ?? colors[variant][0]};background:${background ?? colors[variant][1]};border-color:${borderColor ?? "color-mix(in srgb, currentColor 15%, transparent)"}`;
 ---
 
 <div
   role={variant === "destructive" ? "alert" : "status"}
-  class:list={[
-    "lui-alert rounded-2xl border border-current/15 p-4",
-    styles[variant],
-    className,
-  ]}
+  class:list={["lui-alert rounded-2xl border p-4", className]}
+  style={alertStyle}
 >
-  <span aria-hidden="true" class="lui-alert-icon"><Icon name={icons[variant]} size={20} /></span
+  <span aria-hidden="true" class="lui-alert-icon"><Icon name={icon ?? icons[variant]} size={20} /></span
   ><div class="lui-alert-body min-w-0">
     {title && <p class="m-0 font-bold">{title}</p>}<div
       class="text-sm opacity-90"

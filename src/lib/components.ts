@@ -66,7 +66,7 @@ export const componentGroups: ComponentGroup[] = [
     component("EmptyState", "empty-state", "Explains an empty collection and offers a next action."),
   ]},
   { name: "Feedback", slug: "feedback", icon: "feedback", components: [
-    component("Alert", "alert", "Communicates persistent informational or status messages."),
+    component("Alert", "alert", "Communicates persistent informational or status messages.", '<Alert variant="warning" icon="warning">Review required</Alert>'),
     component("Toast", "toast", "Shows a temporary result without interrupting work."),
     component("Spinner", "spinner", "Indicates indeterminate background activity."),
   ]},

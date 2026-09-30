@@ -30,7 +30,8 @@ const {
       (() => {
         try {
           const t = localStorage.getItem("lui-theme");
-          if (t) document.documentElement.dataset.theme = t;
+          if (t === "light" || t === "dark")
+            document.documentElement.dataset.theme = t;
         } catch {}
       })();
     </script>
@@ -116,19 +117,11 @@ const {
           }
         </nav>
         <div class="docs-sidebar-foot">
-          <button type="button" class="docs-preference" data-theme-toggle
-            ><span
-              ><Icon name="sun" data-theme-icon-light /><Icon
-                name="moon"
-                data-theme-icon-dark
-                hidden
-              /></span
-            ><span
-              ><strong>Appearance</strong><small data-theme-label
-                >System theme</small
-              ></span
-            ></button
-          >
+          <label class="docs-preference docs-theme-picker">
+            <span class="docs-theme-icon"><Icon name="system" data-theme-icon-system /><Icon name="sun" data-theme-icon-light hidden /><Icon name="moon" data-theme-icon-dark hidden /></span>
+            <span class="docs-theme-copy"><strong>Appearance</strong><select class="docs-theme-select" aria-label="Color theme" data-theme-select><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></span>
+            <Icon name="chevron-down" size={14} class="docs-theme-chevron" />
+          </label>
         </div>
       </div>
     </aside>
@@ -208,23 +201,18 @@ const {
         }),
       );
       const syncTheme = () => {
-        const dark =
-          document.documentElement.dataset.theme === "dark" ||
-          (!document.documentElement.dataset.theme &&
-            matchMedia("(prefers-color-scheme: dark)").matches);
-        $("[data-theme-icon-light]")?.toggleAttribute("hidden", dark);
-        $("[data-theme-icon-dark]")?.toggleAttribute("hidden", !dark);
-        const label = $("[data-theme-label]");
-        if (label) label.textContent = dark ? "Dark theme" : "Light theme";
+        const selected = localStorage.getItem("lui-theme") || "system";
+        $("[data-theme-icon-system]")?.toggleAttribute("hidden", selected !== "system");
+        $("[data-theme-icon-light]")?.toggleAttribute("hidden", selected !== "light");
+        $("[data-theme-icon-dark]")?.toggleAttribute("hidden", selected !== "dark");
+        const select = $("[data-theme-select]");
+        if (select) select.value = selected;
       };
       syncTheme();
-      $("[data-theme-toggle]")?.addEventListener("click", () => {
-        const dark =
-          document.documentElement.dataset.theme === "dark" ||
-          (!document.documentElement.dataset.theme &&
-            matchMedia("(prefers-color-scheme: dark)").matches);
-        const next = dark ? "light" : "dark";
-        document.documentElement.dataset.theme = next;
+      $("[data-theme-select]")?.addEventListener("change", (event) => {
+        const next = event.target.value;
+        if (next === "system") delete document.documentElement.dataset.theme;
+        else document.documentElement.dataset.theme = next;
         localStorage.setItem("lui-theme", next);
         syncTheme();
       });

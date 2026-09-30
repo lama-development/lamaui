@@ -113,7 +113,7 @@ const selectOptions = [
   {slug === "code-block" && <CodeBlock code={'<Button variant="primary">Save</Button>'}/>} 
   {slug === "empty-state" && <EmptyState title="No saved links" description="Save frequently used tools so they are easy to find."><Button size="sm">Add link</Button></EmptyState>}
 
-  {slug === "alert" && <Stack gap={3}><Alert title="Information">Your changes are saved locally.</Alert><Alert variant="success" title="Published">The new version is available.</Alert><Alert variant="warning" title="Review required">Two fields need attention.</Alert><Alert variant="destructive" title="Could not save">Try again in a moment.</Alert></Stack>}
+  {slug === "alert" && <Stack gap={3}><Alert title="Information">Your changes are saved locally.</Alert><Alert variant="success" title="Published">The new version is available.</Alert><Alert variant="warning" title="Review required">Two fields need attention.</Alert><Alert variant="destructive" title="Could not save">Try again in a moment.</Alert><Alert icon="heart" color="var(--accent)" background="var(--accent-subtle)" title="Custom alert">Pass any icon and theme-aware colors.</Alert></Stack>}
   {slug === "toast" && <><Button data-toast-open="preview-toast">Show toast</Button><Toast id="preview-toast" title="Preferences saved">Your changes are ready.</Toast></>}
   {slug === "spinner" && <div class="demo-row"><Spinner size="sm"/><Spinner/><Spinner size="lg"/><Button variant="secondary"><Spinner size="sm"/> Saving</Button></div>}
 

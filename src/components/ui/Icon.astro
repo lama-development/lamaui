@@ -29,8 +29,10 @@ import external from "@phosphor-icons/core/duotone/arrow-square-out-duotone.svg?
 import wrap from "@phosphor-icons/core/duotone/arrows-in-line-horizontal-duotone.svg?raw";
 import eye from "@phosphor-icons/core/duotone/eye-duotone.svg?raw";
 import eyeSlash from "@phosphor-icons/core/duotone/eye-slash-duotone.svg?raw";
+import warning from "@phosphor-icons/core/bold/warning-circle-bold.svg?raw";
+import system from "@phosphor-icons/core/duotone/desktop-duotone.svg?raw";
 
-export type IconName = "menu" | "close" | "sun" | "moon" | "chevron-right" | "chevron-down" | "copy" | "plus" | "heart" | "more" | "pin" | "home" | "actions" | "forms" | "navigation" | "data" | "feedback" | "overlays" | "layout" | "marketing" | "check" | "user" | "settings" | "search" | "mail" | "code" | "external" | "wrap" | "eye" | "eye-slash";
+export type IconName = "menu" | "close" | "sun" | "moon" | "chevron-right" | "chevron-down" | "copy" | "plus" | "heart" | "more" | "pin" | "home" | "actions" | "forms" | "navigation" | "data" | "feedback" | "overlays" | "layout" | "marketing" | "check" | "user" | "settings" | "search" | "mail" | "code" | "external" | "wrap" | "eye" | "eye-slash" | "warning" | "system";
 interface Props { name: IconName; size?: number; class?: string; [key: string]: any }
 const { name, size = 20, class: className, ...rest } = Astro.props;
 const icons: Record<IconName, string> = {
@@ -38,7 +40,7 @@ const icons: Record<IconName, string> = {
   "chevron-down": chevronDown, copy, plus, heart, more, pin, home,
   actions, forms, navigation, data, feedback, overlays, layout, marketing,
   check, user, settings, search, mail, code, external, wrap, eye,
-  "eye-slash": eyeSlash,
+  "eye-slash": eyeSlash, warning, system,
 };
 const paths = icons[name]
   .replace(/^<svg[^>]*>/, "")
