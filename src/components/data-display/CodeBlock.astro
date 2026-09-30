@@ -10,13 +10,11 @@ const highlighted = await codeToHtml(code, {
 });
 ---
 <figure class="code-block" data-code-block>
-  <figcaption class="code-toolbar">
-    <span>{label}</span>
-    <button type="button" class="code-copy" aria-label="Copy code" data-copy-code>
-      <span data-copy-default><Icon name="copy" size={16} /></span>
-      <span data-copy-success hidden><Icon name="check" size={16} /></span>
-      <span data-copy-label>Copy</span>
-    </button>
-  </figcaption>
+  <figcaption class="sr-only">{label} code example</figcaption>
+  <button type="button" class="code-copy" aria-label="Copy code" data-copy-code>
+    <span data-copy-default><Icon name="copy" size={16} /></span>
+    <span data-copy-success hidden><Icon name="check" size={16} /></span>
+    <span data-copy-label>Copy</span>
+  </button>
   <div class="code-render" set:html={highlighted}></div>
 </figure>

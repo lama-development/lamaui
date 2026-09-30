@@ -19,23 +19,23 @@ const {
   role="status"
   aria-live="polite"
   class:list={[
-    "fixed bottom-4 right-4 z-[100] hidden w-[min(24rem,calc(100%-2rem))] items-start gap-3 rounded-2xl border border-(--border) bg-(--surface-elevated) p-4 shadow-(--shadow-lg)",
+    "lui-toast fixed bottom-4 right-4 z-[100] hidden w-[min(24rem,calc(100%-2rem))] rounded-2xl border border-(--border) bg-(--surface-elevated) p-4 shadow-(--shadow-lg)",
     className,
   ]}
   data-toast
 >
   <span
     class:list={[
-      "font-bold",
+      "lui-toast-icon font-bold",
       variant === "success"
         ? "text-(--success)"
         : variant === "warning"
           ? "text-(--warning)"
           : "text-(--destructive)",
     ]}><Icon name={variant === "success" ? "check" : variant === "warning" ? "feedback" : "close"} size={18} /></span
-  ><div class="flex-1">
+  ><div class="lui-toast-body min-w-0">
     <p class="m-0 font-bold">{title}</p><div class="muted text-sm">
       <slot />
     </div>
-  </div><button type="button" class="lui-control lui-ghost lui-icon" aria-label="Dismiss" data-toast-close><Icon name="close" size={18} /></button>
+  </div><button type="button" class="lui-toast-close" aria-label="Dismiss" data-toast-close><Icon name="close" size={16} /></button>
 </div>

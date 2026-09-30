@@ -25,13 +25,13 @@ const icons = { info: "feedback", success: "check", warning: "feedback", destruc
 <div
   role={variant === "destructive" ? "alert" : "status"}
   class:list={[
-    "flex gap-3 rounded-2xl border border-current/15 p-4",
+    "lui-alert rounded-2xl border border-current/15 p-4",
     styles[variant],
     className,
   ]}
 >
-  <span aria-hidden="true" class="mt-0.5 shrink-0"><Icon name={icons[variant]} size={18} /></span
-  ><div class="min-w-0 flex-1">
+  <span aria-hidden="true" class="lui-alert-icon"><Icon name={icons[variant]} size={18} /></span
+  ><div class="lui-alert-body min-w-0">
     {title && <p class="m-0 font-bold">{title}</p>}<div
       class="text-sm opacity-90"
     >
@@ -42,7 +42,7 @@ const icons = { info: "feedback", success: "check", warning: "feedback", destruc
       <button
         type="button"
         aria-label="Dismiss"
-        class="self-start rounded-md px-1 hover:bg-black/5"
+        class="lui-alert-close"
         data-dismiss
       >
         <Icon name="close" size={16} />

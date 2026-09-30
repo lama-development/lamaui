@@ -2,4 +2,4 @@
 interface Props { label:string; position?:'left'|'right'; class?:string }
 const {label,position='left',class:className}=Astro.props;
 ---
-<details class:list={['relative inline-block',className]}><summary class="lui-control lui-outline list-none">{label}</summary><div class:list={['lui-menu top-full mt-2 w-72 p-4',position==='right'?'right-0':'left-0']}><slot /></div></details>
+<details class:list={['lui-popover relative inline-block',className]}><summary class="lui-control lui-outline list-none">{label}</summary><div class:list={['lui-menu lui-popover-panel top-full mt-2 w-72',position==='right'?'right-0':'left-0']}><slot /></div></details>

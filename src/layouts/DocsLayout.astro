@@ -371,6 +371,33 @@ const {
           );
         });
       });
+      $$(".lui-popover").forEach((root) => {
+        const summary = $("summary", root),
+          panel = $(".lui-popover-panel", root);
+        const close = () => {
+          if (!root.open || panel.classList.contains("is-closing")) return;
+          panel.classList.add("is-closing");
+          window.setTimeout(() => {
+            root.open = false;
+            panel.classList.remove("is-closing");
+          }, 160);
+        };
+        summary?.addEventListener("click", (event) => {
+          event.preventDefault();
+          if (root.open) return close();
+          root.open = true;
+          panel.classList.add("is-closing");
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => panel.classList.remove("is-closing")),
+          );
+        });
+        document.addEventListener("pointerdown", (event) => {
+          if (!root.contains(event.target)) close();
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") close();
+        });
+      });
       $$("[data-dialog-open]").forEach((button) =>
         button.addEventListener("click", () =>
           document.getElementById(button.dataset.dialogOpen)?.showModal(),
@@ -386,16 +413,28 @@ const {
           if (event.target === dialog) dialog.close();
         }),
       );
+      const hideToast = (toast) => {
+        if (!toast || toast.classList.contains("hidden")) return;
+        toast.classList.remove("is-visible");
+        toast.classList.add("is-leaving");
+        window.setTimeout(() => {
+          toast.classList.remove("flex", "is-leaving");
+          toast.classList.add("hidden");
+        }, 160);
+      };
       $$("[data-toast-open]").forEach((button) =>
         button.addEventListener("click", () => {
           const toast = document.getElementById(button.dataset.toastOpen);
-          toast?.classList.replace("hidden", "flex");
-          setTimeout(() => toast?.classList.replace("flex", "hidden"), 3500);
+          if (!toast) return;
+          toast.classList.remove("hidden", "is-leaving");
+          toast.classList.add("flex", "is-visible");
+          window.clearTimeout(toast._hideTimer);
+          toast._hideTimer = window.setTimeout(() => hideToast(toast), 3500);
         }),
       );
       $$("[data-toast-close]").forEach((button) =>
         button.addEventListener("click", () =>
-          button.closest("[data-toast]")?.classList.replace("flex", "hidden"),
+          hideToast(button.closest("[data-toast]")),
         ),
       );
       $$("[data-dismiss]").forEach((button) =>
