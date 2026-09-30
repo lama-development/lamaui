@@ -1,7 +1,9 @@
 ---
+import Icon, { type IconName } from "@/components/ui/Icon.astro";
 interface Option {
   value: string;
   label: string;
+  icon?: IconName;
   disabled?: boolean;
 }
 interface Props {
@@ -27,14 +29,15 @@ const selected = options.find((o) => o.value === value) ?? options[0];
   <button
     id={`${id}-button`}
     type="button"
-    class="lui-field flex items-center justify-between text-left"
+    class="lui-field group flex items-center justify-between text-left"
     aria-haspopup="listbox"
     aria-expanded="false"
     aria-controls={`${id}-list`}
     data-select-trigger
-    ><span data-select-value>{selected?.label}</span><span aria-hidden="true"
-      >⌄</span
-    ></button
+    ><span class="flex min-w-0 items-center gap-2">
+      {selected?.icon && <span data-select-value-icon class="shrink-0"><Icon name={selected.icon} size={18} /></span>}
+      <span data-select-value>{selected?.label}</span>
+    </span><Icon name="chevron-down" size={16} class="shrink-0 text-(--muted-foreground) transition-transform group-aria-expanded:rotate-180" /></button
   ><div
     id={`${id}-list`}
     role="listbox"
@@ -51,9 +54,12 @@ const selected = options.find((o) => o.value === value) ?? options[0];
           aria-selected={o.value === value}
           disabled={o.disabled}
           data-value={o.value}
+          data-label={o.label}
           class="lui-menu-item aria-selected:bg-(--accent-subtle) aria-selected:text-(--accent)"
         >
-          {o.label}
+          {o.icon && <span data-option-icon class="shrink-0"><Icon name={o.icon} size={18} /></span>}
+          <span class="min-w-0 flex-1 truncate">{o.label}</span>
+          <span class="text-(--accent)" hidden={o.value !== value} data-option-check><Icon name="check" size={16} /></span>
         </button>
       ))
     }

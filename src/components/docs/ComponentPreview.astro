@@ -1,0 +1,140 @@
+---
+import Button from "@/components/ui/Button.astro";
+import IconButton from "@/components/ui/IconButton.astro";
+import ButtonGroup from "@/components/ui/ButtonGroup.astro";
+import Toggle from "@/components/ui/Toggle.astro";
+import ToggleGroup from "@/components/ui/ToggleGroup.astro";
+import Icon from "@/components/ui/Icon.astro";
+import Label from "@/components/forms/Label.astro";
+import FormField from "@/components/forms/FormField.astro";
+import Input from "@/components/forms/Input.astro";
+import Textarea from "@/components/forms/Textarea.astro";
+import Select from "@/components/forms/Select.astro";
+import CustomSelect from "@/components/forms/CustomSelect.astro";
+import Checkbox from "@/components/forms/Checkbox.astro";
+import RadioGroup from "@/components/forms/RadioGroup.astro";
+import Switch from "@/components/forms/Switch.astro";
+import Slider from "@/components/forms/Slider.astro";
+import SearchInput from "@/components/forms/SearchInput.astro";
+import PasswordInput from "@/components/forms/PasswordInput.astro";
+import NumberInput from "@/components/forms/NumberInput.astro";
+import Navbar from "@/components/navigation/Navbar.astro";
+import Sidebar from "@/components/navigation/Sidebar.astro";
+import Breadcrumb from "@/components/navigation/Breadcrumb.astro";
+import Tabs from "@/components/navigation/Tabs.astro";
+import TabPanel from "@/components/navigation/TabPanel.astro";
+import Pagination from "@/components/navigation/Pagination.astro";
+import Stepper from "@/components/navigation/Stepper.astro";
+import DropdownMenu from "@/components/navigation/DropdownMenu.astro";
+import Card from "@/components/data-display/Card.astro";
+import Badge from "@/components/data-display/Badge.astro";
+import Avatar from "@/components/data-display/Avatar.astro";
+import AvatarGroup from "@/components/data-display/AvatarGroup.astro";
+import Table from "@/components/data-display/Table.astro";
+import DescriptionList from "@/components/data-display/DescriptionList.astro";
+import Stat from "@/components/data-display/Stat.astro";
+import Progress from "@/components/data-display/Progress.astro";
+import Skeleton from "@/components/data-display/Skeleton.astro";
+import Divider from "@/components/data-display/Divider.astro";
+import Tag from "@/components/data-display/Tag.astro";
+import CodeBlock from "@/components/data-display/CodeBlock.astro";
+import EmptyState from "@/components/data-display/EmptyState.astro";
+import Alert from "@/components/feedback/Alert.astro";
+import Toast from "@/components/feedback/Toast.astro";
+import Spinner from "@/components/feedback/Spinner.astro";
+import Dialog from "@/components/overlays/Dialog.astro";
+import Drawer from "@/components/overlays/Drawer.astro";
+import Popover from "@/components/overlays/Popover.astro";
+import Tooltip from "@/components/overlays/Tooltip.astro";
+import Container from "@/components/layout/Container.astro";
+import Stack from "@/components/layout/Stack.astro";
+import Inline from "@/components/layout/Inline.astro";
+import Grid from "@/components/layout/Grid.astro";
+import Section from "@/components/layout/Section.astro";
+import PageShell from "@/components/layout/PageShell.astro";
+import Hero from "@/components/marketing/Hero.astro";
+import FeatureCard from "@/components/marketing/FeatureCard.astro";
+import FeatureGrid from "@/components/marketing/FeatureGrid.astro";
+import CTA from "@/components/marketing/CTA.astro";
+import PricingCard from "@/components/marketing/PricingCard.astro";
+import TestimonialCard from "@/components/marketing/TestimonialCard.astro";
+import SectionHeader from "@/components/marketing/SectionHeader.astro";
+import Footer from "@/components/marketing/Footer.astro";
+
+interface Props { slug: string }
+const { slug } = Astro.props;
+const selectOptions = [
+  { value: "design", label: "Design", icon: "forms" as const },
+  { value: "engineering", label: "Engineering", icon: "code" as const },
+  { value: "research", label: "Research", icon: "search" as const },
+];
+---
+<div class="component-preview"><div class="component-preview-column">
+  {slug === "icon" && <div class="demo-row text-(--muted-foreground)"><Icon name="home"/><Icon name="search"/><Icon name="mail"/><Icon name="settings"/><Icon name="copy"/><Icon name="external"/></div>}
+  {slug === "button" && <div class="demo-row"><Button>Primary</Button><Button variant="secondary">Secondary</Button><Button variant="ghost">Ghost</Button><Button variant="destructive">Delete</Button><Button disabled>Disabled</Button></div>}
+  {slug === "icon-button" && <div class="demo-row"><IconButton label="Add"><Icon name="plus" /></IconButton><IconButton label="Copy" variant="secondary"><Icon name="copy" /></IconButton><IconButton label="More actions" variant="ghost"><Icon name="more" /></IconButton></div>}
+  {slug === "button-group" && <ButtonGroup label="Alignment"><Button variant="secondary">Left</Button><Button variant="secondary">Center</Button><Button variant="secondary">Right</Button></ButtonGroup>}
+  {slug === "toggle" && <div class="demo-row"><Toggle pressed><Icon name="pin" size={18}/> Pinned</Toggle><Toggle>Compact view</Toggle></div>}
+  {slug === "toggle-group" && <ToggleGroup label="View"><Toggle pressed>List</Toggle><Toggle>Grid</Toggle><Toggle>Board</Toggle></ToggleGroup>}
+
+  {slug === "label" && <div><Label for="label-demo" required>Email address</Label><Input id="label-demo" type="email" placeholder="name@company.com" /></div>}
+  {slug === "form-field" && <FormField id="field-demo" label="Full name" help="Use the name shown on your profile."><Input id="field-demo" value="Ari Lane" /></FormField>}
+  {slug === "input" && <Stack gap={4}><Input placeholder="Default input"/><Input value="Focused and editable"/><Input value="Invalid value" invalid/><Input value="Disabled" disabled/></Stack>}
+  {slug === "textarea" && <Textarea placeholder="Write a short note…">The dashboard components use compact, direct copy.</Textarea>}
+  {slug === "select" && <Select options={selectOptions} value="design" aria-label="Team"/>}
+  {slug === "custom-select" && <CustomSelect id="team-select" name="team" label="Team" options={selectOptions} value="design"/>}
+  {slug === "checkbox" && <Stack gap={4}><Checkbox id="email-updates" label="Email updates" description="Receive important workspace changes." checked/><Checkbox id="disabled-check" label="Unavailable option" disabled/></Stack>}
+  {slug === "radio-group" && <RadioGroup name="workspace" label="Workspace type" value="team" options={[{value:'personal',label:'Personal'},{value:'team',label:'Team',description:'Shared with your organization'},{value:'enterprise',label:'Enterprise',disabled:true}]}/>} 
+  {slug === "switch" && <Stack gap={4}><Switch label="Animations" description="Use interface motion and transitions." checked/><Switch label="Weekly summary"/></Stack>}
+  {slug === "slider" && <Slider label="Interface density" value={62}/>} 
+  {slug === "search-input" && <SearchInput placeholder="Search components…"/>}
+  {slug === "password-input" && <PasswordInput value="lamaui-demo"/>}
+  {slug === "number-input" && <NumberInput min={1} max={20} value={4} aria-label="Quantity"/>}
+
+  {slug === "navbar" && <div class="-m-8"><Navbar menuId="preview-navbar" links={[{label:'Dashboard',href:'#',active:true},{label:'News',href:'#'},{label:'Branding',href:'#'}]}><Button size="sm" variant="secondary">Account</Button></Navbar><div class="h-24 p-4 muted">Resize the page to test the mobile menu.</div></div>}
+  {slug === "sidebar" && <div class="flex justify-center"><Sidebar items={[{label:'Dashboard',href:'#',active:true,icon:'home'},{label:'Company news',href:'#',icon:'feedback'},{label:'Branding',href:'#',icon:'marketing'}]}/></div>}
+  {slug === "breadcrumb" && <Breadcrumb items={[{label:'Dashboard',href:'#'},{label:'Components',href:'#'},{label:'Breadcrumb'}]}/>} 
+  {(slug === "tabs" || slug === "tab-panel") && <Tabs id="preview-tabs" tabs={[{id:'overview',label:'Overview'},{id:'activity',label:'Activity'},{id:'settings',label:'Settings'}]} active="overview"><TabPanel id="overview" tabsId="preview-tabs" active><Card title="Overview">The selected tab controls this panel.</Card></TabPanel><TabPanel id="activity" tabsId="preview-tabs"><Card title="Activity">Recent changes appear here.</Card></TabPanel><TabPanel id="settings" tabsId="preview-tabs"><Card title="Settings">Workspace preferences appear here.</Card></TabPanel></Tabs>}
+  {slug === "pagination" && <Pagination current={3} total={5}/>} 
+  {slug === "stepper" && <Stepper current={2} steps={[{label:'Details'},{label:'Members'},{label:'Review'}]}/>} 
+  {slug === "dropdown-menu" && <DropdownMenu label="Actions"><button class="lui-menu-item"><Icon name="copy" size={18}/>Duplicate</button><button class="lui-menu-item"><Icon name="settings" size={18}/>Settings</button><button class="lui-menu-item text-(--destructive)"><Icon name="close" size={18}/>Delete</button></DropdownMenu>}
+
+  {slug === "card" && <Card title="Email signature" description="Create a consistent company signature." interactive><Button size="sm">Open tool</Button></Card>}
+  {slug === "badge" && <div class="demo-row"><Badge>Draft</Badge><Badge variant="info">In review</Badge><Badge variant="success">Published</Badge><Badge variant="warning">Attention</Badge><Badge variant="destructive">Error</Badge></div>}
+  {slug === "avatar" && <div class="demo-row"><Avatar initials="AL" size="sm"/><Avatar initials="MP" status="online"/><Avatar initials="TM" size="lg"/></div>}
+  {slug === "avatar-group" && <AvatarGroup label="Contributors"><Avatar initials="AL"/><Avatar initials="MP"/><Avatar initials="TM"/><Avatar initials="DV"/></AvatarGroup>}
+  {slug === "table" && <Table caption="Members" columns={[{key:'name',label:'Name'},{key:'role',label:'Role'},{key:'status',label:'Status',align:'right'}]} rows={[{name:'Ari Lane',role:'Designer',status:'Active'},{name:'Mina Park',role:'Engineer',status:'Away'},{name:'Theo Moss',role:'Researcher',status:'Active'}]}/>} 
+  {slug === "description-list" && <DescriptionList columns={2} items={[{term:'Owner',detail:'Design systems'},{term:'Last updated',detail:'Today, 14:32'},{term:'Version',detail:'0.1.0'},{term:'License',detail:'MIT'}]}/>} 
+  {slug === "stat" && <div class="grid gap-4 sm:grid-cols-2"><Stat label="Components" value="60" change="8 added" trend="up"/><Stat label="Build time" value="0.4s" change="12% faster" trend="up"/></div>}
+  {slug === "progress" && <Stack gap={6}><Progress value={72} label="Documentation" showValue/><Progress value={38} label="Migration" showValue/></Stack>}
+  {slug === "skeleton" && <Stack gap={3}><Skeleton height="8rem" radius="var(--radius-lg)"/><Skeleton width="72%" height="1.25rem"/><Skeleton width="48%"/></Stack>}
+  {slug === "divider" && <Stack gap={5}><span>Account details</span><Divider/><span>Security settings</span><Divider label="or"/><span>Continue another way</span></Stack>}
+  {slug === "tag" && <div class="demo-row"><Tag>Astro</Tag><Tag removable>Design system</Tag><Tag removable>Tailwind CSS</Tag></div>}
+  {slug === "code-block" && <CodeBlock code={'<Button variant="primary">Save</Button>'}/>} 
+  {slug === "empty-state" && <EmptyState title="No saved links" description="Save frequently used tools so they are easy to find."><Button size="sm">Add link</Button></EmptyState>}
+
+  {slug === "alert" && <Stack gap={3}><Alert title="Information">Your changes are saved locally.</Alert><Alert variant="success" title="Published">The new version is available.</Alert><Alert variant="warning" title="Review required">Two fields need attention.</Alert><Alert variant="destructive" title="Could not save">Try again in a moment.</Alert></Stack>}
+  {slug === "toast" && <><Button data-toast-open="preview-toast">Show toast</Button><Toast id="preview-toast" title="Preferences saved">Your changes are ready.</Toast></>}
+  {slug === "spinner" && <div class="demo-row"><Spinner size="sm"/><Spinner/><Spinner size="lg"/><Button variant="secondary"><Spinner size="sm"/> Saving</Button></div>}
+
+  {slug === "dialog" && <><Button data-dialog-open="preview-dialog">Open dialog</Button><Dialog id="preview-dialog" title="Publish changes?" description="This creates a new component version."><div class="flex justify-end gap-2"><Button variant="ghost" data-dialog-close>Cancel</Button><Button data-dialog-close>Publish</Button></div></Dialog></>}
+  {slug === "drawer" && <><Button data-dialog-open="preview-drawer">Open drawer</Button><Drawer id="preview-drawer" title="Component settings"><FormField id="drawer-name" label="Name"><Input id="drawer-name" value="Primary button"/></FormField></Drawer></>}
+  {slug === "popover" && <Popover label="Open popover"><strong>Quick actions</strong><p class="muted mb-0 text-sm">Contextual content stays close to its trigger.</p></Popover>}
+  {slug === "tooltip" && <Tooltip text="Copy component"><IconButton label="Copy component" variant="secondary"><Icon name="copy"/></IconButton></Tooltip>}
+
+  {slug === "container" && <Container size="sm" class="border border-dashed border-(--accent) py-5">Constrained content</Container>}
+  {slug === "stack" && <Stack gap={3}><Card padding="sm">First item</Card><Card padding="sm">Second item</Card><Card padding="sm">Third item</Card></Stack>}
+  {slug === "inline" && <Inline gap={3}><Button size="sm">Save</Button><Button size="sm" variant="secondary">Cancel</Button><Button size="sm" variant="ghost">Preview</Button></Inline>}
+  {slug === "grid" && <Grid columns={3}><Card padding="sm">One</Card><Card padding="sm">Two</Card><Card padding="sm">Three</Card></Grid>}
+  {slug === "section" && <Section padding="sm" class="rounded-2xl bg-(--muted) px-5"><h3 class="m-0">Section content</h3><p class="muted mb-0">Consistent vertical rhythm.</p></Section>}
+  {slug === "page-shell" && <div class="max-h-72 overflow-hidden rounded-2xl border border-(--border)"><PageShell><div slot="navigation" class="border-b border-(--border) bg-(--surface) p-3 font-semibold">Navigation</div><div class="p-6">Main page content</div><div slot="footer" class="border-t border-(--border) bg-(--surface) p-3 text-sm muted">Footer</div></PageShell></div>}
+
+  {slug === "hero" && <Hero title="Build clear internal tools." description="A focused hero with direct language and two useful actions."><Button>Get started</Button><Button variant="secondary">View guide</Button></Hero>}
+  {slug === "feature-card" && <FeatureCard title="Email signatures" description="Create a consistent company signature for every role." href="#"/>}
+  {slug === "feature-grid" && <FeatureGrid><FeatureCard title="QR codes" description="Create branded contact codes."/><FeatureCard title="Signatures" description="Build consistent email signatures."/><FeatureCard title="Branding" description="Find approved brand assets."/></FeatureGrid>}
+  {slug === "cta" && <CTA title="Ready to publish?" description="Review the component changes before creating a version."><Button>Publish</Button></CTA>}
+  {slug === "pricing-card" && <PricingCard name="Team" price="€18" description="For growing product teams." features={['All components','Dark theme','Typed props']}><Button fullWidth>Choose Team</Button></PricingCard>}
+  {slug === "testimonial-card" && <TestimonialCard quote="The defaults are clear and the interactions feel deliberate." name="Ari Lane" role="Product designer" initials="AL"/>}
+  {slug === "section-header" && <SectionHeader title="Company tools" description="Useful utilities for everyday work."/>}
+  {slug === "footer" && <div class="-m-8"><Footer/></div>}
+</div></div>

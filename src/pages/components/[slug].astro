@@ -1,0 +1,41 @@
+---
+import DocsLayout from "@/layouts/DocsLayout.astro";
+import ComponentPreview from "@/components/docs/ComponentPreview.astro";
+import CodeBlock from "@/components/data-display/CodeBlock.astro";
+import Breadcrumb from "@/components/navigation/Breadcrumb.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { components, type ComponentDoc } from "@/lib/components";
+
+export function getStaticPaths() {
+  return components.map(component => ({ params: { slug: component.slug }, props: { component } }));
+}
+
+interface Props { component: ComponentDoc & { group: string; groupSlug: string } }
+const { component } = Astro.props;
+const index = components.findIndex(item => item.slug === component.slug);
+const previous = components[index - 1];
+const next = components[index + 1];
+---
+<DocsLayout title={`${component.name} — LamaUI`} description={component.description} currentSlug={component.slug}>
+  <Breadcrumb items={[{label:'Components',href:'/'},{label:component.group,href:`/#${component.groupSlug}`},{label:component.name}]}/>
+  <header class="docs-page-header mt-6">
+    <h1>{component.name}</h1>
+    <p>{component.description}</p>
+    <div class="component-meta"><span>Astro component</span><span>Keyboard accessible</span><span>Theme tokens</span></div>
+  </header>
+
+  <section class="component-section" aria-labelledby="preview-heading">
+    <h2 id="preview-heading">Preview</h2>
+    <ComponentPreview slug={component.slug}/>
+  </section>
+
+  <section class="component-section" aria-labelledby="usage-heading">
+    <h2 id="usage-heading">Usage</h2>
+    <CodeBlock code={component.usage}/>
+  </section>
+
+  <nav class="mt-10 grid gap-3 border-t border-(--border) pt-5 sm:grid-cols-2" aria-label="Component pages">
+    {previous ? <a href={`/components/${previous.slug}`} class="lui-card lui-interactive flex items-center gap-3 p-4 no-underline"><Icon name="chevron-right" class="rotate-180"/><span><small class="muted block">Previous</small><strong>{previous.name}</strong></span></a> : <span/>}
+    {next && <a href={`/components/${next.slug}`} class="lui-card lui-interactive flex items-center justify-end gap-3 p-4 text-right no-underline"><span><small class="muted block">Next</small><strong>{next.name}</strong></span><Icon name="chevron-right"/></a>}
+  </nav>
+</DocsLayout>

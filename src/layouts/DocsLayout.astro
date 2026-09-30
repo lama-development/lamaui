@@ -1,140 +1,178 @@
 ---
 import "@/styles/global.css";
 import Icon from "@/components/ui/Icon.astro";
+import { componentGroups } from "@/lib/components";
 interface Props {
   title?: string;
   description?: string;
+  currentSlug?: string;
 }
 const {
-  title = "LamaUI — Astro component library",
-  description = "A reusable Astro and Tailwind component library with accessible interactions and a token-driven theme.",
+  title = "LamaUI - Components",
+  description = "Reusable Astro components extracted from a focused dashboard design language.",
+  currentSlug,
 } = Astro.props;
-const groups = [
-  ["Start here", ["Overview", "Theme"]],
-  ["Actions", ["Button", "Icon button", "Toggle"]],
-  ["Forms", ["Inputs", "Selection", "Custom select"]],
-  ["Navigation", ["Navbar", "Tabs", "Breadcrumb"]],
-  ["Data display", ["Card", "Table", "Stat", "Empty state"]],
-  ["Feedback", ["Alert", "Toast"]],
-  ["Overlays", ["Dialog"]],
-  ["Layout", ["Primitives"]],
-  ["Marketing", ["Patterns"]],
-] as const;
-const slug = (s: string) => s.toLowerCase().replaceAll(" ", "-");
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <meta name="description" content={description} />
-    <meta name="theme-color" content="#619f00" />
+    <meta charset="UTF-8" /><meta
+      name="viewport"
+      content="width=device-width"
+    />
+    <meta name="description" content={description} /><meta
+      name="theme-color"
+      content="#619f00"
+    />
     <title>{title}</title>
     <script is:inline>
       (() => {
         try {
-          const theme = localStorage.getItem("lui-theme");
-          if (theme) document.documentElement.dataset.theme = theme;
+          const t = localStorage.getItem("lui-theme");
+          if (t) document.documentElement.dataset.theme = t;
         } catch {}
       })();
     </script>
   </head>
   <body>
-    <a
-      href="#main"
-      class="fixed left-3 top-3 z-[200] -translate-y-20 rounded-xl bg-(--accent) px-3 py-2 font-semibold text-(--accent-foreground) focus:translate-y-0"
-      >Skip to content</a
+    <a href="#main-content" class="skip-link">Skip to content</a>
+    <header class="docs-mobile-header">
+      <a href="/" class="docs-brand"
+        ><span class="docs-mark">L</span><span
+          ><strong>LamaUI</strong><small>Components</small></span
+        ></a
+      >
+      <button
+        type="button"
+        class="lui-control lui-ghost lui-icon"
+        aria-label="Open navigation"
+        aria-controls="docs-navigation"
+        aria-expanded="false"
+        data-docs-open><Icon name="menu" /></button
+      >
+    </header>
+    <aside
+      id="docs-navigation"
+      class="docs-sidebar"
+      data-open="false"
+      aria-label="Documentation navigation"
     >
-    <div class="docs-grid">
-      <aside class="docs-sidebar" id="docs-sidebar" data-open="false">
-        <div class="mb-7 flex min-h-10 items-center justify-between px-1">
-          <a
-            href="#overview"
-            class="flex items-center gap-2.5 text-base font-bold no-underline"
-            ><span
-              class="grid size-8 place-items-center rounded-[10px] bg-(--accent) text-sm text-(--accent-foreground) shadow-(--shadow-control)"
-              >L</span
-            >LamaUI</a
+      <div class="docs-sidebar-inner">
+        <div class="docs-sidebar-head">
+          <a href="/" class="docs-brand"
+            ><span class="docs-mark">L</span><span
+              ><strong>LamaUI</strong><small>Components</small></span
+            ></a
           >
           <button
-            class="lui-control lui-ghost lui-icon md:hidden"
+            type="button"
+            class="lui-control lui-ghost lui-icon docs-sidebar-close"
             aria-label="Close navigation"
             data-docs-close><Icon name="close" /></button
           >
         </div>
-        <nav aria-label="Documentation">
+        <nav class="docs-nav">
+          <a
+            href="/"
+            aria-current={!currentSlug ? "page" : undefined}
+            class="docs-nav-row"><Icon name="home" /><span>Overview</span></a
+          >
           {
-            groups.map(([group, items]) => (
-              <div class="mb-5">
-                <>
-                  <p class="muted mb-1.5 px-3 text-[11px] font-bold uppercase tracking-[.1em]">
-                    {group}
-                  </p>
-                  <ul class="m-0 list-none space-y-0.5 p-0">
-                    {items.map((item) => (
+            componentGroups.map((group) => {
+              const containsCurrent = group.components.some(
+                (item) => item.slug === currentSlug,
+              );
+              return (
+                <details class="docs-nav-group" open={containsCurrent}>
+                  <summary class="docs-nav-row">
+                    <>
+                      <Icon name={group.icon} />
+                      <span>{group.name}</span>
+                      <Icon
+                        name="chevron-down"
+                        size={16}
+                        class="docs-nav-chevron"
+                      />
+                    </>
+                  </summary>
+                  <ul>
+                    {group.components.map((item) => (
                       <li>
                         <a
-                          href={`#${slug(item)}`}
-                          class="docs-nav-link block rounded-[10px] px-3 py-1.5 text-sm font-medium text-(--muted-foreground) no-underline hover:bg-(--surface-hover) hover:text-(--foreground)"
+                          href={`/components/${item.slug}`}
+                          aria-current={
+                            item.slug === currentSlug ? "page" : undefined
+                          }
                         >
-                          {item}
+                          {item.name}
                         </a>
                       </li>
                     ))}
                   </ul>
-                </>
-              </div>
-            ))
+                </details>
+              );
+            })
           }
         </nav>
-      </aside>
-      <div class="docs-main">
-        <header class="docs-topbar">
-          <button
-            class="lui-control lui-ghost lui-icon mr-2 md:hidden"
-            aria-label="Open navigation"
-            aria-controls="docs-sidebar"
-            aria-expanded="false"
-            data-docs-open><Icon name="menu" /></button
-          ><div>
-            <strong class="text-sm">Component guide</strong><span
-              class="muted ml-2 text-xs">v0.1</span>
-          </div><div class="ml-auto flex items-center gap-2">
-            <a
-              href="#theme"
-              class="lui-control lui-ghost lui-sm hidden sm:inline-flex"
-              >Tokens</a
-            ><button
-              type="button"
-              class="lui-control lui-secondary lui-icon"
-              aria-label="Toggle color theme"
-              data-theme-toggle><span data-theme-light><Icon name="sun" /></span><span data-theme-dark hidden><Icon name="moon" /></span></button>
-          </div>
-        </header>
-        <main id="main" class="docs-content"><slot /></main>
+        <div class="docs-sidebar-foot">
+          <button type="button" class="docs-preference" data-theme-toggle
+            ><span
+              ><Icon name="sun" data-theme-icon-light /><Icon
+                name="moon"
+                data-theme-icon-dark
+                hidden
+              /></span
+            ><span
+              ><strong>Appearance</strong><small data-theme-label
+                >System theme</small
+              ></span
+            ></button
+          >
+        </div>
       </div>
+    </aside>
+    <button
+      class="docs-scrim"
+      aria-label="Close navigation"
+      data-docs-scrim
+      hidden></button>
+    <div class="docs-page">
+      <main id="main-content" class="docs-content"><slot /></main>
+      <footer class="docs-footer">LamaUI 0.1 · Astro and Tailwind CSS</footer>
     </div>
-    <button class="fixed inset-0 z-[70] hidden bg-(--overlay) md:hidden" aria-label="Close navigation" data-docs-scrim></button>
     <script is:inline>
-      const $ = (s, r = document) => r.querySelector(s);
-      const $$ = (s, r = document) => [...r.querySelectorAll(s)];
-      const sidebar = $("#docs-sidebar");
-      const docsOpen = $("[data-docs-open]");
-      const docsScrim = $("[data-docs-scrim]");
-      const setDocsOpen = (open) => {
+      const $ = (selector, root = document) => root.querySelector(selector);
+      const $$ = (selector, root = document) =>
+        Array.from(root.querySelectorAll(selector));
+      const sidebar = $("#docs-navigation"),
+        scrim = $("[data-docs-scrim]"),
+        opener = $("[data-docs-open]");
+      const setNavigation = (open) => {
         sidebar?.setAttribute("data-open", String(open));
-        docsOpen?.setAttribute("aria-expanded", String(open));
-        docsScrim?.classList.toggle("hidden", !open);
+        opener?.setAttribute("aria-expanded", String(open));
+        scrim?.toggleAttribute("hidden", !open);
+        document.body.classList.toggle("docs-navigation-open", open);
       };
-      docsOpen?.addEventListener("click", () => setDocsOpen(true));
-      $("[data-docs-close]")?.addEventListener("click", () => setDocsOpen(false));
-      docsScrim?.addEventListener("click", () => setDocsOpen(false));
-      $$("#docs-sidebar a").forEach((a) =>
-        a.addEventListener("click", () =>
-          setDocsOpen(false),
-        ),
+      opener?.addEventListener("click", () => setNavigation(true));
+      $("[data-docs-close]")?.addEventListener("click", () =>
+        setNavigation(false),
       );
+      scrim?.addEventListener("click", () => setNavigation(false));
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") setNavigation(false);
+      });
+      const syncTheme = () => {
+        const dark =
+          document.documentElement.dataset.theme === "dark" ||
+          (!document.documentElement.dataset.theme &&
+            matchMedia("(prefers-color-scheme: dark)").matches);
+        $("[data-theme-icon-light]")?.toggleAttribute("hidden", dark);
+        $("[data-theme-icon-dark]")?.toggleAttribute("hidden", !dark);
+        const label = $("[data-theme-label]");
+        if (label) label.textContent = dark ? "Dark theme" : "Light theme";
+      };
+      syncTheme();
       $("[data-theme-toggle]")?.addEventListener("click", () => {
         const dark =
           document.documentElement.dataset.theme === "dark" ||
@@ -143,144 +181,214 @@ const slug = (s: string) => s.toLowerCase().replaceAll(" ", "-");
         const next = dark ? "light" : "dark";
         document.documentElement.dataset.theme = next;
         localStorage.setItem("lui-theme", next);
-        $("[data-theme-light]")?.toggleAttribute("hidden", next === "dark");
-        $("[data-theme-dark]")?.toggleAttribute("hidden", next !== "dark");
+        syncTheme();
       });
-      const darkNow = document.documentElement.dataset.theme === "dark" || (!document.documentElement.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches);
-      $("[data-theme-light]")?.toggleAttribute("hidden", darkNow);
-      $("[data-theme-dark]")?.toggleAttribute("hidden", !darkNow);
-      document.addEventListener("keydown", (event) => { if (event.key === "Escape") setDocsOpen(false); });
-      const sectionLinks = new Map($$(".docs-nav-link").map(link => [link.getAttribute("href")?.slice(1), link]));
-      const observer = new IntersectionObserver(entries => {
-        const visible = entries.filter(entry => entry.isIntersecting).sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (!visible) return;
-        sectionLinks.forEach((link, id) => link.setAttribute("aria-current", String(id === visible.target.id)));
-      }, { rootMargin: "-15% 0px -70%", threshold: [0, .2, .6] });
-      sectionLinks.forEach((_link, id) => { const section = document.getElementById(id); if (section) observer.observe(section); });
-      $$("[data-toggle]").forEach((b) =>
-        b.addEventListener("click", () =>
-          b.setAttribute(
+      $$("[data-toggle]").forEach((button) =>
+        button.addEventListener("click", () =>
+          button.setAttribute(
             "aria-pressed",
-            String(b.getAttribute("aria-pressed") !== "true"),
+            String(button.getAttribute("aria-pressed") !== "true"),
           ),
         ),
       );
-      $$("[data-toggle-group]").forEach((g) =>
-        g.addEventListener("click", (e) => {
-          const b = e.target.closest("[data-toggle]");
-          if (!b) return;
-          g.querySelectorAll("[data-toggle]").forEach((x) =>
-            x.setAttribute("aria-pressed", String(x === b)),
+      $$("[data-toggle-group]").forEach((group) =>
+        group.addEventListener("click", (event) => {
+          const button = event.target.closest("[data-toggle]");
+          if (!button) return;
+          $$("[data-toggle]", group).forEach((item) =>
+            item.setAttribute("aria-pressed", String(item === button)),
           );
         }),
       );
-      $$("[data-password-toggle]").forEach((b) =>
-        b.addEventListener("click", () => {
-          const i = b
+      $$("[data-password-toggle]").forEach((button) =>
+        button.addEventListener("click", () => {
+          const input = button
             .closest("[data-password]")
             .querySelector("[data-password-input]");
-          const show = i.type === "password";
-          i.type = show ? "text" : "password";
-          b.textContent = show ? "Hide" : "Show";
-          b.setAttribute("aria-label", `${show ? "Hide" : "Show"} password`);
+          const show = input.type === "password";
+          input.type = show ? "text" : "password";
+          button.textContent = show ? "Hide" : "Show";
+          button.setAttribute(
+            "aria-label",
+            `${show ? "Hide" : "Show"} password`,
+          );
         }),
       );
+      const dropdowns = [];
       $$("[data-select]").forEach((root) => {
         const trigger = $("[data-select-trigger]", root),
           list = $("[data-select-list]", root),
           input = $("[data-select-input]", root),
-          value = $("[data-select-value]", root);
-        trigger.addEventListener("click", () => {
-          const open = list.hidden;
-          list.hidden = !open;
-          trigger.setAttribute("aria-expanded", String(open));
-          if (open) list.querySelector('[aria-selected="true"]')?.focus();
-        });
-        list.addEventListener("click", (e) => {
-          const option = e.target.closest('[role="option"]');
-          if (!option || option.disabled) return;
-          $$('[role="option"]', list).forEach((o) =>
-            o.setAttribute("aria-selected", String(o === option)),
-          );
-          input.value = option.dataset.value;
-          value.textContent = option.textContent;
-          list.hidden = true;
+          value = $("[data-select-value]", root),
+          valueIcon = $("[data-select-value-icon]", root),
+          options = $$('[role="option"]', root);
+        let closeTimer;
+        const close = (focus = false) => {
+          if (list.hidden) return;
+          list.classList.remove("is-open");
+          list.classList.add("is-closing");
           trigger.setAttribute("aria-expanded", "false");
-          trigger.focus();
-        });
-        root.addEventListener("keydown", (e) => {
-          if (e.key === "Escape") {
+          clearTimeout(closeTimer);
+          closeTimer = setTimeout(() => {
             list.hidden = true;
-            trigger.setAttribute("aria-expanded", "false");
-            trigger.focus();
+            list.classList.remove("is-closing");
+          }, 150);
+          if (focus) trigger.focus();
+        };
+        const open = (where = "selected") => {
+          dropdowns.forEach((item) => item.root !== root && item.close());
+          list.hidden = false;
+          list.classList.remove("is-closing");
+          requestAnimationFrame(() => list.classList.add("is-open"));
+          trigger.setAttribute("aria-expanded", "true");
+          const enabled = options.filter((option) => !option.disabled),
+            selected = options.find(
+              (option) => option.getAttribute("aria-selected") === "true",
+            );
+          requestAnimationFrame(() =>
+            (where === "first"
+              ? enabled[0]
+              : where === "last"
+                ? enabled.at(-1)
+                : selected || enabled[0]
+            )?.focus(),
+          );
+        };
+        const choose = (option) => {
+          if (option.disabled) return;
+          options.forEach((item) => {
+            item.setAttribute("aria-selected", String(item === option));
+            item.querySelector("[data-option-check]")?.toggleAttribute("hidden", item !== option);
+          });
+          input.value = option.dataset.value;
+          value.classList.add("is-swapping");
+          setTimeout(() => {
+            value.textContent = option.dataset.label;
+            value.classList.remove("is-swapping");
+          }, 80);
+          if (valueIcon)
+            valueIcon.innerHTML =
+              option.querySelector("[data-option-icon]")?.innerHTML || "";
+          close(true);
+        };
+        trigger?.addEventListener("click", () =>
+          list.hidden ? open() : close(true),
+        );
+        trigger?.addEventListener("keydown", (event) => {
+          if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+            event.preventDefault();
+            open(event.key === "ArrowDown" ? "first" : "last");
           }
         });
+        list?.addEventListener("keydown", (event) => {
+          const enabled = options.filter((option) => !option.disabled),
+            index = enabled.indexOf(document.activeElement);
+          if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+            event.preventDefault();
+            enabled[
+              (index + (event.key === "ArrowDown" ? 1 : -1) + enabled.length) %
+                enabled.length
+            ]?.focus();
+          } else if (
+            (event.key === "Enter" || event.key === " ") &&
+            document.activeElement.matches('[role="option"]')
+          ) {
+            event.preventDefault();
+            choose(document.activeElement);
+          } else if (event.key === "Escape") {
+            event.preventDefault();
+            close(true);
+          }
+        });
+        options.forEach((option) =>
+          option.addEventListener("click", () => choose(option)),
+        );
+        dropdowns.push({ root, close });
       });
+      document.addEventListener("pointerdown", (event) =>
+        dropdowns.forEach((item) => {
+          if (!item.root.contains(event.target)) item.close();
+        }),
+      );
       $$("[data-tabs]").forEach((root) => {
         const tabs = $$('[role="tab"]', root),
           panels = $$('[role="tabpanel"]', root);
+        const activate = (tab) => {
+          tabs.forEach((item) => {
+            item.setAttribute("aria-selected", String(item === tab));
+            item.tabIndex = item === tab ? 0 : -1;
+          });
+          panels.forEach(
+            (panel) =>
+              (panel.hidden = panel.dataset.tabPanel !== tab.dataset.tab),
+          );
+          tab.focus();
+        };
         tabs.forEach((tab) =>
-          tab.addEventListener("click", () => {
-            tabs.forEach((t) =>
-              t.setAttribute("aria-selected", String(t === tab)),
-            );
-            panels.forEach(
-              (p) => (p.hidden = p.dataset.tabPanel !== tab.dataset.tab),
-            );
-            tab.focus();
-          }),
+          tab.addEventListener("click", () => activate(tab)),
         );
-        root.addEventListener("keydown", (e) => {
-          if (!["ArrowLeft", "ArrowRight"].includes(e.key)) return;
-          const i = tabs.indexOf(document.activeElement),
-            next =
-              tabs[
-                (i + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) %
-                  tabs.length
-              ];
-          next?.click();
+        root.addEventListener("keydown", (event) => {
+          if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+          event.preventDefault();
+          const index = tabs.indexOf(document.activeElement);
+          activate(
+            tabs[
+              (index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) %
+                tabs.length
+            ],
+          );
         });
       });
-      $$("[data-dialog-open]").forEach((b) =>
-        b.addEventListener("click", () =>
-          document.getElementById(b.dataset.dialogOpen)?.showModal(),
+      $$("[data-dialog-open]").forEach((button) =>
+        button.addEventListener("click", () =>
+          document.getElementById(button.dataset.dialogOpen)?.showModal(),
         ),
       );
-      $$("[data-dialog-close]").forEach((b) =>
-        b.addEventListener("click", () => b.closest("dialog")?.close()),
+      $$("[data-dialog-close]").forEach((button) =>
+        button.addEventListener("click", () =>
+          button.closest("dialog")?.close(),
+        ),
       );
-      $$("dialog").forEach((d) =>
-        d.addEventListener("click", (e) => {
-          if (e.target === d) d.close();
+      $$("dialog").forEach((dialog) =>
+        dialog.addEventListener("click", (event) => {
+          if (event.target === dialog) dialog.close();
         }),
       );
-      $$("[data-dismiss]").forEach((b) =>
-        b.addEventListener("click", () =>
-          b.closest('[role="alert"],[role="status"]')?.remove(),
-        ),
-      );
-      $$("[data-toast-open]").forEach((b) =>
-        b.addEventListener("click", () => {
-          const t = document.getElementById(b.dataset.toastOpen);
-          t?.classList.replace("hidden", "flex");
-          setTimeout(() => t?.classList.replace("flex", "hidden"), 4000);
+      $$("[data-toast-open]").forEach((button) =>
+        button.addEventListener("click", () => {
+          const toast = document.getElementById(button.dataset.toastOpen);
+          toast?.classList.replace("hidden", "flex");
+          setTimeout(() => toast?.classList.replace("flex", "hidden"), 3500);
         }),
       );
-      $$("[data-toast-close]").forEach((b) =>
-        b.addEventListener("click", () =>
-          b.closest("[data-toast]")?.classList.replace("flex", "hidden"),
+      $$("[data-toast-close]").forEach((button) =>
+        button.addEventListener("click", () =>
+          button.closest("[data-toast]")?.classList.replace("flex", "hidden"),
         ),
       );
-      $$("[data-nav-toggle]").forEach((b) =>
-        b.addEventListener("click", () => {
-          const n = b.parentElement.querySelector("[data-nav-menu]");
-          const opening = n.classList.contains("hidden");
-          n.classList.toggle("hidden", !opening);
-          n.classList.toggle("flex", opening);
-          b.setAttribute("aria-expanded", String(opening));
-          b.setAttribute("aria-label", opening ? "Close navigation" : "Open navigation");
-          b.querySelector("[data-nav-open-icon]")?.toggleAttribute("hidden", opening);
-          b.querySelector("[data-nav-close-icon]")?.toggleAttribute("hidden", !opening);
+      $$("[data-dismiss]").forEach((button) =>
+        button.addEventListener("click", () =>
+          button.closest('[role="alert"],[role="status"]')?.remove(),
+        ),
+      );
+      $$("[data-nav-toggle]").forEach((button) =>
+        button.addEventListener("click", () => {
+          const nav = document.getElementById(
+            button.getAttribute("aria-controls"),
+          );
+          const opening = nav?.dataset.open !== "true";
+          nav.dataset.open = String(opening);
+          button.setAttribute("aria-expanded", String(opening));
+          button.setAttribute(
+            "aria-label",
+            opening ? "Close navigation" : "Open navigation",
+          );
+          button
+            .querySelector("[data-nav-open-icon]")
+            ?.toggleAttribute("hidden", opening);
+          button
+            .querySelector("[data-nav-close-icon]")
+            ?.toggleAttribute("hidden", !opening);
         }),
       );
     </script>

@@ -1,5 +1,6 @@
 ---
+import Icon from "@/components/ui/Icon.astro";
 interface Props { label:string; align?:'start'|'end'; class?:string }
 const {label,align='start',class:className}=Astro.props;
 ---
-<details class:list={['relative inline-block',className]}><summary class="lui-control lui-secondary list-none">{label} <span aria-hidden="true">⌄</span></summary><div class:list={['lui-menu top-full mt-2',align==='end'?'right-0':'left-0']}><slot /></div></details>
+<details class:list={['group relative inline-block',className]}><summary class="lui-control lui-secondary list-none">{label}<Icon name="chevron-down" size={16} class="transition-transform group-open:rotate-180" /></summary><div class:list={['lui-menu top-full mt-2',align==='end'?'right-0':'left-0']}><slot /></div></details>

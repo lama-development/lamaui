@@ -1,6 +1,7 @@
 ---
+import Icon, { type IconName } from "@/components/ui/Icon.astro";
 interface Props {
-  icon?: string;
+  icon?: IconName;
   title: string;
   description: string;
   href?: string;
@@ -15,7 +16,7 @@ const Tag = href ? "a" : "article";
   class:list={["lui-card lui-interactive block p-5 no-underline", className]}
   >{icon && <span
     class="mb-4 grid size-11 place-items-center rounded-xl bg-(--accent-subtle) text-sm font-bold text-(--accent)"
-    aria-hidden="true">{icon}</span>}
+    aria-hidden="true"><Icon name={icon} /></span>}
   <h3 class="m-0 text-lg font-bold">{title}</h3><p class="muted mt-1 mb-0">
     {description}
   </p></Tag

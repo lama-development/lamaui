@@ -1,11 +1,12 @@
 ---
+import Icon, { type IconName } from "@/components/ui/Icon.astro";
 interface Props {
   title: string;
   description: string;
-  icon?: string;
+  icon?: IconName;
   class?: string;
 }
-const { title, description, icon = "◇", class: className } = Astro.props;
+const { title, description, icon = "data", class: className } = Astro.props;
 ---
 
 <div
@@ -16,7 +17,7 @@ const { title, description, icon = "◇", class: className } = Astro.props;
 >
   <span
     class="mb-4 grid size-12 place-items-center rounded-xl bg-(--accent-subtle) text-xl text-(--accent)"
-    aria-hidden="true">{icon}</span
+    aria-hidden="true"><Icon name={icon} /></span
   ><h3 class="m-0 text-lg font-bold">{title}</h3><p
     class="muted mt-1 mb-5 max-w-md"
   >

@@ -1,9 +1,10 @@
 ---
+import Icon, { type IconName } from "@/components/ui/Icon.astro";
 interface Item {
   label: string;
   href: string;
   active?: boolean;
-  icon?: string;
+  icon?: IconName;
 }
 interface Props {
   label?: string;
@@ -26,7 +27,7 @@ const { label = "Sidebar navigation", items, class: className } = Astro.props;
               aria-current={item.active ? "page" : undefined}
               class="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-semibold text-(--muted-foreground) no-underline hover:bg-(--surface-hover) aria-[current=page]:bg-(--accent-subtle) aria-[current=page]:text-(--accent)"
             >
-              {item.icon && <span aria-hidden="true">{item.icon}</span>}
+              {item.icon && <Icon name={item.icon} size={20} />}
               {item.label}
             </a>
           </li>
