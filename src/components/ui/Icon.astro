@@ -26,15 +26,19 @@ import search from "@phosphor-icons/core/duotone/magnifying-glass-duotone.svg?ra
 import mail from "@phosphor-icons/core/duotone/envelope-duotone.svg?raw";
 import code from "@phosphor-icons/core/bold/code-bold.svg?raw";
 import external from "@phosphor-icons/core/duotone/arrow-square-out-duotone.svg?raw";
+import wrap from "@phosphor-icons/core/duotone/arrows-in-line-horizontal-duotone.svg?raw";
+import eye from "@phosphor-icons/core/duotone/eye-duotone.svg?raw";
+import eyeSlash from "@phosphor-icons/core/duotone/eye-slash-duotone.svg?raw";
 
-export type IconName = "menu" | "close" | "sun" | "moon" | "chevron-right" | "chevron-down" | "copy" | "plus" | "heart" | "more" | "pin" | "home" | "actions" | "forms" | "navigation" | "data" | "feedback" | "overlays" | "layout" | "marketing" | "check" | "user" | "settings" | "search" | "mail" | "code" | "external";
+export type IconName = "menu" | "close" | "sun" | "moon" | "chevron-right" | "chevron-down" | "copy" | "plus" | "heart" | "more" | "pin" | "home" | "actions" | "forms" | "navigation" | "data" | "feedback" | "overlays" | "layout" | "marketing" | "check" | "user" | "settings" | "search" | "mail" | "code" | "external" | "wrap" | "eye" | "eye-slash";
 interface Props { name: IconName; size?: number; class?: string; [key: string]: any }
 const { name, size = 20, class: className, ...rest } = Astro.props;
 const icons: Record<IconName, string> = {
   menu, close, sun, moon, "chevron-right": chevronRight,
   "chevron-down": chevronDown, copy, plus, heart, more, pin, home,
   actions, forms, navigation, data, feedback, overlays, layout, marketing,
-  check, user, settings, search, mail, code, external,
+  check, user, settings, search, mail, code, external, wrap, eye,
+  "eye-slash": eyeSlash,
 };
 const paths = icons[name]
   .replace(/^<svg[^>]*>/, "")

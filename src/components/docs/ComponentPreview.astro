@@ -109,7 +109,7 @@ const selectOptions = [
   {slug === "progress" && <Stack gap={6}><Progress value={72} label="Documentation" showValue/><Progress value={38} label="Migration" showValue/></Stack>}
   {slug === "skeleton" && <Stack gap={3}><Skeleton height="8rem" radius="var(--radius-lg)"/><Skeleton width="72%" height="1.25rem"/><Skeleton width="48%"/></Stack>}
   {slug === "divider" && <Stack gap={5}><span>Account details</span><Divider/><span>Security settings</span><Divider label="or"/><span>Continue another way</span></Stack>}
-  {slug === "tag" && <div class="demo-row"><Tag>Astro</Tag><Tag removable>Design system</Tag><Tag removable>Tailwind CSS</Tag></div>}
+  {slug === "tag" && <div class="demo-row tag-row"><Tag>Astro</Tag><Tag removable>Design system</Tag><Tag removable>Tailwind CSS</Tag></div>}
   {slug === "code-block" && <CodeBlock code={'<Button variant="primary">Save</Button>'}/>} 
   {slug === "empty-state" && <EmptyState title="No saved links" description="Save frequently used tools so they are easy to find."><Button size="sm">Add link</Button></EmptyState>}
 

@@ -194,6 +194,19 @@ const {
           }
         }),
       );
+      $$("[data-code-wrap]").forEach((button) =>
+        button.addEventListener("click", () => {
+          const block = button.closest("[data-code-block]"),
+            wrapped = !block.classList.contains("is-wrapped");
+          block.classList.toggle("is-wrapped", wrapped);
+          button.setAttribute("aria-pressed", String(wrapped));
+          button.setAttribute(
+            "aria-label",
+            wrapped ? "Unwrap lines" : "Wrap lines",
+          );
+          button.title = wrapped ? "Unwrap lines" : "Wrap lines";
+        }),
+      );
       const syncTheme = () => {
         const dark =
           document.documentElement.dataset.theme === "dark" ||
@@ -239,13 +252,28 @@ const {
             .querySelector("[data-password-input]");
           const show = input.type === "password";
           input.type = show ? "text" : "password";
-          button.textContent = show ? "Hide" : "Show";
+          $("[data-password-show]", button)?.toggleAttribute("hidden", show);
+          $("[data-password-hide]", button)?.toggleAttribute("hidden", !show);
           button.setAttribute(
             "aria-label",
             `${show ? "Hide" : "Show"} password`,
           );
+          button.title = `${show ? "Hide" : "Show"} password`;
         }),
       );
+      $$("[data-slider]").forEach((slider) => {
+        const output = $("[data-slider-output]", slider.closest("label"));
+        const update = () => {
+          const min = Number(slider.min),
+            max = Number(slider.max),
+            value = Number(slider.value),
+            progress = ((value - min) / (max - min)) * 100;
+          slider.style.setProperty("--slider-progress", `${progress}%`);
+          if (output) output.value = slider.value;
+        };
+        slider.addEventListener("input", update);
+        update();
+      });
       const dropdowns = [];
       $$("[data-select]").forEach((root) => {
         const trigger = $("[data-select-trigger]", root),

@@ -18,7 +18,7 @@ const { steps, current } = Astro.props;
     steps.map((step, i) => (
       <li
         aria-current={i + 1 === current ? "step" : undefined}
-        class="relative flex gap-3"
+        class:list={["lui-step", step.description && "has-description"]}
       >
         <>
           <span

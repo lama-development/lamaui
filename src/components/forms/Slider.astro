@@ -8,11 +8,12 @@ interface Props {
   name?: string;
 }
 const { label, min = 0, max = 100, value = 50, step = 1, name } = Astro.props;
+const progress = ((value - min) / (max - min)) * 100;
 ---
 
-<label class="block"
-  ><span class="lui-label flex justify-between"
-    ><span>{label}</span><output>{value}</output></span
+<label class="lui-slider-field"
+  ><span class="lui-slider-label"
+    ><span>{label}</span><output data-slider-output>{value}</output></span
   ><input
     type="range"
     {name}
@@ -20,6 +21,8 @@ const { label, min = 0, max = 100, value = 50, step = 1, name } = Astro.props;
     {max}
     {value}
     {step}
-    class="h-2 w-full cursor-pointer appearance-none rounded-full bg-(--border) accent-(--accent)"
+    class="lui-slider"
+    style={`--slider-progress:${progress}%`}
+    data-slider
   /></label
 >

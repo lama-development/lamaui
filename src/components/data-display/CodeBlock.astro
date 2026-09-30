@@ -12,11 +12,14 @@ const highlighted = await codeToHtml(code, {
 <figure class="code-block" data-code-block>
   <figcaption class="code-head">
     <span class="code-language"><Icon name="code" size={20} /><span>{label}</span></span>
-    <button type="button" class="code-copy" aria-label="Copy code" data-copy-code>
-      <span data-copy-default><Icon name="copy" size={20} /></span>
-      <span data-copy-success hidden><Icon name="check" size={20} /></span>
-      <span class="sr-only" data-copy-label>Copy</span>
-    </button>
+    <span class="code-actions">
+      <button type="button" class="code-action" aria-label="Wrap lines" aria-pressed="false" title="Wrap lines" data-code-wrap><Icon name="wrap" size={20} /></button>
+      <button type="button" class="code-action code-copy" aria-label="Copy code" title="Copy code" data-copy-code>
+        <span data-copy-default><Icon name="copy" size={20} /></span>
+        <span data-copy-success hidden><Icon name="check" size={20} /></span>
+        <span class="sr-only" data-copy-label>Copy</span>
+      </button>
+    </span>
   </figcaption>
   <div class="code-render" set:html={highlighted}></div>
 </figure>
