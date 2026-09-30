@@ -55,15 +55,16 @@ input:not([type]),input[type="text"],input[type="email"],input[type="password"],
 .lui-menu-item:hover, .lui-menu-item:focus-visible { background:var(--surface-hover); }
 [data-select-value] { display:inline-block; transition:transform var(--duration-fast),filter var(--duration-fast),opacity var(--duration-fast); }
 [data-select-value].is-swapping { transform:translateY(-4px); filter:blur(2px); opacity:0; }
-.lui-alert { display:grid; grid-template-columns:1.5rem minmax(0,1fr) auto; align-items:start; column-gap:.75rem; }
-.lui-alert-icon,.lui-toast-icon { display:grid; width:1.5rem; height:1.5rem; place-items:center; }
-.lui-alert-body,.lui-toast-body { padding-top:.0625rem; }
+.lui-icon-svg { display:block; flex:none; }
+.lui-alert { display:grid; grid-template-columns:1.25rem minmax(0,1fr) auto; align-items:start; column-gap:.75rem; }
+.lui-alert-icon,.lui-toast-icon { display:grid; width:1.25rem; height:1.35rem; place-items:center; }
+.lui-alert-body,.lui-toast-body { min-width:0; }
 .lui-alert-body > :first-child,.lui-toast-body > :first-child { line-height:1.35; }
 .lui-alert-body > div,.lui-toast-body > div { margin-top:.1875rem; line-height:var(--leading-tight); }
 .lui-alert-close,.lui-toast-close,.lui-dialog-close { display:grid; width:2rem; height:2rem; flex:none; place-items:center; border:0; border-radius:.5rem; background:transparent; color:currentColor; padding:0; transition:background var(--duration-fast),color var(--duration-fast),transform var(--duration-fast); }
 .lui-alert-close { margin:-.25rem -.25rem 0 0; }
 .lui-alert-close:hover { background:color-mix(in srgb,currentColor 8%,transparent); }
-.lui-toast { grid-template-columns:1.5rem minmax(0,1fr) 2rem; align-items:start; column-gap:.75rem; }
+.lui-toast { grid-template-columns:1.25rem minmax(0,1fr) 2rem; align-items:start; column-gap:.75rem; }
 .lui-toast-close { margin:-.25rem -.25rem 0 0; color:var(--muted-foreground); }
 .lui-toast-close:hover,.lui-dialog-close:hover { background:var(--surface-hover); color:var(--foreground); }
 .lui-dialog { position:fixed; inset:0; margin:auto; }
@@ -136,9 +137,12 @@ input:not([type]),input[type="text"],input[type="email"],input[type="password"],
 .demo { padding:1.5rem; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-lg); }
 .demo-row { display:flex; flex-wrap:wrap; align-items:center; gap:.625rem; }
 .code-block { position:relative; overflow:hidden; margin:0; border:1px solid var(--border); border-radius:var(--radius-lg); background:#fff; }
-.code-copy { position:absolute; top:.625rem; right:.625rem; z-index:2; display:inline-flex; min-height:2rem; align-items:center; gap:.375rem; border:1px solid #d0d7de; border-radius:.5rem; background:color-mix(in srgb,#fff 92%,transparent); color:#57606a; padding:.375rem .5rem; font-size:.75rem; font-weight:650; box-shadow:0 1px 2px rgb(27 31 36 / 8%); backdrop-filter:blur(8px); transition:background var(--duration-fast),border-color var(--duration-fast),color var(--duration-fast),transform var(--duration-fast); }
+.code-copy { position:absolute; top:.625rem; right:.625rem; z-index:2; display:inline-flex; min-height:2rem; align-items:center; gap:.25rem; border:1px solid #d0d7de; border-radius:.5rem; background:color-mix(in srgb,#fff 92%,transparent); color:#57606a; padding:.375rem .5rem; font-size:.75rem; font-weight:650; box-shadow:0 1px 2px rgb(27 31 36 / 8%); backdrop-filter:blur(8px); transition:background var(--duration-fast),border-color var(--duration-fast),color var(--duration-fast),transform var(--duration-fast); }
+.code-copy > span { display:flex; align-items:center; }
 .code-copy:hover { border-color:#afb8c1; background:#fff; color:#24292f; }
 .code-copy:active { transform:scale(.96); }
+.code-block.is-single-line .code-copy { top:50%; transform:translateY(-50%); }
+.code-block.is-single-line .code-copy:active { transform:translateY(-50%) scale(.96); }
 .code-render { overflow:auto; }
 .code-render .shiki { margin:0; padding:1.125rem 5.5rem 1.125rem 1.125rem; background-color:var(--shiki-light-bg); color:var(--shiki-light); font:var(--text-sm)/1.65 var(--font-mono); tab-size:2; }
 .code-render .shiki span { color:var(--shiki-light); }
