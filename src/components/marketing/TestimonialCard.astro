@@ -1,0 +1,5 @@
+---
+interface Props { quote:string; name:string; role?:string; initials?:string; class?:string }
+const {quote,name,role,initials='LM',class:className}=Astro.props;
+---
+<figure class:list={['lui-card m-0 p-6',className]}><blockquote class="m-0 text-lg leading-relaxed">“{quote}”</blockquote><figcaption class="mt-5 flex items-center gap-3"><span class="grid size-10 place-items-center rounded-full bg-[var(--primary)] text-sm font-bold text-[var(--primary-foreground)]">{initials}</span><span><strong class="block">{name}</strong>{role&&<span class="muted block text-sm">{role}</span>}</span></figcaption></figure>

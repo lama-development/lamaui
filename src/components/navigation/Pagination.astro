@@ -1,0 +1,6 @@
+---
+interface Props { current:number; total:number; href?:string; label?:string }
+const {current,total,href='?page=',label='Pagination'}=Astro.props;
+const pages=Array.from({length:total},(_,i)=>i+1);
+---
+<nav aria-label={label} class="flex items-center gap-1"><a href={`${href}${Math.max(1,current-1)}`} aria-disabled={current===1} class="lui-control lui-ghost lui-sm">←</a>{pages.map(page=><a href={`${href}${page}`} aria-current={page===current?'page':undefined} class="lui-control lui-ghost lui-sm min-w-10 aria-[current=page]:bg-[var(--accent)] aria-[current=page]:text-[var(--accent-foreground)]">{page}</a>)}<a href={`${href}${Math.min(total,current+1)}`} aria-disabled={current===total} class="lui-control lui-ghost lui-sm">→</a></nav>

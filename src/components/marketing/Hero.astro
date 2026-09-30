@@ -1,0 +1,5 @@
+---
+interface Props { eyebrow?:string; title:string; description:string; align?:'left'|'center'; class?:string }
+const {eyebrow,title,description,align='left',class:className}=Astro.props;
+---
+<section class:list={['relative overflow-hidden py-16 sm:py-24',align==='center'&&'text-center',className]}><div class="pointer-events-none absolute -right-28 -top-36 size-96 rounded-full bg-[var(--accent-subtle)] blur-3xl"></div><div class:list={['relative max-w-3xl',align==='center'&&'mx-auto']}>{eyebrow&&<p class="eyebrow mb-3">{eyebrow}</p>}<h1 class="prose-title">{title}</h1><p class="muted mt-5 mb-7 max-w-2xl text-lg sm:text-xl">{description}</p><div class:list={['flex flex-wrap gap-3',align==='center'&&'justify-center']}><slot /></div></div></section>

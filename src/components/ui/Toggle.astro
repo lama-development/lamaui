@@ -1,0 +1,5 @@
+---
+interface Props { pressed?:boolean; label?:string; disabled?:boolean; class?:string }
+const { pressed=false, label, disabled=false, class:className } = Astro.props;
+---
+<button type="button" aria-pressed={pressed} {disabled} aria-label={label} data-toggle class:list={['lui-control lui-outline aria-pressed:bg-[var(--accent-subtle)] aria-pressed:text-[var(--accent)] aria-pressed:border-[var(--accent)]',className]}><slot /></button>

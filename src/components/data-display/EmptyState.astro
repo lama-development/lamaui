@@ -1,0 +1,5 @@
+---
+interface Props { title:string; description:string; icon?:string; class?:string }
+const {title,description,icon='◇',class:className}=Astro.props;
+---
+<div class:list={['lui-card flex flex-col items-center p-8 text-center',className]}><span class="mb-4 grid size-12 place-items-center rounded-xl bg-[var(--accent-subtle)] text-xl text-[var(--accent)]" aria-hidden="true">{icon}</span><h3 class="m-0 text-lg font-bold">{title}</h3><p class="muted mt-1 mb-5 max-w-md">{description}</p><slot /></div>

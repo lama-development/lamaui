@@ -1,0 +1,116 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import Button from '@/components/ui/Button.astro';
+import IconButton from '@/components/ui/IconButton.astro';
+import ButtonGroup from '@/components/ui/ButtonGroup.astro';
+import Toggle from '@/components/ui/Toggle.astro';
+import ToggleGroup from '@/components/ui/ToggleGroup.astro';
+import FormField from '@/components/forms/FormField.astro';
+import Input from '@/components/forms/Input.astro';
+import Textarea from '@/components/forms/Textarea.astro';
+import Select from '@/components/forms/Select.astro';
+import CustomSelect from '@/components/forms/CustomSelect.astro';
+import Checkbox from '@/components/forms/Checkbox.astro';
+import RadioGroup from '@/components/forms/RadioGroup.astro';
+import Switch from '@/components/forms/Switch.astro';
+import Slider from '@/components/forms/Slider.astro';
+import SearchInput from '@/components/forms/SearchInput.astro';
+import PasswordInput from '@/components/forms/PasswordInput.astro';
+import NumberInput from '@/components/forms/NumberInput.astro';
+import Breadcrumb from '@/components/navigation/Breadcrumb.astro';
+import Tabs from '@/components/navigation/Tabs.astro';
+import TabPanel from '@/components/navigation/TabPanel.astro';
+import Pagination from '@/components/navigation/Pagination.astro';
+import Stepper from '@/components/navigation/Stepper.astro';
+import DropdownMenu from '@/components/navigation/DropdownMenu.astro';
+import Navbar from '@/components/navigation/Navbar.astro';
+import Sidebar from '@/components/navigation/Sidebar.astro';
+import Card from '@/components/data-display/Card.astro';
+import Badge from '@/components/data-display/Badge.astro';
+import Avatar from '@/components/data-display/Avatar.astro';
+import AvatarGroup from '@/components/data-display/AvatarGroup.astro';
+import Table from '@/components/data-display/Table.astro';
+import DescriptionList from '@/components/data-display/DescriptionList.astro';
+import Stat from '@/components/data-display/Stat.astro';
+import Progress from '@/components/data-display/Progress.astro';
+import Skeleton from '@/components/data-display/Skeleton.astro';
+import Divider from '@/components/data-display/Divider.astro';
+import Tag from '@/components/data-display/Tag.astro';
+import EmptyState from '@/components/data-display/EmptyState.astro';
+import CodeBlock from '@/components/data-display/CodeBlock.astro';
+import Alert from '@/components/feedback/Alert.astro';
+import Spinner from '@/components/feedback/Spinner.astro';
+import Toast from '@/components/feedback/Toast.astro';
+import Dialog from '@/components/overlays/Dialog.astro';
+import Drawer from '@/components/overlays/Drawer.astro';
+import Popover from '@/components/overlays/Popover.astro';
+import Tooltip from '@/components/overlays/Tooltip.astro';
+import Container from '@/components/layout/Container.astro';
+import Stack from '@/components/layout/Stack.astro';
+import Inline from '@/components/layout/Inline.astro';
+import Grid from '@/components/layout/Grid.astro';
+import Section from '@/components/layout/Section.astro';
+import Hero from '@/components/marketing/Hero.astro';
+import FeatureCard from '@/components/marketing/FeatureCard.astro';
+import FeatureGrid from '@/components/marketing/FeatureGrid.astro';
+import CTA from '@/components/marketing/CTA.astro';
+import PricingCard from '@/components/marketing/PricingCard.astro';
+import TestimonialCard from '@/components/marketing/TestimonialCard.astro';
+import SectionHeader from '@/components/marketing/SectionHeader.astro';
+import Footer from '@/components/marketing/Footer.astro';
+
+const categories=[
+  ['Actions','5','Buttons, groups and stateful toggles','↗'],
+  ['Forms','12','Inputs, pickers and validation','⌁'],
+  ['Navigation','8','Wayfinding from tabs to sidebars','⌘'],
+  ['Data display','12','Cards, tables, status and progress','▦'],
+  ['Feedback','4','Alerts, toasts and loading states','!'],
+  ['Overlays','4','Dialogs, drawers and anchored content','◫'],
+  ['Layout','6','Responsive composition primitives','⌗'],
+  ['Marketing','8','Reusable content patterns','✦'],
+];
+const options=[{value:'design',label:'Design'},{value:'engineering',label:'Engineering'},{value:'research',label:'Research'}];
+---
+<DocsLayout>
+  <section id="overview" class="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-6 sm:p-10">
+    <div class="absolute -right-16 -top-24 size-72 rounded-full bg-[var(--accent-subtle)] blur-3xl"></div>
+    <div class="relative max-w-3xl">
+      <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--background)] px-3 py-1 text-sm font-semibold"><span class="size-2 rounded-full bg-[var(--accent)]"></span>Astro + Tailwind CSS</div>
+      <h1 class="prose-title">Quiet structure.<br/><span class="text-[var(--accent)]">Confident interaction.</span></h1>
+      <p class="muted mt-5 mb-7 max-w-2xl text-lg">LamaUI is a practical component library shaped by cool surfaces, tactile controls, generous squircles, and a single expressive accent. Every primitive is typed, themeable, responsive, and built for Astro.</p>
+      <div class="flex flex-wrap gap-3"><Button href="#button" size="lg">Browse components →</Button><Button href="#theme" variant="secondary" size="lg">Customize theme</Button></div>
+    </div>
+    <div class="relative mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">{categories.slice(0,4).map(([name,count])=><div class="rounded-2xl bg-[var(--muted)] p-4"><strong class="block text-2xl">{count}</strong><span class="muted text-sm">{name}</span></div>)}</div>
+  </section>
+
+  <section class="docs-section" aria-labelledby="gallery-title"><p class="eyebrow">Component gallery</p><h2 id="gallery-title" class="mt-2 mb-2 text-3xl font-bold">Everything in its place</h2><p class="muted mt-0 max-w-2xl">Eight focused families cover the path from raw layout to polished product surfaces.</p><div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{categories.map(([name,count,description,icon])=><a href={`#${name.toLowerCase().replace(' ','-')}`} class="lui-card lui-interactive block p-5 no-underline"><span class="mb-5 grid size-10 place-items-center rounded-xl bg-[var(--accent-subtle)] text-[var(--accent)]">{icon}</span><div class="flex items-baseline justify-between gap-3"><h3 class="m-0 font-bold">{name}</h3><span class="muted text-xs">{count}</span></div><p class="muted mt-1 mb-0 text-sm">{description}</p></a>)}</div></section>
+
+  <section id="theme" class="docs-section"><p class="eyebrow">Foundation</p><h2 class="mt-2 mb-2 text-3xl font-bold">Theme</h2><p class="muted mt-0 max-w-2xl">Change <code>--accent-hue</code>, <code>--accent-saturation</code>, and <code>--accent-lightness</code> once in <code>theme.css</code>. Components consume semantic tokens, never page-specific color names.</p><div class="demo grid gap-6 lg:grid-cols-2"><div><h3 class="mt-0">Semantic palette</h3><div class="grid grid-cols-4 gap-2">{[['Accent','var(--accent)'],['Primary','var(--primary)'],['Surface','var(--surface)'],['Muted','var(--muted)'],['Success','var(--success)'],['Warning','var(--warning)'],['Danger','var(--destructive)'],['Info','var(--info)']].map(([label,color])=><div><div class="h-14 rounded-xl border border-[var(--border)]" style={`background:${color}`}></div><span class="mt-1 block text-xs">{label}</span></div>)}</div></div><CodeBlock code={`:root {\n  --accent-hue: 83;\n  --accent-saturation: 100%;\n  --accent-lightness: 31%;\n}`} language="css"/></div></section>
+
+  <section id="button" class="docs-section"><p class="eyebrow">Actions</p><h2 class="mt-2 mb-2 text-3xl font-bold">Button</h2><p class="muted mt-0">Five semantic variants, three sizes, links, loading labels, and disabled behavior.</p><div class="demo"><div class="demo-row"><Button>Primary</Button><Button variant="secondary">Secondary</Button><Button variant="outline">Outline</Button><Button variant="ghost">Ghost</Button><Button variant="destructive">Destructive</Button><Button disabled>Disabled</Button></div><Divider class="my-5"/><div class="demo-row"><Button size="sm">Small</Button><Button>Medium</Button><Button size="lg">Large</Button><ButtonGroup label="Editor alignment"><Button variant="secondary">Left</Button><Button variant="secondary">Center</Button><Button variant="secondary">Right</Button></ButtonGroup></div><CodeBlock code={'<Button variant="primary" size="md">Save changes</Button>'}/></div></section>
+
+  <section id="icon-button" class="docs-section"><h2 class="text-2xl font-bold">Icon button</h2><div class="demo"><div class="demo-row"><IconButton label="Add item" variant="primary">＋</IconButton><IconButton label="Favorite" variant="secondary">♡</IconButton><IconButton label="More options">•••</IconButton></div></div></section>
+  <section id="toggle" class="docs-section"><h2 class="text-2xl font-bold">Toggle & Toggle group</h2><div class="demo"><div class="demo-row"><Toggle label="Pin item">⌖ Pin</Toggle><ToggleGroup label="Text alignment"><Toggle pressed>Left</Toggle><Toggle>Center</Toggle><Toggle>Right</Toggle></ToggleGroup></div></div></section>
+
+  <section id="inputs" class="docs-section"><p class="eyebrow">Forms</p><h2 class="mt-2 text-3xl font-bold">Inputs</h2><div class="demo grid gap-5 md:grid-cols-2"><FormField id="email" label="Work email" help="We’ll only use this for account updates." required><Input id="email" name="email" type="email" placeholder="you@company.com" required /></FormField><FormField id="invalid" label="Project name" error="Use at least three characters."><Input id="invalid" value="UI" invalid /></FormField><FormField id="search" label="Search"><SearchInput id="search" placeholder="Find components…"/></FormField><FormField id="password" label="Password"><PasswordInput id="password" value="lamaui-demo"/></FormField><FormField id="notes" label="Notes" class="md:col-span-2"><Textarea id="notes" placeholder="Add a little context…"/></FormField><FormField id="quantity" label="Quantity"><NumberInput id="quantity" min={1} max={20} value={4}/></FormField><Slider label="Density" value={64}/></div></section>
+  <section id="selection" class="docs-section"><h2 class="text-2xl font-bold">Selection controls</h2><div class="demo grid gap-6 md:grid-cols-2"><Stack gap={4}><Checkbox id="updates" label="Product updates" description="Occasional notes about new releases." checked/><Checkbox id="disabled-check" label="Unavailable option" disabled/><Switch label="Reduce motion" description="Minimize non-essential transitions." checked/></Stack><RadioGroup name="plan" label="Workspace plan" value="team" options={[{value:'solo',label:'Solo',description:'For personal projects'},{value:'team',label:'Team',description:'For growing groups'},{value:'enterprise',label:'Enterprise',disabled:true}]}/></div></section>
+  <section id="custom-select" class="docs-section"><h2 class="text-2xl font-bold">Select & custom picklist</h2><div class="demo grid gap-5 sm:grid-cols-2"><FormField id="native-team" label="Native select"><Select id="native-team" options={options} value="design"/></FormField><FormField id="custom-team" label="Custom picklist"><CustomSelect id="custom-team" name="team" label="Team" options={options} value="engineering"/></FormField></div></section>
+
+  <section id="navbar" class="docs-section"><p class="eyebrow">Navigation</p><h2 class="mt-2 text-3xl font-bold">Navbar & Sidebar</h2><div class="demo overflow-hidden p-0"><Navbar links={[{label:'Overview',href:'#',active:true},{label:'Components',href:'#'},{label:'Changelog',href:'#'}]}><Button size="sm">Get started</Button></Navbar><div class="flex min-h-56"><Sidebar class="hidden sm:block" items={[{label:'Dashboard',href:'#',active:true,icon:'⌂'},{label:'Projects',href:'#',icon:'▦'},{label:'Settings',href:'#',icon:'⚙'}]}/><div class="flex-1 p-6"><Breadcrumb items={[{label:'Workspace',href:'#'},{label:'Design systems',href:'#'},{label:'LamaUI'}]}/><h3 class="mt-5 text-xl">Navigation that scales down cleanly.</h3></div></div></div></section>
+  <section id="tabs" class="docs-section"><h2 class="text-2xl font-bold">Tabs & Dropdown menu</h2><div class="demo"><div class="flex flex-wrap items-start justify-between gap-4"><Tabs id="demo-tabs" tabs={[{id:'preview',label:'Preview'},{id:'code',label:'Code'},{id:'props',label:'Props'}]} active="preview" class="flex-1"><TabPanel id="preview" tabsId="demo-tabs" active><p class="m-0">A keyboard-navigable tab panel.</p></TabPanel><TabPanel id="code" tabsId="demo-tabs"><p class="m-0">Component source lives here.</p></TabPanel><TabPanel id="props" tabsId="demo-tabs"><p class="m-0">Typed props stay concise.</p></TabPanel></Tabs><DropdownMenu label="Actions" align="end"><button class="lui-menu-item">Duplicate</button><button class="lui-menu-item">Move to folder</button><button class="lui-menu-item text-[var(--destructive)]">Delete</button></DropdownMenu></div></div></section>
+  <section id="breadcrumb" class="docs-section"><h2 class="text-2xl font-bold">Pagination & Stepper</h2><div class="demo space-y-8"><Pagination current={2} total={5}/><Stepper current={2} steps={[{label:'Details',description:'Basic information'},{label:'Members',description:'Invite the team'},{label:'Review',description:'Confirm changes'}]}/></div></section>
+
+  <section id="card" class="docs-section"><p class="eyebrow">Data display</p><h2 class="mt-2 text-3xl font-bold">Cards, badges & avatars</h2><div class="demo"><Grid columns={3}><Card title="Workspace" description="A calm default surface."><div class="demo-row"><Badge dot>Draft</Badge><Badge variant="success" dot>Active</Badge><Badge variant="warning">Review</Badge></div></Card><Card title="Contributors" interactive><AvatarGroup label="Contributors"><Avatar initials="DV" status="online"/><Avatar initials="AL"/><Avatar initials="MK"/></AvatarGroup><p class="muted mb-0 text-sm">Three people updated this week.</p></Card><Card title="Tags"><Inline><Tag removable>Astro</Tag><Tag removable>Design system</Tag><Tag>v0.1</Tag></Inline></Card></Grid></div></section>
+  <section id="table" class="docs-section"><h2 class="text-2xl font-bold">Table & description list</h2><div class="demo space-y-6"><Table caption="Team members" columns={[{key:'name',label:'Name'},{key:'role',label:'Role'},{key:'status',label:'Status',align:'right'}]} rows={[{name:'Ari Lane',role:'Design lead',status:'Active'},{name:'Mina Park',role:'Engineer',status:'Away'},{name:'Theo Moss',role:'Researcher',status:'Active'}]}/><DescriptionList columns={3} items={[{term:'Owner',detail:'Design systems'},{term:'Last updated',detail:'Today, 14:32'},{term:'License',detail:'MIT'}]}/></div></section>
+  <section id="stat" class="docs-section"><h2 class="text-2xl font-bold">Stats & progress</h2><div class="demo"><Grid columns={3}><Stat label="Components" value="59" change="8 this release" trend="up"/><Stat label="Bundle target" value="0 KB" change="Astro by default"/><Card title="Release readiness"><Progress value={76} showValue/><Progress value={42} label="Documentation" showValue class="mt-5"/></Card></Grid></div></section>
+  <section id="empty-state" class="docs-section"><h2 class="text-2xl font-bold">Empty & loading states</h2><div class="demo grid gap-4 md:grid-cols-2"><EmptyState title="No saved views" description="Create a view to keep filters and sorting together."><Button size="sm">Create view</Button></EmptyState><Card><Skeleton height="10rem" radius="var(--radius-lg)"/><Skeleton width="72%" height="1.25rem" class="mt-4"/><Skeleton width="48%" class="mt-2"/></Card></div></section>
+
+  <section id="alert" class="docs-section"><p class="eyebrow">Feedback</p><h2 class="mt-2 text-3xl font-bold">Alerts</h2><div class="demo space-y-3"><Alert title="Information">Your changes are saved locally until you publish.</Alert><Alert variant="success" title="Ready to ship">All checks passed successfully.</Alert><Alert variant="warning" title="Review needed">Two tokens differ from the active theme.</Alert><Alert variant="destructive" title="Couldn’t publish" dismissible>Check the project permissions and try again.</Alert></div></section>
+  <section id="toast" class="docs-section"><h2 class="text-2xl font-bold">Toast & spinner</h2><div class="demo"><div class="demo-row"><Button data-toast-open="demo-toast">Show toast</Button><Button variant="secondary"><Spinner size="sm"/> Saving…</Button><Spinner label="Loading preview" size="lg"/></div><Toast id="demo-toast" title="Theme updated">Your accent color is now in sync.</Toast></div></section>
+
+  <section id="dialog" class="docs-section"><p class="eyebrow">Overlays</p><h2 class="mt-2 text-3xl font-bold">Dialog & drawer</h2><div class="demo"><div class="demo-row"><Button data-dialog-open="demo-dialog">Open dialog</Button><Button variant="secondary" data-dialog-open="demo-drawer">Open drawer</Button><Popover label="Open popover"><h3 class="mt-0 text-base">Quick note</h3><p class="muted mb-0 text-sm">Popovers work well for concise contextual content.</p></Popover><Tooltip text="Copy component"><IconButton label="Copy component" variant="secondary">⧉</IconButton></Tooltip></div><Dialog id="demo-dialog" title="Publish library?" description="This creates a new version of your component catalog."><p class="muted">Consumers can keep using the current version until they choose to upgrade.</p><div class="mt-6 flex justify-end gap-2"><Button variant="ghost" data-dialog-close>Cancel</Button><Button data-dialog-close>Publish</Button></div></Dialog><Drawer id="demo-drawer" title="Component settings"><Stack gap={5}><FormField id="drawer-name" label="Display name"><Input id="drawer-name" value="Primary button"/></FormField><Select options={options} value="design"/><Switch label="Visible in catalog" checked/></Stack></Drawer></div></section>
+
+  <section id="primitives" class="docs-section"><p class="eyebrow">Layout</p><h2 class="mt-2 text-3xl font-bold">Composition primitives</h2><p class="muted">Container, Stack, Inline, Grid, Section, and PageShell create responsive structure without prescribing content.</p><div class="demo"><Container size="md" class="rounded-2xl border border-dashed border-[var(--accent)] p-4"><Section padding="sm"><Stack gap={4}><Badge variant="info">Container · md</Badge><Grid columns={3}><div class="rounded-xl bg-[var(--accent-subtle)] p-4 text-center text-sm font-bold">Grid 1</div><div class="rounded-xl bg-[var(--accent-subtle)] p-4 text-center text-sm font-bold">Grid 2</div><div class="rounded-xl bg-[var(--accent-subtle)] p-4 text-center text-sm font-bold">Grid 3</div></Grid></Stack></Section></Container></div></section>
+
+  <section id="patterns" class="docs-section"><p class="eyebrow">Marketing</p><h2 class="mt-2 text-3xl font-bold">Content patterns</h2><div class="demo overflow-hidden"><Hero eyebrow="LamaUI 0.1" title="Build calm, capable interfaces." description="Reusable marketing patterns share the same tokens and interaction language as the product primitives."><Button>Start building</Button><Button variant="secondary">View examples</Button></Hero><SectionHeader eyebrow="Features" title="A coherent system, end to end." description="Compose smaller primitives into expressive, reusable sections."/><FeatureGrid class="mt-6"><FeatureCard icon="◇" title="Token driven" description="One semantic theme controls every surface and state."/><FeatureCard icon="⌘" title="Astro native" description="Interactive only where behavior genuinely needs it."/><FeatureCard icon="✓" title="Accessible" description="Semantic markup, visible focus, and keyboard paths."/></FeatureGrid><div class="mt-8 grid gap-4 md:grid-cols-2"><PricingCard name="Studio" price="€18" description="For independent makers." features={['All components','Dark theme','Typed props']}><Button fullWidth>Choose Studio</Button></PricingCard><TestimonialCard quote="It feels designed, not assembled. The defaults are quiet and every state is considered." name="Lena Moretti" role="Product designer" initials="LM"/></div><CTA class="mt-8" title="Ready to make it yours?" description="Adjust three accent tokens and start composing."><Button>Read the guide</Button></CTA><Footer class="mt-8"/></div></section>
+</DocsLayout>

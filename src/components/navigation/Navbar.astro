@@ -1,0 +1,6 @@
+---
+interface Link { label:string; href:string; active?:boolean }
+interface Props { brand?:string; links?:Link[]; class?:string }
+const {brand='LamaUI',links=[],class:className}=Astro.props;
+---
+<header class:list={['border-b border-[var(--border)] bg-[var(--surface)]',className]}><div class="mx-auto flex min-h-16 max-w-[var(--container)] items-center gap-5 px-4"><a href="/" class="flex items-center gap-2 font-bold no-underline"><span class="grid size-8 place-items-center rounded-xl bg-[var(--accent)] text-[var(--accent-foreground)]">L</span>{brand}</a><button class="lui-control lui-ghost lui-icon ml-auto md:hidden" aria-label="Toggle navigation" aria-expanded="false" data-nav-toggle>☰</button><nav class="ml-auto hidden items-center gap-1 md:flex" data-nav-menu>{links.map(l=><a href={l.href} aria-current={l.active?'page':undefined} class="lui-control lui-ghost lui-sm aria-[current=page]:bg-[var(--accent-subtle)] aria-[current=page]:text-[var(--accent)]">{l.label}</a>)}<slot /></nav></div></header>

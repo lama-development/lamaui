@@ -1,0 +1,5 @@
+---
+interface Props { for?:string; required?:boolean; class?:string }
+const { for:forId, required=false, class:className } = Astro.props;
+---
+<label for={forId} class:list={['lui-label',className]}><slot />{required && <span aria-hidden="true" class="text-[var(--destructive)]"> *</span>}</label>

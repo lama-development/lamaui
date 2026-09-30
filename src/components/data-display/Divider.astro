@@ -1,0 +1,5 @@
+---
+interface Props { label?:string; vertical?:boolean; class?:string }
+const {label,vertical=false,class:className}=Astro.props;
+---
+{vertical?<span role="separator" aria-orientation="vertical" class:list={['mx-2 block self-stretch border-l border-[var(--border)]',className]}></span>:<div role="separator" class:list={['flex items-center gap-3',className]}><span class="h-px flex-1 bg-[var(--border)]"></span>{label&&<span class="muted text-xs font-semibold uppercase tracking-wider">{label}</span>}{label&&<span class="h-px flex-1 bg-[var(--border)]"></span>}</div>}

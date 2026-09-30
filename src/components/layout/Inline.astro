@@ -1,0 +1,5 @@
+---
+interface Props { gap?:1|2|3|4|6|8; align?:'start'|'center'|'end'|'baseline'; justify?:'start'|'center'|'end'|'between'; wrap?:boolean; class?:string; as?:string }
+const {gap=3,align='center',justify='start',wrap=true,class:className,as='div'}=Astro.props; const Tag=as;
+---
+<Tag class:list={['flex',`gap-${gap}`,`items-${align}`,`justify-${justify}`,wrap&&'flex-wrap',className]}><slot /></Tag>

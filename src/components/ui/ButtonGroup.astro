@@ -1,0 +1,5 @@
+---
+interface Props { label:string; class?:string }
+const { label, class:className } = Astro.props;
+---
+<div role="group" aria-label={label} class:list={['inline-flex [&_.lui-control]:rounded-none [&_.lui-control]:-ml-px [&_.lui-control:first-child]:ml-0 [&_.lui-control:first-child]:rounded-l-xl [&_.lui-control:last-child]:rounded-r-xl',className]}><slot /></div>

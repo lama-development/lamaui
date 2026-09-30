@@ -1,0 +1,5 @@
+---
+interface Props { removable?:boolean; removeLabel?:string; class?:string }
+const {removable=false,removeLabel='Remove',class:className}=Astro.props;
+---
+<span class:list={['inline-flex min-h-8 items-center gap-1 rounded-xl border border-[var(--border)] bg-[var(--surface)] px-2.5 text-sm font-semibold',className]}><slot />{removable&&<button type="button" aria-label={removeLabel} class="-mr-1 grid size-5 place-items-center rounded-md hover:bg-[var(--muted)]">×</button>}</span>

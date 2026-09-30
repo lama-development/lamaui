@@ -1,0 +1,5 @@
+---
+interface Props { title:string; description?:string; class?:string }
+const {title,description,class:className}=Astro.props;
+---
+<section class:list={['overflow-hidden rounded-3xl bg-[var(--primary)] p-7 text-[var(--primary-foreground)] sm:p-10',className]}><div class="flex flex-col gap-6 sm:flex-row sm:items-center"><div class="flex-1"><h2 class="m-0 text-2xl font-bold">{title}</h2>{description&&<p class="mt-2 mb-0 max-w-2xl opacity-75">{description}</p>}</div><div class="flex flex-wrap gap-3"><slot /></div></div></section>

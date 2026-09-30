@@ -1,0 +1,6 @@
+---
+interface Item { label:string; href:string; active?:boolean; icon?:string }
+interface Props { label?:string; items:Item[]; class?:string }
+const {label='Sidebar navigation',items,class:className}=Astro.props;
+---
+<aside class:list={['w-64 border-r border-[var(--border)] bg-[var(--surface)] p-3',className]}><nav aria-label={label}><ul class="m-0 list-none space-y-1 p-0">{items.map(item=><li><a href={item.href} aria-current={item.active?'page':undefined} class="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-semibold text-[var(--muted-foreground)] no-underline hover:bg-[var(--surface-hover)] aria-[current=page]:bg-[var(--accent-subtle)] aria-[current=page]:text-[var(--accent)]">{item.icon&&<span aria-hidden="true">{item.icon}</span>}{item.label}</a></li>)}</ul></nav></aside>

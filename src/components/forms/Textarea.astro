@@ -1,0 +1,5 @@
+---
+interface Props { invalid?:boolean; rows?:number; class?:string; [key:string]:any }
+const { invalid=false,rows=4,class:className,...rest}=Astro.props;
+---
+<textarea {...rest} {rows} aria-invalid={invalid || undefined} class:list={['lui-field min-h-28 resize-y',className]}><slot /></textarea>

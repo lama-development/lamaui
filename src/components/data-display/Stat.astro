@@ -1,0 +1,5 @@
+---
+interface Props { label:string; value:string; change?:string; trend?:'up'|'down'|'neutral'; class?:string }
+const {label,value,change,trend='neutral',class:className}=Astro.props;
+---
+<div class:list={['lui-card p-5',className]}><p class="muted m-0 text-sm font-semibold">{label}</p><p class="my-1 text-3xl font-bold tracking-tight">{value}</p>{change&&<p class:list={['m-0 text-sm',trend==='up'?'text-[var(--success)]':trend==='down'?'text-[var(--destructive)]':'muted']}>{trend==='up'?'↗':trend==='down'?'↘':'→'} {change}</p>}</div>

@@ -1,0 +1,119 @@
+/* LamaUI design tokens. Change --accent-hue to rebrand the entire system. */
+:root {
+  color-scheme: light;
+  --accent-hue: 83;
+  --accent-saturation: 100%;
+  --accent-lightness: 31%;
+
+  --background: #f4f5f6;
+  --foreground: #121417;
+  --surface: #ffffff;
+  --surface-hover: #eceef1;
+  --surface-elevated: #ffffff;
+  --muted: #eceef1;
+  --muted-foreground: #5b6068;
+  --border: #e1e4e8;
+  --input: #eceef1;
+  --primary: #0b2c4d;
+  --primary-foreground: #ffffff;
+  --accent: hsl(var(--accent-hue) var(--accent-saturation) var(--accent-lightness));
+  --accent-hover: hsl(var(--accent-hue) var(--accent-saturation) 27%);
+  --accent-subtle: hsl(var(--accent-hue) 72% 92%);
+  --accent-foreground: #ffffff;
+  --accent-ring: hsl(var(--accent-hue) 88% 36% / 35%);
+  --destructive: #c62828;
+  --destructive-subtle: #fdecec;
+  --success: #278253;
+  --success-subtle: #e7f5ed;
+  --warning: #9a5700;
+  --warning-subtle: #fff3df;
+  --info: #2466a8;
+  --info-subtle: #e8f1fb;
+  --ring: var(--accent);
+  --overlay: rgb(5 12 20 / 55%);
+
+  --font-sans: "Google Sans Flex", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  --text-xs: .75rem;
+  --text-sm: .875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: clamp(2.5rem, 6vw, 4.5rem);
+  --leading-tight: 1.15;
+  --leading-normal: 1.55;
+
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  --radius-sm: .5rem;
+  --radius-md: .75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 999px;
+  --shadow-sm: 0 1px 2px rgb(5 12 20 / 8%);
+  --shadow-md: 0 10px 28px rgb(5 12 20 / 10%);
+  --shadow-lg: 0 20px 48px rgb(5 12 20 / 16%);
+  --shadow-control: inset 0 1px 0 rgb(255 255 255 / 22%), inset 0 -2px 0 rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 10%);
+
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+  --ease-standard: cubic-bezier(.22, 1, .36, 1);
+  --control-sm: 2.5rem;
+  --control-md: 2.75rem;
+  --control-lg: 3rem;
+  --container: 76rem;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --background: #141314;
+  --foreground: #f2f2f6;
+  --surface: #1c1b1d;
+  --surface-hover: #27262a;
+  --surface-elevated: #222124;
+  --muted: #0e0e0f;
+  --muted-foreground: #a1a1a6;
+  --border: #303034;
+  --input: #0e0e0f;
+  --primary: #dce9f5;
+  --primary-foreground: #0b2c4d;
+  --accent-lightness: 39%;
+  --accent-subtle: hsl(var(--accent-hue) 52% 15%);
+  --accent-foreground: #071000;
+  --destructive: #ff5c5c;
+  --destructive-subtle: #351719;
+  --success: #58c78d;
+  --success-subtle: #11291d;
+  --warning: #f6b94f;
+  --warning-subtle: #2d2110;
+  --info: #72b6f8;
+  --info-subtle: #102338;
+  --overlay: rgb(0 0 0 / 70%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --background: #141314; --foreground: #f2f2f6; --surface: #1c1b1d;
+    --surface-hover: #27262a; --surface-elevated: #222124; --muted: #0e0e0f;
+    --muted-foreground: #a1a1a6; --border: #303034; --input: #0e0e0f;
+    --primary: #dce9f5; --primary-foreground: #0b2c4d; --accent-lightness: 39%;
+    --accent-subtle: hsl(var(--accent-hue) 52% 15%); --accent-foreground: #071000;
+    --destructive: #ff5c5c; --destructive-subtle: #351719; --success: #58c78d;
+    --success-subtle: #11291d; --warning: #f6b94f; --warning-subtle: #2d2110;
+    --info: #72b6f8; --info-subtle: #102338; --overlay: rgb(0 0 0 / 70%);
+  }
+}

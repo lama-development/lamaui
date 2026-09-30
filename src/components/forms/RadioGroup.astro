@@ -1,0 +1,6 @@
+---
+interface Option { value:string; label:string; description?:string; disabled?:boolean }
+interface Props { name:string; label:string; options:Option[]; value?:string; inline?:boolean }
+const {name,label,options,value,inline=false}=Astro.props;
+---
+<fieldset><legend class="lui-label">{label}</legend><div class:list={['flex gap-3',inline?'flex-row flex-wrap':'flex-col']}>{options.map(o=><label class="flex cursor-pointer items-start gap-3"><input type="radio" {name} value={o.value} checked={o.value===value} disabled={o.disabled} class="mt-0.5 size-5 appearance-none rounded-full border-[5px] border-[var(--input)] bg-[var(--input)] outline outline-1 outline-[var(--border)] checked:bg-[var(--accent)] checked:outline-[var(--accent)]"/><span><span class="font-semibold">{o.label}</span>{o.description&&<span class="muted block text-sm">{o.description}</span>}</span></label>)}</div></fieldset>

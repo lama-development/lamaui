@@ -1,0 +1,6 @@
+---
+interface Props { id:string; title:string; description?:string; size?:'sm'|'md'|'lg'; class?:string }
+const {id,title,description,size='md',class:className}=Astro.props;
+const sizes={sm:'max-w-sm',md:'max-w-lg',lg:'max-w-2xl'};
+---
+<dialog {id} class:list={['w-[calc(100%-2rem)] rounded-3xl border border-[var(--border)] bg-[var(--surface-elevated)] p-0 text-[var(--foreground)] shadow-[var(--shadow-lg)] backdrop:bg-[var(--overlay)]',sizes[size],className]}><div class="p-6"><header class="mb-5 flex gap-4"><div class="flex-1"><h2 class="m-0 text-xl font-bold">{title}</h2>{description&&<p class="muted mt-1 mb-0">{description}</p>}</div><button type="button" class="lui-control lui-ghost lui-icon" aria-label="Close dialog" data-dialog-close>×</button></header><slot /></div></dialog>
