@@ -58,16 +58,17 @@ import PricingCard from "@/components/marketing/PricingCard.astro";
 import TestimonialCard from "@/components/marketing/TestimonialCard.astro";
 import SectionHeader from "@/components/marketing/SectionHeader.astro";
 import Footer from "@/components/marketing/Footer.astro";
+import Icon from "@/components/ui/Icon.astro";
 
 const categories = [
-  ["Actions", "5", "Buttons, groups and stateful toggles", "↗"],
-  ["Forms", "12", "Inputs, pickers and validation", "⌁"],
-  ["Navigation", "8", "Wayfinding from tabs to sidebars", "⌘"],
-  ["Data display", "12", "Cards, tables, status and progress", "▦"],
-  ["Feedback", "4", "Alerts, toasts and loading states", "!"],
-  ["Overlays", "4", "Dialogs, drawers and anchored content", "◫"],
-  ["Layout", "6", "Responsive composition primitives", "⌗"],
-  ["Marketing", "8", "Reusable content patterns", "✦"],
+  ["Actions", "5", "Buttons, groups and stateful toggles", "button"],
+  ["Forms", "12", "Inputs, pickers and validation", "inputs"],
+  ["Navigation", "8", "Navbar, tabs, breadcrumbs and progress", "navbar"],
+  ["Data display", "12", "Cards, tables, status and progress", "card"],
+  ["Feedback", "4", "Alerts, toasts and loading states", "alert"],
+  ["Overlays", "4", "Dialogs, drawers and anchored content", "dialog"],
+  ["Layout", "6", "Responsive composition primitives", "primitives"],
+  ["Marketing", "8", "Reusable content patterns", "patterns"],
 ];
 const options = [
   { value: "design", label: "Design" },
@@ -77,79 +78,54 @@ const options = [
 ---
 
 <DocsLayout>
-  <section
-    id="overview"
-    class="relative overflow-hidden rounded-3xl border border-(--border) bg-(--surface) p-6 sm:p-10"
-  >
-    <div
-      class="absolute -right-16 -top-24 size-72 rounded-full bg-(--accent-subtle) blur-3xl"
-    >
-    </div>
-    <div class="relative max-w-3xl">
-      <div
-        class="mb-5 inline-flex items-center gap-2 rounded-full border border-(--border) bg-(--background) px-3 py-1 text-sm font-semibold"
-      >
-        <span class="size-2 rounded-full bg-(--accent)"></span>Astro + Tailwind
-        CSS
-      </div>
-      <h1 class="prose-title">
-        Quiet structure.<br /><span class="text-(--accent)"
-          >Confident interaction.</span>
-      </h1>
+  <section id="overview" class="docs-overview">
+    <div class="docs-overview-copy">
+      <p class="eyebrow mb-3">LamaUI · v0.1</p>
+      <h1 class="prose-title">Components for clear, tactile interfaces.</h1>
       <p class="muted mt-5 mb-7 max-w-2xl text-lg">
-        LamaUI is a practical component library shaped by cool surfaces, tactile
-        controls, generous squircles, and a single expressive accent. Every
-        primitive is typed, themeable, responsive, and built for Astro.
+        A reusable Astro library built from the reference product’s cool gray
+        surfaces, compact controls, precise borders, and chartreuse accent.
       </p>
-      <div class="flex flex-wrap gap-3">
-        <Button href="#button" size="lg">Browse components →</Button><Button
-          href="#theme"
-          variant="secondary"
-          size="lg">Customize theme</Button>
+      <div class="flex flex-wrap gap-2.5">
+        <Button href="#button">Browse components</Button>
+        <Button href="#theme" variant="secondary">View theme tokens</Button>
       </div>
     </div>
-    <div class="relative mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
-      {
-        categories.slice(0, 4).map(([name, count]) => (
-          <div class="rounded-2xl bg-(--muted) p-4">
-            <>
-              <strong class="block text-2xl">{count}</strong>
-              <span class="muted text-sm">{name}</span>
-            </>
-          </div>
-        ))
-      }
+    <div class="docs-overview-preview">
+      <p class="muted mt-0 mb-3 text-xs font-bold uppercase tracking-[.1em]">Live preview</p>
+      <div class="lui-card p-4">
+        <div class="mb-4 flex items-center gap-3">
+          <span class="grid size-10 place-items-center rounded-xl bg-(--accent-subtle) font-bold text-(--accent)">L</span>
+          <div><strong class="block leading-tight">Create workspace</strong><span class="muted text-sm">Start with a clear name.</span></div>
+        </div>
+        <FormField id="overview-name" label="Workspace name">
+          <Input id="overview-name" value="Product design" />
+        </FormField>
+        <div class="mt-4 flex justify-end gap-2"><Button variant="ghost" size="sm">Cancel</Button><Button size="sm">Create</Button></div>
+      </div>
+      <p class="muted mt-3 mb-0 text-sm">60 components · light and dark themes · no client framework</p>
     </div>
   </section>
 
   <section class="docs-section" aria-labelledby="gallery-title">
-    <p class="eyebrow">Component gallery</p><h2
+    <p class="eyebrow">Library</p><h2
       id="gallery-title"
       class="mt-2 mb-2 text-3xl font-bold"
     >
-      Everything in its place
+      Component directory
     </h2><p class="muted mt-0 max-w-2xl">
-      Eight focused families cover the path from raw layout to polished product
-      surfaces.
-    </p><div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      Browse by purpose. Each section includes states, variants, and a concise
+      usage example.
+    </p><div class="docs-directory mt-6">
       {
-        categories.map(([name, count, description, icon]) => (
+        categories.map(([name, count, description, target]) => (
           <a
-            href={`#${name.toLowerCase().replace(" ", "-")}`}
-            class="lui-card lui-interactive block p-5 no-underline"
+            href={`#${target}`}
+            class="docs-directory-link"
           >
-            <>
-              <span class="mb-5 grid size-10 place-items-center rounded-xl bg-(--accent-subtle) text-(--accent)">
-                {icon}
-              </span>
-              <div class="flex items-baseline justify-between gap-3">
-                <>
-                  <h3 class="m-0 font-bold">{name}</h3>
-                  <span class="muted text-xs">{count}</span>
-                </>
-              </div>
-              <p class="muted mt-1 mb-0 text-sm">{description}</p>
-            </>
+            <strong>{name}</strong>
+            <p class="muted m-0 text-sm">{description}</p>
+            <span class="docs-directory-count">{count}</span>
           </a>
         ))
       }
@@ -228,16 +204,16 @@ const options = [
   <section id="icon-button" class="docs-section">
     <h2 class="text-2xl font-bold">Icon button</h2><div class="demo">
       <div class="demo-row">
-        <IconButton label="Add item" variant="primary">＋</IconButton
-        ><IconButton label="Favorite" variant="secondary">♡</IconButton
-        ><IconButton label="More options">•••</IconButton>
+        <IconButton label="Add item" variant="primary"><Icon name="plus" /></IconButton
+        ><IconButton label="Favorite" variant="secondary"><Icon name="heart" /></IconButton
+        ><IconButton label="More options"><Icon name="more" /></IconButton>
       </div>
     </div>
   </section>
   <section id="toggle" class="docs-section">
     <h2 class="text-2xl font-bold">Toggle & Toggle group</h2><div class="demo">
       <div class="demo-row">
-        <Toggle label="Pin item">⌖ Pin</Toggle><ToggleGroup
+        <Toggle label="Pin item"><Icon name="pin" size={18} /> Pin</Toggle><ToggleGroup
           label="Text alignment"
           ><Toggle pressed>Left</Toggle><Toggle>Center</Toggle><Toggle
             >Right</Toggle
@@ -344,9 +320,9 @@ const options = [
         <Sidebar
           class="hidden sm:block"
           items={[
-            { label: "Dashboard", href: "#", active: true, icon: "⌂" },
-            { label: "Projects", href: "#", icon: "▦" },
-            { label: "Settings", href: "#", icon: "⚙" },
+            { label: "Dashboard", href: "#", active: true },
+            { label: "Projects", href: "#" },
+            { label: "Settings", href: "#" },
           ]}
         /><div class="flex-1 p-6">
           <Breadcrumb
@@ -534,7 +510,7 @@ const options = [
             Popovers work well for concise contextual content.
           </p></Popover
         ><Tooltip text="Copy component"
-          ><IconButton label="Copy component" variant="secondary">⧉</IconButton
+          ><IconButton label="Copy component" variant="secondary"><Icon name="copy" /></IconButton
           ></Tooltip>
       </div><Dialog
         id="demo-dialog"
@@ -608,15 +584,12 @@ const options = [
         description="Compose smaller primitives into expressive, reusable sections."
       /><FeatureGrid class="mt-6"
         ><FeatureCard
-          icon="◇"
           title="Token driven"
           description="One semantic theme controls every surface and state."
         /><FeatureCard
-          icon="⌘"
           title="Astro native"
           description="Interactive only where behavior genuinely needs it."
         /><FeatureCard
-          icon="✓"
           title="Accessible"
           description="Semantic markup, visible focus, and keyboard paths."
         /></FeatureGrid

@@ -1,4 +1,5 @@
 ---
+import Icon from "@/components/ui/Icon.astro";
 interface Link {
   label: string;
   href: string;
@@ -8,11 +9,12 @@ interface Props {
   brand?: string;
   links?: Link[];
   class?: string;
+  menuId?: string;
 }
-const { brand = "LamaUI", links = [], class: className } = Astro.props;
+const { brand = "LamaUI", links = [], class: className, menuId = "lui-navbar-menu" } = Astro.props;
 ---
 
-<header class:list={["border-b border-(--border) bg-(--surface)", className]}>
+<header class:list={["relative border-b border-(--border) bg-(--surface)", className]}>
   <div
     class="mx-auto flex min-h-16 max-w-(--container) items-center gap-5 px-4"
   >
@@ -23,10 +25,14 @@ const { brand = "LamaUI", links = [], class: className } = Astro.props;
       >{brand}</a
     ><button
       class="lui-control lui-ghost lui-icon ml-auto md:hidden"
-      aria-label="Toggle navigation"
+      aria-label="Open navigation"
+      aria-controls={menuId}
       aria-expanded="false"
-      data-nav-toggle>☰</button
-    ><nav class="ml-auto hidden items-center gap-1 md:flex" data-nav-menu>
+      data-nav-toggle>
+      <span data-nav-open-icon><Icon name="menu" /></span>
+      <span data-nav-close-icon hidden><Icon name="close" /></span>
+    </button
+    ><nav id={menuId} class="absolute inset-x-0 top-full z-30 hidden flex-col gap-1 border-b border-(--border) bg-(--surface) p-3 shadow-(--shadow-md) md:static md:ml-auto md:flex md:flex-row md:items-center md:border-0 md:bg-transparent md:p-0 md:shadow-none" data-nav-menu>
       {
         links.map((l) => (
           <a

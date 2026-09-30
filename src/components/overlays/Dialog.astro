@@ -1,4 +1,5 @@
 ---
+import Icon from "@/components/ui/Icon.astro";
 interface Props {
   id: string;
   title: string;
@@ -13,7 +14,7 @@ const sizes = { sm: "max-w-sm", md: "max-w-lg", lg: "max-w-2xl" };
 <dialog
   {id}
   class:list={[
-    "w-[calc(100%-2rem)] rounded-3xl border border-(--border) bg-(--surface-elevated) p-0 text-(--foreground) shadow-(--shadow-lg) backdrop:bg-(--overlay)",
+    "w-[calc(100%-2rem)] rounded-2xl border border-(--border) bg-(--surface-elevated) p-0 text-(--foreground) shadow-(--shadow-lg) backdrop:bg-(--overlay)",
     sizes[size],
     className,
   ]}
@@ -28,7 +29,7 @@ const sizes = { sm: "max-w-sm", md: "max-w-lg", lg: "max-w-2xl" };
         type="button"
         class="lui-control lui-ghost lui-icon"
         aria-label="Close dialog"
-        data-dialog-close>×</button>
+        data-dialog-close><Icon name="close" /></button>
     </header><slot />
   </div>
 </dialog>
