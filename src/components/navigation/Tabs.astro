@@ -1,6 +1,44 @@
 ---
-interface Tab { id:string; label:string; disabled?:boolean }
-interface Props { tabs:Tab[]; active?:string; id?:string; class?:string }
-const {tabs,active=tabs[0]?.id,id='tabs',class:className}=Astro.props;
+interface Tab {
+  id: string;
+  label: string;
+  disabled?: boolean;
+}
+interface Props {
+  tabs: Tab[];
+  active?: string;
+  id?: string;
+  class?: string;
+}
+const {
+  tabs,
+  active = tabs[0]?.id,
+  id = "tabs",
+  class: className,
+} = Astro.props;
 ---
-<div data-tabs class={className}><div role="tablist" aria-label="Tabs" class="inline-flex rounded-2xl border border-[var(--border)] bg-[var(--muted)] p-1">{tabs.map(tab=><button id={`${id}-${tab.id}-tab`} type="button" role="tab" aria-selected={tab.id===active} aria-controls={`${id}-${tab.id}-panel`} disabled={tab.disabled} class="min-h-10 rounded-xl px-3 text-sm font-semibold text-[var(--muted-foreground)] aria-selected:bg-[var(--surface)] aria-selected:text-[var(--foreground)] aria-selected:shadow-sm disabled:opacity-40" data-tab={tab.id}>{tab.label}</button>)}</div><div class="mt-4"><slot /></div></div>
+
+<div data-tabs class={className}>
+  <div
+    role="tablist"
+    aria-label="Tabs"
+    class="inline-flex rounded-2xl border border-(--border) bg-(--muted) p-1"
+  >
+    {
+      tabs.map((tab) => (
+        <button
+          id={`${id}-${tab.id}-tab`}
+          type="button"
+          role="tab"
+          aria-selected={tab.id === active}
+          aria-controls={`${id}-${tab.id}-panel`}
+          disabled={tab.disabled}
+          class="min-h-10 rounded-xl px-3 text-sm font-semibold text-(--muted-foreground) aria-selected:bg-(--surface) aria-selected:text-(--foreground) aria-selected:shadow-sm disabled:opacity-40"
+          data-tab={tab.id}
+        >
+          {tab.label}
+        </button>
+      ))
+    }
+  </div><div class="mt-4"><slot /></div>
+</div>

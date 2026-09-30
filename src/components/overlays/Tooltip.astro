@@ -1,5 +1,18 @@
 ---
-interface Props { text:string; position?:'top'|'bottom'; class?:string }
-const {text,position='top',class:className}=Astro.props;
+interface Props {
+  text: string;
+  position?: "top" | "bottom";
+  class?: string;
+}
+const { text, position = "top", class: className } = Astro.props;
 ---
-<span class:list={['group relative inline-flex',className]}><slot /><span role="tooltip" class:list={['pointer-events-none absolute left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded-lg bg-[var(--foreground)] px-2 py-1 text-xs text-[var(--background)] opacity-0 shadow transition-opacity group-hover:opacity-100 group-focus-within:opacity-100',position==='top'?'bottom-full mb-2':'top-full mt-2']}>{text}</span></span>
+
+<span class:list={["group relative inline-flex", className]}
+  ><slot /><span
+    role="tooltip"
+    class:list={[
+      "pointer-events-none absolute left-1/2 z-50 -translate-x-1/2 whitespace-nowrap rounded-lg bg-(--foreground) px-2 py-1 text-xs text-(--background) opacity-0 shadow transition-opacity group-hover:opacity-100 group-focus-within:opacity-100",
+      position === "top" ? "bottom-full mb-2" : "top-full mt-2",
+    ]}>{text}</span
+  ></span
+>

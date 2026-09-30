@@ -1,6 +1,39 @@
 ---
-interface Item { label:string; href?:string }
-interface Props { items:Item[]; label?:string }
-const {items,label='Breadcrumb'}=Astro.props;
+interface Item {
+  label: string;
+  href?: string;
+}
+interface Props {
+  items: Item[];
+  label?: string;
+}
+const { items, label = "Breadcrumb" } = Astro.props;
 ---
-<nav aria-label={label}><ol class="m-0 flex list-none flex-wrap items-center gap-2 p-0 text-sm">{items.map((item,i)=><li class="flex items-center gap-2">{i>0&&<span class="muted" aria-hidden="true">/</span>}{item.href?<a href={item.href} class="muted hover:text-[var(--foreground)] hover:underline">{item.label}</a>:<span aria-current="page" class="font-semibold">{item.label}</span>}</li>)}</ol></nav>
+
+<nav aria-label={label}>
+  <ol class="m-0 flex list-none flex-wrap items-center gap-2 p-0 text-sm">
+    {
+      items.map((item, i) => (
+        <li class="flex items-center gap-2">
+          {i > 0 && (
+            <span class="muted" aria-hidden="true">
+              /
+            </span>
+          )}
+          {item.href ? (
+            <a
+              href={item.href}
+              class="muted hover:text-(--foreground) hover:underline"
+            >
+              {item.label}
+            </a>
+          ) : (
+            <span aria-current="page" class="font-semibold">
+              {item.label}
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

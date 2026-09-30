@@ -1,7 +1,59 @@
 ---
-import type { Status } from '@/types';
-interface Props { variant?:Exclude<Status,'neutral'>; title?:string; dismissible?:boolean; class?:string }
-const {variant='info',title,dismissible=false,class:className}=Astro.props;
-const styles={info:'bg-[var(--info-subtle)] text-[var(--info)]',success:'bg-[var(--success-subtle)] text-[var(--success)]',warning:'bg-[var(--warning-subtle)] text-[var(--warning)]',destructive:'bg-[var(--destructive-subtle)] text-[var(--destructive)]'};
+import type { Status } from "@/types";
+interface Props {
+  variant?: Exclude<Status, "neutral">;
+  title?: string;
+  dismissible?: boolean;
+  class?: string;
+}
+const {
+  variant = "info",
+  title,
+  dismissible = false,
+  class: className,
+} = Astro.props;
+const styles = {
+  info: "bg-(--info-subtle) text-(--info)",
+  success: "bg-(--success-subtle) text-(--success)",
+  warning: "bg-(--warning-subtle) text-(--warning)",
+  destructive: "bg-(--destructive-subtle) text-(--destructive)",
+};
 ---
-<div role={variant==='destructive'?'alert':'status'} class:list={['flex gap-3 rounded-2xl border border-current/15 p-4',styles[variant],className]}><span aria-hidden="true" class="font-bold">{variant==='success'?'✓':variant==='warning'?'!':variant==='destructive'?'×':'i'}</span><div class="min-w-0 flex-1">{title&&<p class="m-0 font-bold">{title}</p>}<div class="text-sm opacity-90"><slot /></div></div>{dismissible&&<button type="button" aria-label="Dismiss" class="self-start rounded-md px-1 hover:bg-black/5" data-dismiss>×</button>}</div>
+
+<div
+  role={variant === "destructive" ? "alert" : "status"}
+  class:list={[
+    "flex gap-3 rounded-2xl border border-current/15 p-4",
+    styles[variant],
+    className,
+  ]}
+>
+  <span aria-hidden="true" class="font-bold"
+    >{
+      variant === "success"
+        ? "✓"
+        : variant === "warning"
+          ? "!"
+          : variant === "destructive"
+            ? "×"
+            : "i"
+    }</span
+  ><div class="min-w-0 flex-1">
+    {title && <p class="m-0 font-bold">{title}</p>}<div
+      class="text-sm opacity-90"
+    >
+      <slot />
+    </div>
+  </div>{
+    dismissible && (
+      <button
+        type="button"
+        aria-label="Dismiss"
+        class="self-start rounded-md px-1 hover:bg-black/5"
+        data-dismiss
+      >
+        ×
+      </button>
+    )
+  }
+</div>

@@ -1,7 +1,62 @@
 ---
-interface Option { value:string; label:string; disabled?:boolean }
-interface Props { id:string; name:string; label:string; options:Option[]; value?:string; class?:string }
-const {id,name,label,options,value=options[0]?.value,class:className}=Astro.props;
-const selected=options.find(o=>o.value===value)??options[0];
+interface Option {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
+interface Props {
+  id: string;
+  name: string;
+  label: string;
+  options: Option[];
+  value?: string;
+  class?: string;
+}
+const {
+  id,
+  name,
+  label,
+  options,
+  value = options[0]?.value,
+  class: className,
+} = Astro.props;
+const selected = options.find((o) => o.value === value) ?? options[0];
 ---
-<div class:list={['relative',className]} data-select><button id={`${id}-button`} type="button" class="lui-field flex items-center justify-between text-left" aria-haspopup="listbox" aria-expanded="false" aria-controls={`${id}-list`} data-select-trigger><span data-select-value>{selected?.label}</span><span aria-hidden="true">⌄</span></button><div id={`${id}-list`} role="listbox" aria-labelledby={`${id}-button`} class="lui-menu top-full mt-2 w-full" hidden data-select-list>{options.map(o=><button type="button" role="option" aria-selected={o.value===value} disabled={o.disabled} data-value={o.value} class="lui-menu-item aria-selected:bg-[var(--accent-subtle)] aria-selected:text-[var(--accent)]">{o.label}</button>)}</div><input type="hidden" {id} {name} value={value} data-select-input/><span class="sr-only">{label}</span></div>
+
+<div class:list={["relative", className]} data-select>
+  <button
+    id={`${id}-button`}
+    type="button"
+    class="lui-field flex items-center justify-between text-left"
+    aria-haspopup="listbox"
+    aria-expanded="false"
+    aria-controls={`${id}-list`}
+    data-select-trigger
+    ><span data-select-value>{selected?.label}</span><span aria-hidden="true"
+      >⌄</span
+    ></button
+  ><div
+    id={`${id}-list`}
+    role="listbox"
+    aria-labelledby={`${id}-button`}
+    class="lui-menu top-full mt-2 w-full"
+    hidden
+    data-select-list
+  >
+    {
+      options.map((o) => (
+        <button
+          type="button"
+          role="option"
+          aria-selected={o.value === value}
+          disabled={o.disabled}
+          data-value={o.value}
+          class="lui-menu-item aria-selected:bg-(--accent-subtle) aria-selected:text-(--accent)"
+        >
+          {o.label}
+        </button>
+      ))
+    }
+  </div><input type="hidden" {id} {name} value={value} data-select-input /><span
+    class="sr-only">{label}</span>
+</div>

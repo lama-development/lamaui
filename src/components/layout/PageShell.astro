@@ -1,5 +1,10 @@
 ---
-interface Props { class?:string }
-const {class:className}=Astro.props;
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
 ---
-<div class:list={['min-h-screen bg-[var(--background)]',className]}><slot name="navigation"/><main><slot /></main><slot name="footer"/></div>
+
+<div class:list={["min-h-screen bg-(--background)", className]}>
+  <slot name="navigation" /><main><slot /></main><slot name="footer" />
+</div>

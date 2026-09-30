@@ -1,5 +1,33 @@
 ---
-interface Props { id:string; label:string; description?:string; checked?:boolean; disabled?:boolean; [key:string]:any }
-const {id,label,description,checked=false,disabled=false,...rest}=Astro.props;
+interface Props {
+  id: string;
+  label: string;
+  description?: string;
+  checked?: boolean;
+  disabled?: boolean;
+  [key: string]: any;
+}
+const {
+  id,
+  label,
+  description,
+  checked = false,
+  disabled = false,
+  ...rest
+} = Astro.props;
 ---
-<label for={id} class="flex cursor-pointer items-start gap-3"><input {...rest} {id} type="checkbox" {checked} {disabled} class="mt-0.5 size-5 appearance-none rounded-md border border-[var(--border)] bg-[var(--input)] checked:border-[var(--accent)] checked:bg-[var(--accent)] checked:bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2020%2020%22%3E%3Cpath%20d=%22m5%2010%203%203%207-7%22%20fill=%22none%22%20stroke=%22white%22%20stroke-width=%222%22/%3E%3C/svg%3E')] focus-visible:outline-2 focus-visible:outline-[var(--ring)] disabled:opacity-50"/><span><span class="block font-semibold">{label}</span>{description&&<span class="muted block text-sm">{description}</span>}</span></label>
+
+<label for={id} class="flex cursor-pointer items-start gap-3"
+  ><input
+    {...rest}
+    {id}
+    type="checkbox"
+    {checked}
+    {disabled}
+    class="mt-0.5 size-5 appearance-none rounded-md border border-(--border) bg-(--input) checked:border-(--accent) checked:bg-(--accent) checked:bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2020%2020%22%3E%3Cpath%20d=%22m5%2010%203%203%207-7%22%20fill=%22none%22%20stroke=%22white%22%20stroke-width=%222%22/%3E%3C/svg%3E')] focus-visible:outline-2 focus-visible:outline-(--ring) disabled:opacity-50"
+  /><span
+    ><span class="block font-semibold">{label}</span>{
+      description && <span class="muted block text-sm">{description}</span>
+    }</span
+  ></label
+>

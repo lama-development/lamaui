@@ -1,5 +1,19 @@
 ---
-interface Props { size?:'sm'|'md'|'lg'|'full'; class?:string; as?:string }
-const {size='lg',class:className,as='div'}=Astro.props; const Tag=as; const sizes={sm:'max-w-2xl',md:'max-w-4xl',lg:'max-w-[var(--container)]',full:'max-w-none'};
+interface Props {
+  size?: "sm" | "md" | "lg" | "full";
+  class?: string;
+  as?: string;
+}
+const { size = "lg", class: className, as = "div" } = Astro.props;
+const Tag = as;
+const sizes = {
+  sm: "max-w-2xl",
+  md: "max-w-4xl",
+  lg: "max-w-(--container)",
+  full: "max-w-none",
+};
 ---
-<Tag class:list={['mx-auto w-full px-4 sm:px-6',sizes[size],className]}><slot /></Tag>
+
+<Tag class:list={["mx-auto w-full px-4 sm:px-6", sizes[size], className]}
+  ><slot /></Tag
+>

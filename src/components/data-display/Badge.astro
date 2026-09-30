@@ -1,7 +1,27 @@
 ---
-import type { Status } from '@/types';
-interface Props { variant?:Status; dot?:boolean; class?:string }
-const {variant='neutral',dot=false,class:className}=Astro.props;
-const styles={neutral:'bg-[var(--muted)] text-[var(--muted-foreground)]',info:'bg-[var(--info-subtle)] text-[var(--info)]',success:'bg-[var(--success-subtle)] text-[var(--success)]',warning:'bg-[var(--warning-subtle)] text-[var(--warning)]',destructive:'bg-[var(--destructive-subtle)] text-[var(--destructive)]'};
+import type { Status } from "@/types";
+interface Props {
+  variant?: Status;
+  dot?: boolean;
+  class?: string;
+}
+const { variant = "neutral", dot = false, class: className } = Astro.props;
+const styles = {
+  neutral: "bg-(--muted) text-(--muted-foreground)",
+  info: "bg-(--info-subtle) text-(--info)",
+  success: "bg-(--success-subtle) text-(--success)",
+  warning: "bg-(--warning-subtle) text-(--warning)",
+  destructive: "bg-(--destructive-subtle) text-(--destructive)",
+};
 ---
-<span class:list={['inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold',styles[variant],className]}>{dot&&<span class="size-1.5 rounded-full bg-current" aria-hidden="true"></span>}<slot /></span>
+
+<span
+  class:list={[
+    "inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-bold",
+    styles[variant],
+    className,
+  ]}
+  >{
+    dot && <span class="size-1.5 rounded-full bg-current" aria-hidden="true" />
+  }<slot /></span
+>

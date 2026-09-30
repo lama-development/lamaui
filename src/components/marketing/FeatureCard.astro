@@ -1,5 +1,22 @@
 ---
-interface Props { icon?:string; title:string; description:string; href?:string; class?:string }
-const {icon='◇',title,description,href,class:className}=Astro.props; const Tag=href?'a':'article';
+interface Props {
+  icon?: string;
+  title: string;
+  description: string;
+  href?: string;
+  class?: string;
+}
+const { icon = "◇", title, description, href, class: className } = Astro.props;
+const Tag = href ? "a" : "article";
 ---
-<Tag href={href} class:list={['lui-card lui-interactive block p-5 no-underline',className]}><span class="mb-4 grid size-11 place-items-center rounded-xl bg-[var(--accent-subtle)] text-xl text-[var(--accent)]" aria-hidden="true">{icon}</span><h3 class="m-0 text-lg font-bold">{title}</h3><p class="muted mt-1 mb-0">{description}</p></Tag>
+
+<Tag
+  href={href}
+  class:list={["lui-card lui-interactive block p-5 no-underline", className]}
+  ><span
+    class="mb-4 grid size-11 place-items-center rounded-xl bg-(--accent-subtle) text-xl text-(--accent)"
+    aria-hidden="true">{icon}</span
+  ><h3 class="m-0 text-lg font-bold">{title}</h3><p class="muted mt-1 mb-0">
+    {description}
+  </p></Tag
+>

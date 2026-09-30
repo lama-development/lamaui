@@ -1,6 +1,61 @@
 ---
-interface Column { key:string; label:string; align?:'left'|'center'|'right' }
-interface Props { columns:Column[]; rows:Record<string,any>[]; caption?:string }
-const {columns,rows,caption}=Astro.props;
+interface Column {
+  key: string;
+  label: string;
+  align?: "left" | "center" | "right";
+}
+interface Props {
+  columns: Column[];
+  rows: Record<string, any>[];
+  caption?: string;
+}
+const { columns, rows, caption } = Astro.props;
 ---
-<div class="overflow-x-auto rounded-2xl border border-[var(--border)] bg-[var(--surface)]"><table class="w-full border-collapse text-sm">{caption&&<caption class="sr-only">{caption}</caption>}<thead><tr>{columns.map(c=><th scope="col" class:list={['border-b border-[var(--border)] bg-[var(--muted)] px-4 py-3 font-semibold',c.align==='right'?'text-right':c.align==='center'?'text-center':'text-left']}>{c.label}</th>)}</tr></thead><tbody>{rows.map(row=><tr class="hover:bg-[var(--surface-hover)]">{columns.map(c=><td class:list={['border-b border-[var(--border)] px-4 py-3 last:border-0',c.align==='right'?'text-right':c.align==='center'?'text-center':'text-left']}>{row[c.key]}</td>)}</tr>)}</tbody></table></div>
+
+<div
+  class="overflow-x-auto rounded-2xl border border-(--border) bg-(--surface)"
+>
+  <table class="w-full border-collapse text-sm">
+    {caption && <caption class="sr-only">{caption}</caption>}<thead
+      ><tr
+        >{
+          columns.map((c) => (
+            <th
+              scope="col"
+              class:list={[
+                "border-b border-(--border) bg-(--muted) px-4 py-3 font-semibold",
+                c.align === "right"
+                  ? "text-right"
+                  : c.align === "center"
+                    ? "text-center"
+                    : "text-left",
+              ]}
+            >
+              {c.label}
+            </th>
+          ))
+        }</tr
+      ></thead
+    ><tbody
+      >{
+        rows.map((row) => (
+          <tr class="hover:bg-(--surface-hover)">
+            {columns.map((c) => (
+              <td
+                class:list={[
+                  "border-b border-(--border) px-4 py-3 last:border-0",
+                  c.align === "right"
+                    ? "text-right"
+                    : c.align === "center"
+                      ? "text-center"
+                      : "text-left",
+                ]}
+              >
+                {row[c.key]}
+              </td>
+            ))}
+          </tr>
+        ))
+      }</tbody>
+  </table>
+</div>

@@ -1,5 +1,25 @@
 ---
-interface Props { label:string; min?:number; max?:number; value?:number; step?:number; name?:string }
-const {label,min=0,max=100,value=50,step=1,name}=Astro.props;
+interface Props {
+  label: string;
+  min?: number;
+  max?: number;
+  value?: number;
+  step?: number;
+  name?: string;
+}
+const { label, min = 0, max = 100, value = 50, step = 1, name } = Astro.props;
 ---
-<label class="block"><span class="lui-label flex justify-between"><span>{label}</span><output>{value}</output></span><input type="range" {name} {min} {max} {value} {step} class="h-2 w-full cursor-pointer appearance-none rounded-full bg-[var(--border)] accent-[var(--accent)]"/></label>
+
+<label class="block"
+  ><span class="lui-label flex justify-between"
+    ><span>{label}</span><output>{value}</output></span
+  ><input
+    type="range"
+    {name}
+    {min}
+    {max}
+    {value}
+    {step}
+    class="h-2 w-full cursor-pointer appearance-none rounded-full bg-(--border) accent-(--accent)"
+  /></label
+>

@@ -1,5 +1,37 @@
 ---
-interface Props { label:string; description?:string; checked?:boolean; disabled?:boolean; name?:string }
-const {label,description,checked=false,disabled=false,name}=Astro.props;
+interface Props {
+  label: string;
+  description?: string;
+  checked?: boolean;
+  disabled?: boolean;
+  name?: string;
+}
+const {
+  label,
+  description,
+  checked = false,
+  disabled = false,
+  name,
+} = Astro.props;
 ---
-<label class="flex cursor-pointer items-center justify-between gap-4"><span><span class="block font-semibold">{label}</span>{description&&<span class="muted block text-sm">{description}</span>}</span><span class="relative inline-flex"><input type="checkbox" role="switch" {name} {checked} {disabled} class="peer sr-only"/><span class="h-6 w-10 rounded-full bg-[var(--border)] transition-colors peer-checked:bg-[var(--accent)] peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--ring)]"></span><span class="absolute left-0.5 top-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4"></span></span></label>
+
+<label class="flex cursor-pointer items-center justify-between gap-4"
+  ><span
+    ><span class="block font-semibold">{label}</span>{
+      description && <span class="muted block text-sm">{description}</span>
+    }</span
+  ><span class="relative inline-flex"
+    ><input
+      type="checkbox"
+      role="switch"
+      {name}
+      {checked}
+      {disabled}
+      class="peer sr-only"
+    /><span
+      class="h-6 w-10 rounded-full bg-(--border) transition-colors peer-checked:bg-(--accent) peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-(--ring)"
+    ></span><span
+      class="absolute left-0.5 top-0.5 size-5 rounded-full bg-white shadow transition-transform peer-checked:translate-x-4"
+    ></span></span
+  ></label
+>

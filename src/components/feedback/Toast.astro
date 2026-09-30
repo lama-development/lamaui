@@ -1,5 +1,40 @@
 ---
-interface Props { id?:string; title?:string; variant?:'success'|'warning'|'destructive'; class?:string }
-const {id='lui-toast',title='Saved',variant='success',class:className}=Astro.props;
+interface Props {
+  id?: string;
+  title?: string;
+  variant?: "success" | "warning" | "destructive";
+  class?: string;
+}
+const {
+  id = "lui-toast",
+  title = "Saved",
+  variant = "success",
+  class: className,
+} = Astro.props;
 ---
-<div {id} role="status" aria-live="polite" class:list={['fixed bottom-4 right-4 z-[100] hidden w-[min(24rem,calc(100%-2rem))] items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface-elevated)] p-4 shadow-[var(--shadow-lg)]',className]} data-toast><span class:list={['font-bold',variant==='success'?'text-[var(--success)]':variant==='warning'?'text-[var(--warning)]':'text-[var(--destructive)]']}>{variant==='success'?'✓':variant==='warning'?'!':'×'}</span><div class="flex-1"><p class="m-0 font-bold">{title}</p><div class="muted text-sm"><slot /></div></div><button type="button" aria-label="Dismiss" data-toast-close>×</button></div>
+
+<div
+  {id}
+  role="status"
+  aria-live="polite"
+  class:list={[
+    "fixed bottom-4 right-4 z-[100] hidden w-[min(24rem,calc(100%-2rem))] items-start gap-3 rounded-2xl border border-(--border) bg-(--surface-elevated) p-4 shadow-(--shadow-lg)",
+    className,
+  ]}
+  data-toast
+>
+  <span
+    class:list={[
+      "font-bold",
+      variant === "success"
+        ? "text-(--success)"
+        : variant === "warning"
+          ? "text-(--warning)"
+          : "text-(--destructive)",
+    ]}>{variant === "success" ? "✓" : variant === "warning" ? "!" : "×"}</span
+  ><div class="flex-1">
+    <p class="m-0 font-bold">{title}</p><div class="muted text-sm">
+      <slot />
+    </div>
+  </div><button type="button" aria-label="Dismiss" data-toast-close>×</button>
+</div>

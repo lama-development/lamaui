@@ -1,20 +1,30 @@
 ---
-import '@/styles/global.css';
-interface Props { title?:string; description?:string }
-const {title='LamaUI — Astro component library',description='A reusable Astro and Tailwind component library with accessible interactions and a token-driven theme.'}=Astro.props;
-const groups=[
-  ['Start here',['Overview','Theme']],
-  ['Actions',['Button','Icon button','Toggle']],
-  ['Forms',['Inputs','Selection','Custom select']],
-  ['Navigation',['Navbar','Tabs','Breadcrumb','Pagination','Stepper']],
-  ['Data display',['Card','Badge','Avatar','Table','Stat','Progress','Empty state']],
-  ['Feedback',['Alert','Toast','Spinner','Skeleton']],
-  ['Overlays',['Dialog','Drawer','Popover','Tooltip']],
-  ['Layout',['Primitives']],
-  ['Marketing',['Patterns']],
+import "@/styles/global.css";
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = "LamaUI — Astro component library",
+  description = "A reusable Astro and Tailwind component library with accessible interactions and a token-driven theme.",
+} = Astro.props;
+const groups = [
+  ["Start here", ["Overview", "Theme"]],
+  ["Actions", ["Button", "Icon button", "Toggle"]],
+  ["Forms", ["Inputs", "Selection", "Custom select"]],
+  ["Navigation", ["Navbar", "Tabs", "Breadcrumb", "Pagination", "Stepper"]],
+  [
+    "Data display",
+    ["Card", "Badge", "Avatar", "Table", "Stat", "Progress", "Empty state"],
+  ],
+  ["Feedback", ["Alert", "Toast", "Spinner", "Skeleton"]],
+  ["Overlays", ["Dialog", "Drawer", "Popover", "Tooltip"]],
+  ["Layout", ["Primitives"]],
+  ["Marketing", ["Patterns"]],
 ] as const;
-const slug=(s:string)=>s.toLowerCase().replaceAll(' ','-');
+const slug = (s: string) => s.toLowerCase().replaceAll(" ", "-");
 ---
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -24,39 +34,232 @@ const slug=(s:string)=>s.toLowerCase().replaceAll(' ','-');
     <meta name="theme-color" content="#619f00" />
     <title>{title}</title>
     <script is:inline>
-      (()=>{try{const theme=localStorage.getItem('lui-theme');if(theme)document.documentElement.dataset.theme=theme}catch{}})();
+      (() => {
+        try {
+          const theme = localStorage.getItem("lui-theme");
+          if (theme) document.documentElement.dataset.theme = theme;
+        } catch {}
+      })();
     </script>
   </head>
   <body>
-    <a href="#main" class="fixed left-3 top-3 z-[200] -translate-y-20 rounded-xl bg-[var(--accent)] px-3 py-2 font-semibold text-[var(--accent-foreground)] focus:translate-y-0">Skip to content</a>
+    <a
+      href="#main"
+      class="fixed left-3 top-3 z-[200] -translate-y-20 rounded-xl bg-(--accent) px-3 py-2 font-semibold text-(--accent-foreground) focus:translate-y-0"
+      >Skip to content</a
+    >
     <div class="docs-grid">
       <aside class="docs-sidebar" id="docs-sidebar" data-open="false">
         <div class="mb-6 flex items-center justify-between">
-          <a href="#overview" class="flex items-center gap-2 text-lg font-bold no-underline"><span class="grid size-9 place-items-center rounded-xl bg-[var(--accent)] text-[var(--accent-foreground)] shadow-[var(--shadow-control)]">L</span>LamaUI</a>
-          <button class="lui-control lui-ghost lui-icon md:hidden" aria-label="Close navigation" data-docs-close>×</button>
+          <a
+            href="#overview"
+            class="flex items-center gap-2 text-lg font-bold no-underline"
+            ><span
+              class="grid size-9 place-items-center rounded-xl bg-(--accent) text-(--accent-foreground) shadow-(--shadow-control)"
+              >L</span
+            >LamaUI</a
+          >
+          <button
+            class="lui-control lui-ghost lui-icon md:hidden"
+            aria-label="Close navigation"
+            data-docs-close>×</button
+          >
         </div>
         <nav aria-label="Documentation">
-          {groups.map(([group,items])=><div class="mb-5"><p class="muted mb-1 px-3 text-xs font-bold uppercase tracking-wider">{group}</p><ul class="m-0 list-none space-y-0.5 p-0">{items.map(item=><li><a href={`#${slug(item)}`} class="block rounded-xl px-3 py-2 text-sm font-semibold text-[var(--muted-foreground)] no-underline hover:bg-[var(--surface-hover)] hover:text-[var(--foreground)]">{item}</a></li>)}</ul></div>)}
+          {
+            groups.map(([group, items]) => (
+              <div class="mb-5">
+                <>
+                  <p class="muted mb-1 px-3 text-xs font-bold uppercase tracking-wider">
+                    {group}
+                  </p>
+                  <ul class="m-0 list-none space-y-0.5 p-0">
+                    {items.map((item) => (
+                      <li>
+                        <a
+                          href={`#${slug(item)}`}
+                          class="block rounded-xl px-3 py-2 text-sm font-semibold text-(--muted-foreground) no-underline hover:bg-(--surface-hover) hover:text-(--foreground)"
+                        >
+                          {item}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              </div>
+            ))
+          }
         </nav>
       </aside>
       <div class="docs-main">
-        <header class="docs-topbar"><button class="lui-control lui-ghost lui-icon mr-2 md:hidden" aria-label="Open navigation" data-docs-open>☰</button><div><strong class="text-sm">Components</strong><span class="muted ml-2 text-sm">v0.1</span></div><div class="ml-auto flex items-center gap-2"><a href="#theme" class="lui-control lui-ghost lui-sm hidden sm:inline-flex">Theme tokens</a><button type="button" class="lui-control lui-secondary lui-icon" aria-label="Toggle color theme" data-theme-toggle>◐</button></div></header>
+        <header class="docs-topbar">
+          <button
+            class="lui-control lui-ghost lui-icon mr-2 md:hidden"
+            aria-label="Open navigation"
+            data-docs-open>☰</button
+          ><div>
+            <strong class="text-sm">Components</strong><span
+              class="muted ml-2 text-sm">v0.1</span>
+          </div><div class="ml-auto flex items-center gap-2">
+            <a
+              href="#theme"
+              class="lui-control lui-ghost lui-sm hidden sm:inline-flex"
+              >Theme tokens</a
+            ><button
+              type="button"
+              class="lui-control lui-secondary lui-icon"
+              aria-label="Toggle color theme"
+              data-theme-toggle>◐</button>
+          </div>
+        </header>
         <main id="main" class="docs-content"><slot /></main>
       </div>
     </div>
     <script is:inline>
-      const $=(s,r=document)=>r.querySelector(s); const $$=(s,r=document)=>[...r.querySelectorAll(s)];
-      const sidebar=$('#docs-sidebar'); $('[data-docs-open]')?.addEventListener('click',()=>sidebar?.setAttribute('data-open','true')); $('[data-docs-close]')?.addEventListener('click',()=>sidebar?.setAttribute('data-open','false')); $$('#docs-sidebar a').forEach(a=>a.addEventListener('click',()=>sidebar?.setAttribute('data-open','false')));
-      $('[data-theme-toggle]')?.addEventListener('click',()=>{const dark=document.documentElement.dataset.theme==='dark'||(!document.documentElement.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches); const next=dark?'light':'dark';document.documentElement.dataset.theme=next;localStorage.setItem('lui-theme',next)});
-      $$('[data-toggle]').forEach(b=>b.addEventListener('click',()=>b.setAttribute('aria-pressed',String(b.getAttribute('aria-pressed')!=='true'))));
-      $$('[data-toggle-group]').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('[data-toggle]');if(!b)return;g.querySelectorAll('[data-toggle]').forEach(x=>x.setAttribute('aria-pressed',String(x===b)))}));
-      $$('[data-password-toggle]').forEach(b=>b.addEventListener('click',()=>{const i=b.closest('[data-password]').querySelector('[data-password-input]');const show=i.type==='password';i.type=show?'text':'password';b.textContent=show?'Hide':'Show';b.setAttribute('aria-label',`${show?'Hide':'Show'} password`)}));
-      $$('[data-select]').forEach(root=>{const trigger=$('[data-select-trigger]',root),list=$('[data-select-list]',root),input=$('[data-select-input]',root),value=$('[data-select-value]',root);trigger.addEventListener('click',()=>{const open=list.hidden;list.hidden=!open;trigger.setAttribute('aria-expanded',String(open));if(open)list.querySelector('[aria-selected="true"]')?.focus()});list.addEventListener('click',e=>{const option=e.target.closest('[role="option"]');if(!option||option.disabled)return;$$('[role="option"]',list).forEach(o=>o.setAttribute('aria-selected',String(o===option)));input.value=option.dataset.value;value.textContent=option.textContent;list.hidden=true;trigger.setAttribute('aria-expanded','false');trigger.focus()});root.addEventListener('keydown',e=>{if(e.key==='Escape'){list.hidden=true;trigger.setAttribute('aria-expanded','false');trigger.focus()}})});
-      $$('[data-tabs]').forEach(root=>{const tabs=$$('[role="tab"]',root),panels=$$('[role="tabpanel"]',root);tabs.forEach(tab=>tab.addEventListener('click',()=>{tabs.forEach(t=>t.setAttribute('aria-selected',String(t===tab)));panels.forEach(p=>p.hidden=p.dataset.tabPanel!==tab.dataset.tab);tab.focus()}));root.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight'].includes(e.key))return;const i=tabs.indexOf(document.activeElement),next=tabs[(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length];next?.click()})});
-      $$('[data-dialog-open]').forEach(b=>b.addEventListener('click',()=>document.getElementById(b.dataset.dialogOpen)?.showModal())); $$('[data-dialog-close]').forEach(b=>b.addEventListener('click',()=>b.closest('dialog')?.close())); $$('dialog').forEach(d=>d.addEventListener('click',e=>{if(e.target===d)d.close()}));
-      $$('[data-dismiss]').forEach(b=>b.addEventListener('click',()=>b.closest('[role="alert"],[role="status"]')?.remove()));
-      $$('[data-toast-open]').forEach(b=>b.addEventListener('click',()=>{const t=document.getElementById(b.dataset.toastOpen);t?.classList.replace('hidden','flex');setTimeout(()=>t?.classList.replace('flex','hidden'),4000)})); $$('[data-toast-close]').forEach(b=>b.addEventListener('click',()=>b.closest('[data-toast]')?.classList.replace('flex','hidden')));
-      $$('[data-nav-toggle]').forEach(b=>b.addEventListener('click',()=>{const n=b.parentElement.querySelector('[data-nav-menu]');const open=n.classList.toggle('hidden');b.setAttribute('aria-expanded',String(!open))}));
+      const $ = (s, r = document) => r.querySelector(s);
+      const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+      const sidebar = $("#docs-sidebar");
+      $("[data-docs-open]")?.addEventListener("click", () =>
+        sidebar?.setAttribute("data-open", "true"),
+      );
+      $("[data-docs-close]")?.addEventListener("click", () =>
+        sidebar?.setAttribute("data-open", "false"),
+      );
+      $$("#docs-sidebar a").forEach((a) =>
+        a.addEventListener("click", () =>
+          sidebar?.setAttribute("data-open", "false"),
+        ),
+      );
+      $("[data-theme-toggle]")?.addEventListener("click", () => {
+        const dark =
+          document.documentElement.dataset.theme === "dark" ||
+          (!document.documentElement.dataset.theme &&
+            matchMedia("(prefers-color-scheme: dark)").matches);
+        const next = dark ? "light" : "dark";
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem("lui-theme", next);
+      });
+      $$("[data-toggle]").forEach((b) =>
+        b.addEventListener("click", () =>
+          b.setAttribute(
+            "aria-pressed",
+            String(b.getAttribute("aria-pressed") !== "true"),
+          ),
+        ),
+      );
+      $$("[data-toggle-group]").forEach((g) =>
+        g.addEventListener("click", (e) => {
+          const b = e.target.closest("[data-toggle]");
+          if (!b) return;
+          g.querySelectorAll("[data-toggle]").forEach((x) =>
+            x.setAttribute("aria-pressed", String(x === b)),
+          );
+        }),
+      );
+      $$("[data-password-toggle]").forEach((b) =>
+        b.addEventListener("click", () => {
+          const i = b
+            .closest("[data-password]")
+            .querySelector("[data-password-input]");
+          const show = i.type === "password";
+          i.type = show ? "text" : "password";
+          b.textContent = show ? "Hide" : "Show";
+          b.setAttribute("aria-label", `${show ? "Hide" : "Show"} password`);
+        }),
+      );
+      $$("[data-select]").forEach((root) => {
+        const trigger = $("[data-select-trigger]", root),
+          list = $("[data-select-list]", root),
+          input = $("[data-select-input]", root),
+          value = $("[data-select-value]", root);
+        trigger.addEventListener("click", () => {
+          const open = list.hidden;
+          list.hidden = !open;
+          trigger.setAttribute("aria-expanded", String(open));
+          if (open) list.querySelector('[aria-selected="true"]')?.focus();
+        });
+        list.addEventListener("click", (e) => {
+          const option = e.target.closest('[role="option"]');
+          if (!option || option.disabled) return;
+          $$('[role="option"]', list).forEach((o) =>
+            o.setAttribute("aria-selected", String(o === option)),
+          );
+          input.value = option.dataset.value;
+          value.textContent = option.textContent;
+          list.hidden = true;
+          trigger.setAttribute("aria-expanded", "false");
+          trigger.focus();
+        });
+        root.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") {
+            list.hidden = true;
+            trigger.setAttribute("aria-expanded", "false");
+            trigger.focus();
+          }
+        });
+      });
+      $$("[data-tabs]").forEach((root) => {
+        const tabs = $$('[role="tab"]', root),
+          panels = $$('[role="tabpanel"]', root);
+        tabs.forEach((tab) =>
+          tab.addEventListener("click", () => {
+            tabs.forEach((t) =>
+              t.setAttribute("aria-selected", String(t === tab)),
+            );
+            panels.forEach(
+              (p) => (p.hidden = p.dataset.tabPanel !== tab.dataset.tab),
+            );
+            tab.focus();
+          }),
+        );
+        root.addEventListener("keydown", (e) => {
+          if (!["ArrowLeft", "ArrowRight"].includes(e.key)) return;
+          const i = tabs.indexOf(document.activeElement),
+            next =
+              tabs[
+                (i + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) %
+                  tabs.length
+              ];
+          next?.click();
+        });
+      });
+      $$("[data-dialog-open]").forEach((b) =>
+        b.addEventListener("click", () =>
+          document.getElementById(b.dataset.dialogOpen)?.showModal(),
+        ),
+      );
+      $$("[data-dialog-close]").forEach((b) =>
+        b.addEventListener("click", () => b.closest("dialog")?.close()),
+      );
+      $$("dialog").forEach((d) =>
+        d.addEventListener("click", (e) => {
+          if (e.target === d) d.close();
+        }),
+      );
+      $$("[data-dismiss]").forEach((b) =>
+        b.addEventListener("click", () =>
+          b.closest('[role="alert"],[role="status"]')?.remove(),
+        ),
+      );
+      $$("[data-toast-open]").forEach((b) =>
+        b.addEventListener("click", () => {
+          const t = document.getElementById(b.dataset.toastOpen);
+          t?.classList.replace("hidden", "flex");
+          setTimeout(() => t?.classList.replace("flex", "hidden"), 4000);
+        }),
+      );
+      $$("[data-toast-close]").forEach((b) =>
+        b.addEventListener("click", () =>
+          b.closest("[data-toast]")?.classList.replace("flex", "hidden"),
+        ),
+      );
+      $$("[data-nav-toggle]").forEach((b) =>
+        b.addEventListener("click", () => {
+          const n = b.parentElement.querySelector("[data-nav-menu]");
+          const open = n.classList.toggle("hidden");
+          b.setAttribute("aria-expanded", String(!open));
+        }),
+      );
     </script>
   </body>
 </html>
