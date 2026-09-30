@@ -3,19 +3,20 @@ import { codeToHtml } from "shiki";
 import Icon from "@/components/ui/Icon.astro";
 interface Props { code: string; language?: string; label?: string }
 const { code, language = "astro", label = language } = Astro.props;
-const singleLine = !code.includes("\n");
 const highlighted = await codeToHtml(code, {
   lang: language as any,
   themes: { light: "github-light", dark: "github-dark" },
   defaultColor: false,
 });
 ---
-<figure class:list={["code-block", singleLine && "is-single-line"]} data-code-block>
-  <figcaption class="sr-only">{label} code example</figcaption>
-  <button type="button" class="code-copy" aria-label="Copy code" data-copy-code>
-    <span data-copy-default><Icon name="copy" size={16} /></span>
-    <span data-copy-success hidden><Icon name="check" size={16} /></span>
-    <span data-copy-label>Copy</span>
-  </button>
+<figure class="code-block" data-code-block>
+  <figcaption class="code-head">
+    <span class="code-language"><Icon name="code" size={20} /><span>{label}</span></span>
+    <button type="button" class="code-copy" aria-label="Copy code" data-copy-code>
+      <span data-copy-default><Icon name="copy" size={20} /></span>
+      <span data-copy-success hidden><Icon name="check" size={20} /></span>
+      <span class="sr-only" data-copy-label>Copy</span>
+    </button>
+  </figcaption>
   <div class="code-render" set:html={highlighted}></div>
 </figure>
