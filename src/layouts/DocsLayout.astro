@@ -162,6 +162,38 @@ const {
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") setNavigation(false);
       });
+      $$(".docs-nav-group").forEach((group) =>
+        group.addEventListener("toggle", () => {
+          if (!group.open) return;
+          $$(".docs-nav-group").forEach((other) => {
+            if (other !== group) other.open = false;
+          });
+        }),
+      );
+      $$('[data-copy-code]').forEach((button) =>
+        button.addEventListener("click", async () => {
+          const block = button.closest("[data-code-block]"),
+            code = $("code", block)?.textContent ?? "",
+            label = $("[data-copy-label]", button),
+            defaultIcon = $("[data-copy-default]", button),
+            successIcon = $("[data-copy-success]", button);
+          try {
+            await navigator.clipboard.writeText(code);
+            defaultIcon?.toggleAttribute("hidden", true);
+            successIcon?.toggleAttribute("hidden", false);
+            if (label) label.textContent = "Copied";
+            button.setAttribute("aria-label", "Code copied");
+            window.setTimeout(() => {
+              defaultIcon?.toggleAttribute("hidden", false);
+              successIcon?.toggleAttribute("hidden", true);
+              if (label) label.textContent = "Copy";
+              button.setAttribute("aria-label", "Copy code");
+            }, 1800);
+          } catch {
+            if (label) label.textContent = "Copy failed";
+          }
+        }),
+      );
       const syncTheme = () => {
         const dark =
           document.documentElement.dataset.theme === "dark" ||

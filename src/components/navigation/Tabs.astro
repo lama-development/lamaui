@@ -22,7 +22,7 @@ const {
   <div
     role="tablist"
     aria-label="Tabs"
-    class="inline-flex rounded-2xl border border-(--border) bg-(--muted) p-1"
+    class="lui-tabs"
   >
     {
       tabs.map((tab) => (
@@ -33,7 +33,7 @@ const {
           aria-selected={tab.id === active}
           aria-controls={`${id}-${tab.id}-panel`}
           disabled={tab.disabled}
-          class="min-h-10 rounded-xl px-3 text-sm font-semibold text-(--muted-foreground) aria-selected:bg-(--surface) aria-selected:text-(--foreground) aria-selected:shadow-sm disabled:opacity-40"
+          class="lui-tab"
           data-tab={tab.id}
         >
           {tab.label}
