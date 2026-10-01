@@ -13,8 +13,8 @@ const { sections, variant } = Astro.props;
 {
   variant === "mobile" ? (
     <div class="mt-4 mb-8 flex items-start gap-2 min-[1280px]:hidden print:hidden">
-      <div class="t-acc min-w-0 flex-1 rounded-[0.75rem] border border-outline bg-surface shadow-(--shadow-sm) [corner-shape:squircle]" data-guide-mobile-index data-open="false">
-        <button type="button" class="flex min-h-12 w-full items-center gap-2 rounded-[0.75rem] border-0 bg-transparent px-3 text-start text-sm font-semibold transition-[background-color,color] duration-(--duration-fast) [corner-shape:squircle] hover:bg-surface-hover" aria-expanded="false" data-guide-index-toggle>
+      <div class="t-acc min-w-0 flex-1 rounded-xl border border-outline bg-surface shadow-(--shadow-sm) [corner-shape:squircle]" data-guide-mobile-index data-open="false">
+        <button type="button" class="flex min-h-12 w-full items-center gap-2 rounded-xl border-0 bg-transparent px-3 text-start text-sm font-semibold transition-[background-color,color] duration-(--duration-fast) [corner-shape:squircle] hover:bg-surface-hover" aria-expanded="false" data-guide-index-toggle>
           <Icon name="clipboard-text" size={18} class="text-muted-label" />
           <span class="flex-1">On this page</span>
           <span class="t-acc-chevron text-muted-label">
@@ -29,11 +29,11 @@ const { sections, variant } = Astro.props;
           </div>
         </div>
       </div>
-      <details class="group relative flex-none rounded-[0.75rem] shadow-(--shadow-sm) [corner-shape:squircle] min-[621px]:hidden" data-guide-menu>
-        <summary aria-label="Page actions" title="Page actions" class="grid size-12 list-none place-items-center rounded-[0.75rem] border border-outline bg-surface text-muted-label transition-[background-color,box-shadow,transform] duration-(--duration-fast) [corner-shape:squircle] hover:bg-surface-hover active:scale-[.96] [&::-webkit-details-marker]:hidden">
+      <details class="group relative flex-none rounded-xl shadow-(--shadow-sm) [corner-shape:squircle] min-[621px]:hidden" data-guide-menu>
+        <summary aria-label="Page actions" title="Page actions" class="grid size-12 list-none place-items-center rounded-xl border border-outline bg-surface text-muted-label transition-[background-color,box-shadow,transform] duration-(--duration-fast) [corner-shape:squircle] hover:bg-surface-hover active:scale-[.96] [&::-webkit-details-marker]:hidden">
           <Icon name="export" size={20} />
         </summary>
-        <div class="absolute end-0 z-40 mt-2 grid min-w-52 gap-1 rounded-lg border border-outline bg-surface-elevated p-1.5 shadow-(--shadow-md)">
+        <div class="absolute inset-e-0 z-40 mt-2 grid min-w-52 gap-1 rounded-lg border border-outline bg-surface-elevated p-1.5 shadow-(--shadow-md)">
           <button type="button" data-guide-copy class="flex min-h-11 items-center gap-2.5 rounded-md border-0 bg-transparent px-3 py-2.5 text-start text-sm hover:bg-surface-hover focus-visible:bg-surface-hover">
             <>
               <Icon name="copy" size={18} class="text-accent" />
@@ -52,7 +52,7 @@ const { sections, variant } = Astro.props;
       </details>
     </div>
   ) : (
-    <aside class="hidden self-start rounded-[0.75rem] border border-outline bg-surface p-1.5 shadow-(--shadow-sm) [corner-shape:squircle] min-[1280px]:sticky min-[1280px]:top-8 min-[1280px]:mt-3 min-[1280px]:block print:hidden">
+    <aside class="hidden self-start rounded-xl border border-outline bg-surface p-1.5 shadow-(--shadow-sm) [corner-shape:squircle] min-[1280px]:sticky min-[1280px]:top-8 min-[1280px]:mt-3 min-[1280px]:block print:hidden">
       <div class="flex min-h-12 items-center gap-2 px-3 text-sm font-semibold">
         <Icon name="clipboard-text" size={18} class="text-muted-label" />
         <span>On this page</span>
