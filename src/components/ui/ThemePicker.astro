@@ -30,7 +30,7 @@ const options = [
       <div class="lui-theme-icons relative isolate inline-flex gap-1 rounded-lg border border-outline bg-surface p-1 [corner-shape:squircle]" role="group" aria-label={label}>
         <span class="t-tabs-pill" aria-hidden="true" />
         {options.map((option) => (
-          <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} relative z-1 hover:text-label aria-pressed:text-label aria-pressed:hover:bg-transparent aria-pressed:hover:text-label`} aria-label={`${option.label} theme`} title={`${option.label} theme`} aria-pressed={option.value === "system"} data-theme-choice={option.value}>
+          <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} relative z-1 rounded-[calc(var(--radius-lg)-0.3125rem)] hover:text-label aria-pressed:text-label aria-pressed:hover:bg-transparent aria-pressed:hover:text-label`} aria-label={`${option.label} theme`} title={`${option.label} theme`} aria-pressed={option.value === "system"} data-theme-choice={option.value}>
             <Icon name={option.icon} />
           </button>
         ))}
@@ -175,7 +175,7 @@ const options = [
   .lui-theme-icons .t-tabs-pill {
     top: 4px;
     height: var(--control-md);
-    border-radius: var(--radius-md);
+    border-radius: calc(var(--radius-lg) - 0.3125rem);
     corner-shape: squircle;
   }
   @media (prefers-reduced-motion: reduce) {

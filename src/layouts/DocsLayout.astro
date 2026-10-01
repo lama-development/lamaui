@@ -47,7 +47,7 @@ const { title = "LamaUI - Components", description = "Reusable Astro components 
       <a href="/" class="docs-brand flex min-w-0 flex-1 items-center gap-2.5 rounded-md text-label no-underline [&_small]:block [&_small]:text-sm [&_small]:leading-[1.2] [&_small]:font-normal [&_small]:text-muted-label [&_strong]:block [&_strong]:text-lg [&_strong]:leading-none"><Llama class="docs-mark size-8 flex-none" width={32} height={32} aria-hidden="true" focusable="false" /><span><strong>LamaUI</strong></span></a>
       <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles}`} aria-label="Open navigation" aria-controls="docs-navigation" aria-expanded="false" data-docs-open><Icon name="menu" /></button>
     </header>
-    <aside id="docs-navigation" class="docs-sidebar fixed inset-[0_auto_0_0] z-50 w-64 border-r border-outline bg-surface print:hidden [@media(width<=860px)]:z-80 [@media(width<=860px)]:transform-[translateX(-105%)] [@media(width<=860px)]:shadow-(--shadow-lg) [@media(width<=860px)]:[transition:transform_var(--duration-slow)_var(--ease-standard)] [@media(width<=860px)]:data-[open=true]:transform-[translateX(0)]" data-open="false" aria-label="Documentation navigation">
+    <aside id="docs-navigation" class="docs-sidebar fixed inset-[0_auto_0_0] z-50 w-60 border-r border-outline bg-surface print:hidden [@media(width<=860px)]:z-80 [@media(width<=860px)]:transform-[translateX(-105%)] [@media(width<=860px)]:shadow-(--shadow-lg) [@media(width<=860px)]:[transition:transform_var(--duration-slow)_var(--ease-standard)] [@media(width<=860px)]:data-[open=true]:transform-[translateX(0)]" data-open="false" aria-label="Documentation navigation">
       <div class="docs-sidebar-inner flex h-full min-h-0 flex-col px-3 pb-3">
         <div class="docs-sidebar-head -mx-3 flex min-h-14 flex-none items-center gap-2 border-b border-outline px-3 py-1.5">
           <a href="/" class="docs-brand flex min-w-0 flex-1 items-center gap-2.5 rounded-md text-label no-underline [&_small]:block [&_small]:text-sm [&_small]:leading-[1.2] [&_small]:font-normal [&_small]:text-muted-label [&_strong]:block [&_strong]:text-lg [&_strong]:leading-none"><Llama class="docs-mark size-8 flex-none" width={32} height={32} aria-hidden="true" focusable="false" /><span><strong>LamaUI</strong></span></a>
@@ -88,7 +88,7 @@ const { title = "LamaUI - Components", description = "Reusable Astro components 
       </div>
     </aside>
     <button class="docs-scrim print:hidden [@media(width<=860px)]:fixed [@media(width<=860px)]:inset-0 [@media(width<=860px)]:z-70 [@media(width<=860px)]:border-0 [@media(width<=860px)]:bg-overlay" aria-label="Close navigation" data-docs-scrim hidden></button>
-    <div class="docs-page min-h-screen pl-64 print:pl-0 [@media(width<=860px)]:pl-0">
+    <div class="docs-page min-h-screen pl-60 print:pl-0 [@media(width<=860px)]:pl-0">
       <main id="main-content" class="docs-content mx-auto min-h-[calc(100vh-4rem)] w-[min(100%-2rem,72rem)] pt-12 pb-20 print:min-h-0 print:w-full print:p-0 [@media(width<=620px)]:w-[min(100%-1.25rem,72rem)] [@media(width<=860px)]:pt-8"><slot /></main>
       <footer class="docs-footer mx-auto flex w-[min(100%-2rem,72rem)] flex-wrap items-center justify-between gap-[0.75rem_1.5rem] border-t border-outline pt-4 pb-8 text-[0.8125rem] text-muted-label print:hidden [@media(width<=620px)]:w-[min(100%-1.25rem,72rem)]">
         <span>LamaUI</span>
