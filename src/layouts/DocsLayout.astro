@@ -1,111 +1,68 @@
 ---
+import { controlStyles, ghostStyles, iconControlStyles } from "@/lib/styles";
 import "@/styles/global.css";
 import Icon from "@/components/ui/Icon.astro";
+import AccentPicker from "@/components/ui/AccentPicker.astro";
+import ThemePicker from "@/components/ui/ThemePicker.astro";
+import Llama from "@/assets/icons/llama.svg";
 import { componentGroups } from "@/lib/components";
+import { version } from "../../package.json";
 interface Props {
   title?: string;
   description?: string;
   currentSlug?: string;
 }
-const {
-  title = "LamaUI - Components",
-  description = "Reusable Astro components extracted from a focused dashboard design language.",
-  currentSlug,
-} = Astro.props;
+const { title = "LamaUI - Components", description = "Reusable Astro components extracted from a focused dashboard design language.", currentSlug } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" /><meta
-      name="viewport"
-      content="width=device-width"
-    />
-    <meta name="description" content={description} /><meta
-      name="theme-color"
-      content="#619f00"
-    />
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} /><meta name="theme-color" content="#749E00" />
     <title>{title}</title>
+    <link rel="preload" href="/fonts/google-sans-flex.woff2" as="font" type="font/woff2" crossorigin />
     <script is:inline>
       (() => {
         try {
           const t = localStorage.getItem("lui-theme");
-          if (t === "light" || t === "dark")
-            document.documentElement.dataset.theme = t;
+          if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+          const accent = localStorage.getItem("lui-accent");
+          if (["lime", "blue", "violet", "rose", "orange", "teal"].includes(accent)) document.documentElement.dataset.accent = accent;
         } catch {}
       })();
     </script>
   </head>
   <body>
-    <a href="#main-content" class="skip-link">Skip to content</a>
-    <header class="docs-mobile-header">
-      <a href="/" class="docs-brand"
-        ><span class="docs-mark">L</span><span
-          ><strong>LamaUI</strong><small>Components</small></span
-        ></a
-      >
-      <button
-        type="button"
-        class="lui-control lui-ghost lui-icon"
-        aria-label="Open navigation"
-        aria-controls="docs-navigation"
-        aria-expanded="false"
-        data-docs-open><Icon name="menu" /></button
-      >
+    <a href="#main-content" class="skip-link fixed inset-[8px_auto_auto_8px] z-200 transform-[translateY(-80px)] rounded-md bg-accent px-3 py-2 text-sm font-semibold text-accent-label focus:transform-[translateY(0)] print:hidden">Skip to content</a>
+    <header class="docs-mobile-header hidden print:hidden [@media(width<=860px)]:sticky [@media(width<=860px)]:top-0 [@media(width<=860px)]:z-40 [@media(width<=860px)]:flex [@media(width<=860px)]:min-h-14 [@media(width<=860px)]:items-center [@media(width<=860px)]:justify-between [@media(width<=860px)]:border-b [@media(width<=860px)]:border-outline [@media(width<=860px)]:bg-[color-mix(in_srgb,var(--surface)_94%,transparent)] [@media(width<=860px)]:p-[0.375rem_0.75rem] [@media(width<=860px)]:[backdrop-filter:blur(12px)] [@media(width<=860px)]:[&_.docs-brand]:flex-none [@media(width<=860px)]:[&_.docs-brand_small]:hidden">
+      <a href="/" class="docs-brand flex min-w-0 flex-1 items-center gap-2.5 rounded-md text-label no-underline [&_small]:block [&_small]:text-sm [&_small]:leading-[1.2] [&_small]:font-normal [&_small]:text-muted-label [&_strong]:block [&_strong]:text-lg [&_strong]:leading-none"><Llama class="docs-mark size-8 flex-none" width={32} height={32} aria-hidden="true" focusable="false" /><span><strong>LamaUI</strong></span></a>
+      <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles}`} aria-label="Open navigation" aria-controls="docs-navigation" aria-expanded="false" data-docs-open><Icon name="menu" /></button>
     </header>
-    <aside
-      id="docs-navigation"
-      class="docs-sidebar"
-      data-open="false"
-      aria-label="Documentation navigation"
-    >
-      <div class="docs-sidebar-inner">
-        <div class="docs-sidebar-head">
-          <a href="/" class="docs-brand"
-            ><span class="docs-mark">L</span><span
-              ><strong>LamaUI</strong><small>Components</small></span
-            ></a
-          >
-          <button
-            type="button"
-            class="lui-control lui-ghost lui-icon docs-sidebar-close"
-            aria-label="Close navigation"
-            data-docs-close><Icon name="close" /></button
-          >
+    <aside id="docs-navigation" class="docs-sidebar fixed inset-[0_auto_0_0] z-50 w-64 border-r border-outline bg-surface print:hidden [@media(width<=860px)]:z-80 [@media(width<=860px)]:transform-[translateX(-105%)] [@media(width<=860px)]:shadow-(--shadow-lg) [@media(width<=860px)]:[transition:transform_var(--duration-slow)_var(--ease-standard)] [@media(width<=860px)]:data-[open=true]:transform-[translateX(0)]" data-open="false" aria-label="Documentation navigation">
+      <div class="docs-sidebar-inner flex h-full min-h-0 flex-col px-3 pb-3">
+        <div class="docs-sidebar-head -mx-3 flex min-h-14 flex-none items-center gap-2 border-b border-outline px-3 py-1.5">
+          <a href="/" class="docs-brand flex min-w-0 flex-1 items-center gap-2.5 rounded-md text-label no-underline [&_small]:block [&_small]:text-sm [&_small]:leading-[1.2] [&_small]:font-normal [&_small]:text-muted-label [&_strong]:block [&_strong]:text-lg [&_strong]:leading-none"><Llama class="docs-mark size-8 flex-none" width={32} height={32} aria-hidden="true" focusable="false" /><span><strong>LamaUI</strong></span></a>
+          <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} docs-sidebar-close min-[861px]:hidden!`} aria-label="Close navigation" data-docs-close><Icon name="close" /></button>
         </div>
-        <nav class="docs-nav">
-          <a
-            href="/"
-            aria-current={!currentSlug ? "page" : undefined}
-            class="docs-nav-row"><Icon name="home" /><span>Overview</span></a
-          >
+        <nav class="docs-nav min-h-0 flex-1 overflow-auto py-3 [&>_*_+_*]:mt-1">
+          <a href="/" aria-current={!currentSlug ? "page" : undefined} class="docs-nav-row flex min-h-11 cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-label no-underline [corner-shape:squircle] [transition:background_var(--duration-fast),color_var(--duration-fast)] hover:bg-surface-hover hover:text-label aria-[current=page]:bg-muted aria-[current=page]:font-semibold aria-[current=page]:text-label [&_span]:flex-1 [&_svg]:flex-none"><Icon name="home" /><span>Overview</span></a>
           {
             componentGroups.map((group) => {
-              const containsCurrent = group.components.some(
-                (item) => item.slug === currentSlug,
-              );
+              const containsCurrent = group.components.some((item) => item.slug === currentSlug);
               return (
-                <details class="docs-nav-group" open={containsCurrent}>
-                  <summary class="docs-nav-row">
+                <details class="docs-nav-group [&_li_a]:flex [&_li_a]:min-h-9 [&_li_a]:items-center [&_li_a]:rounded-[0.625rem] [&_li_a]:p-[0.375rem_0.75rem] [&_li_a]:text-sm [&_li_a]:leading-tight [&_li_a]:text-muted-label [&_li_a]:no-underline [&_li_a:hover]:bg-surface-hover [&_li_a:hover]:text-label [&_li_a[aria-current=page]]:font-semibold [&_li_a[aria-current=page]]:text-accent [&_li+li]:mt-1 [&_summary]:list-none [&_ul]:m-[0.25rem_0_0.375rem_2rem] [&_ul]:list-none [&_ul]:p-0 [&[open]_.docs-nav-chevron]:transform-[rotate(180deg)]" open={containsCurrent}>
+                  <summary class="docs-nav-row flex min-h-11 cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-label no-underline [corner-shape:squircle] [transition:background_var(--duration-fast),color_var(--duration-fast)] hover:bg-surface-hover hover:text-label aria-[current=page]:bg-muted aria-[current=page]:font-semibold aria-[current=page]:text-label [&_span]:flex-1 [&_svg]:flex-none">
                     <>
                       <Icon name={group.icon} />
                       <span>{group.name}</span>
-                      <Icon
-                        name="chevron-down"
-                        size={16}
-                        class="docs-nav-chevron"
-                      />
+                      <Icon name="chevron-down" size={16} class="docs-nav-chevron [transition:transform_var(--duration-normal)_var(--ease-standard)]" />
                     </>
                   </summary>
                   <ul>
                     {group.components.map((item) => (
                       <li>
-                        <a
-                          href={`/components/${item.slug}`}
-                          aria-current={
-                            item.slug === currentSlug ? "page" : undefined
-                          }
-                        >
+                        <a href={`/components/${item.slug}`} aria-current={item.slug === currentSlug ? "page" : undefined}>
                           {item.name}
                         </a>
                       </li>
@@ -116,28 +73,27 @@ const {
             })
           }
         </nav>
-        <div class="docs-sidebar-foot">
-          <label class="docs-preference docs-theme-picker">
-            <span class="docs-theme-icon"><Icon name="system" data-theme-icon-system /><Icon name="sun" data-theme-icon-light hidden /><Icon name="moon" data-theme-icon-dark hidden /></span>
-            <span class="docs-theme-copy"><strong>Appearance</strong><select class="docs-theme-select" aria-label="Color theme" data-theme-select><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></span>
-            <Icon name="chevron-down" size={14} class="docs-theme-chevron" />
-          </label>
+        <div class="docs-sidebar-foot -mx-3 flex flex-none items-center justify-between gap-3 border-t border-outline px-3 pt-3">
+          <ThemePicker id="sidebar-theme" variant="icons" />
+          <AccentPicker id="sidebar-accent" />
         </div>
       </div>
     </aside>
-    <button
-      class="docs-scrim"
-      aria-label="Close navigation"
-      data-docs-scrim
-      hidden></button>
-    <div class="docs-page">
-      <main id="main-content" class="docs-content"><slot /></main>
-      <footer class="docs-footer">LamaUI 0.1 · Astro and Tailwind CSS</footer>
+    <button class="docs-scrim print:hidden [@media(width<=860px)]:fixed [@media(width<=860px)]:inset-0 [@media(width<=860px)]:z-70 [@media(width<=860px)]:border-0 [@media(width<=860px)]:bg-overlay" aria-label="Close navigation" data-docs-scrim hidden></button>
+    <div class="docs-page min-h-screen pl-64 print:pl-0 [@media(width<=860px)]:pl-0">
+      <main id="main-content" class="docs-content mx-auto min-h-[calc(100vh-4rem)] w-[min(100%-2rem,72rem)] pt-12 pb-20 print:min-h-0 print:w-full print:p-0 [@media(width<=620px)]:w-[min(100%-1.25rem,72rem)] [@media(width<=860px)]:pt-8"><slot /></main>
+      <footer class="docs-footer mx-auto flex w-[min(100%-2rem,72rem)] flex-wrap items-center justify-between gap-[0.75rem_1.5rem] border-t border-outline pt-4 pb-8 text-[0.8125rem] text-muted-label print:hidden [@media(width<=620px)]:w-[min(100%-1.25rem,72rem)]">
+        <span>LamaUI</span>
+        <div class="docs-footer-links ms-auto flex items-center gap-2.5 [&_a]:inline-flex [&_a]:items-center [&_a]:gap-1.5 [&_a]:no-underline [&_a:hover]:underline [&_a:hover]:underline-offset-[0.2em]">
+          <span>v{version}</span>
+          <span aria-hidden="true">&middot;</span>
+          <a href="https://github.com/lama-development/lamaui/issues/new" target="_blank" rel="noopener noreferrer">Report a problem<Icon name="external" size={16} /><span class="sr-only"> (opens in a new tab)</span></a>
+        </div>
+      </footer>
     </div>
     <script is:inline>
       const $ = (selector, root = document) => root.querySelector(selector);
-      const $$ = (selector, root = document) =>
-        Array.from(root.querySelectorAll(selector));
+      const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
       const sidebar = $("#docs-navigation"),
         scrim = $("[data-docs-scrim]"),
         opener = $("[data-docs-open]");
@@ -148,9 +104,7 @@ const {
         document.body.classList.toggle("docs-navigation-open", open);
       };
       opener?.addEventListener("click", () => setNavigation(true));
-      $("[data-docs-close]")?.addEventListener("click", () =>
-        setNavigation(false),
-      );
+      $("[data-docs-close]")?.addEventListener("click", () => setNavigation(false));
       scrim?.addEventListener("click", () => setNavigation(false));
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") setNavigation(false);
@@ -161,9 +115,9 @@ const {
           $$(".docs-nav-group").forEach((other) => {
             if (other !== group) other.open = false;
           });
-        }),
+        })
       );
-      $$('[data-copy-code]').forEach((button) =>
+      $$("[data-copy-code]").forEach((button) =>
         button.addEventListener("click", async () => {
           const block = button.closest("[data-code-block]"),
             code = $("code", block)?.textContent ?? "",
@@ -185,7 +139,7 @@ const {
           } catch {
             if (label) label.textContent = "Copy failed";
           }
-        }),
+        })
       );
       $$("[data-code-wrap]").forEach((button) =>
         button.addEventListener("click", () => {
@@ -193,61 +147,30 @@ const {
             wrapped = !block.classList.contains("is-wrapped");
           block.classList.toggle("is-wrapped", wrapped);
           button.setAttribute("aria-pressed", String(wrapped));
-          button.setAttribute(
-            "aria-label",
-            wrapped ? "Unwrap lines" : "Wrap lines",
-          );
+          button.setAttribute("aria-label", wrapped ? "Unwrap lines" : "Wrap lines");
           button.title = wrapped ? "Unwrap lines" : "Wrap lines";
-        }),
+          $("[data-wrap-off]", button)?.toggleAttribute("hidden", wrapped);
+          $("[data-wrap-on]", button)?.toggleAttribute("hidden", !wrapped);
+        })
       );
-      const syncTheme = () => {
-        const selected = localStorage.getItem("lui-theme") || "system";
-        $("[data-theme-icon-system]")?.toggleAttribute("hidden", selected !== "system");
-        $("[data-theme-icon-light]")?.toggleAttribute("hidden", selected !== "light");
-        $("[data-theme-icon-dark]")?.toggleAttribute("hidden", selected !== "dark");
-        const select = $("[data-theme-select]");
-        if (select) select.value = selected;
-      };
-      syncTheme();
-      $("[data-theme-select]")?.addEventListener("change", (event) => {
-        const next = event.target.value;
-        if (next === "system") delete document.documentElement.dataset.theme;
-        else document.documentElement.dataset.theme = next;
-        localStorage.setItem("lui-theme", next);
-        syncTheme();
-      });
-      $$("[data-toggle]").forEach((button) =>
-        button.addEventListener("click", () =>
-          button.setAttribute(
-            "aria-pressed",
-            String(button.getAttribute("aria-pressed") !== "true"),
-          ),
-        ),
-      );
+      $$("[data-toggle]").forEach((button) => button.addEventListener("click", () => button.setAttribute("aria-pressed", String(button.getAttribute("aria-pressed") !== "true"))));
       $$("[data-toggle-group]").forEach((group) =>
         group.addEventListener("click", (event) => {
           const button = event.target.closest("[data-toggle]");
           if (!button) return;
-          $$("[data-toggle]", group).forEach((item) =>
-            item.setAttribute("aria-pressed", String(item === button)),
-          );
-        }),
+          $$("[data-toggle]", group).forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+        })
       );
       $$("[data-password-toggle]").forEach((button) =>
         button.addEventListener("click", () => {
-          const input = button
-            .closest("[data-password]")
-            .querySelector("[data-password-input]");
+          const input = button.closest("[data-password]").querySelector("[data-password-input]");
           const show = input.type === "password";
           input.type = show ? "text" : "password";
           $("[data-password-show]", button)?.toggleAttribute("hidden", show);
           $("[data-password-hide]", button)?.toggleAttribute("hidden", !show);
-          button.setAttribute(
-            "aria-label",
-            `${show ? "Hide" : "Show"} password`,
-          );
+          button.setAttribute("aria-label", `${show ? "Hide" : "Show"} password`);
           button.title = `${show ? "Hide" : "Show"} password`;
-        }),
+        })
       );
       $$("[data-slider]").forEach((slider) => {
         const output = $("[data-slider-output]", slider.closest("label"));
@@ -262,102 +185,6 @@ const {
         slider.addEventListener("input", update);
         update();
       });
-      const dropdowns = [];
-      $$("[data-select]").forEach((root) => {
-        const trigger = $("[data-select-trigger]", root),
-          list = $("[data-select-list]", root),
-          input = $("[data-select-input]", root),
-          value = $("[data-select-value]", root),
-          valueIcon = $("[data-select-value-icon]", root),
-          options = $$('[role="option"]', root);
-        let closeTimer;
-        const close = (focus = false) => {
-          if (list.hidden) return;
-          list.classList.remove("is-open");
-          list.classList.add("is-closing");
-          trigger.setAttribute("aria-expanded", "false");
-          clearTimeout(closeTimer);
-          closeTimer = setTimeout(() => {
-            list.hidden = true;
-            list.classList.remove("is-closing");
-          }, 150);
-          if (focus) trigger.focus();
-        };
-        const open = (where = "selected") => {
-          dropdowns.forEach((item) => item.root !== root && item.close());
-          list.hidden = false;
-          list.classList.remove("is-closing");
-          requestAnimationFrame(() => list.classList.add("is-open"));
-          trigger.setAttribute("aria-expanded", "true");
-          const enabled = options.filter((option) => !option.disabled),
-            selected = options.find(
-              (option) => option.getAttribute("aria-selected") === "true",
-            );
-          requestAnimationFrame(() =>
-            (where === "first"
-              ? enabled[0]
-              : where === "last"
-                ? enabled.at(-1)
-                : selected || enabled[0]
-            )?.focus(),
-          );
-        };
-        const choose = (option) => {
-          if (option.disabled) return;
-          options.forEach((item) => {
-            item.setAttribute("aria-selected", String(item === option));
-            item.querySelector("[data-option-check]")?.toggleAttribute("hidden", item !== option);
-          });
-          input.value = option.dataset.value;
-          value.classList.add("is-swapping");
-          setTimeout(() => {
-            value.textContent = option.dataset.label;
-            value.classList.remove("is-swapping");
-          }, 80);
-          if (valueIcon)
-            valueIcon.innerHTML =
-              option.querySelector("[data-option-icon]")?.innerHTML || "";
-          close(true);
-        };
-        trigger?.addEventListener("click", () =>
-          list.hidden ? open() : close(true),
-        );
-        trigger?.addEventListener("keydown", (event) => {
-          if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-            event.preventDefault();
-            open(event.key === "ArrowDown" ? "first" : "last");
-          }
-        });
-        list?.addEventListener("keydown", (event) => {
-          const enabled = options.filter((option) => !option.disabled),
-            index = enabled.indexOf(document.activeElement);
-          if (event.key === "ArrowDown" || event.key === "ArrowUp") {
-            event.preventDefault();
-            enabled[
-              (index + (event.key === "ArrowDown" ? 1 : -1) + enabled.length) %
-                enabled.length
-            ]?.focus();
-          } else if (
-            (event.key === "Enter" || event.key === " ") &&
-            document.activeElement.matches('[role="option"]')
-          ) {
-            event.preventDefault();
-            choose(document.activeElement);
-          } else if (event.key === "Escape") {
-            event.preventDefault();
-            close(true);
-          }
-        });
-        options.forEach((option) =>
-          option.addEventListener("click", () => choose(option)),
-        );
-        dropdowns.push({ root, close });
-      });
-      document.addEventListener("pointerdown", (event) =>
-        dropdowns.forEach((item) => {
-          if (!item.root.contains(event.target)) item.close();
-        }),
-      );
       $$("[data-tabs]").forEach((root) => {
         const tabs = $$('[role="tab"]', root),
           panels = $$('[role="tabpanel"]', root);
@@ -366,25 +193,15 @@ const {
             item.setAttribute("aria-selected", String(item === tab));
             item.tabIndex = item === tab ? 0 : -1;
           });
-          panels.forEach(
-            (panel) =>
-              (panel.hidden = panel.dataset.tabPanel !== tab.dataset.tab),
-          );
+          panels.forEach((panel) => (panel.hidden = panel.dataset.tabPanel !== tab.dataset.tab));
           tab.focus();
         };
-        tabs.forEach((tab) =>
-          tab.addEventListener("click", () => activate(tab)),
-        );
+        tabs.forEach((tab) => tab.addEventListener("click", () => activate(tab)));
         root.addEventListener("keydown", (event) => {
           if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
           event.preventDefault();
           const index = tabs.indexOf(document.activeElement);
-          activate(
-            tabs[
-              (index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) %
-                tabs.length
-            ],
-          );
+          activate(tabs[(index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length]);
         });
       });
       $$(".lui-popover").forEach((root) => {
@@ -403,9 +220,7 @@ const {
           if (root.open) return close();
           root.open = true;
           panel.classList.add("is-closing");
-          requestAnimationFrame(() =>
-            requestAnimationFrame(() => panel.classList.remove("is-closing")),
-          );
+          requestAnimationFrame(() => requestAnimationFrame(() => panel.classList.remove("is-closing")));
         });
         document.addEventListener("pointerdown", (event) => {
           if (!root.contains(event.target)) close();
@@ -414,20 +229,12 @@ const {
           if (event.key === "Escape") close();
         });
       });
-      $$("[data-dialog-open]").forEach((button) =>
-        button.addEventListener("click", () =>
-          document.getElementById(button.dataset.dialogOpen)?.showModal(),
-        ),
-      );
-      $$("[data-dialog-close]").forEach((button) =>
-        button.addEventListener("click", () =>
-          button.closest("dialog")?.close(),
-        ),
-      );
+      $$("[data-dialog-open]").forEach((button) => button.addEventListener("click", () => document.getElementById(button.dataset.dialogOpen)?.showModal()));
+      $$("[data-dialog-close]").forEach((button) => button.addEventListener("click", () => button.closest("dialog")?.close()));
       $$("dialog").forEach((dialog) =>
         dialog.addEventListener("click", (event) => {
           if (event.target === dialog) dialog.close();
-        }),
+        })
       );
       const hideToast = (toast) => {
         if (!toast || toast.classList.contains("hidden")) return;
@@ -446,38 +253,40 @@ const {
           toast.classList.add("flex", "is-visible");
           window.clearTimeout(toast._hideTimer);
           toast._hideTimer = window.setTimeout(() => hideToast(toast), 3500);
-        }),
+        })
       );
-      $$("[data-toast-close]").forEach((button) =>
-        button.addEventListener("click", () =>
-          hideToast(button.closest("[data-toast]")),
-        ),
-      );
-      $$("[data-dismiss]").forEach((button) =>
-        button.addEventListener("click", () =>
-          button.closest('[role="alert"],[role="status"]')?.remove(),
-        ),
-      );
+      $$("[data-toast-close]").forEach((button) => button.addEventListener("click", () => hideToast(button.closest("[data-toast]"))));
+      $$("[data-dismiss]").forEach((button) => button.addEventListener("click", () => button.closest('[role="alert"],[role="status"]')?.remove()));
       $$("[data-nav-toggle]").forEach((button) =>
         button.addEventListener("click", () => {
-          const nav = document.getElementById(
-            button.getAttribute("aria-controls"),
-          );
+          const nav = document.getElementById(button.getAttribute("aria-controls"));
           const opening = nav?.dataset.open !== "true";
           nav.dataset.open = String(opening);
           button.setAttribute("aria-expanded", String(opening));
-          button.setAttribute(
-            "aria-label",
-            opening ? "Close navigation" : "Open navigation",
-          );
-          button
-            .querySelector("[data-nav-open-icon]")
-            ?.toggleAttribute("hidden", opening);
-          button
-            .querySelector("[data-nav-close-icon]")
-            ?.toggleAttribute("hidden", !opening);
-        }),
+          button.setAttribute("aria-label", opening ? "Close navigation" : "Open navigation");
+          button.querySelector("[data-nav-open-icon]")?.toggleAttribute("hidden", opening);
+          button.querySelector("[data-nav-close-icon]")?.toggleAttribute("hidden", !opening);
+        })
       );
     </script>
   </body>
 </html>
+
+<style>
+  .docs-nav-group summary::-webkit-details-marker {
+    display: none;
+  }
+  .docs-nav-group::details-content {
+    block-size: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition:
+      block-size var(--duration-normal) var(--ease-standard),
+      opacity var(--duration-fast),
+      content-visibility var(--duration-normal) allow-discrete;
+  }
+  .docs-nav-group[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+</style>

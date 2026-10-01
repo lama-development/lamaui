@@ -1,0 +1,54 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+import { interactiveStyles } from "@/lib/styles";
+interface Page {
+  name: string;
+  slug: string;
+}
+interface Props {
+  previous?: Page;
+  next?: Page;
+}
+const { previous, next } = Astro.props;
+const linkStyles = `component-pagination-link ${interactiveStyles}
+  flex min-w-0 min-h-13 items-center gap-1.5 border border-outline
+  rounded-lg bg-surface px-2.5 py-2 no-underline shadow-none
+  [corner-shape:squircle] hover:shadow-none
+  min-[861px]:gap-3 min-[861px]:border min-[861px]:border-outline
+  min-[861px]:rounded-lg min-[861px]:bg-surface min-[861px]:p-4`;
+const labelStyles = "block text-[.6875rem] leading-none text-muted-label min-[861px]:text-sm min-[861px]:leading-[1.25]";
+const titleStyles = "block truncate font-semibold text-[.8125rem] leading-[1.1] min-[861px]:text-base min-[861px]:leading-tight";
+---
+
+<nav class:list={["component-pagination mt-10 grid grid-cols-2 gap-3", (!previous || !next) && "component-pagination-single max-[861px]:grid-cols-1"]} aria-label="Component pages">
+  {
+    previous ? (
+      <a href={`/components/${previous.slug}`} class={linkStyles}>
+        <Icon name="chevron-right" class="size-4 rotate-180 min-[861px]:size-5" />
+        <span class="min-w-0">
+          <>
+            <small class={labelStyles}>Previous</small>
+            <strong class={titleStyles}>{previous.name}</strong>
+          </>
+        </span>
+      </a>
+    ) : (
+      <span class="component-pagination-placeholder hidden min-[861px]:block" />
+    )
+  }
+  {
+    next ? (
+      <a href={`/components/${next.slug}`} class:list={[linkStyles, "component-pagination-next justify-end text-right"]}>
+        <span class="min-w-0">
+          <>
+            <small class={labelStyles}>Next</small>
+            <strong class={titleStyles}>{next.name}</strong>
+          </>
+        </span>
+        <Icon name="chevron-right" class="size-4 min-[861px]:size-5" />
+      </a>
+    ) : (
+      <span class="component-pagination-placeholder hidden min-[861px]:block" />
+    )
+  }
+</nav>

@@ -1,28 +1,37 @@
 ---
 import DocsLayout from "@/layouts/DocsLayout.astro";
 import Icon from "@/components/ui/Icon.astro";
+import Badge from "@/components/data-display/Badge.astro";
 import { componentGroups } from "@/lib/components";
 ---
+
 <DocsLayout>
-  <header class="docs-page-header">
+  <header class="docs-page-header mb-8 [&_h1]:m-0 [&_h1]:text-[clamp(2rem,4vw,2.75rem)] [&_h1]:leading-[1.08] [&_h1]:tracking-[-0.035em] [&_p]:m-[0.75rem_0_0] [&_p]:max-w-2xl [&_p]:text-muted-label">
     <h1>Components</h1>
     <p>Reusable Astro components built from the dashboard’s surfaces, spacing, controls, navigation, and motion patterns.</p>
   </header>
 
-  {componentGroups.map(group => (
-    <section id={group.slug} class="docs-category" aria-labelledby={`${group.slug}-heading`}>
-      <div class="docs-category-head">
-        <span><Icon name={group.icon} /></span>
-        <div><h2 id={`${group.slug}-heading`}>{group.name}</h2><small class="muted">{group.components.length} components</small></div>
-      </div>
-      <div class="docs-component-grid">
-        {group.components.map(item => (
-          <a href={`/components/${item.slug}`} class="docs-component-card">
-            <div class="min-w-0 flex-1"><h3>{item.name}</h3><p>{item.description}</p></div>
-            <Icon name="chevron-right" size={18} />
-          </a>
-        ))}
-      </div>
-    </section>
-  ))}
+  {
+    componentGroups.map((group) => (
+      <section id={group.slug} class="docs-category [&+_.docs-category]:mt-10" aria-labelledby={`${group.slug}-heading`}>
+        <div class="docs-category-head mb-4 flex flex-wrap items-center gap-2.5">
+          <h2 id={`${group.slug}-heading`} class="m-0 text-lg leading-tight">
+            {group.name}
+          </h2>
+          <Badge variant="accent">{group.components.length} components</Badge>
+        </div>
+        <div class="docs-component-grid grid grid-cols-3 gap-4 [@media(width<=1020px)]:grid-cols-2 [@media(width<=620px)]:grid-cols-1">
+          {group.components.map((item) => (
+            <a href={`/components/${item.slug}`} class="docs-component-card flex min-h-28 items-center gap-4 rounded-lg border border-outline bg-surface p-5 text-label no-underline [corner-shape:squircle] [transition:background_var(--duration-fast),border-color_var(--duration-fast)] hover:bg-surface-hover [&_h3]:m-0 [&_h3]:text-base [&_p]:m-[0.25rem_0_0] [&_p]:text-sm [&_p]:leading-tight [&_p]:text-muted-label [&>_svg]:flex-none [&>_svg]:text-muted-label">
+              <div class="min-w-0 flex-1">
+                <h3>{item.name}</h3>
+                <p>{item.description}</p>
+              </div>
+              <Icon name="chevron-right" size={18} />
+            </a>
+          ))}
+        </div>
+      </section>
+    ))
+  }
 </DocsLayout>

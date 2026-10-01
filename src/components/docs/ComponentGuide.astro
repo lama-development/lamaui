@@ -1,0 +1,44 @@
+---
+import GuideIndex from "./GuideIndex.astro";
+import Icon from "@/components/ui/Icon.astro";
+import Button from "@/components/ui/Button.astro";
+import { controlStyles, secondaryStyles, smallControlStyles } from "@/lib/styles";
+import { cx } from "@/lib/classes";
+interface Props {
+  title: string;
+  slug: string;
+  description: string;
+  sections: { id: string; label: string }[];
+}
+const { title, slug, description, sections } = Astro.props;
+---
+
+<div data-guide data-guide-title={title} data-guide-slug={slug} data-guide-description={description}>
+  <div class="mb-6 flex flex-wrap items-center justify-end gap-3 print:hidden">
+    <div class="flex items-center gap-2">
+      <Button variant="secondary" size="sm" data-guide-copy><Icon name="copy" size={16} /><span data-guide-copy-label>Copy page</span></Button>
+      <details class="group relative" data-guide-export>
+        <summary class={cx(controlStyles, secondaryStyles, smallControlStyles, "list-none [&::-webkit-details-marker]:hidden")}>Export<Icon name="chevron-down" size={14} class="transition-transform group-open:rotate-180" /></summary>
+        <div class="absolute right-0 z-40 mt-2 grid min-w-48 gap-1 rounded-lg border border-outline bg-surface-elevated p-1.5 shadow-(--shadow-md)">
+          <button type="button" data-guide-download class="rounded-md px-3 py-2.5 text-left text-sm hover:bg-surface-hover">Download Markdown</button>
+          <button type="button" data-guide-print class="rounded-md px-3 py-2.5 text-left text-sm hover:bg-surface-hover">Print / Save as PDF</button>
+        </div>
+      </details>
+    </div>
+    <span class="sr-only" role="status" data-guide-status></span>
+  </div>
+  <details class="mb-8 rounded-lg border border-outline bg-surface p-3 [corner-shape:squircle] min-[1280px]:hidden print:hidden" data-guide-mobile-index>
+    <summary class="mb-2 cursor-pointer text-sm font-semibold">On this page</summary>
+    <GuideIndex {sections} />
+  </details>
+  <div class="grid min-w-0 gap-12 min-[1280px]:grid-cols-[minmax(0,1fr)_12rem] print:block">
+    <article class="min-w-0" data-guide-content><slot /></article>
+    <aside class="hidden self-start min-[1280px]:sticky min-[1280px]:top-8 min-[1280px]:block print:hidden">
+      <p class="mb-3 px-3 text-xs font-semibold tracking-wide text-muted-label">ON THIS PAGE</p>
+      <GuideIndex {sections} />
+    </aside>
+  </div>
+</div>
+<script>
+  import "@/scripts/component-guide";
+</script>

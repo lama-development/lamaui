@@ -1,41 +1,61 @@
 ---
+import ComponentGuide from "@/components/docs/ComponentGuide.astro";
+import ThemePickerGuide from "@/components/docs/ThemePickerGuide.astro";
+import ComponentPagination from "@/components/docs/ComponentPagination.astro";
 import DocsLayout from "@/layouts/DocsLayout.astro";
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/data-display/CodeBlock.astro";
 import Breadcrumb from "@/components/navigation/Breadcrumb.astro";
-import Icon from "@/components/ui/Icon.astro";
 import { components, type ComponentDoc } from "@/lib/components";
 
 export function getStaticPaths() {
-  return components.map(component => ({ params: { slug: component.slug }, props: { component } }));
+  return components.map((component) => ({ params: { slug: component.slug }, props: { component } }));
 }
 
-interface Props { component: ComponentDoc & { group: string; groupSlug: string } }
+interface Props {
+  component: ComponentDoc & { group: string; groupSlug: string };
+}
 const { component } = Astro.props;
-const index = components.findIndex(item => item.slug === component.slug);
+const index = components.findIndex((item) => item.slug === component.slug);
 const previous = components[index - 1];
 const next = components[index + 1];
+const isThemeGuide = component.slug === "theme-picker";
+const sections = [
+  { id: "preview-heading", label: "Live preview" },
+  { id: "usage-heading", label: "Quick start" },
+  ...(isThemeGuide
+    ? [
+        { id: "variants-heading", label: "Choose a variant" },
+        { id: "behavior-heading", label: "How preferences work" },
+        { id: "props-heading", label: "Props reference" },
+        { id: "integration-heading", label: "Layout integration" },
+        { id: "keyboard-heading", label: "Keyboard navigation" }
+      ]
+    : [])
+];
+const usage = isThemeGuide ? 'import ThemePicker from "@/components/ui/ThemePicker.astro";\n\n<ThemePicker id="settings-theme" />' : component.usage;
 ---
+
 <DocsLayout title={`${component.name} — LamaUI`} description={component.description} currentSlug={component.slug}>
-  <Breadcrumb items={[{label:'Components',href:'/'},{label:component.group,href:`/#${component.groupSlug}`},{label:component.name}]}/>
-  <header class="docs-page-header mt-6">
-    <h1>{component.name}</h1>
-    <p>{component.description}</p>
-    <div class="component-meta"><span>Astro component</span><span>Keyboard accessible</span><span>Theme tokens</span></div>
-  </header>
+  <Breadcrumb items={[{ label: "Components", href: "/" }, { label: component.group, href: `/#${component.groupSlug}` }, { label: component.name }]} />
+  <ComponentGuide title={component.name} slug={component.slug} description={component.description} {sections}>
+    <header data-guide-no-export class="docs-page-header mt-6 mb-8 [&_h1]:m-0 [&_h1]:text-[clamp(2rem,4vw,2.75rem)] [&_h1]:leading-[1.08] [&_h1]:tracking-[-0.035em] [&_p]:m-[0.75rem_0_0] [&_p]:max-w-2xl [&_p]:text-muted-label">
+      <h1>{component.name}</h1>
+      <p>{component.description}</p>
+      <div class="component-meta mt-4 flex flex-wrap gap-1 text-[0.8125rem] text-muted-label [&_span]:inline-flex [&_span]:min-h-7 [&_span]:items-center [&_span]:rounded-(--radius-full) [&_span]:border [&_span]:border-outline [&_span]:bg-surface [&_span]:p-[0.25rem_0.625rem] [&_span]:leading-none"><span>Astro component</span><span>Keyboard accessible</span><span>Theme tokens</span></div>
+    </header>
 
-  <section class="component-section" aria-labelledby="preview-heading">
-    <h2 id="preview-heading">Preview</h2>
-    <ComponentPreview slug={component.slug}/>
-  </section>
+    <section data-guide-no-export class="component-section mt-10 print:hidden [&_h2]:m-[0_0_1rem] [&_h2]:text-2xl" aria-labelledby="preview-heading">
+      <h2 id="preview-heading" class="scroll-mt-24">Live preview</h2>
+      <ComponentPreview slug={component.slug} />
+    </section>
 
-  <section class="component-section" aria-labelledby="usage-heading">
-    <h2 id="usage-heading">Usage</h2>
-    <CodeBlock code={component.usage}/>
-  </section>
+    <section class="component-section mt-10 [&_h2]:m-[0_0_1rem] [&_h2]:text-2xl" aria-labelledby="usage-heading">
+      <h2 id="usage-heading" class="scroll-mt-24">Quick start</h2>
+      <CodeBlock code={usage} />
+    </section>
 
-  <nav class:list={["component-pagination", (!previous || !next) && "component-pagination-single"]} aria-label="Component pages">
-    {previous ? <a href={`/components/${previous.slug}`} class="component-pagination-link lui-card lui-interactive"><Icon name="chevron-right" class="rotate-180"/><span><small class="muted">Previous</small><strong>{previous.name}</strong></span></a> : <span class="component-pagination-placeholder"/>}
-    {next ? <a href={`/components/${next.slug}`} class="component-pagination-link component-pagination-next lui-card lui-interactive"><span><small class="muted">Next</small><strong>{next.name}</strong></span><Icon name="chevron-right"/></a> : <span class="component-pagination-placeholder"/>}
-  </nav>
+    {isThemeGuide && <ThemePickerGuide />}
+    <div data-guide-no-export class="print:hidden"><ComponentPagination {previous} {next} /></div>
+  </ComponentGuide>
 </DocsLayout>

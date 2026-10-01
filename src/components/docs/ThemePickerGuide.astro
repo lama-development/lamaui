@@ -1,0 +1,104 @@
+---
+import CodeBlock from "@/components/data-display/CodeBlock.astro";
+const sectionStyles = "scroll-mt-24 space-y-5";
+const props = [
+  { name: "id", type: "string", default: "Required", description: "Unique per instance. Connects the trigger, listbox, and input." },
+  { name: "variant", type: '"dropdown" | "icons"', default: '"dropdown"', description: "Choose a labeled dropdown or three compact icon buttons." },
+  { name: "label", type: "string", default: '"Appearance"', description: "Visible above the dropdown; the accessible group name for icons." },
+  { name: "placement", type: '"top" | "bottom"', default: '"bottom"', description: "Dropdown opening direction. Has no effect on the icons variant." },
+  { name: "class", type: "string", default: "—", description: "Additional Tailwind classes for the outer wrapper." }
+];
+const initialization = `<script is:inline>
+  try {
+    const theme = localStorage.getItem("lui-theme");
+    if (theme === "light" || theme === "dark") {
+      document.documentElement.dataset.theme = theme;
+    }
+  } catch {}
+</script>`;
+---
+
+<div class="mt-12 space-y-12 [&_:not(pre)>code]:rounded [&_:not(pre)>code]:bg-muted [&_:not(pre)>code]:px-1.5 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-[.875em] [&_h2]:text-2xl [&_h2]:font-semibold [&_h2]:tracking-tight [&_h3]:text-lg [&_h3]:font-semibold [&_li]:leading-[1.65] [&_p]:m-0 [&_p]:max-w-prose [&_p]:leading-[1.65]">
+  <section id="variants-heading" class={sectionStyles} aria-labelledby="variants-title">
+    <h2 id="variants-title">Choose a variant</h2>
+    <p>Use the dropdown when the setting needs a visible label. Choose icons when space is limited and the three choices should stay one click away.</p>
+    <div class="space-y-4 pt-2">
+      <h3>Dropdown</h3>
+      <p>The default variant shows the current preference with its icon. Options open in the custom listbox, with a checkmark beside the selected theme.</p>
+      <CodeBlock code={'<ThemePicker id="settings-theme" label="Appearance" />'} />
+    </div>
+    <div class="space-y-4 pt-4">
+      <h3>Icon picker</h3>
+      <p>System, Light, and Dark appear as separate buttons. The selected button has a distinct background and pressed state. Each icon has an accessible name and a browser tooltip.</p>
+      <CodeBlock code={'<ThemePicker id="toolbar-theme" variant="icons" label="Color theme" />'} />
+    </div>
+    <div class="space-y-4 pt-4">
+      <h3>Open upward</h3>
+      <p>At the bottom of a sidebar, open the dropdown above its trigger. This setting only applies to the dropdown variant.</p>
+      <CodeBlock code={'<ThemePicker id="sidebar-theme" placement="top" />'} />
+    </div>
+  </section>
+  <section id="behavior-heading" class={sectionStyles} aria-labelledby="behavior-title">
+    <h2 id="behavior-title">How preferences work</h2>
+    <ul class="m-0 list-disc space-y-3 pl-5">
+      <li><strong>System</strong> follows the device’s light or dark appearance, including changes made while the page is open.</li>
+      <li><strong>Light and Dark</strong> override the device preference and set <code>data-theme</code> on the document root.</li>
+      <li><strong>Saved preferences</strong> use the <code>lui-theme</code> localStorage key. Pickers on the page and other open tabs stay synchronized.</li>
+    </ul>
+    <p class="rounded-md border border-outline bg-surface p-4 text-sm text-muted-label">If browser storage is unavailable, the picker still changes appearance for the current page. The preference cannot persist after navigation.</p>
+  </section>
+  <section id="props-heading" class={sectionStyles} aria-labelledby="props-title">
+    <h2 id="props-title">Props reference</h2>
+    <p>Give every picker a unique <code>id</code>, even when you render both variants on the same page.</p>
+    <div class="overflow-x-auto rounded-md border border-outline">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-surface"
+          ><tr
+            >{
+              ["Prop", "Type / default", "Description"].map((label) => (
+                <th scope="col" class="px-4 py-3 font-semibold">
+                  {label}
+                </th>
+              ))
+            }</tr
+          ></thead
+        >
+        <tbody
+          >{
+            props.map((prop) => (
+              <tr class="border-t border-outline">
+                <>
+                  <th scope="row" class="px-4 py-4 align-top font-semibold">
+                    <code>{prop.name}</code>
+                  </th>
+                  <td class="px-4 py-4 align-top">
+                    <>
+                      <code class="wrap-break-words">{prop.type}</code>
+                      <span class="mt-2 block text-xs text-muted-label">{prop.default}</span>
+                    </>
+                  </td>
+                  <td class="min-w-48 px-4 py-4 align-top leading-relaxed text-muted-label">{prop.description}</td>
+                </>
+              </tr>
+            ))
+          }</tbody
+        >
+      </table>
+    </div>
+  </section>
+  <section id="integration-heading" class={sectionStyles} aria-labelledby="integration-title">
+    <h2 id="integration-title">Use it in your layout</h2>
+    <p>Import the global stylesheet in your layout. The picker and CustomSelect load their own interactions automatically.</p>
+    <CodeBlock code={'---\nimport "@/styles/global.css";\nimport ThemePicker from "@/components/ui/ThemePicker.astro";\n---\n\n<ThemePicker id="app-theme" />'} />
+    <h3>Apply the saved theme before paint</h3>
+    <p>DocsLayout already handles this. In a different layout, place this script inside <code>&lt;head&gt;</code> so the saved theme is applied before the page appears.</p>
+    <CodeBlock code={initialization} />
+  </section>
+  <section id="keyboard-heading" class={sectionStyles} aria-labelledby="keyboard-title">
+    <h2 id="keyboard-title">Keyboard navigation</h2>
+    <div class="grid gap-6 min-[700px]:grid-cols-2">
+      <div class="space-y-3"><h3>Dropdown</h3><ul class="m-0 list-disc space-y-2 pl-5"><li>Enter or Space opens the options.</li><li>Arrow keys move through options; Home and End jump to the first and last.</li><li>Enter or Space selects the focused option.</li><li>Escape closes and returns focus to the trigger. Tab continues to the next control.</li></ul></div>
+      <div class="space-y-3"><h3>Icons</h3><ul class="m-0 list-disc space-y-2 pl-5"><li>Tab moves between the three buttons.</li><li>Enter or Space selects the focused theme.</li><li>The active button announces its pressed state to screen readers.</li></ul></div>
+    </div>
+  </section>
+</div>
