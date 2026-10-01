@@ -1,4 +1,5 @@
 ---
+import { codeToHtml } from "shiki";
 import Icon from "@/components/ui/Icon.astro";
 interface Props {
   code: string;
@@ -7,8 +8,11 @@ interface Props {
 }
 const { code, language = "astro", label = language } = Astro.props;
 const actionStyles = "code-action inline-flex w-8 h-8 flex-none items-center justify-center gap-1 border-0 rounded-lg bg-transparent text-muted-label p-0 [transition:background_var(--duration-fast),color_var(--duration-fast),transform_var(--duration-fast)] [&>_span]:flex [&>_span]:items-center hover:bg-surface-hover hover:text-label aria-pressed:bg-surface-hover aria-pressed:text-label active:transform-[scale(0.96)]";
-const escapeHtml = (value: string) => value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
-const codeHtml = `<pre><code class="language-${escapeHtml(language)}">${escapeHtml(code)}</code></pre>`;
+const highlighted = await codeToHtml(code, {
+  lang: language as any,
+  themes: { light: "gruvbox-light-hard", dark: "gruvbox-dark-hard" },
+  defaultColor: false
+});
 ---
 
 <figure class="code-block m-0 overflow-hidden rounded-md border border-outline bg-surface print:break-inside-avoid print:[&_.shiki]:break-all print:[&_.shiki]:whitespace-pre-wrap" data-code-block>
@@ -23,7 +27,7 @@ const codeHtml = `<pre><code class="language-${escapeHtml(language)}">${escapeHt
       </button>
     </span>
   </figcaption>
-  <div class="code-render overflow-auto print:overflow-visible" set:html={codeHtml} />
+  <div class="code-render overflow-auto print:overflow-visible" set:html={highlighted} />
 </figure>
 
 <style is:global>
@@ -37,6 +41,19 @@ const codeHtml = `<pre><code class="language-${escapeHtml(language)}">${escapeHt
     tab-size: 2;
     white-space: pre;
   }
+  .code-render code {
+    display: block;
+    font-size: 0;
+    padding: 0;
+  }
+  .code-render .shiki span {
+    color: var(--shiki-light);
+  }
+  .code-render .line {
+    display: block;
+    min-height: 1lh;
+    font: var(--text-sm)/1.65 var(--font-mono);
+  }
   .code-render pre {
     display: block;
   }
@@ -49,10 +66,16 @@ const codeHtml = `<pre><code class="language-${escapeHtml(language)}">${escapeHt
     background: transparent;
     color: var(--shiki-dark);
   }
+  [data-theme="dark"] .code-render .shiki span {
+    color: var(--shiki-dark);
+  }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme]) .code-render pre,
     :root:not([data-theme]) .code-render code {
       background: transparent;
+      color: var(--shiki-dark);
+    }
+    :root:not([data-theme]) .code-render .shiki span {
       color: var(--shiki-dark);
     }
   }
@@ -61,6 +84,9 @@ const codeHtml = `<pre><code class="language-${escapeHtml(language)}">${escapeHt
   @media print {
     .code-render pre,
     .code-render code {
+      color: var(--shiki-light) !important;
+    }
+    .code-render .shiki span {
       color: var(--shiki-light) !important;
     }
   }

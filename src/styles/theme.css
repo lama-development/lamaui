@@ -11,8 +11,8 @@
   --card-surface: color-mix(in srgb, var(--accent) 4%, light-dark(#ffffff, #1c1b1d));
   --muted: color-mix(in srgb, var(--accent) 5%, light-dark(#eceef1, #0e0e0f));
   --muted-label: color-mix(in srgb, var(--accent) 5%, light-dark(#5b6068, #a1a1a6));
-  --outline: color-mix(in srgb, var(--accent) 12%, light-dark(#e1e4e8, #303034));
-  --card-outline: color-mix(in srgb, var(--accent) 16%, light-dark(#e1e4e8, #303034));
+  --outline: color-mix(in srgb, var(--accent) 6%, light-dark(#e4e6e9, #2a292d));
+  --card-outline: color-mix(in srgb, var(--accent) 8%, light-dark(#e4e6e9, #2a292d));
   --input: var(--muted);
   --destructive: light-dark(#c62828, #ff5c5c);
   --destructive-label: light-dark(#ffffff, #121417);
