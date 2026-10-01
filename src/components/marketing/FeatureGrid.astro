@@ -1,5 +1,10 @@
 ---
-interface Props { columns?:2|3|4; class?:string }
-const {columns=3,class:className}=Astro.props; const cols={2:'sm:grid-cols-2',3:'sm:grid-cols-2 lg:grid-cols-3',4:'sm:grid-cols-2 lg:grid-cols-4'};
+interface Props {
+  columns?: 2 | 3 | 4;
+  class?: string;
+}
+const { columns = 3, class: className } = Astro.props;
+const cols = { 2: "sm:grid-cols-2", 3: "sm:grid-cols-2 lg:grid-cols-3", 4: "sm:grid-cols-2 lg:grid-cols-4" };
 ---
-<div class:list={['grid grid-cols-1 gap-4',cols[columns],className]}><slot /></div>
+
+<div class:list={["grid grid-cols-1 gap-4", cols[columns], className]}><slot /></div>

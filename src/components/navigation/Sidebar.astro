@@ -14,19 +14,13 @@ interface Props {
 const { label = "Sidebar navigation", items, class: className } = Astro.props;
 ---
 
-<aside
-  class:list={["w-64 border-r border-(--border) bg-(--surface) p-3", className]}
->
+<aside class:list={["w-64 border-r border-outline bg-surface p-3", className]}>
   <nav aria-label={label}>
     <ul class="m-0 list-none space-y-1 p-0">
       {
         items.map((item) => (
           <li>
-            <a
-              href={item.href}
-              aria-current={item.active ? "page" : undefined}
-              class="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-semibold text-(--muted-foreground) no-underline hover:bg-(--surface-hover) aria-[current=page]:bg-(--accent-subtle) aria-[current=page]:text-(--accent)"
-            >
+            <a href={item.href} aria-current={item.active ? "page" : undefined} class="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-semibold text-muted-label no-underline hover:bg-surface-hover aria-[current=page]:bg-accent-subtle aria-[current=page]:text-accent">
               {item.icon && <Icon name={item.icon} size={20} />}
               {item.label}
             </a>

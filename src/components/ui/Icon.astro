@@ -11,10 +11,10 @@ import heart from "@phosphor-icons/core/duotone/heart-duotone.svg?raw";
 import more from "@phosphor-icons/core/bold/dots-three-bold.svg?raw";
 import pin from "@phosphor-icons/core/duotone/push-pin-duotone.svg?raw";
 import home from "@phosphor-icons/core/duotone/house-duotone.svg?raw";
-import actions from "@phosphor-icons/core/duotone/sliders-horizontal-duotone.svg?raw";
+import actions from "@phosphor-icons/core/duotone/sliders-duotone.svg?raw";
 import forms from "@phosphor-icons/core/duotone/note-pencil-duotone.svg?raw";
 import navigation from "@phosphor-icons/core/duotone/compass-duotone.svg?raw";
-import data from "@phosphor-icons/core/duotone/table-duotone.svg?raw";
+import data from "@phosphor-icons/core/duotone/database-duotone.svg?raw";
 import feedback from "@phosphor-icons/core/duotone/chat-circle-text-duotone.svg?raw";
 import overlays from "@phosphor-icons/core/duotone/stack-duotone.svg?raw";
 import layout from "@phosphor-icons/core/duotone/layout-duotone.svg?raw";
@@ -26,33 +26,57 @@ import search from "@phosphor-icons/core/duotone/magnifying-glass-duotone.svg?ra
 import mail from "@phosphor-icons/core/duotone/envelope-duotone.svg?raw";
 import code from "@phosphor-icons/core/bold/code-bold.svg?raw";
 import external from "@phosphor-icons/core/duotone/arrow-square-out-duotone.svg?raw";
-import wrap from "@phosphor-icons/core/duotone/arrows-in-line-horizontal-duotone.svg?raw";
+import wrap from "@/assets/icons/wrap-off.svg?raw";
+import wrapOn from "@/assets/icons/wrap-on.svg?raw";
 import eye from "@phosphor-icons/core/duotone/eye-duotone.svg?raw";
 import eyeSlash from "@phosphor-icons/core/duotone/eye-slash-duotone.svg?raw";
 import warning from "@phosphor-icons/core/bold/warning-circle-bold.svg?raw";
 import system from "@phosphor-icons/core/duotone/desktop-duotone.svg?raw";
 
-export type IconName = "menu" | "close" | "sun" | "moon" | "chevron-right" | "chevron-down" | "copy" | "plus" | "heart" | "more" | "pin" | "home" | "actions" | "forms" | "navigation" | "data" | "feedback" | "overlays" | "layout" | "marketing" | "check" | "user" | "settings" | "search" | "mail" | "code" | "external" | "wrap" | "eye" | "eye-slash" | "warning" | "system";
-interface Props { name: IconName; size?: number; class?: string; [key: string]: any }
+export type IconName = "menu" | "close" | "sun" | "moon" | "chevron-right" | "chevron-down" | "copy" | "plus" | "heart" | "more" | "pin" | "home" | "actions" | "forms" | "navigation" | "data" | "feedback" | "overlays" | "layout" | "marketing" | "check" | "user" | "settings" | "search" | "mail" | "code" | "external" | "wrap" | "wrap-on" | "eye" | "eye-slash" | "warning" | "system";
+interface Props {
+  name: IconName;
+  size?: number;
+  class?: string;
+  [key: string]: any;
+}
 const { name, size = 20, class: className, ...rest } = Astro.props;
 const icons: Record<IconName, string> = {
-  menu, close, sun, moon, "chevron-right": chevronRight,
-  "chevron-down": chevronDown, copy, plus, heart, more, pin, home,
-  actions, forms, navigation, data, feedback, overlays, layout, marketing,
-  check, user, settings, search, mail, code, external, wrap, eye,
-  "eye-slash": eyeSlash, warning, system,
+  menu,
+  close,
+  sun,
+  moon,
+  "chevron-right": chevronRight,
+  "chevron-down": chevronDown,
+  copy,
+  plus,
+  heart,
+  more,
+  pin,
+  home,
+  actions,
+  forms,
+  navigation,
+  data,
+  feedback,
+  overlays,
+  layout,
+  marketing,
+  check,
+  user,
+  settings,
+  search,
+  mail,
+  code,
+  external,
+  wrap,
+  eye,
+  "eye-slash": eyeSlash,
+  warning,
+  system,
+  "wrap-on": wrapOn
 };
-const paths = icons[name]
-  .replace(/^<svg[^>]*>/, "")
-  .replace(/<\/svg>\s*$/, "");
+const paths = icons[name].replace(/^<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
 ---
-<svg
-  {...rest}
-  class:list={["lui-icon-svg", className]}
-  width={size}
-  height={size}
-  viewBox="0 0 256 256"
-  fill="currentColor"
-  aria-hidden="true"
-  set:html={paths}
-/>
+
+<svg {...rest} class:list={["lui-icon-svg block flex-none", className]} width={size} height={size} viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" set:html={paths} />

@@ -7,10 +7,10 @@ interface Props {
 const { for: forId, required = false, class: className } = Astro.props;
 ---
 
-<label for={forId} class:list={["lui-label", className]}
+<label for={forId} class:list={["lui-label mb-1.5 block text-sm font-semibold", className]}
   ><slot />{
     required && (
-      <span aria-hidden="true" class="text-(--destructive)">
+      <span aria-hidden="true" class="text-destructive">
         {" "}
         *
       </span>

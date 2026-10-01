@@ -1,6 +1,32 @@
 ---
-interface Option { value:string; label:string; disabled?:boolean }
-interface Props { options:Option[]; value?:string; placeholder?:string; class?:string; [key:string]:any }
-const {options,value,placeholder,class:className,...rest}=Astro.props;
+import { fieldStyles } from "@/lib/styles";
+interface Option {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
+interface Props {
+  options: Option[];
+  value?: string;
+  placeholder?: string;
+  class?: string;
+  [key: string]: any;
+}
+const { options, value, placeholder, class: className, ...rest } = Astro.props;
 ---
-<select {...rest} class:list={['lui-field appearance-none bg-[linear-gradient(45deg,transparent_50%,var(--muted-foreground)_50%),linear-gradient(135deg,var(--muted-foreground)_50%,transparent_50%)] bg-[length:5px_5px,5px_5px] bg-[position:calc(100%-17px)_50%,calc(100%-12px)_50%] bg-no-repeat pr-10',className]}>{placeholder&&<option value="" disabled selected={!value}>{placeholder}</option>}{options.map(o=><option value={o.value} selected={o.value===value} disabled={o.disabled}>{o.label}</option>)}</select>
+
+<select {...rest} class:list={[`${fieldStyles} appearance-none bg-[linear-gradient(45deg,transparent_50%,var(--muted-label)_50%),linear-gradient(135deg,var(--muted-label)_50%,transparent_50%)] bg-size-[5px_5px,5px_5px] bg-position-[calc(100%-17px)_50%,calc(100%-12px)_50%] bg-no-repeat pr-10`, className]}
+  >{
+    placeholder && (
+      <option value="" disabled selected={!value}>
+        {placeholder}
+      </option>
+    )
+  }{
+    options.map((o) => (
+      <option value={o.value} selected={o.value === value} disabled={o.disabled}>
+        {o.label}
+      </option>
+    ))
+  }</select
+>

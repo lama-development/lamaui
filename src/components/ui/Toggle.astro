@@ -1,26 +1,12 @@
 ---
+import { controlStyles, outlineStyles } from "@/lib/styles";
 interface Props {
   pressed?: boolean;
   label?: string;
   disabled?: boolean;
   class?: string;
 }
-const {
-  pressed = false,
-  label,
-  disabled = false,
-  class: className,
-} = Astro.props;
+const { pressed = false, label, disabled = false, class: className } = Astro.props;
 ---
 
-<button
-  type="button"
-  aria-pressed={pressed}
-  {disabled}
-  aria-label={label}
-  data-toggle
-  class:list={[
-    "lui-control lui-outline aria-pressed:bg-(--accent-subtle) aria-pressed:text-(--accent) aria-pressed:border-(--accent)",
-    className,
-  ]}><slot /></button
->
+<button type="button" aria-pressed={pressed} {disabled} aria-label={label} data-toggle class:list={[`${controlStyles} ${outlineStyles} aria-pressed:border-accent aria-pressed:bg-accent-subtle aria-pressed:text-accent`, className]}><slot /></button>

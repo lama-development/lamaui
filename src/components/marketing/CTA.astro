@@ -7,19 +7,10 @@ interface Props {
 const { title, description, class: className } = Astro.props;
 ---
 
-<section
-  class:list={[
-    "overflow-hidden rounded-2xl bg-(--primary) p-7 text-(--primary-foreground) sm:p-10",
-    className,
-  ]}
->
+<section class:list={["overflow-hidden rounded-2xl bg-accent p-7 text-accent-label sm:p-10", className]}>
   <div class="flex flex-col gap-6 sm:flex-row sm:items-center">
     <div class="flex-1">
-      <h2 class="m-0 text-2xl font-bold">{title}</h2>{
-        description && (
-          <p class="mt-2 mb-0 max-w-2xl opacity-75">{description}</p>
-        )
-      }
+      <h2 class="m-0 text-2xl font-bold">{title}</h2>{description && <p class="mt-2 mb-0 max-w-2xl opacity-75">{description}</p>}
     </div><div class="flex flex-wrap gap-3"><slot /></div>
   </div>
 </section>

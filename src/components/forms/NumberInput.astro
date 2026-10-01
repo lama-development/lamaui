@@ -1,6 +1,12 @@
 ---
-import Input from './Input.astro';
-interface Props { min?:number; max?:number; step?:number; [key:string]:any }
-const props=Astro.props;
+import Input from "./Input.astro";
+interface Props {
+  min?: number;
+  max?: number;
+  step?: number;
+  [key: string]: any;
+}
+const props = Astro.props;
 ---
-<Input {...props} type="number" inputmode="decimal"/>
+
+<Input {...props} type="number" inputmode="decimal" />

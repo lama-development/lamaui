@@ -1,0 +1,123 @@
+---
+import { accentPresets } from "@/lib/accents";
+import { controlStyles, ghostStyles, iconControlStyles } from "@/lib/styles";
+import Icon from "@/components/ui/Icon.astro";
+interface Props {
+  id?: string;
+}
+const { id = "accent-picker" } = Astro.props;
+---
+
+<div class="lui-accent-picker relative flex-none rounded-lg border border-outline bg-surface p-1 [corner-shape:squircle]" data-accent-picker>
+  <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles}`} aria-label="Choose accent color, current: Lime" title="Accent color: Lime" aria-expanded="false" aria-controls={`${id}-colors`} data-accent-trigger>
+    <span class="size-5 rounded-full border border-black/10 bg-accent" aria-hidden="true"></span>
+  </button>
+  <div id={`${id}-colors`} class="lui-accent-dock absolute right-0 bottom-[calc(100%+0.5rem)] z-10 grid grid-cols-3 gap-1 rounded-lg border border-outline bg-surface-elevated p-1.5 shadow-(--shadow-md) [corner-shape:squircle]" role="group" aria-label="Accent color" inert data-accent-dock>
+    {
+      accentPresets.map((preset) => (
+        <button type="button" class="lui-accent-choice relative flex size-11 cursor-pointer items-center justify-center rounded-md border border-transparent bg-transparent transition-colors duration-(--duration-fast) hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring aria-pressed:bg-muted" aria-label={`${preset.label} accent`} title={preset.label} aria-pressed={preset.value === "lime"} data-accent-choice={preset.value}>
+          <span class="lui-accent-swatch flex size-5 items-center justify-center rounded-full border border-black/10" style={`background: light-dark(${preset.light}, ${preset.dark})`} aria-hidden="true">
+            <Icon name="check" size={14} class="lui-accent-check rounded-full bg-surface text-label" />
+          </span>
+        </button>
+      ))
+    }
+  </div>
+</div>
+<script>
+  import { accentPresets } from "@/lib/accents";
+  const validAccent = (value: string | null) => accentPresets.some((preset) => preset.value === value);
+  const syncAccent = (value: string | null) => {
+    const accent = validAccent(value) ? value! : "lime";
+    document.documentElement.dataset.accent = accent;
+    document.querySelectorAll<HTMLButtonElement>("[data-accent-choice]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.accentChoice === accent));
+    });
+    const preset = accentPresets.find((preset) => preset.value === accent)!;
+    document.querySelectorAll<HTMLButtonElement>("[data-accent-trigger]").forEach((button) => {
+      button.setAttribute("aria-label", `Choose accent color, current: ${preset.label}`);
+      button.title = `Accent color: ${preset.label}`;
+    });
+  };
+  let savedAccent: string | null = null;
+  try {
+    savedAccent = localStorage.getItem("lui-accent");
+  } catch {}
+  syncAccent(savedAccent);
+  document.querySelectorAll<HTMLElement>("[data-accent-picker]").forEach((root) => {
+    const trigger = root.querySelector<HTMLButtonElement>("[data-accent-trigger]")!;
+    const dock = root.querySelector<HTMLElement>("[data-accent-dock]")!;
+    const choices = Array.from(dock.querySelectorAll<HTMLButtonElement>("[data-accent-choice]"));
+    const setOpen = (open: boolean, restoreFocus = false) => {
+      trigger.setAttribute("aria-expanded", String(open));
+      root.dataset.open = String(open);
+      dock.inert = !open;
+      if (restoreFocus) trigger.focus();
+    };
+    const openWithFocus = () => {
+      setOpen(true);
+      (choices.find((button) => button.getAttribute("aria-pressed") === "true") ?? choices[0]).focus();
+    };
+    trigger.addEventListener("click", () => {
+      if (root.dataset.open === "true") setOpen(false);
+      else openWithFocus();
+    });
+    root.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && root.dataset.open === "true") {
+        event.preventDefault();
+        event.stopPropagation();
+        setOpen(false, true);
+      } else if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) {
+        event.preventDefault();
+        if (root.dataset.open !== "true") return openWithFocus();
+        const index = choices.indexOf(document.activeElement as HTMLButtonElement);
+        const step = event.key === "ArrowDown" ? 3 : event.key === "ArrowUp" ? -3 : event.key === "ArrowRight" ? 1 : -1;
+        const next = event.key === "Home" ? 0 : event.key === "End" ? choices.length - 1 : (index + step + choices.length) % choices.length;
+        choices[next].focus();
+      }
+    });
+    choices.forEach((button) => button.addEventListener("click", () => setOpen(false, true)));
+    document.addEventListener("pointerdown", (event) => {
+      if (!root.contains(event.target as Node)) setOpen(false);
+    });
+    root.addEventListener("focusout", (event) => {
+      if (!root.contains(event.relatedTarget as Node | null)) setOpen(false);
+    });
+  });
+  document.querySelectorAll<HTMLButtonElement>("[data-accent-choice]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const accent = button.dataset.accentChoice!;
+      syncAccent(accent);
+      try {
+        localStorage.setItem("lui-accent", accent);
+      } catch {}
+    });
+  });
+  window.addEventListener("storage", (event) => {
+    if (event.key === "lui-accent" || event.key === null) syncAccent(event.newValue);
+  });
+</script>
+
+<style>
+  .lui-accent-dock {
+    visibility: hidden;
+    opacity: 0;
+  }
+  [data-open="true"] .lui-accent-dock {
+    visibility: visible;
+    opacity: 1;
+  }
+  .lui-accent-check {
+    visibility: hidden;
+  }
+  [aria-pressed="true"] .lui-accent-check {
+    visibility: visible;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .lui-accent-dock {
+      transition:
+        opacity var(--duration-fast) var(--ease-standard),
+        visibility var(--duration-fast);
+    }
+  }
+</style>

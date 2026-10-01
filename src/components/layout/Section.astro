@@ -1,5 +1,11 @@
 ---
-interface Props { id?:string; padding?:'sm'|'md'|'lg'; class?:string }
-const {id,padding='md',class:className}=Astro.props; const pads={sm:'py-8',md:'py-12 sm:py-16',lg:'py-16 sm:py-24'};
+interface Props {
+  id?: string;
+  padding?: "sm" | "md" | "lg";
+  class?: string;
+}
+const { id, padding = "md", class: className } = Astro.props;
+const pads = { sm: "py-8", md: "py-12 sm:py-16", lg: "py-16 sm:py-24" };
 ---
-<section {id} class:list={[pads[padding],className]}><slot /></section>
+
+<section {id} class:list={[pads[padding], className]}><slot /></section>

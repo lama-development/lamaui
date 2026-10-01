@@ -1,7 +1,23 @@
 ---
-import Label from './Label.astro';
-interface Props { id:string; label:string; help?:string; error?:string; required?:boolean; class?:string }
-const { id,label,help,error,required=false,class:className }=Astro.props;
-const messageId=(help||error)?`${id}-message`:undefined;
+import Label from "./Label.astro";
+interface Props {
+  id: string;
+  label: string;
+  help?: string;
+  error?: string;
+  required?: boolean;
+  class?: string;
+}
+const { id, label, help, error, required = false, class: className } = Astro.props;
+const messageId = help || error ? `${id}-message` : undefined;
 ---
-<div class={className}><Label for={id} {required}>{label}</Label><slot aria-describedby={messageId}/>{(error||help)&&<p id={messageId} class:list={['lui-help',error&&'lui-error']}>{error||help}</p>}</div>
+
+<div class={className}>
+  <Label for={id} {required}>{label}</Label><slot aria-describedby={messageId} />{
+    (error || help) && (
+      <p id={messageId} class:list={["lui-help m-[0.35rem_0_0] text-sm leading-tight text-muted-label", error && "lui-error text-destructive"]}>
+        {error || help}
+      </p>
+    )
+  }
+</div>

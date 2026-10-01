@@ -1,4 +1,5 @@
 ---
+import { fieldStyles, menuItemStyles, menuStyles } from "@/lib/styles";
 import Icon, { type IconName } from "@/components/ui/Icon.astro";
 interface Option {
   value: string;
@@ -13,56 +14,42 @@ interface Props {
   options: Option[];
   value?: string;
   class?: string;
+  placement?: "top" | "bottom";
 }
-const {
-  id,
-  name,
-  label,
-  options,
-  value = options[0]?.value,
-  class: className,
-} = Astro.props;
+const { id, name, label, options, value = options[0]?.value, class: className, placement = "bottom" } = Astro.props;
 const selected = options.find((o) => o.value === value) ?? options[0];
 ---
 
 <div class:list={["relative", className]} data-select>
-  <button
-    id={`${id}-button`}
-    type="button"
-    class="lui-field group flex items-center justify-between text-left"
-    aria-haspopup="listbox"
-    aria-expanded="false"
-    aria-controls={`${id}-list`}
-    data-select-trigger
+  <button id={`${id}-button`} type="button" class={`${fieldStyles} group flex items-center justify-between text-left`} aria-haspopup="listbox" aria-expanded="false" aria-controls={`${id}-list`} aria-label={label} data-select-trigger
     ><span class="flex min-w-0 items-center gap-2">
-      {selected?.icon && <span data-select-value-icon class="shrink-0"><Icon name={selected.icon} size={18} /></span>}
-      <span data-select-value>{selected?.label}</span>
-    </span><Icon name="chevron-down" size={16} class="shrink-0 text-(--muted-foreground) transition-transform group-aria-expanded:rotate-180" /></button
-  ><div
-    id={`${id}-list`}
-    role="listbox"
-    aria-labelledby={`${id}-button`}
-    class="lui-menu top-full mt-2 w-full"
-    hidden
-    data-select-list
-  >
+      {
+        selected?.icon && (
+          <span data-select-value-icon class="shrink-0">
+            <Icon name={selected.icon} size={18} />
+          </span>
+        )
+      }
+      <span data-select-value class="inline-block transition-[transform,filter,opacity] duration-(--duration-fast) [&.is-swapping]:-translate-y-1 [&.is-swapping]:opacity-0 [&.is-swapping]:blur-[2px]">{selected?.label}</span>
+    </span><Icon name="chevron-down" size={16} class="shrink-0 text-muted-label transition-transform group-aria-expanded:rotate-180" /></button
+  ><div id={`${id}-list`} role="listbox" aria-labelledby={`${id}-button`} class:list={[`${menuStyles} grid w-full gap-1`, placement === "top" ? "bottom-full mb-2" : "top-full mt-2"]} hidden data-select-list>
     {
       options.map((o) => (
-        <button
-          type="button"
-          role="option"
-          aria-selected={o.value === value}
-          disabled={o.disabled}
-          data-value={o.value}
-          data-label={o.label}
-          class="lui-menu-item aria-selected:bg-(--accent-subtle) aria-selected:text-(--accent)"
-        >
-          {o.icon && <span data-option-icon class="shrink-0"><Icon name={o.icon} size={18} /></span>}
+        <button type="button" role="option" tabindex="-1" aria-selected={o.value === value} disabled={o.disabled} data-value={o.value} data-label={o.label} class={`${menuItemStyles} aria-selected:bg-accent-subtle aria-selected:text-accent`}>
+          {o.icon && (
+            <span data-option-icon class="shrink-0">
+              <Icon name={o.icon} size={18} />
+            </span>
+          )}
           <span class="min-w-0 flex-1 truncate">{o.label}</span>
-          <span class="text-(--accent)" hidden={o.value !== value} data-option-check><Icon name="check" size={16} /></span>
+          <span class="text-accent" hidden={o.value !== value} data-option-check>
+            <Icon name="check" size={16} />
+          </span>
         </button>
       ))
     }
-  </div><input type="hidden" {id} {name} value={value} data-select-input /><span
-    class="sr-only">{label}</span>
+  </div><input type="hidden" {id} {name} value={value} data-select-input /><span class="sr-only">{label}</span>
 </div>
+<script>
+  import "@/scripts/custom-select";
+</script>

@@ -1,4 +1,5 @@
 ---
+import { controlStyles, ghostStyles, iconControlStyles, smallControlStyles } from "@/lib/styles";
 import Icon from "@/components/ui/Icon.astro";
 interface Link {
   label: string;
@@ -14,32 +15,15 @@ interface Props {
 const { brand = "LamaUI", links = [], class: className, menuId = "lui-navbar-menu" } = Astro.props;
 ---
 
-<header class:list={["relative border-b border-(--border) bg-(--surface)", className]}>
-  <div
-    class="mx-auto flex min-h-16 max-w-(--container) items-center gap-5 px-4"
-  >
-    <a href="/" class="flex items-center gap-2 font-bold no-underline"
-      ><span
-        class="grid size-8 place-items-center rounded-xl bg-(--accent) text-(--accent-foreground)"
-        >L</span
-      >{brand}</a
-    ><button
-      class="lui-control lui-ghost lui-icon lui-navbar-toggle ml-auto"
-      aria-label="Open navigation"
-      aria-controls={menuId}
-      aria-expanded="false"
-      data-nav-toggle>
+<header class:list={["relative border-b border-outline bg-surface", className]}>
+  <div class="mx-auto flex min-h-16 max-w-(--container) items-center gap-5 px-4">
+    <a href="/" class="flex items-center gap-2 font-bold no-underline"><span class="grid size-8 place-items-center rounded-xl bg-accent text-accent-label">L</span>{brand}</a><button class={`${controlStyles} ${ghostStyles} ${iconControlStyles} lui-navbar-toggle min-[861px]:hidden! ml-auto`} aria-label="Open navigation" aria-controls={menuId} aria-expanded="false" data-nav-toggle>
       <span data-nav-open-icon><Icon name="menu" /></span>
       <span data-nav-close-icon hidden><Icon name="close" /></span>
-    </button
-    ><nav id={menuId} class="lui-navbar-menu" data-nav-menu data-open="false">
+    </button><nav id={menuId} class="lui-navbar-menu ml-auto flex items-center gap-1 [@media(width<=860px)]:absolute [@media(width<=860px)]:inset-[100%_0_auto] [@media(width<=860px)]:z-30 [@media(width<=860px)]:flex [@media(width<=860px)]:flex-col [@media(width<=860px)]:items-stretch [@media(width<=860px)]:gap-1 [@media(width<=860px)]:border-b [@media(width<=860px)]:border-outline [@media(width<=860px)]:bg-surface [@media(width<=860px)]:p-3 [@media(width<=860px)]:shadow-(--shadow-md) [@media(width<=860px)]:data-[open=false]:hidden [@media(width<=860px)]:data-[open=true]:animate-[navbar-menu-in_var(--duration-normal)_var(--ease-standard)] [@media(width<=860px)]:[&_.lui-control]:justify-start" data-nav-menu data-open="false">
       {
         links.map((l) => (
-          <a
-            href={l.href}
-            aria-current={l.active ? "page" : undefined}
-            class="lui-control lui-ghost lui-sm aria-[current=page]:bg-(--accent-subtle) aria-[current=page]:text-(--accent)"
-          >
+          <a href={l.href} aria-current={l.active ? "page" : undefined} class={`${controlStyles} ${ghostStyles} ${smallControlStyles} aria-[current=page]:bg-accent-subtle aria-[current=page]:text-accent`}>
             {l.label}
           </a>
         ))

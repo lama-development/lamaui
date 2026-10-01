@@ -7,12 +7,4 @@ interface Props {
 const { text, position = "top", class: className } = Astro.props;
 ---
 
-<span class:list={["group relative inline-flex", className]}
-  ><slot /><span
-    role="tooltip"
-    class:list={[
-      "lui-tooltip pointer-events-none absolute left-1/2 z-50 whitespace-nowrap bg-(--foreground) px-2 py-1 text-xs text-(--background) shadow",
-      position === "top" ? "bottom-full mb-2" : "top-full mt-2",
-    ]}>{text}</span
-  ></span
->
+<span class:list={["group relative inline-flex", className]}><slot /><span role="tooltip" class:list={["lui-tooltip pointer-events-none absolute left-1/2 z-50 transform-[translate(-50%,0.2rem)_scale(0.97)] rounded-md bg-label px-2 py-1 text-xs whitespace-nowrap text-page opacity-[0] shadow [transition:opacity_var(--duration-fast),transform_var(--duration-fast)_var(--ease-standard)] group-focus-within:transform-[translate(-50%,0)_scale(1)] group-focus-within:opacity-[1] group-hover:transform-[translate(-50%,0)_scale(1)] group-hover:opacity-[1]", position === "top" ? "bottom-full mb-2" : "top-full mt-2"]}>{text}</span></span>

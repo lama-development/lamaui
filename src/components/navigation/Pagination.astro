@@ -1,4 +1,5 @@
 ---
+import { controlStyles, ghostStyles, smallControlStyles } from "@/lib/styles";
 interface Props {
   current: number;
   total: number;
@@ -10,22 +11,11 @@ const pages = Array.from({ length: total }, (_, i) => i + 1);
 ---
 
 <nav aria-label={label} class="flex items-center gap-1">
-  <a
-    href={`${href}${Math.max(1, current - 1)}`}
-    aria-disabled={current === 1}
-    class="lui-control lui-ghost lui-sm">←</a
-  >{
+  <a href={`${href}${Math.max(1, current - 1)}`} aria-disabled={current === 1} class={`${controlStyles} ${ghostStyles} ${smallControlStyles}`}>←</a>{
     pages.map((page) => (
-      <a
-        href={`${href}${page}`}
-        aria-current={page === current ? "page" : undefined}
-        class="lui-control lui-ghost lui-sm min-w-10 aria-[current=page]:bg-(--accent) aria-[current=page]:text-(--accent-foreground)"
-      >
+      <a href={`${href}${page}`} aria-current={page === current ? "page" : undefined} class={`${controlStyles} ${ghostStyles} ${smallControlStyles} min-w-10 aria-[current=page]:bg-accent aria-[current=page]:text-accent-label`}>
         {page}
       </a>
     ))
-  }<a
-    href={`${href}${Math.min(total, current + 1)}`}
-    aria-disabled={current === total}
-    class="lui-control lui-ghost lui-sm">→</a>
+  }<a href={`${href}${Math.min(total, current + 1)}`} aria-disabled={current === total} class={`${controlStyles} ${ghostStyles} ${smallControlStyles}`}>→</a>
 </nav>

@@ -1,5 +1,11 @@
 ---
-interface Props { id:string; tabsId?:string; active?:boolean; class?:string }
-const {id,tabsId='tabs',active=false,class:className}=Astro.props;
+interface Props {
+  id: string;
+  tabsId?: string;
+  active?: boolean;
+  class?: string;
+}
+const { id, tabsId = "tabs", active = false, class: className } = Astro.props;
 ---
+
 <div id={`${tabsId}-${id}-panel`} role="tabpanel" aria-labelledby={`${tabsId}-${id}-tab`} hidden={!active} data-tab-panel={id} class={className}><slot /></div>

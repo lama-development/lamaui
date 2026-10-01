@@ -1,0 +1,87 @@
+---
+import { controlStyles, ghostStyles, iconControlStyles } from "@/lib/styles";
+import CustomSelect from "@/components/forms/CustomSelect.astro";
+import Icon from "@/components/ui/Icon.astro";
+interface Props {
+  id: string;
+  variant?: "dropdown" | "icons";
+  label?: string;
+  placement?: "top" | "bottom";
+  class?: string;
+}
+const { id, variant = "dropdown", label = "Appearance", placement = "bottom", class: className } = Astro.props;
+const options = [
+  { value: "system", label: "System", icon: "system" as const },
+  { value: "light", label: "Light", icon: "sun" as const },
+  { value: "dark", label: "Dark", icon: "moon" as const }
+];
+---
+
+<div class:list={["lui-theme-picker min-w-0", className]} data-theme-picker>
+  {
+    variant === "dropdown" ? (
+      <>
+        <label class="lui-label mb-1.5 block text-sm font-semibold" for={`${id}-button`}>
+          {label}
+        </label>
+        <CustomSelect {id} name="theme" {label} {options} value="system" {placement} />
+      </>
+    ) : (
+      <div class="lui-theme-icons inline-flex gap-1 rounded-lg border border-outline bg-surface p-1 [corner-shape:squircle]" role="group" aria-label={label}>
+        {options.map((option) => (
+          <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} hover:text-label aria-pressed:bg-muted aria-pressed:text-label aria-pressed:hover:bg-muted aria-pressed:hover:text-label`} aria-label={`${option.label} theme`} title={`${option.label} theme`} aria-pressed={option.value === "system"} data-theme-choice={option.value}>
+            <Icon name={option.icon} />
+          </button>
+        ))}
+      </div>
+    )
+  }
+</div>
+<script>
+  type Theme = "system" | "light" | "dark";
+  const isTheme = (value: unknown): value is Theme => value === "system" || value === "light" || value === "dark";
+  let theme: Theme = "system";
+  try {
+    const stored = localStorage.getItem("lui-theme");
+    if (isTheme(stored)) theme = stored;
+  } catch {}
+  const sync = () => {
+    if (theme === "system") delete document.documentElement.dataset.theme;
+    else document.documentElement.dataset.theme = theme;
+    document.querySelectorAll<HTMLElement>("[data-theme-picker]").forEach((root) => {
+      root.querySelectorAll<HTMLButtonElement>("[data-theme-choice]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme)));
+      const input = root.querySelector<HTMLInputElement>("[data-select-input]");
+      if (input) input.value = theme;
+      root.querySelectorAll<HTMLElement>('[role="option"]').forEach((option) => {
+        const selected = option.dataset.value === theme;
+        option.setAttribute("aria-selected", String(selected));
+        option.querySelector("[data-option-check]")?.toggleAttribute("hidden", !selected);
+        if (selected) {
+          const value = root.querySelector("[data-select-value]");
+          if (value) value.textContent = option.dataset.label || "";
+          const icon = root.querySelector("[data-select-value-icon]");
+          if (icon) icon.innerHTML = option.querySelector("[data-option-icon]")?.innerHTML || "";
+        }
+      });
+    });
+  };
+  const apply = (value: unknown) => {
+    if (!isTheme(value)) return;
+    theme = value;
+    try {
+      localStorage.setItem("lui-theme", theme);
+    } catch {}
+    sync();
+  };
+  document.querySelectorAll<HTMLElement>("[data-theme-picker]").forEach((root) => {
+    root.addEventListener("change", (event) => apply((event.target as HTMLInputElement).value));
+    root.querySelectorAll<HTMLButtonElement>("[data-theme-choice]").forEach((button) => button.addEventListener("click", () => apply(button.dataset.themeChoice)));
+  });
+  window.addEventListener("storage", (event) => {
+    if (event.key === "lui-theme" || event.key === null) {
+      theme = isTheme(event.newValue) ? event.newValue : "system";
+      sync();
+    }
+  });
+  sync();
+</script>

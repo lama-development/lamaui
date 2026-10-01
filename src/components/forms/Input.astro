@@ -1,5 +1,13 @@
 ---
-interface Props { id?:string; type?:any; invalid?:boolean; class?:string; [key:string]:any }
-const { type='text',invalid=false,class:className,...rest}=Astro.props;
+import { fieldStyles } from "@/lib/styles";
+interface Props {
+  id?: string;
+  type?: any;
+  invalid?: boolean;
+  class?: string;
+  [key: string]: any;
+}
+const { type = "text", invalid = false, class: className, ...rest } = Astro.props;
 ---
-<input {...rest} {type} aria-invalid={invalid || undefined} class:list={['lui-field',className]}/>
+
+<input {...rest} {type} aria-invalid={invalid || undefined} class:list={[fieldStyles, className]} />

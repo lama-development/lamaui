@@ -16,15 +16,12 @@ const { items, label = "Breadcrumb" } = Astro.props;
       items.map((item, i) => (
         <li class="flex items-center gap-2">
           {i > 0 && (
-            <span class="muted" aria-hidden="true">
+            <span class="muted text-muted-label" aria-hidden="true">
               /
             </span>
           )}
           {item.href ? (
-            <a
-              href={item.href}
-              class="muted hover:text-(--foreground) hover:underline"
-            >
+            <a href={item.href} class="muted text-muted-label hover:text-label hover:underline">
               {item.label}
             </a>
           ) : (

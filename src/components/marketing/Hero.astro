@@ -5,32 +5,16 @@ interface Props {
   align?: "left" | "center";
   class?: string;
 }
-const {
-  title,
-  description,
-  align = "left",
-  class: className,
-} = Astro.props;
+const { title, description, align = "left", class: className } = Astro.props;
 ---
 
-<section
-  class:list={[
-    "relative overflow-hidden py-16 sm:py-24",
-    align === "center" && "text-center",
-    className,
-  ]}
->
+<section class:list={["relative overflow-hidden py-16 sm:py-24", align === "center" && "text-center", className]}>
   <div class:list={["max-w-3xl", align === "center" && "mx-auto"]}>
     <h1 class="m-0 text-4xl leading-tight font-bold tracking-tight sm:text-5xl">
       {title}
-    </h1><p class="muted mt-5 mb-7 max-w-2xl text-lg sm:text-xl">
+    </h1><p class="muted mt-5 mb-7 max-w-2xl text-lg text-muted-label sm:text-xl">
       {description}
-    </p><div
-      class:list={[
-        "flex flex-wrap gap-3",
-        align === "center" && "justify-center",
-      ]}
-    >
+    </p><div class:list={["flex flex-wrap gap-3", align === "center" && "justify-center"]}>
       <slot />
     </div>
   </div>

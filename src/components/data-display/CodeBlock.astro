@@ -1,25 +1,73 @@
 ---
 import { codeToHtml } from "shiki";
 import Icon from "@/components/ui/Icon.astro";
-interface Props { code: string; language?: string; label?: string }
+interface Props {
+  code: string;
+  language?: string;
+  label?: string;
+}
 const { code, language = "astro", label = language } = Astro.props;
+const actionStyles = "code-action inline-flex w-8 h-8 flex-none items-center justify-center gap-1 border-0 rounded-lg bg-transparent text-muted-label p-0 [transition:background_var(--duration-fast),color_var(--duration-fast),transform_var(--duration-fast)] [&>_span]:flex [&>_span]:items-center hover:bg-surface-hover hover:text-label aria-pressed:bg-surface-hover aria-pressed:text-label active:transform-[scale(0.96)]";
 const highlighted = await codeToHtml(code, {
   lang: language as any,
   themes: { light: "github-light", dark: "github-dark" },
-  defaultColor: false,
+  defaultColor: false
 });
 ---
-<figure class="code-block" data-code-block>
-  <figcaption class="code-head">
-    <span class="code-language"><Icon name="code" size={20} /><span>{label}</span></span>
-    <span class="code-actions">
-      <button type="button" class="code-action" aria-label="Wrap lines" aria-pressed="false" title="Wrap lines" data-code-wrap><Icon name="wrap" size={20} /></button>
-      <button type="button" class="code-action code-copy" aria-label="Copy code" title="Copy code" data-copy-code>
+
+<figure class="code-block m-0 overflow-hidden rounded-md border border-outline bg-surface print:break-inside-avoid print:[&_.shiki]:break-all print:[&_.shiki]:whitespace-pre-wrap" data-code-block>
+  <figcaption class="code-head flex min-h-12 items-center justify-between gap-4 pt-2.5 pr-3 pb-1.5 pl-4 text-muted-label">
+    <span class="code-language inline-flex min-w-0 items-center gap-2 [font:600_0.875rem/1_var(--font-sans)]"><Icon name="code" size={20} /><span>{label}</span></span>
+    <span class="code-actions flex items-center gap-1 print:hidden">
+      <button type="button" class={actionStyles} aria-label="Wrap lines" aria-pressed="false" title="Wrap lines" data-code-wrap><span data-wrap-off><Icon name="wrap" size={20} /></span><span data-wrap-on hidden><Icon name="wrap-on" size={20} /></span></button>
+      <button type="button" class:list={[actionStyles, "code-copy"]} aria-label="Copy code" title="Copy code" data-copy-code>
         <span data-copy-default><Icon name="copy" size={20} /></span>
         <span data-copy-success hidden><Icon name="check" size={20} /></span>
         <span class="sr-only" data-copy-label>Copy</span>
       </button>
     </span>
   </figcaption>
-  <div class="code-render" set:html={highlighted}></div>
+  <div class="code-render overflow-auto print:overflow-visible" set:html={highlighted} />
 </figure>
+
+<style is:global>
+  .code-render .shiki {
+    margin: 0;
+    padding: 0.5rem 1rem 1rem;
+    background: transparent;
+    color: var(--shiki-light);
+    font: var(--text-sm)/1.65 var(--font-mono);
+    tab-size: 2;
+  }
+  .code-render .shiki span {
+    color: var(--shiki-light);
+  }
+  .code-block.is-wrapped .code-render .shiki {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  [data-theme="dark"] .code-render .shiki {
+    background: transparent;
+    color: var(--shiki-dark);
+  }
+  [data-theme="dark"] .code-render .shiki span {
+    color: var(--shiki-dark);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) .code-render .shiki {
+      background: transparent;
+      color: var(--shiki-dark);
+    }
+    :root:not([data-theme]) .code-render .shiki span {
+      color: var(--shiki-dark);
+    }
+  }
+</style>
+<style is:global>
+  @media print {
+    .code-render .shiki,
+    .code-render .shiki span {
+      color: var(--shiki-light) !important;
+    }
+  }
+</style>

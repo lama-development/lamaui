@@ -1,7 +1,16 @@
 ---
-import Button from './Button.astro';
-import type { Variant } from '@/types';
-interface Props { label:string; variant?:Variant; type?:'button'|'submit'|'reset'; disabled?:boolean; class?:string; [key:string]:any }
-const { label, variant='ghost', class:className, ...rest } = Astro.props;
+import { iconControlStyles } from "@/lib/styles";
+import Button from "./Button.astro";
+import type { Variant } from "@/types";
+interface Props {
+  label: string;
+  variant?: Variant;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+  class?: string;
+  [key: string]: any;
+}
+const { label, variant = "ghost", class: className, ...rest } = Astro.props;
 ---
-<Button {...rest} {variant} class:list={['lui-icon',className]} aria-label={label}><slot /></Button>
+
+<Button {...rest} {variant} class:list={[iconControlStyles, className]} aria-label={label}><slot /></Button>

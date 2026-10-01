@@ -5,15 +5,7 @@ interface Props {
   radius?: string;
   class?: string;
 }
-const {
-  width = "100%",
-  height = "1rem",
-  radius = "var(--radius-sm)",
-  class: className,
-} = Astro.props;
+const { width = "100%", height = "1rem", radius = "var(--radius-sm)", class: className } = Astro.props;
 ---
 
-<span
-  aria-hidden="true"
-  class:list={["block animate-pulse bg-(--muted)", className]}
-  style={`width:${width};height:${height};border-radius:${radius}`}></span>
+<span aria-hidden="true" class:list={["block animate-pulse bg-muted", className]} style={`width:${width};height:${height};border-radius:${radius}`}></span>

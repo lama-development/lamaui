@@ -1,6 +1,24 @@
 ---
-interface Item { term:string; detail:string }
-interface Props { items:Item[]; columns?:1|2|3 }
-const {items,columns=2}=Astro.props;
+interface Item {
+  term: string;
+  detail: string;
+}
+interface Props {
+  items: Item[];
+  columns?: 1 | 2 | 3;
+}
+const { items, columns = 2 } = Astro.props;
 ---
-<dl class:list={['grid gap-4',columns===1?'grid-cols-1':columns===3?'sm:grid-cols-3':'sm:grid-cols-2']}>{items.map(item=><div><dt class="muted text-sm">{item.term}</dt><dd class="m-0 mt-1 font-semibold">{item.detail}</dd></div>)}</dl>
+
+<dl class:list={["grid gap-4", columns === 1 ? "grid-cols-1" : columns === 3 ? "sm:grid-cols-3" : "sm:grid-cols-2"]}>
+  {
+    items.map((item) => (
+      <div>
+        <>
+          <dt class="muted text-sm text-muted-label">{item.term}</dt>
+          <dd class="m-0 mt-1 font-semibold">{item.detail}</dd>
+        </>
+      </div>
+    ))
+  }
+</dl>

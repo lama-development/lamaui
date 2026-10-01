@@ -4,25 +4,13 @@ interface Props {
   removeLabel?: string;
   class?: string;
 }
-const {
-  removable = false,
-  removeLabel = "Remove",
-  class: className,
-} = Astro.props;
+const { removable = false, removeLabel = "Remove", class: className } = Astro.props;
 ---
 
-<span
-  class:list={[
-    "inline-flex min-h-8 items-center gap-1 rounded-xl border border-(--border) bg-(--surface) px-2.5 text-sm font-semibold",
-    className,
-  ]}
+<span class:list={["inline-flex min-h-8 items-center gap-1 rounded-xl border border-outline bg-surface px-2.5 text-sm font-semibold", className]}
   ><slot />{
     removable && (
-      <button
-        type="button"
-        aria-label={removeLabel}
-        class="-mr-1 grid size-5 place-items-center rounded-md hover:bg-(--muted)"
-      >
+      <button type="button" aria-label={removeLabel} class="-mr-1 grid size-5 place-items-center rounded-md hover:bg-muted">
         ×
       </button>
     )

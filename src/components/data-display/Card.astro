@@ -1,6 +1,23 @@
 ---
-interface Props { title?:string; description?:string; padding?:'sm'|'md'|'lg'; interactive?:boolean; class?:string }
-const {title,description,padding='md',interactive=false,class:className}=Astro.props;
-const pads={sm:'p-4',md:'p-5',lg:'p-7'};
+import { cardStyles, interactiveStyles } from "@/lib/styles";
+interface Props {
+  title?: string;
+  description?: string;
+  padding?: "sm" | "md" | "lg";
+  interactive?: boolean;
+  class?: string;
+}
+const { title, description, padding = "md", interactive = false, class: className } = Astro.props;
+const pads = { sm: "p-4", md: "p-5", lg: "p-7" };
 ---
-<article class:list={['lui-card',pads[padding],interactive&&'lui-interactive',className]}>{(title||description)&&<header class="mb-4">{title&&<h3 class="m-0 text-lg font-bold leading-tight">{title}</h3>}{description&&<p class="muted mt-1 mb-0 text-sm">{description}</p>}</header>}<slot /></article>
+
+<article class:list={[cardStyles, pads[padding], interactive && interactiveStyles, className]}>
+  {
+    (title || description) && (
+      <header class="mb-4">
+        {title && <h3 class="m-0 text-lg leading-tight font-semibold">{title}</h3>}
+        {description && <p class="muted mt-1 mb-0 text-sm text-muted-label">{description}</p>}
+      </header>
+    )
+  }<slot />
+</article>

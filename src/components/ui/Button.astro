@@ -1,8 +1,31 @@
 ---
-import type { Size, Variant } from '@/types';
-import { cx } from '@/lib/classes';
-interface Props { variant?: Variant; size?: Size; href?: string; type?: 'button'|'submit'|'reset'; disabled?: boolean; fullWidth?: boolean; class?: string; [key:string]: any }
-const { variant='primary', size='md', href, type='button', disabled=false, fullWidth=false, class:className, ...rest } = Astro.props;
-const classes = cx('lui-control', `lui-${variant}`, size !== 'md' && `lui-${size}`, fullWidth && 'w-full', className);
+import { controlStyles, primaryStyles, secondaryStyles, outlineStyles, ghostStyles, destructiveStyles, smallControlStyles, largeControlStyles } from "@/lib/styles";
+import type { Size, Variant } from "@/types";
+import { cx } from "@/lib/classes";
+interface Props {
+  variant?: Variant;
+  size?: Size;
+  href?: string;
+  type?: "button" | "submit" | "reset";
+  disabled?: boolean;
+  fullWidth?: boolean;
+  class?: string;
+  [key: string]: any;
+}
+const { variant = "primary", size = "md", href, type = "button", disabled = false, fullWidth = false, class: className, ...rest } = Astro.props;
+const variants = { primary: primaryStyles, secondary: secondaryStyles, outline: outlineStyles, ghost: ghostStyles, destructive: destructiveStyles };
+const sizes = { sm: smallControlStyles, md: "", lg: largeControlStyles };
+const classes = cx(controlStyles, variants[variant], sizes[size], fullWidth && "w-full", className);
 ---
-{href ? <a {...rest} href={disabled ? undefined : href} aria-disabled={disabled || undefined} class={classes}><slot /></a> : <button {...rest} {type} {disabled} class={classes}><slot /></button>}
+
+{
+  href ? (
+    <a {...rest} href={disabled ? undefined : href} aria-disabled={disabled || undefined} class={classes}>
+      <slot />
+    </a>
+  ) : (
+    <button {...rest} {type} {disabled} class={classes}>
+      <slot />
+    </button>
+  )
+}

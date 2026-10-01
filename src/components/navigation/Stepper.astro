@@ -10,32 +10,15 @@ interface Props {
 const { steps, current } = Astro.props;
 ---
 
-<ol
-  class="m-0 grid list-none gap-3 p-0 sm:grid-cols-[repeat(var(--count),1fr)]"
-  style={`--count:${steps.length}`}
->
+<ol class="m-0 grid list-none gap-3 p-0 sm:grid-cols-[repeat(var(--count),1fr)]" style={`--count:${steps.length}`}>
   {
     steps.map((step, i) => (
-      <li
-        aria-current={i + 1 === current ? "step" : undefined}
-        class:list={["lui-step", step.description && "has-description"]}
-      >
+      <li aria-current={i + 1 === current ? "step" : undefined} class:list={["lui-step relative flex items-center gap-3 [&.has-description]:items-start [&.has-description_>_span:first-child]:mt-0.5 [&.has-description_>_span:last-child_>_span:first-child]:leading-[1.25] [&>_span:last-child_>_span:first-child]:leading-8", step.description && "has-description"]}>
         <>
-          <span
-            class:list={[
-              "grid size-8 shrink-0 place-items-center rounded-full border text-sm font-bold",
-              i + 1 <= current
-                ? "border-(--accent) bg-(--accent) text-(--accent-foreground)"
-                : "border-(--border) bg-(--surface) muted",
-            ]}
-          >
-            {i < current - 1 ? "✓" : i + 1}
-          </span>
+          <span class:list={["grid size-8 shrink-0 place-items-center rounded-full border text-sm font-bold", i + 1 <= current ? "border-accent bg-accent text-accent-label" : "muted border-outline bg-surface text-muted-label"]}>{i < current - 1 ? "✓" : i + 1}</span>
           <span>
             <span class="block font-semibold">{step.label}</span>
-            {step.description && (
-              <span class="muted block text-sm">{step.description}</span>
-            )}
+            {step.description && <span class="muted block text-sm text-muted-label">{step.description}</span>}
           </span>
         </>
       </li>

@@ -4,25 +4,17 @@ interface Props {
   description?: string;
   class?: string;
 }
-const {
-  brand = "LamaUI",
-  description = "A calm, tactile design system for Astro.",
-  class: className,
-} = Astro.props;
+const { brand = "LamaUI", description = "A calm, tactile design system for Astro.", class: className } = Astro.props;
 ---
 
-<footer
-  class:list={["border-t border-(--border) bg-(--surface) py-10", className]}
->
-  <div
-    class="mx-auto flex max-w-(--container) flex-col gap-4 px-4 sm:flex-row sm:items-end"
-  >
+<footer class:list={["border-t border-outline bg-surface py-10", className]}>
+  <div class="mx-auto flex max-w-(--container) flex-col gap-4 px-4 sm:flex-row sm:items-end">
     <div>
-      <p class="m-0 font-bold">{brand}</p><p class="muted mt-1 mb-0 text-sm">
+      <p class="m-0 font-bold">{brand}</p><p class="muted mt-1 mb-0 text-sm text-muted-label">
         {description}
       </p>
-    </div><div class="muted text-sm sm:ml-auto">
-      <slot /> © {new Date().getFullYear()}
+    </div><div class="muted text-sm text-muted-label sm:ml-auto">
+      <slot /> &copy; {new Date().getFullYear()}
     </div>
   </div>
 </footer>

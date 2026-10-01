@@ -10,32 +10,14 @@ interface Props {
   id?: string;
   class?: string;
 }
-const {
-  tabs,
-  active = tabs[0]?.id,
-  id = "tabs",
-  class: className,
-} = Astro.props;
+const { tabs, active = tabs[0]?.id, id = "tabs", class: className } = Astro.props;
 ---
 
 <div data-tabs class={className}>
-  <div
-    role="tablist"
-    aria-label="Tabs"
-    class="lui-tabs"
-  >
+  <div role="tablist" aria-label="Tabs" class="lui-tabs inline-flex gap-1 rounded-lg border border-outline bg-muted p-1">
     {
       tabs.map((tab) => (
-        <button
-          id={`${id}-${tab.id}-tab`}
-          type="button"
-          role="tab"
-          aria-selected={tab.id === active}
-          aria-controls={`${id}-${tab.id}-panel`}
-          disabled={tab.disabled}
-          class="lui-tab"
-          data-tab={tab.id}
-        >
+        <button id={`${id}-${tab.id}-tab`} type="button" role="tab" aria-selected={tab.id === active} aria-controls={`${id}-${tab.id}-panel`} disabled={tab.disabled} class="lui-tab min-h-10 rounded-[calc(var(--radius-lg)-0.25rem)] border-0 bg-transparent px-3 py-2 text-sm font-semibold text-muted-label [transition:background_var(--duration-fast),color_var(--duration-fast),box-shadow_var(--duration-fast)] disabled:opacity-[0.4] aria-selected:bg-surface aria-selected:text-label aria-selected:shadow-(--shadow-sm)" data-tab={tab.id}>
           {tab.label}
         </button>
       ))
