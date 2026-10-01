@@ -27,9 +27,10 @@ const options = [
         <CustomSelect {id} name="theme" {label} {options} value="system" {placement} />
       </>
     ) : (
-      <div class="lui-theme-icons inline-flex gap-1 rounded-lg border border-outline bg-surface p-1 [corner-shape:squircle]" role="group" aria-label={label}>
+      <div class="lui-theme-icons relative isolate inline-flex gap-1 rounded-lg border border-outline bg-surface p-1 [corner-shape:squircle]" role="group" aria-label={label}>
+        <span class="t-tabs-pill" aria-hidden="true" />
         {options.map((option) => (
-          <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} hover:text-label aria-pressed:bg-muted aria-pressed:text-label aria-pressed:hover:bg-muted aria-pressed:hover:text-label`} aria-label={`${option.label} theme`} title={`${option.label} theme`} aria-pressed={option.value === "system"} data-theme-choice={option.value}>
+          <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} relative z-1 hover:text-label aria-pressed:text-label aria-pressed:hover:bg-transparent aria-pressed:hover:text-label`} aria-label={`${option.label} theme`} title={`${option.label} theme`} aria-pressed={option.value === "system"} data-theme-choice={option.value}>
             <Icon name={option.icon} />
           </button>
         ))}
@@ -45,11 +46,25 @@ const options = [
     const stored = localStorage.getItem("lui-theme");
     if (isTheme(stored)) theme = stored;
   } catch {}
-  const sync = () => {
+  const moveHighlight = (root: HTMLElement, animate: boolean) => {
+    const pill = root.querySelector<HTMLElement>(".t-tabs-pill");
+    const active = root.querySelector<HTMLButtonElement>('[data-theme-choice][aria-pressed="true"]');
+    if (!pill || !active) return;
+    const previous = pill.style.transition;
+    if (!animate) pill.style.transition = "none";
+    pill.style.transform = `translateX(${active.offsetLeft}px)`;
+    pill.style.width = `${active.offsetWidth}px`;
+    if (!animate) {
+      void pill.offsetWidth;
+      pill.style.transition = previous;
+    }
+  };
+  const sync = (animate = true) => {
     if (theme === "system") delete document.documentElement.dataset.theme;
     else document.documentElement.dataset.theme = theme;
     document.querySelectorAll<HTMLElement>("[data-theme-picker]").forEach((root) => {
       root.querySelectorAll<HTMLButtonElement>("[data-theme-choice]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme)));
+      moveHighlight(root, animate);
       const input = root.querySelector<HTMLInputElement>("[data-select-input]");
       if (input) input.value = theme;
       root.querySelectorAll<HTMLElement>('[role="option"]').forEach((option) => {
@@ -65,23 +80,105 @@ const options = [
       });
     });
   };
-  const apply = (value: unknown) => {
+  let activeTransition: ViewTransition | undefined;
+  let latestRequest = 0;
+  const apply = async (value: unknown, origin: HTMLElement) => {
     if (!isTheme(value)) return;
-    theme = value;
+    const request = ++latestRequest;
+    activeTransition?.skipTransition();
+    if (activeTransition) await activeTransition.finished;
+    if (request !== latestRequest || value === theme) return;
+    const update = () => {
+      theme = value;
+      try {
+        localStorage.setItem("lui-theme", theme);
+      } catch {}
+      sync();
+    };
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const nextScheme = value === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : value;
+    if (!document.startViewTransition || reducedMotion.matches || getComputedStyle(document.documentElement).colorScheme === nextScheme) {
+      update();
+      return;
+    }
+    const bounds = origin.getBoundingClientRect();
+    const x = bounds.left + bounds.width / 2;
+    const y = bounds.top + bounds.height / 2;
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    const styles = getComputedStyle(document.documentElement);
+    const duration = parseFloat(styles.getPropertyValue("--duration-slow"));
+    document.documentElement.classList.add("theme-reveal");
+    const transition = document.startViewTransition(update);
+    activeTransition = transition;
+    const stopMotion = () => { if (reducedMotion.matches) transition.skipTransition(); };
+    reducedMotion.addEventListener("change", stopMotion);
     try {
-      localStorage.setItem("lui-theme", theme);
-    } catch {}
-    sync();
+      await transition.ready;
+      document.documentElement.animate({
+        clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`]
+      }, {
+        duration,
+        easing: styles.getPropertyValue("--ease-standard").trim(),
+        pseudoElement: "::view-transition-new(root)"
+      });
+    } catch {
+      // A skipped transition still applies the chosen theme.
+    } finally {
+      await transition.finished;
+      reducedMotion.removeEventListener("change", stopMotion);
+      if (activeTransition === transition) {
+        activeTransition = undefined;
+        document.documentElement.classList.remove("theme-reveal");
+      }
+    }
   };
   document.querySelectorAll<HTMLElement>("[data-theme-picker]").forEach((root) => {
-    root.addEventListener("change", (event) => apply((event.target as HTMLInputElement).value));
-    root.querySelectorAll<HTMLButtonElement>("[data-theme-choice]").forEach((button) => button.addEventListener("click", () => apply(button.dataset.themeChoice)));
+    root.addEventListener("change", (event) => { void apply((event.target as HTMLInputElement).value, root.querySelector<HTMLElement>("[data-select-trigger]") ?? root); });
+    root.querySelectorAll<HTMLButtonElement>("[data-theme-choice]").forEach((button) => button.addEventListener("click", () => { void apply(button.dataset.themeChoice, button); }));
   });
   window.addEventListener("storage", (event) => {
     if (event.key === "lui-theme" || event.key === null) {
+      latestRequest++;
+      activeTransition?.skipTransition();
       theme = isTheme(event.newValue) ? event.newValue : "system";
       sync();
     }
   });
-  sync();
+  sync(false);
+  window.addEventListener("resize", () => {
+    document.querySelectorAll<HTMLElement>("[data-theme-picker]").forEach((root) => moveHighlight(root, false));
+  });
 </script>
+
+<style>
+  .t-tabs-pill {
+    position: absolute;
+    top: 3px;
+    left: 0;
+    height: 30px;
+    width: 0;
+    background: var(--tabs-pill-bg);
+    border-radius: 48px;
+    transform: translateX(0);
+    transition:
+      transform var(--tabs-dur) var(--tabs-ease),
+      width var(--tabs-dur) var(--tabs-ease);
+    will-change: transform, width;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .lui-theme-icons {
+    --tabs-dur: var(--duration-normal);
+    --tabs-ease: var(--ease-standard);
+    --tabs-pill-bg: var(--muted);
+  }
+  .lui-theme-icons .t-tabs-pill {
+    top: 4px;
+    height: var(--control-md);
+    border-radius: var(--radius-md);
+    corner-shape: squircle;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .t-tabs-pill { transition: none !important; }
+  }
+</style>

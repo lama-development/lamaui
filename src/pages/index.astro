@@ -1,7 +1,7 @@
 ---
 import DocsLayout from "@/layouts/DocsLayout.astro";
 import Icon from "@/components/ui/Icon.astro";
-import Badge from "@/components/data-display/Badge.astro";
+import Chip from "@/components/data-display/Chip.astro";
 import { componentGroups } from "@/lib/components";
 ---
 
@@ -18,7 +18,7 @@ import { componentGroups } from "@/lib/components";
           <h2 id={`${group.slug}-heading`} class="m-0 text-lg leading-tight">
             {group.name}
           </h2>
-          <Badge variant="accent">{group.components.length} components</Badge>
+          <Chip variant="accent">{group.components.length} components</Chip>
         </div>
         <div class="docs-component-grid grid grid-cols-3 gap-4 [@media(width<=1020px)]:grid-cols-2 [@media(width<=620px)]:grid-cols-1">
           {group.components.map((item) => (

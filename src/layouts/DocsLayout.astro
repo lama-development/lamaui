@@ -21,6 +21,11 @@ const { title = "LamaUI - Components", description = "Reusable Astro components 
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} /><meta name="theme-color" content="#fcfdfa" />
     <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicons/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicons/favicon-96x96.png" />
+    <link rel="shortcut icon" href="/favicons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
+    <link rel="manifest" href="/favicons/site.webmanifest" />
     <link rel="preload" href="/fonts/google-sans-flex.woff2" as="font" type="font/woff2" crossorigin />
     <script is:inline>
       (() => {
@@ -76,7 +81,7 @@ const { title = "LamaUI - Components", description = "Reusable Astro components 
             })
           }
         </nav>
-        <div class="docs-sidebar-foot -mx-3 flex flex-none items-center justify-between gap-3 border-t border-outline px-3 pt-3">
+        <div class="docs-sidebar-foot -mx-3 flex flex-none items-center gap-2 border-t border-outline px-3 pt-3">
           <ThemePicker id="sidebar-theme" variant="icons" />
           <AccentPicker id="sidebar-accent" />
         </div>
@@ -191,21 +196,51 @@ const { title = "LamaUI - Components", description = "Reusable Astro components 
       $$("[data-tabs]").forEach((root) => {
         const tabs = $$('[role="tab"]', root),
           panels = $$('[role="tabpanel"]', root);
+        const highlight = $(".lui-tab-highlight", root);
+        const moveHighlight = (tab, animate = true) => {
+          if (!highlight || !tab) return;
+          const previous = highlight.style.transition;
+          if (!animate) highlight.style.transition = "none";
+          highlight.style.transform = `translateX(${tab.offsetLeft}px)`;
+          highlight.style.width = `${tab.offsetWidth}px`;
+          if (!animate) {
+            void highlight.offsetWidth;
+            highlight.style.transition = previous;
+          }
+        };
         const activate = (tab) => {
+          if (!tab || tab.disabled) return;
+          const changed = tab.getAttribute("aria-selected") !== "true";
           tabs.forEach((item) => {
             item.setAttribute("aria-selected", String(item === tab));
             item.tabIndex = item === tab ? 0 : -1;
           });
           panels.forEach((panel) => (panel.hidden = panel.dataset.tabPanel !== tab.dataset.tab));
+          moveHighlight(tab);
+          if (changed && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+            const panel = panels.find((item) => !item.hidden);
+            if (panel) {
+              panel.getAnimations().forEach((animation) => animation.cancel());
+              const styles = getComputedStyle(root);
+              panel.animate([
+                { opacity: 0, transform: "translateY(8px)", filter: "blur(2px)" },
+                { opacity: 1, transform: "translateY(0)", filter: "blur(0)" }
+              ], { duration: parseFloat(styles.getPropertyValue("--duration-normal")), easing: styles.getPropertyValue("--ease-standard").trim() });
+            }
+          }
           tab.focus();
         };
         tabs.forEach((tab) => tab.addEventListener("click", () => activate(tab)));
         root.addEventListener("keydown", (event) => {
-          if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+          if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key) || !tabs.includes(document.activeElement)) return;
           event.preventDefault();
-          const index = tabs.indexOf(document.activeElement);
-          activate(tabs[(index + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length]);
+          const enabled = tabs.filter((tab) => !tab.disabled);
+          const index = enabled.indexOf(document.activeElement);
+          activate(enabled[event.key === "Home" ? 0 : event.key === "End" ? enabled.length - 1 : (index + (event.key === "ArrowRight" ? 1 : -1) + enabled.length) % enabled.length]);
         });
+        const snapHighlight = () => moveHighlight(tabs.find((tab) => tab.getAttribute("aria-selected") === "true"), false);
+        snapHighlight();
+        new ResizeObserver(snapHighlight).observe(root);
       });
       $$(".lui-popover").forEach((root) => {
         const summary = $("summary", root),

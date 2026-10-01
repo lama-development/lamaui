@@ -200,3 +200,19 @@ dialog[open]::backdrop {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Reveal the new palette above a still snapshot of the previous theme. */
+html.theme-reveal::view-transition-image-pair(root) {
+  isolation: auto;
+}
+html.theme-reveal::view-transition-old(root),
+html.theme-reveal::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+html.theme-reveal::view-transition-old(root) {
+  z-index: 1;
+}
+html.theme-reveal::view-transition-new(root) {
+  z-index: 2;
+}

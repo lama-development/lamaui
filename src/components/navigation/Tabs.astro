@@ -14,13 +14,26 @@ const { tabs, active = tabs[0]?.id, id = "tabs", class: className } = Astro.prop
 ---
 
 <div data-tabs class={className}>
-  <div role="tablist" aria-label="Tabs" class="lui-tabs inline-flex gap-1 rounded-lg border border-outline bg-muted p-1">
+  <div role="tablist" aria-label="Tabs" class="lui-tabs relative isolate inline-flex gap-1 rounded-lg border border-outline bg-muted p-1">
+    <span class="lui-tab-highlight absolute top-1 left-0 bottom-1 rounded-[calc(var(--radius-lg)-0.25rem)] bg-surface shadow-(--shadow-sm)" aria-hidden="true" />
     {
       tabs.map((tab) => (
-        <button id={`${id}-${tab.id}-tab`} type="button" role="tab" aria-selected={tab.id === active} aria-controls={`${id}-${tab.id}-panel`} disabled={tab.disabled} class="lui-tab min-h-10 rounded-[calc(var(--radius-lg)-0.25rem)] border-0 bg-transparent px-3 py-2 text-sm font-semibold text-muted-label [transition:background_var(--duration-fast),color_var(--duration-fast),box-shadow_var(--duration-fast)] disabled:opacity-[0.4] aria-selected:bg-surface aria-selected:text-label aria-selected:shadow-(--shadow-sm)" data-tab={tab.id}>
+        <button id={`${id}-${tab.id}-tab`} type="button" role="tab" aria-selected={tab.id === active} aria-controls={`${id}-${tab.id}-panel`} tabindex={tab.id === active ? 0 : -1} disabled={tab.disabled} class="lui-tab relative z-1 min-h-10 rounded-[calc(var(--radius-lg)-0.25rem)] border-0 bg-transparent px-3 py-2 text-sm font-semibold text-muted-label transition-colors duration-(--duration-fast) disabled:opacity-[0.4] aria-selected:text-label" data-tab={tab.id}>
           {tab.label}
         </button>
       ))
     }
   </div><div class="mt-4"><slot /></div>
 </div>
+
+<style>
+  .lui-tab-highlight {
+    pointer-events: none;
+    transition:
+      transform var(--duration-normal) var(--ease-standard),
+      width var(--duration-normal) var(--ease-standard);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lui-tab-highlight { transition: none; }
+  }
+</style>

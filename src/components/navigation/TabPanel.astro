@@ -8,4 +8,4 @@ interface Props {
 const { id, tabsId = "tabs", active = false, class: className } = Astro.props;
 ---
 
-<div id={`${tabsId}-${id}-panel`} role="tabpanel" aria-labelledby={`${tabsId}-${id}-tab`} hidden={!active} data-tab-panel={id} class={className}><slot /></div>
+<div id={`${tabsId}-${id}-panel`} role="tabpanel" aria-labelledby={`${tabsId}-${id}-tab`} tabindex="0" hidden={!active} data-tab-panel={id} class={className}><slot /></div>

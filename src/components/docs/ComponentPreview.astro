@@ -29,7 +29,7 @@ import Pagination from "@/components/navigation/Pagination.astro";
 import Stepper from "@/components/navigation/Stepper.astro";
 import DropdownMenu from "@/components/navigation/DropdownMenu.astro";
 import Card from "@/components/data-display/Card.astro";
-import Badge from "@/components/data-display/Badge.astro";
+import Chip from "@/components/data-display/Chip.astro";
 import Avatar from "@/components/data-display/Avatar.astro";
 import AvatarGroup from "@/components/data-display/AvatarGroup.astro";
 import Table from "@/components/data-display/Table.astro";
@@ -340,14 +340,14 @@ const selectOptions = [
       )
     }
     {
-      slug === "badge" && (
+      slug === "chip" && (
         <div class="demo-row flex flex-wrap items-center gap-2.5">
           <>
-            <Badge>Draft</Badge>
-            <Badge variant="info">In review</Badge>
-            <Badge variant="success">Published</Badge>
-            <Badge variant="warning">Attention</Badge>
-            <Badge variant="destructive">Error</Badge>
+            <Chip>Draft</Chip>
+            <Chip variant="info">In review</Chip>
+            <Chip variant="success">Published</Chip>
+            <Chip variant="warning">Attention</Chip>
+            <Chip variant="destructive">Error</Chip>
           </>
         </div>
       )

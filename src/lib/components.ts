@@ -58,7 +58,7 @@ export const componentGroups: ComponentGroup[] = [
     icon: "data",
     components: [
       component("Card", "card", "A bordered surface for related information and actions."),
-      component("Badge", "badge", "A compact text label for status or classification."),
+      component("Chip", "chip", "A compact text label for status or classification."),
       component("Avatar", "avatar", "Represents a person with an image or initials."),
       component("AvatarGroup", "avatar-group", "Displays several avatars in a compact stack."),
       component("Table", "table", "Displays structured row and column data."),
