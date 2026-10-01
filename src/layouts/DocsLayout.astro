@@ -19,7 +19,7 @@ const { title = "LamaUI - Components", description = "Reusable Astro components 
 <html lang="en">
   <head>
     <meta charset="UTF-8" /><meta name="viewport" content="width=device-width" />
-    <meta name="description" content={description} /><meta name="theme-color" content="#749E00" />
+    <meta name="description" content={description} /><meta name="theme-color" content="#fcfdfa" />
     <title>{title}</title>
     <link rel="preload" href="/fonts/google-sans-flex.woff2" as="font" type="font/woff2" crossorigin />
     <script is:inline>
@@ -34,8 +34,11 @@ const { title = "LamaUI - Components", description = "Reusable Astro components 
     </script>
   </head>
   <body>
+    <script>
+      import "@/scripts/browser-theme";
+    </script>
     <a href="#main-content" class="skip-link fixed inset-[8px_auto_auto_8px] z-200 transform-[translateY(-80px)] rounded-md bg-accent px-3 py-2 text-sm font-semibold text-accent-label focus:transform-[translateY(0)] print:hidden">Skip to content</a>
-    <header class="docs-mobile-header hidden print:hidden [@media(width<=860px)]:sticky [@media(width<=860px)]:top-0 [@media(width<=860px)]:z-40 [@media(width<=860px)]:flex [@media(width<=860px)]:min-h-14 [@media(width<=860px)]:items-center [@media(width<=860px)]:justify-between [@media(width<=860px)]:border-b [@media(width<=860px)]:border-outline [@media(width<=860px)]:bg-[color-mix(in_srgb,var(--surface)_94%,transparent)] [@media(width<=860px)]:p-[0.375rem_0.75rem] [@media(width<=860px)]:[backdrop-filter:blur(12px)] [@media(width<=860px)]:[&_.docs-brand]:flex-none [@media(width<=860px)]:[&_.docs-brand_small]:hidden">
+    <header class="docs-mobile-header hidden print:hidden [@media(width<=860px)]:sticky [@media(width<=860px)]:top-0 [@media(width<=860px)]:z-40 [@media(width<=860px)]:flex [@media(width<=860px)]:min-h-14 [@media(width<=860px)]:items-center [@media(width<=860px)]:justify-between [@media(width<=860px)]:border-b [@media(width<=860px)]:border-outline [@media(width<=860px)]:bg-surface [@media(width<=860px)]:p-[0.375rem_0.75rem] [@media(width<=860px)]:[backdrop-filter:blur(12px)] [@media(width<=860px)]:[&_.docs-brand]:flex-none [@media(width<=860px)]:[&_.docs-brand_small]:hidden">
       <a href="/" class="docs-brand flex min-w-0 flex-1 items-center gap-2.5 rounded-md text-label no-underline [&_small]:block [&_small]:text-sm [&_small]:leading-[1.2] [&_small]:font-normal [&_small]:text-muted-label [&_strong]:block [&_strong]:text-lg [&_strong]:leading-none"><Llama class="docs-mark size-8 flex-none" width={32} height={32} aria-hidden="true" focusable="false" /><span><strong>LamaUI</strong></span></a>
       <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles}`} aria-label="Open navigation" aria-controls="docs-navigation" aria-expanded="false" data-docs-open><Icon name="menu" /></button>
     </header>
