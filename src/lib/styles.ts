@@ -5,7 +5,7 @@ export const controlStyles = cx("lui-control inline-flex cursor-pointer items-ce
 
 export const fieldStyles = cx("lui-field min-h-(--control-md) w-full rounded-md border border-outline bg-input px-[.85rem] py-[.65rem] text-label transition-[border-color,box-shadow,background-color] duration-(--duration-fast) outline-none [corner-shape:squircle] placeholder:text-[color-mix(in_srgb,var(--muted-label)_65%,transparent)] focus:border-accent focus:shadow-[0_0_0_3px_var(--accent-ring)] disabled:cursor-not-allowed disabled:opacity-[.52] aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_srgb,var(--destructive)_22%,transparent)] [&.lui-password-field]:pr-11 [&.lui-search-field]:pl-10");
 
-export const cardStyles = cx("lui-card rounded-lg border border-outline bg-surface shadow-(--shadow-sm) [corner-shape:squircle]");
+export const cardStyles = cx("lui-card rounded-lg border border-card-outline bg-card-surface shadow-(--shadow-sm) [corner-shape:squircle]");
 
 export const interactiveStyles = cx("lui-interactive transition-[background-color,border-color,box-shadow] duration-(--duration-fast) hover:bg-surface-hover");
 

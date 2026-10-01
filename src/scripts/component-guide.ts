@@ -42,55 +42,82 @@ function markdown(node: Element): string {
 
 document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
   const content = root.querySelector<HTMLElement>("[data-guide-content]");
-  const status = root.querySelector<HTMLElement>("[data-guide-status]");
-  const exportMenu = root.querySelector<HTMLDetailsElement>("[data-guide-export]");
+  const toast = root.querySelector<HTMLElement>("[data-guide-toast]");
+  const toastTitle = toast?.querySelector<HTMLElement>(".lui-toast-body p");
+  const toastMessage = toast?.querySelector<HTMLElement>("[data-guide-toast-message]");
+  const actionMenus = Array.from(root.querySelectorAll<HTMLDetailsElement>("[data-guide-menu]"));
+  let toastTimer: number | undefined;
   if (!content) return;
   const documentMarkdown = () => `# ${root.dataset.guideTitle}\n\n${root.dataset.guideDescription}\n\n${markdown(content)}Source: ${location.origin}${location.pathname}\n`;
-  const closeExport = (restoreFocus = false) => {
-    if (!exportMenu) return;
-    exportMenu.open = false;
-    if (restoreFocus) exportMenu.querySelector("summary")?.focus();
+  const closeActionMenus = (restoreFocus = false) => {
+    actionMenus.forEach((menu) => {
+      if (!menu.open) return;
+      menu.open = false;
+      if (restoreFocus) menu.querySelector("summary")?.focus();
+    });
   };
-  root.querySelector("[data-guide-copy]")?.addEventListener("click", async () => {
-    const label = root.querySelector("[data-guide-copy-label]");
-    try {
-      await navigator.clipboard.writeText(documentMarkdown());
-      if (label) label.textContent = "Copied";
-      if (status) status.textContent = "Page copied as Markdown.";
-    } catch {
-      if (status) status.textContent = "Could not copy. Use Export to download the Markdown file.";
-    }
-    window.setTimeout(() => {
-      if (label) label.textContent = "Copy page";
-    }, 2000);
+  const showToast = (title: string, message: string) => {
+    if (!toast) return;
+    if (toastTitle) toastTitle.textContent = title;
+    if (toastMessage) toastMessage.textContent = message;
+    toast.classList.remove("hidden", "is-leaving");
+    toast.classList.add("flex", "is-visible");
+    window.clearTimeout(toastTimer);
+    toastTimer = window.setTimeout(() => {
+      toast.classList.remove("is-visible");
+      toast.classList.add("is-leaving");
+      window.setTimeout(() => {
+        toast.classList.remove("flex", "is-leaving");
+        toast.classList.add("hidden");
+      }, 160);
+    }, 3500);
+  };
+  root.querySelectorAll<HTMLElement>("[data-guide-copy]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(documentMarkdown());
+        showToast("Page copied", "Markdown copied to the clipboard.");
+        closeActionMenus(true);
+      } catch {
+        showToast("Could not copy", "Download the Markdown file instead.");
+      }
+    });
   });
-  root.querySelector("[data-guide-download]")?.addEventListener("click", () => {
-    const url = URL.createObjectURL(new Blob([documentMarkdown()], { type: "text/markdown;charset=utf-8" }));
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `${root.dataset.guideSlug}.md`;
-    document.body.append(link);
-    link.click();
-    link.remove();
-    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-    closeExport(true);
-    if (status) status.textContent = "Markdown download started.";
+  root.querySelectorAll("[data-guide-download]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const url = URL.createObjectURL(new Blob([documentMarkdown()], { type: "text/markdown;charset=utf-8" }));
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${root.dataset.guideSlug}.md`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+      closeActionMenus(true);
+      showToast("Download started", `${root.dataset.guideSlug}.md is being downloaded.`);
+    });
   });
-  root.querySelector("[data-guide-print]")?.addEventListener("click", () => {
-    closeExport(true);
-    window.print();
+  root.querySelectorAll("[data-guide-print]").forEach((button) => {
+    button.addEventListener("click", () => {
+      closeActionMenus(true);
+      showToast("Print dialog opened", "Choose Save as PDF to export this page.");
+      window.requestAnimationFrame(() => window.print());
+    });
   });
   document.addEventListener("pointerdown", (event) => {
-    if (event.target instanceof Node && !exportMenu?.contains(event.target)) closeExport();
+    const target = event.target;
+    if (target instanceof Node && !actionMenus.some((menu) => menu.contains(target))) closeActionMenus();
   });
-  exportMenu?.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      event.preventDefault();
-      closeExport(true);
-    }
-  });
-  exportMenu?.addEventListener("focusout", (event) => {
-    if (event.relatedTarget instanceof Node && !exportMenu.contains(event.relatedTarget)) closeExport();
+  actionMenus.forEach((menu) => {
+    menu.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeActionMenus(true);
+      }
+    });
+    menu.addEventListener("focusout", (event) => {
+      if (event.relatedTarget instanceof Node && !menu.contains(event.relatedTarget)) closeActionMenus();
+    });
   });
 
   const links = Array.from(root.querySelectorAll<HTMLAnchorElement>("[data-guide-anchor]"));
@@ -118,8 +145,16 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
     { passive: true }
   );
   window.addEventListener("resize", syncIndex);
-  root.querySelector("[data-guide-mobile-index]")?.addEventListener("click", (event) => {
-    if (event.target instanceof Element && event.target.closest("a")) (root.querySelector("[data-guide-mobile-index]") as HTMLDetailsElement).open = false;
+  const mobileIndex = root.querySelector<HTMLElement>("[data-guide-mobile-index]");
+  const mobileIndexToggle = mobileIndex?.querySelector<HTMLButtonElement>("[data-guide-index-toggle]");
+  const setMobileIndex = (open: boolean) => {
+    if (!mobileIndex || !mobileIndexToggle) return;
+    mobileIndex.dataset.open = String(open);
+    mobileIndexToggle.setAttribute("aria-expanded", String(open));
+  };
+  mobileIndexToggle?.addEventListener("click", () => setMobileIndex(mobileIndex?.dataset.open !== "true"));
+  mobileIndex?.addEventListener("click", (event) => {
+    if (event.target instanceof Element && event.target.closest("a")) setMobileIndex(false);
   });
   syncIndex();
 });

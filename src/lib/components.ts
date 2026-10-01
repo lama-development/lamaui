@@ -21,15 +21,7 @@ export const componentGroups: ComponentGroup[] = [
     name: "Actions",
     slug: "actions",
     icon: "actions",
-    components: [
-      component("Icon", "icon", "A consistent stroke icon set for controls and navigation.", '<Icon name="settings" size={20} />'),
-      component("Button", "button", "Triggers an action or links to another view.", '<Button variant="primary" size="md">Save</Button>'),
-      component("IconButton", "icon-button", "A compact action with an accessible text label.", '<IconButton label="Copy"><Icon name="copy" /></IconButton>'),
-      component("ButtonGroup", "button-group", "Joins related actions into one control group."),
-      component("Toggle", "toggle", "A button that represents an on or off state."),
-      component("ToggleGroup", "toggle-group", "A coordinated set of mutually exclusive toggles."),
-      component("ThemePicker", "theme-picker", "Chooses System, Light, or Dark with a custom dropdown or icon buttons.", 'import ThemePicker from "@/components/ui/ThemePicker.astro";\n\n// Labeled custom dropdown (default)\n<ThemePicker id="settings-theme" />\n\n// Compact picker with three icon buttons\n<ThemePicker id="toolbar-theme" variant="icons" label="Color theme" />\n\n// Open upward near the bottom of a sidebar\n<ThemePicker id="footer-theme" placement="top" />')
-    ]
+    components: [component("Icon", "icon", "A consistent stroke icon set for controls and navigation.", '<Icon name="settings" size={20} />'), component("Button", "button", "Triggers an action or links to another view.", '<Button variant="primary" size="md">Save</Button>'), component("IconButton", "icon-button", "A compact action with an accessible text label.", '<IconButton label="Copy"><Icon name="copy" /></IconButton>'), component("ButtonGroup", "button-group", "Joins related actions into one control group."), component("Toggle", "toggle", "A button that represents an on or off state."), component("ToggleGroup", "toggle-group", "A coordinated set of mutually exclusive toggles."), component("ThemePicker", "theme-picker", "Chooses System, Light, or Dark with compact icon buttons.", 'import ThemePicker from "@/components/ui/ThemePicker.astro";\n\n<ThemePicker label="Color theme" />')]
   },
   {
     name: "Forms",

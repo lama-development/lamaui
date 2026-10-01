@@ -1,15 +1,11 @@
 ---
 import { controlStyles, ghostStyles, iconControlStyles } from "@/lib/styles";
-import CustomSelect from "@/components/forms/CustomSelect.astro";
 import Icon from "@/components/ui/Icon.astro";
 interface Props {
-  id: string;
-  variant?: "dropdown" | "icons";
   label?: string;
-  placement?: "top" | "bottom";
   class?: string;
 }
-const { id, variant = "dropdown", label = "Appearance", placement = "bottom", class: className } = Astro.props;
+const { label = "Color theme", class: className } = Astro.props;
 const options = [
   { value: "system", label: "System", icon: "system" as const },
   { value: "light", label: "Light", icon: "sun" as const },
@@ -18,25 +14,16 @@ const options = [
 ---
 
 <div class:list={["lui-theme-picker min-w-0", className]} data-theme-picker>
-  {
-    variant === "dropdown" ? (
-      <>
-        <label class="lui-label mb-1.5 block text-sm font-semibold" for={`${id}-button`}>
-          {label}
-        </label>
-        <CustomSelect {id} name="theme" {label} {options} value="system" {placement} />
-      </>
-    ) : (
-      <div class="lui-theme-icons relative isolate inline-flex gap-1 rounded-lg border border-outline bg-surface p-1 [corner-shape:squircle]" role="group" aria-label={label}>
-        <span class="t-tabs-pill" aria-hidden="true" />
-        {options.map((option) => (
-          <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} relative z-1 rounded-[calc(var(--radius-lg)-0.3125rem)] hover:text-label aria-pressed:text-label aria-pressed:hover:bg-transparent aria-pressed:hover:text-label`} aria-label={`${option.label} theme`} title={`${option.label} theme`} aria-pressed={option.value === "system"} data-theme-choice={option.value}>
-            <Icon name={option.icon} />
-          </button>
-        ))}
-      </div>
-    )
-  }
+  <div class="lui-theme-icons relative isolate inline-flex gap-1 rounded-lg border border-outline bg-surface p-1 [corner-shape:squircle]" role="group" aria-label={label}>
+    <span class="t-tabs-pill" aria-hidden="true"></span>
+    {
+      options.map((option) => (
+        <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} relative z-1 rounded-[calc(var(--radius-lg)-0.3125rem)] hover:text-label aria-pressed:text-label aria-pressed:hover:bg-transparent aria-pressed:hover:text-label`} aria-label={`${option.label} theme`} title={`${option.label} theme`} aria-pressed={option.value === "system"} data-theme-choice={option.value}>
+          <Icon name={option.icon} />
+        </button>
+      ))
+    }
+  </div>
 </div>
 <script>
   type Theme = "system" | "light" | "dark";
@@ -65,23 +52,37 @@ const options = [
     document.querySelectorAll<HTMLElement>("[data-theme-picker]").forEach((root) => {
       root.querySelectorAll<HTMLButtonElement>("[data-theme-choice]").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme)));
       moveHighlight(root, animate);
-      const input = root.querySelector<HTMLInputElement>("[data-select-input]");
-      if (input) input.value = theme;
-      root.querySelectorAll<HTMLElement>('[role="option"]').forEach((option) => {
-        const selected = option.dataset.value === theme;
-        option.setAttribute("aria-selected", String(selected));
-        option.querySelector("[data-option-check]")?.toggleAttribute("hidden", !selected);
-        if (selected) {
-          const value = root.querySelector("[data-select-value]");
-          if (value) value.textContent = option.dataset.label || "";
-          const icon = root.querySelector("[data-select-value-icon]");
-          if (icon) icon.innerHTML = option.querySelector("[data-option-icon]")?.innerHTML || "";
-        }
-      });
     });
   };
   let activeTransition: ViewTransition | undefined;
   let latestRequest = 0;
+  const revealWithoutViewTransition = async (update: () => void, origin: HTMLElement) => {
+    const bounds = origin.getBoundingClientRect();
+    const x = bounds.left + bounds.width / 2;
+    const y = bounds.top + bounds.height / 2;
+    const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    const reveal = document.createElement("span");
+    reveal.className = "lui-theme-circle";
+    reveal.style.left = `${x}px`;
+    reveal.style.top = `${y}px`;
+    reveal.style.background = getComputedStyle(document.querySelector(".docs-sidebar") ?? document.body).backgroundColor;
+    document.body.append(reveal);
+    const animation = reveal.animate([{ transform: "translate(-50%, -50%) scale(0)" }, { transform: `translate(-50%, -50%) scale(${radius})` }], {
+      duration: 400,
+      easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+      fill: "forwards"
+    });
+    try {
+      await animation.finished;
+    } catch {}
+    update();
+    reveal.style.background = getComputedStyle(document.querySelector(".docs-sidebar") ?? document.body).backgroundColor;
+    const fade = reveal.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 150, easing: "ease-out", fill: "forwards" });
+    try {
+      await fade.finished;
+    } catch {}
+    reveal.remove();
+  };
   const apply = async (value: unknown, origin: HTMLElement) => {
     if (!isTheme(value)) return;
     const request = ++latestRequest;
@@ -97,8 +98,14 @@ const options = [
     };
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const nextScheme = value === "system" ? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light") : value;
-    if (!document.startViewTransition || reducedMotion.matches || getComputedStyle(document.documentElement).colorScheme === nextScheme) {
+    if (reducedMotion.matches || getComputedStyle(document.documentElement).colorScheme === nextScheme) {
       update();
+      return;
+    }
+    if (!document.startViewTransition) {
+      await revealWithoutViewTransition(() => {
+        if (request === latestRequest) update();
+      }, origin);
       return;
     }
     const bounds = origin.getBoundingClientRect();
@@ -110,17 +117,22 @@ const options = [
     document.documentElement.classList.add("theme-reveal");
     const transition = document.startViewTransition(update);
     activeTransition = transition;
-    const stopMotion = () => { if (reducedMotion.matches) transition.skipTransition(); };
+    const stopMotion = () => {
+      if (reducedMotion.matches) transition.skipTransition();
+    };
     reducedMotion.addEventListener("change", stopMotion);
     try {
       await transition.ready;
-      document.documentElement.animate({
-        clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`]
-      }, {
-        duration,
-        easing: styles.getPropertyValue("--ease-standard").trim(),
-        pseudoElement: "::view-transition-new(root)"
-      });
+      document.documentElement.animate(
+        {
+          clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`]
+        },
+        {
+          duration,
+          easing: styles.getPropertyValue("--ease-standard").trim(),
+          pseudoElement: "::view-transition-new(root)"
+        }
+      );
     } catch {
       // A skipped transition still applies the chosen theme.
     } finally {
@@ -133,8 +145,11 @@ const options = [
     }
   };
   document.querySelectorAll<HTMLElement>("[data-theme-picker]").forEach((root) => {
-    root.addEventListener("change", (event) => { void apply((event.target as HTMLInputElement).value, root.querySelector<HTMLElement>("[data-select-trigger]") ?? root); });
-    root.querySelectorAll<HTMLButtonElement>("[data-theme-choice]").forEach((button) => button.addEventListener("click", () => { void apply(button.dataset.themeChoice, button); }));
+    root.querySelectorAll<HTMLButtonElement>("[data-theme-choice]").forEach((button) =>
+      button.addEventListener("click", () => {
+        void apply(button.dataset.themeChoice, button);
+      })
+    );
   });
   window.addEventListener("storage", (event) => {
     if (event.key === "lui-theme" || event.key === null) {
@@ -151,6 +166,14 @@ const options = [
 </script>
 
 <style>
+  :global(.lui-theme-circle) {
+    position: fixed;
+    z-index: 2147483647;
+    width: 2px;
+    height: 2px;
+    border-radius: 999px;
+    pointer-events: none;
+  }
   .t-tabs-pill {
     position: absolute;
     top: 3px;
@@ -179,6 +202,8 @@ const options = [
     corner-shape: squircle;
   }
   @media (prefers-reduced-motion: reduce) {
-    .t-tabs-pill { transition: none !important; }
+    .t-tabs-pill {
+      transition: none !important;
+    }
   }
 </style>

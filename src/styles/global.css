@@ -14,12 +14,15 @@
   --leading-normal: 1.55;
   --color-page: var(--page);
   --color-label: var(--label);
+  --color-heading: var(--heading);
   --color-surface: var(--surface);
   --color-surface-hover: var(--surface-hover);
   --color-surface-elevated: var(--surface-elevated);
   --color-muted: var(--muted);
   --color-muted-label: var(--muted-label);
   --color-outline: var(--outline);
+  --color-card-outline: var(--card-outline);
+  --color-card-surface: var(--card-surface);
   --color-input: var(--input);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
@@ -52,6 +55,7 @@
     display: none;
   }
   h1 {
+    color: var(--heading);
     font-weight: 700;
   }
   h2,
@@ -59,9 +63,11 @@
   h4,
   h5,
   h6 {
+    color: var(--heading);
     font-weight: 600;
   }
   html {
+    background: var(--surface);
     scroll-behavior: smooth;
     scroll-padding-top: 5rem;
     interpolate-size: allow-keywords;

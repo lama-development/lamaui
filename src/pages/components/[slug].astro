@@ -1,6 +1,5 @@
 ---
 import ComponentGuide from "@/components/docs/ComponentGuide.astro";
-import ThemePickerGuide from "@/components/docs/ThemePickerGuide.astro";
 import ComponentPagination from "@/components/docs/ComponentPagination.astro";
 import DocsLayout from "@/layouts/DocsLayout.astro";
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
@@ -19,27 +18,17 @@ const { component } = Astro.props;
 const index = components.findIndex((item) => item.slug === component.slug);
 const previous = components[index - 1];
 const next = components[index + 1];
-const isThemeGuide = component.slug === "theme-picker";
 const sections = [
   { id: "preview-heading", label: "Live preview" },
-  { id: "usage-heading", label: "Quick start" },
-  ...(isThemeGuide
-    ? [
-        { id: "variants-heading", label: "Choose a variant" },
-        { id: "behavior-heading", label: "How preferences work" },
-        { id: "props-heading", label: "Props reference" },
-        { id: "integration-heading", label: "Layout integration" },
-        { id: "keyboard-heading", label: "Keyboard navigation" }
-      ]
-    : [])
+  { id: "usage-heading", label: "Quick start" }
 ];
-const usage = isThemeGuide ? 'import ThemePicker from "@/components/ui/ThemePicker.astro";\n\n<ThemePicker id="settings-theme" />' : component.usage;
+const usage = component.usage;
 ---
 
 <DocsLayout title={`${component.name} — LamaUI`} description={component.description} currentSlug={component.slug}>
   <Breadcrumb items={[{ label: "Components", href: "/" }, { label: component.group, href: `/#${component.groupSlug}` }, { label: component.name }]} />
   <ComponentGuide title={component.name} slug={component.slug} description={component.description} {sections}>
-    <header data-guide-no-export class="docs-page-header mt-6 mb-8 [&_h1]:m-0 [&_h1]:text-[clamp(2rem,4vw,2.75rem)] [&_h1]:leading-[1.08] [&_h1]:tracking-[-0.035em] [&_p]:m-[0.75rem_0_0] [&_p]:max-w-2xl [&_p]:text-muted-label">
+    <header data-guide-no-export class="docs-page-header mt-4 mb-8 [&_h1]:m-0 [&_h1]:text-[clamp(2rem,4vw,2.75rem)] [&_h1]:leading-[1.08] [&_h1]:tracking-[-0.035em] [&_p]:m-[0.75rem_0_0] [&_p]:max-w-2xl [&_p]:text-muted-label">
       <h1>{component.name}</h1>
       <p>{component.description}</p>
       <div class="component-meta mt-4 flex flex-wrap gap-1 text-[0.8125rem] text-muted-label [&_span]:inline-flex [&_span]:min-h-7 [&_span]:items-center [&_span]:rounded-(--radius-full) [&_span]:border [&_span]:border-outline [&_span]:bg-surface [&_span]:p-[0.25rem_0.625rem] [&_span]:leading-none"><span>Astro component</span><span>Keyboard accessible</span><span>Theme tokens</span></div>
@@ -55,7 +44,6 @@ const usage = isThemeGuide ? 'import ThemePicker from "@/components/ui/ThemePick
       <CodeBlock code={usage} />
     </section>
 
-    {isThemeGuide && <ThemePickerGuide />}
     <div data-guide-no-export class="print:hidden"><ComponentPagination {previous} {next} /></div>
   </ComponentGuide>
 </DocsLayout>

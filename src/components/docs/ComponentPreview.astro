@@ -76,27 +76,7 @@ const selectOptions = [
 
 <div class="component-preview flex min-h-48 items-center justify-center rounded-md bg-surface p-8 [border:1px_dashed_color-mix(in_srgb,var(--outline),var(--muted-label)_22%)] [@media(width<=620px)]:min-h-40 [@media(width<=620px)]:p-4">
   <div class="component-preview-column w-[min(100%,36rem)]">
-    {
-      slug === "theme-picker" && (
-        <Stack gap={6}>
-          <>
-            <div>
-              <>
-                <h3 class="lui-label mb-1.5 block text-sm font-semibold">Dropdown</h3>
-                <ThemePicker id="preview-theme-dropdown" />
-              </>
-            </div>
-            <div>
-              <>
-                <h3 class="lui-label mb-1.5 block text-sm font-semibold">Icons</h3>
-                <ThemePicker id="preview-theme-icons" variant="icons" />
-              </>
-            </div>
-            <p class="muted text-muted-label">Both examples update this page and stay in sync with the sidebar.</p>
-          </>
-        </Stack>
-      )
-    }
+    {slug === "theme-picker" && <ThemePicker label="Preview color theme" />}
     {
       slug === "icon" && (
         <div class="demo-row flex flex-wrap items-center gap-2.5 text-muted-label">

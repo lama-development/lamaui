@@ -15,12 +15,15 @@ import { componentGroups } from "@/lib/components";
     componentGroups.map((group) => (
       <section id={group.slug} class="docs-category [&+_.docs-category]:mt-10" aria-labelledby={`${group.slug}-heading`}>
         <div class="docs-category-head mb-4 flex flex-wrap items-center gap-2.5">
-          <h2 id={`${group.slug}-heading`} class="m-0 text-lg leading-tight">
-            {group.name}
-          </h2>
+          <div class="flex items-center gap-2">
+            <Icon name={group.icon} size={20} class="text-muted-label" aria-hidden="true" />
+            <h2 id={`${group.slug}-heading`} class="m-0 text-lg leading-tight">
+              {group.name}
+            </h2>
+          </div>
           <Chip variant="accent">{group.components.length} components</Chip>
         </div>
-        <div class="docs-component-grid grid grid-cols-3 gap-4 [@media(width<=1020px)]:grid-cols-2 [@media(width<=620px)]:grid-cols-1">
+        <div class="docs-component-grid grid grid-cols-4 gap-4 [@media(width<=1020px)]:grid-cols-2 [@media(width<=620px)]:grid-cols-1">
           {group.components.map((item) => (
             <a href={`/components/${item.slug}`} class="docs-component-card flex min-h-28 items-center gap-4 rounded-lg border border-outline bg-surface p-5 text-label no-underline [corner-shape:squircle] [transition:background_var(--duration-fast),border-color_var(--duration-fast)] hover:bg-surface-hover [&_h3]:m-0 [&_h3]:text-base [&_p]:m-[0.25rem_0_0] [&_p]:text-sm [&_p]:leading-tight [&_p]:text-muted-label [&>_svg]:flex-none [&>_svg]:text-muted-label">
               <div class="min-w-0 flex-1">

@@ -13,6 +13,7 @@ interface Props {
   currentSlug?: string;
 }
 const { title = "LamaUI - Components", description = "Reusable Astro components extracted from a focused dashboard design language.", currentSlug } = Astro.props;
+const year = new Date().getFullYear();
 ---
 
 <!doctype html>
@@ -59,42 +60,46 @@ const { title = "LamaUI - Components", description = "Reusable Astro components 
             componentGroups.map((group) => {
               const containsCurrent = group.components.some((item) => item.slug === currentSlug);
               return (
-                <details class="docs-nav-group [&_li_a]:flex [&_li_a]:min-h-9 [&_li_a]:items-center [&_li_a]:rounded-[0.625rem] [&_li_a]:p-[0.375rem_0.75rem] [&_li_a]:text-sm [&_li_a]:leading-tight [&_li_a]:text-muted-label [&_li_a]:no-underline [&_li_a:hover]:bg-surface-hover [&_li_a:hover]:text-label [&_li_a[aria-current=page]]:font-semibold [&_li_a[aria-current=page]]:text-accent [&_li+li]:mt-1 [&_summary]:list-none [&_ul]:m-[0.25rem_0_0.375rem_2rem] [&_ul]:list-none [&_ul]:p-0 [&[open]_.docs-nav-chevron]:transform-[rotate(180deg)]" open={containsCurrent}>
-                  <summary class="docs-nav-row flex min-h-11 cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-label no-underline [corner-shape:squircle] [transition:background_var(--duration-fast),color_var(--duration-fast)] hover:bg-surface-hover hover:text-label aria-[current=page]:bg-muted aria-[current=page]:font-semibold aria-[current=page]:text-label [&_span]:flex-1 [&_svg]:flex-none">
+                <div class="docs-nav-group [&_li_a]:flex [&_li_a]:min-h-9 [&_li_a]:items-center [&_li_a]:rounded-[0.625rem] [&_li_a]:p-[0.375rem_0.75rem] [&_li_a]:text-sm [&_li_a]:leading-tight [&_li_a]:text-muted-label [&_li_a]:no-underline [&_li_a:hover]:bg-surface-hover [&_li_a:hover]:text-label [&_li_a[aria-current=page]]:font-semibold [&_li_a[aria-current=page]]:text-accent [&_li+li]:mt-1 [&_ul]:m-0 [&_ul]:list-none [&_ul]:p-[0.25rem_0_0.375rem_2rem] [&[data-open=true]_.docs-nav-chevron]:transform-[rotate(180deg)]" data-open={String(containsCurrent)}>
+                  <button type="button" class="docs-nav-row flex min-h-11 w-full cursor-pointer items-center gap-3 rounded-md border-0 bg-transparent px-3 py-2 text-left text-sm text-muted-label no-underline [corner-shape:squircle] [transition:background_var(--duration-fast),color_var(--duration-fast)] hover:bg-surface-hover hover:text-label [&_span]:flex-1 [&_svg]:flex-none" aria-expanded={containsCurrent} aria-controls={`docs-nav-${group.slug}`} data-docs-group-toggle>
                     <>
                       <Icon name={group.icon} />
                       <span>{group.name}</span>
                       <Icon name="chevron-down" size={16} class="docs-nav-chevron [transition:transform_var(--duration-normal)_var(--ease-standard)]" />
                     </>
-                  </summary>
-                  <ul>
-                    {group.components.map((item) => (
-                      <li>
-                        <a href={`/components/${item.slug}`} aria-current={item.slug === currentSlug ? "page" : undefined}>
-                          {item.name}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </details>
+                  </button>
+                  <div id={`docs-nav-${group.slug}`} class="docs-nav-panel" inert={!containsCurrent}>
+                    <div class="docs-nav-panel-inner">
+                      <ul>
+                        {group.components.map((item) => (
+                          <li>
+                            <a href={`/components/${item.slug}`} aria-current={item.slug === currentSlug ? "page" : undefined}>
+                              {item.name}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               );
             })
           }
         </nav>
         <div class="docs-sidebar-foot -mx-3 flex flex-none items-center gap-2 border-t border-outline px-3 pt-3">
-          <ThemePicker id="sidebar-theme" variant="icons" />
+          <ThemePicker />
           <AccentPicker id="sidebar-accent" />
         </div>
       </div>
     </aside>
     <button class="docs-scrim print:hidden [@media(width<=860px)]:fixed [@media(width<=860px)]:inset-0 [@media(width<=860px)]:z-70 [@media(width<=860px)]:border-0 [@media(width<=860px)]:bg-overlay" aria-label="Close navigation" data-docs-scrim hidden></button>
     <div class="docs-page min-h-screen pl-60 print:pl-0 [@media(width<=860px)]:pl-0">
-      <main id="main-content" class="docs-content mx-auto min-h-[calc(100vh-4rem)] w-[min(100%-2rem,72rem)] pt-12 pb-20 print:min-h-0 print:w-full print:p-0 [@media(width<=620px)]:w-[min(100%-1.25rem,72rem)] [@media(width<=860px)]:pt-8"><slot /></main>
-      <footer class="docs-footer mx-auto flex w-[min(100%-2rem,72rem)] flex-wrap items-center justify-between gap-[0.75rem_1.5rem] border-t border-outline pt-4 pb-8 text-[0.8125rem] text-muted-label print:hidden [@media(width<=620px)]:w-[min(100%-1.25rem,72rem)]">
-        <span>LamaUI</span>
-        <div class="docs-footer-links ms-auto flex items-center gap-2.5 [&_a]:inline-flex [&_a]:items-center [&_a]:gap-1.5 [&_a]:no-underline [&_a:hover]:underline [&_a:hover]:underline-offset-[0.2em]">
+      <main id="main-content" class="docs-content mx-auto min-h-[calc(100vh-4rem)] w-[min(100%-2rem,98rem)] pt-12 pb-20 print:min-h-0 print:w-full print:p-0 [@media(width<=620px)]:w-[min(100%-1.25rem,98rem)] [@media(width<=860px)]:pt-8"><slot /></main>
+      <footer class="docs-footer mx-auto flex w-[min(100%-2rem,98rem)] flex-wrap items-center justify-between gap-[0.75rem_1.5rem] border-t border-outline pt-4 pb-8 text-[0.8125rem] text-muted-label print:hidden [@media(width<=620px)]:w-[min(100%-1.25rem,98rem)] [@media(width<=620px)]:flex-col [@media(width<=620px)]:justify-center [@media(width<=620px)]:gap-2 [@media(width<=620px)]:text-center">
+        <span>&copy; {year} LamaUI</span>
+        <div class="docs-footer-links ms-auto flex items-center gap-2 [&_a]:inline-flex [&_a]:items-center [&_a]:gap-1.5 [&_a]:no-underline [&_a:hover]:underline [@media(width<=620px)]:ms-0">
           <span>v{version}</span>
-          <span aria-hidden="true">&middot;</span>
+          <span class="size-1 rounded-full bg-current opacity-70" aria-hidden="true"></span>
           <a href="https://github.com/lama-development/lamaui/issues/new" target="_blank" rel="noopener noreferrer">Report a problem<Icon name="external" size={16} /><span class="sr-only"> (opens in a new tab)</span></a>
         </div>
       </footer>
@@ -117,14 +122,19 @@ const { title = "LamaUI - Components", description = "Reusable Astro components 
       document.addEventListener("keydown", (event) => {
         if (event.key === "Escape") setNavigation(false);
       });
-      $$(".docs-nav-group").forEach((group) =>
-        group.addEventListener("toggle", () => {
-          if (!group.open) return;
+      $$(".docs-nav-group").forEach((group) => {
+        const toggle = $("[data-docs-group-toggle]", group);
+        toggle?.addEventListener("click", () => {
+          const opening = group.dataset.open !== "true";
           $$(".docs-nav-group").forEach((other) => {
-            if (other !== group) other.open = false;
+            const open = other === group && opening;
+            other.dataset.open = String(open);
+            $("[data-docs-group-toggle]", other)?.setAttribute("aria-expanded", String(open));
+            const panel = $(".docs-nav-panel", other);
+            if (panel) panel.inert = !open;
           });
-        })
-      );
+        });
+      });
       $$("[data-copy-code]").forEach((button) =>
         button.addEventListener("click", async () => {
           const block = button.closest("[data-code-block]"),
@@ -222,10 +232,13 @@ const { title = "LamaUI - Components", description = "Reusable Astro components 
             if (panel) {
               panel.getAnimations().forEach((animation) => animation.cancel());
               const styles = getComputedStyle(root);
-              panel.animate([
-                { opacity: 0, transform: "translateY(8px)", filter: "blur(2px)" },
-                { opacity: 1, transform: "translateY(0)", filter: "blur(0)" }
-              ], { duration: parseFloat(styles.getPropertyValue("--duration-normal")), easing: styles.getPropertyValue("--ease-standard").trim() });
+              panel.animate(
+                [
+                  { opacity: 0, transform: "translateY(8px)", filter: "blur(2px)" },
+                  { opacity: 1, transform: "translateY(0)", filter: "blur(0)" }
+                ],
+                { duration: parseFloat(styles.getPropertyValue("--duration-normal")), easing: styles.getPropertyValue("--ease-standard").trim() }
+              );
             }
           }
           tab.focus();
@@ -238,7 +251,11 @@ const { title = "LamaUI - Components", description = "Reusable Astro components 
           const index = enabled.indexOf(document.activeElement);
           activate(enabled[event.key === "Home" ? 0 : event.key === "End" ? enabled.length - 1 : (index + (event.key === "ArrowRight" ? 1 : -1) + enabled.length) % enabled.length]);
         });
-        const snapHighlight = () => moveHighlight(tabs.find((tab) => tab.getAttribute("aria-selected") === "true"), false);
+        const snapHighlight = () =>
+          moveHighlight(
+            tabs.find((tab) => tab.getAttribute("aria-selected") === "true"),
+            false
+          );
         snapHighlight();
         new ResizeObserver(snapHighlight).observe(root);
       });
@@ -311,20 +328,27 @@ const { title = "LamaUI - Components", description = "Reusable Astro components 
 </html>
 
 <style>
-  .docs-nav-group summary::-webkit-details-marker {
-    display: none;
-  }
-  .docs-nav-group::details-content {
-    block-size: 0;
+  .docs-nav-panel {
+    display: grid;
+    grid-template-rows: 0fr;
     overflow: hidden;
     opacity: 0;
     transition:
-      block-size var(--duration-normal) var(--ease-standard),
-      opacity var(--duration-fast),
-      content-visibility var(--duration-normal) allow-discrete;
+      grid-template-rows var(--duration-normal) var(--ease-standard),
+      opacity var(--duration-fast) var(--ease-standard);
   }
-  .docs-nav-group[open]::details-content {
-    block-size: auto;
+  .docs-nav-panel-inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .docs-nav-group[data-open="true"] > .docs-nav-panel {
+    grid-template-rows: 1fr;
     opacity: 1;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .docs-nav-panel,
+    .docs-nav-chevron {
+      transition: none !important;
+    }
   }
 </style>

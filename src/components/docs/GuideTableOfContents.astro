@@ -1,0 +1,115 @@
+---
+import GuideIndex from "./GuideIndex.astro";
+import Icon from "@/components/ui/Icon.astro";
+
+interface Props {
+  sections: { id: string; label: string }[];
+  variant: "mobile" | "desktop";
+}
+
+const { sections, variant } = Astro.props;
+---
+
+{
+  variant === "mobile" ? (
+    <div class="mt-4 mb-8 flex items-start gap-2 min-[1280px]:hidden print:hidden">
+      <div class="t-acc min-w-0 flex-1 rounded-[0.75rem] border border-outline bg-surface shadow-(--shadow-sm) [corner-shape:squircle]" data-guide-mobile-index data-open="false">
+        <button type="button" class="flex min-h-12 w-full items-center gap-2 rounded-[0.75rem] border-0 bg-transparent px-3 text-start text-sm font-semibold transition-[background-color,color] duration-(--duration-fast) [corner-shape:squircle] hover:bg-surface-hover" aria-expanded="false" data-guide-index-toggle>
+          <Icon name="clipboard-text" size={18} class="text-muted-label" />
+          <span class="flex-1">On this page</span>
+          <span class="t-acc-chevron text-muted-label">
+            <Icon name="chevron-down" size={16} />
+          </span>
+        </button>
+        <div class="t-acc-panel">
+          <div class="t-acc-panel-inner">
+            <div class="px-1.5 pb-1.5">
+              <GuideIndex {sections} />
+            </div>
+          </div>
+        </div>
+      </div>
+      <details class="group relative flex-none rounded-[0.75rem] shadow-(--shadow-sm) [corner-shape:squircle] min-[621px]:hidden" data-guide-menu>
+        <summary aria-label="Page actions" title="Page actions" class="grid size-12 list-none place-items-center rounded-[0.75rem] border border-outline bg-surface text-muted-label transition-[background-color,box-shadow,transform] duration-(--duration-fast) [corner-shape:squircle] hover:bg-surface-hover active:scale-[.96] [&::-webkit-details-marker]:hidden">
+          <Icon name="export" size={20} />
+        </summary>
+        <div class="absolute end-0 z-40 mt-2 grid min-w-52 gap-1 rounded-lg border border-outline bg-surface-elevated p-1.5 shadow-(--shadow-md)">
+          <button type="button" data-guide-copy class="flex min-h-11 items-center gap-2.5 rounded-md border-0 bg-transparent px-3 py-2.5 text-start text-sm hover:bg-surface-hover focus-visible:bg-surface-hover">
+            <>
+              <Icon name="copy" size={18} class="text-accent" />
+              <span data-guide-copy-label>Copy page</span>
+            </>
+          </button>
+          <button type="button" data-guide-download class="flex min-h-11 items-center gap-2.5 rounded-md border-0 bg-transparent px-3 py-2.5 text-start text-sm hover:bg-surface-hover focus-visible:bg-surface-hover">
+            <Icon name="file-md" size={18} class="text-accent" />
+            Download Markdown
+          </button>
+          <button type="button" data-guide-print class="flex min-h-11 items-center gap-2.5 rounded-md border-0 bg-transparent px-3 py-2.5 text-start text-sm hover:bg-surface-hover focus-visible:bg-surface-hover">
+            <Icon name="file-pdf" size={18} class="text-accent" />
+            Print / Save as PDF
+          </button>
+        </div>
+      </details>
+    </div>
+  ) : (
+    <aside class="hidden self-start rounded-[0.75rem] border border-outline bg-surface p-1.5 shadow-(--shadow-sm) [corner-shape:squircle] min-[1280px]:sticky min-[1280px]:top-8 min-[1280px]:mt-3 min-[1280px]:block print:hidden">
+      <div class="flex min-h-12 items-center gap-2 px-3 text-sm font-semibold">
+        <Icon name="clipboard-text" size={18} class="text-muted-label" />
+        <span>On this page</span>
+      </div>
+      <GuideIndex {sections} />
+    </aside>
+  )
+}
+
+<style>
+  :root {
+    --acc-expand: 250ms;
+    --acc-collapse: 250ms;
+    --acc-chevron: 250ms;
+    --acc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .t-acc-panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--acc-collapse) var(--acc-ease);
+  }
+  .t-acc[data-open="true"] .t-acc-panel {
+    grid-template-rows: 1fr;
+    transition: grid-template-rows var(--acc-expand) var(--acc-ease);
+  }
+  .t-acc-panel-inner {
+    overflow: hidden;
+    opacity: 0;
+    filter: blur(2px);
+    transition:
+      opacity var(--acc-collapse) var(--acc-ease),
+      filter var(--acc-collapse) var(--acc-ease);
+  }
+  .t-acc[data-open="true"] .t-acc-panel-inner {
+    opacity: 1;
+    filter: blur(0);
+    transition:
+      opacity var(--acc-expand) var(--acc-ease),
+      filter var(--acc-expand) var(--acc-ease);
+  }
+  .t-acc-chevron {
+    display: inline-flex;
+    transform: scaleY(1);
+    transform-origin: center;
+    transition: transform var(--acc-chevron) var(--acc-ease);
+  }
+  .t-acc-chevron :global(path) {
+    vector-effect: non-scaling-stroke;
+  }
+  .t-acc[data-open="true"] .t-acc-chevron {
+    transform: scaleY(-1);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .t-acc-panel,
+    .t-acc-panel-inner,
+    .t-acc-chevron {
+      transition: none !important;
+    }
+  }
+</style>

@@ -32,8 +32,12 @@ import eye from "@phosphor-icons/core/duotone/eye-duotone.svg?raw";
 import eyeSlash from "@phosphor-icons/core/duotone/eye-slash-duotone.svg?raw";
 import warning from "@phosphor-icons/core/bold/warning-circle-bold.svg?raw";
 import system from "@phosphor-icons/core/duotone/desktop-duotone.svg?raw";
+import fileMd from "@phosphor-icons/core/duotone/file-md-duotone.svg?raw";
+import filePdf from "@phosphor-icons/core/duotone/file-pdf-duotone.svg?raw";
+import clipboardText from "@phosphor-icons/core/duotone/clipboard-text-duotone.svg?raw";
+import exportIcon from "@phosphor-icons/core/duotone/export-duotone.svg?raw";
 
-export type IconName = "menu" | "close" | "sun" | "moon" | "chevron-right" | "chevron-down" | "copy" | "plus" | "heart" | "more" | "pin" | "home" | "actions" | "forms" | "navigation" | "data" | "feedback" | "overlays" | "layout" | "marketing" | "check" | "user" | "settings" | "search" | "mail" | "code" | "external" | "wrap" | "wrap-on" | "eye" | "eye-slash" | "warning" | "system";
+export type IconName = "menu" | "close" | "sun" | "moon" | "chevron-right" | "chevron-down" | "copy" | "plus" | "heart" | "more" | "pin" | "home" | "actions" | "forms" | "navigation" | "data" | "feedback" | "overlays" | "layout" | "marketing" | "check" | "user" | "settings" | "search" | "mail" | "code" | "external" | "wrap" | "wrap-on" | "eye" | "eye-slash" | "warning" | "system" | "file-md" | "file-pdf" | "clipboard-text" | "export";
 interface Props {
   name: IconName;
   size?: number;
@@ -74,6 +78,10 @@ const icons: Record<IconName, string> = {
   "eye-slash": eyeSlash,
   warning,
   system,
+  "file-md": fileMd,
+  "file-pdf": filePdf,
+  "clipboard-text": clipboardText,
+  export: exportIcon,
   "wrap-on": wrapOn
 };
 const paths = icons[name].replace(/^<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
