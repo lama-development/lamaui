@@ -11,11 +11,11 @@ const { id = "accent-picker" } = Astro.props;
   <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles}`} aria-label="Choose accent color, current: Lime" title="Accent color: Lime" aria-expanded="false" aria-controls={`${id}-colors`} data-accent-trigger>
     <span class="size-5 rounded-full border border-black/10 bg-accent" aria-hidden="true"></span>
   </button>
-  <div id={`${id}-colors`} class="lui-accent-dock absolute right-0 bottom-[calc(100%+0.5rem)] z-10 flex w-full flex-col gap-1" role="group" aria-label="Accent color" inert data-accent-dock>
+  <div id={`${id}-colors`} class="lui-accent-dock absolute right-0 bottom-[calc(100%+0.5rem)] z-10 flex w-full flex-col gap-1 rounded-lg border border-outline bg-surface-elevated p-1 shadow-(--shadow-md) [corner-shape:squircle]" role="group" aria-label="Accent color" inert data-accent-dock>
     {
       accentPresets.map((preset) => (
         <button type="button" class="lui-accent-choice relative flex h-9 w-full cursor-pointer items-center justify-center rounded-md border border-transparent bg-transparent transition-colors duration-(--duration-fast) hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" aria-label={`${preset.label} accent`} aria-pressed={preset.value === "lime"} data-accent-choice={preset.value}>
-          <span class="lui-accent-swatch block h-5 w-7 rotate-6 rounded-[4px] border border-black/10 shadow-(--shadow-sm)" style={`background: light-dark(${preset.light}, ${preset.dark})`} aria-hidden="true" />
+          <span class="lui-accent-swatch block size-5 rounded-full border border-black/10 shadow-(--shadow-sm)" style={`background: light-dark(${preset.light}, ${preset.dark})`} aria-hidden="true" />
         </button>
       ))
     }
