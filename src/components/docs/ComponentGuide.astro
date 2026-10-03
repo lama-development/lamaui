@@ -12,7 +12,10 @@ const { title, slug, description, sections } = Astro.props;
 ---
 
 <div data-guide data-guide-title={title} data-guide-slug={slug} data-guide-description={description}>
-  <GuideActions />
+  <div class="flex items-center justify-between gap-4">
+    <slot name="breadcrumb" />
+    <GuideActions />
+  </div>
   <Toast id={`guide-export-toast-${slug}`} title="Export complete" data-guide-toast>
     <span data-guide-toast-message>Page export completed.</span>
   </Toast>

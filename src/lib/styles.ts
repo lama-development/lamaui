@@ -9,7 +9,7 @@ export const cardStyles = cx("lui-card rounded-lg border border-card-outline bg-
 
 export const interactiveStyles = cx("lui-interactive transition-[background-color,border-color,box-shadow] duration-(--duration-fast) hover:bg-surface-hover");
 
-export const menuStyles = cx("lui-menu absolute z-60 min-w-52 origin-top -translate-y-1 scale-[.97] rounded-lg border border-outline bg-surface-elevated p-1.5 opacity-0 shadow-(--shadow-md) transition-[transform,opacity] duration-(--duration-normal) ease-(--ease-standard) [corner-shape:squircle] [&.is-closing]:-translate-y-0.5 [&.is-closing]:scale-[.99] [&.is-closing]:opacity-0 [&.is-open]:translate-y-0 [&.is-open]:scale-100 [&.is-open]:opacity-100 [details[open]>&]:translate-y-0 [details[open]>&]:scale-100 [details[open]>&]:opacity-100");
+export const menuStyles = cx("lui-menu absolute z-60 min-w-52 origin-top -translate-y-1 scale-[.97] rounded-lg border border-outline bg-surface-elevated p-1.5 opacity-0 shadow-(--shadow-dropdown) transition-[transform,opacity] duration-(--duration-normal) ease-(--ease-standard) [corner-shape:squircle] [&.is-closing]:-translate-y-0.5 [&.is-closing]:scale-[.99] [&.is-closing]:opacity-0 [&.is-open]:translate-y-0 [&.is-open]:scale-100 [&.is-open]:opacity-100 [details[open]>&]:translate-y-0 [details[open]>&]:scale-100 [details[open]>&]:opacity-100");
 
 export const menuItemStyles = cx("lui-menu-item flex w-full cursor-pointer items-center gap-2.5 rounded-[.625rem] border-0 bg-transparent px-3 py-2.5 text-left text-label no-underline hover:bg-surface-hover focus-visible:bg-surface-hover");
 
@@ -21,7 +21,7 @@ export const dialogCloseStyles = cx("lui-dialog-close -mt-1 -mr-1 grid size-8 fl
 
 export const primaryStyles = cx("lui-primary bg-accent text-accent-label shadow-(--shadow-control) hover:bg-accent-hover");
 
-export const secondaryStyles = cx("lui-secondary bg-surface text-label shadow-(--shadow-sm) hover:bg-surface-hover [&.lui-secondary]:border-outline");
+export const secondaryStyles = cx("lui-secondary bg-surface text-label shadow-(--shadow-control) hover:bg-surface-hover [&.lui-secondary]:border-outline");
 
 export const outlineStyles = cx("lui-outline bg-transparent text-label hover:bg-surface-hover [&.lui-outline]:border-outline");
 

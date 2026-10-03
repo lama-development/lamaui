@@ -3,6 +3,7 @@ import { menuItemStyles } from "@/lib/styles";
 import Button from "@/components/ui/Button.astro";
 import IconButton from "@/components/ui/IconButton.astro";
 import ButtonGroup from "@/components/ui/ButtonGroup.astro";
+import SplitButton from "@/components/ui/SplitButton.astro";
 import Toggle from "@/components/ui/Toggle.astro";
 import ToggleGroup from "@/components/ui/ToggleGroup.astro";
 import Icon from "@/components/ui/Icon.astro";
@@ -97,11 +98,27 @@ const selectOptions = [
           <>
             <Button>Primary</Button>
             <Button variant="secondary">Secondary</Button>
+            <Button icon="plus">With icon</Button>
+            <Button variant="secondary" icon="external" iconPosition="end">
+              Open link
+            </Button>
             <Button variant="ghost">Ghost</Button>
             <Button variant="destructive">Delete</Button>
             <Button disabled>Disabled</Button>
           </>
         </div>
+      )
+    }
+    {
+      slug === "split-button" && (
+        <SplitButton
+          label="Download PDF"
+          icon="file-pdf"
+          options={[
+            { label: "Download Markdown", icon: "file-md" },
+            { label: "Copy as text", icon: "clipboard-text" }
+          ]}
+        />
       )
     }
     {

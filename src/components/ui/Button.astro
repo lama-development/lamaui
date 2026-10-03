@@ -1,5 +1,6 @@
 ---
 import { controlStyles, primaryStyles, secondaryStyles, outlineStyles, ghostStyles, destructiveStyles, smallControlStyles, largeControlStyles } from "@/lib/styles";
+import Icon, { type IconName } from "@/components/ui/Icon.astro";
 import type { Size, Variant } from "@/types";
 import { cx } from "@/lib/classes";
 interface Props {
@@ -9,23 +10,29 @@ interface Props {
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
   fullWidth?: boolean;
+  icon?: IconName;
+  iconPosition?: "start" | "end";
   class?: string;
   [key: string]: any;
 }
-const { variant = "primary", size = "md", href, type = "button", disabled = false, fullWidth = false, class: className, ...rest } = Astro.props;
+const { variant = "primary", size = "md", href, type = "button", disabled = false, fullWidth = false, icon, iconPosition = "start", class: className, ...rest } = Astro.props;
 const variants = { primary: primaryStyles, secondary: secondaryStyles, outline: outlineStyles, ghost: ghostStyles, destructive: destructiveStyles };
 const sizes = { sm: smallControlStyles, md: "", lg: largeControlStyles };
-const classes = cx(controlStyles, variants[variant], sizes[size], fullWidth && "w-full", className);
+const classes = cx(controlStyles, variants[variant], sizes[size], (variant === "primary" || variant === "secondary") && "min-w-32", fullWidth && "w-full", className);
 ---
 
 {
   href ? (
     <a {...rest} href={disabled ? undefined : href} aria-disabled={disabled || undefined} class={classes}>
+      {icon && iconPosition === "start" && <Icon name={icon} size={18} />}
       <slot />
+      {icon && iconPosition === "end" && <Icon name={icon} size={18} />}
     </a>
   ) : (
     <button {...rest} {type} {disabled} class={classes}>
+      {icon && iconPosition === "start" && <Icon name={icon} size={18} />}
       <slot />
+      {icon && iconPosition === "end" && <Icon name={icon} size={18} />}
     </button>
   )
 }

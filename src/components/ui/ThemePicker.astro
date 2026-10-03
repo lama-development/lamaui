@@ -54,6 +54,11 @@ const options = [
       moveHighlight(root, animate);
     });
   };
+  const cssTimeToMilliseconds = (value: string) => {
+    const match = value.trim().match(/^([\d.]+)(ms|s)$/);
+    if (!match) return 0;
+    return Number(match[1]) * (match[2] === "s" ? 1000 : 1);
+  };
   let activeTransition: ViewTransition | undefined;
   let latestRequest = 0;
   const revealWithoutViewTransition = async (update: () => void, origin: HTMLElement) => {
@@ -113,7 +118,7 @@ const options = [
     const y = bounds.top + bounds.height / 2;
     const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
     const styles = getComputedStyle(document.documentElement);
-    const duration = parseFloat(styles.getPropertyValue("--duration-slow"));
+    const duration = cssTimeToMilliseconds(styles.getPropertyValue("--duration-slow"));
     document.documentElement.classList.add("theme-reveal");
     const transition = document.startViewTransition(update);
     activeTransition = transition;

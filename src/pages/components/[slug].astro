@@ -26,8 +26,8 @@ const usage = component.usage;
 ---
 
 <DocsLayout title={`${component.name} - LamaUI`} description={component.description} currentSlug={component.slug}>
-  <Breadcrumb items={[{ label: "Components", href: "/" }, { label: component.group, href: `/#${component.groupSlug}` }, { label: component.name }]} />
   <ComponentGuide title={component.name} slug={component.slug} description={component.description} {sections}>
+    <Breadcrumb slot="breadcrumb" items={[{ label: "Components", href: "/" }, { label: component.group, href: `/#${component.groupSlug}` }, { label: component.name }]} />
     <header data-guide-no-export class="docs-page-header mt-4 mb-8 [&_h1]:m-0 [&_h1]:text-[clamp(2rem,4vw,2.75rem)] [&_h1]:leading-[1.08] [&_h1]:tracking-[-0.035em] [&_p]:m-[0.75rem_0_0] [&_p]:max-w-2xl [&_p]:text-muted-label">
       <h1>{component.name}</h1>
       <p>{component.description}</p>

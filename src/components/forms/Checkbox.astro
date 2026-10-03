@@ -10,4 +10,15 @@ interface Props {
 const { id, label, description, checked = false, disabled = false, ...rest } = Astro.props;
 ---
 
-<label for={id} class:list={["lui-choice grid cursor-pointer grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-3 has-[:disabled]:cursor-not-allowed has-[:disabled]:text-muted-label has-[:disabled]:opacity-50 [&.has-description]:items-start", description && "has-description"]}><input {...rest} {id} type="checkbox" {checked} {disabled} class="lui-choice-control m-0 size-5 appearance-none rounded-[4px] border border-outline bg-input checked:border-accent checked:bg-accent checked:bg-[url('data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2020%2020%22%3E%3Cpath%20d=%22m5%2010%203%203%207-7%22%20fill=%22none%22%20stroke=%22white%22%20stroke-width=%222%22/%3E%3C/svg%3E')] focus-visible:outline-2 focus-visible:outline-ring" /><span><span class="block leading-5 font-semibold">{label}</span>{description && <span class="muted block text-sm text-muted-label">{description}</span>}</span></label>
+<label for={id} class:list={["lui-choice grid cursor-pointer grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-3 has-[:disabled]:cursor-not-allowed has-[:disabled]:text-muted-label has-[:disabled]:opacity-50 [&.has-description]:items-start", description && "has-description"]}><input {...rest} {id} type="checkbox" {checked} {disabled} class="lui-checkbox lui-choice-control m-0 size-5 appearance-none rounded-[4px] border border-outline bg-input checked:border-accent checked:bg-accent focus-visible:outline-2 focus-visible:outline-ring" /><span><span class="block leading-5 font-semibold">{label}</span>{description && <span class="muted block text-sm text-muted-label">{description}</span>}</span></label>
+
+<style>
+  .lui-checkbox:checked::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: var(--accent-label);
+    mask: url("data:image/svg+xml,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2020%2020%22%3E%3Cpath%20d=%22m5%2010%203%203%207-7%22%20fill=%22none%22%20stroke=%22black%22%20stroke-width=%222%22/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+</style>

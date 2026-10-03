@@ -83,6 +83,17 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
       }
     });
   });
+  root.querySelectorAll("[data-guide-copy-link]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(`${location.origin}${location.pathname}`);
+        closeActionMenus(true);
+        showToast("Link copied", "Page link copied to the clipboard.");
+      } catch {
+        showToast("Could not copy link", "Copy the page address from your browser instead.");
+      }
+    });
+  });
   root.querySelectorAll("[data-guide-download]").forEach((button) => {
     button.addEventListener("click", () => {
       const url = URL.createObjectURL(new Blob([documentMarkdown()], { type: "text/markdown;charset=utf-8" }));
@@ -97,11 +108,25 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
       showToast("Download started", `${root.dataset.guideSlug}.md is being downloaded.`);
     });
   });
+  root.querySelectorAll<HTMLButtonElement>("[data-guide-pdf]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      closeActionMenus(true);
+      try {
+        const { downloadGuidePdf } = await import("@/lib/guide-pdf");
+        downloadGuidePdf(content, root.dataset.guideTitle || "Guide", root.dataset.guideDescription || "", root.dataset.guideSlug || "guide", `${location.origin}${location.pathname}`);
+        showToast("Download started", `${root.dataset.guideSlug}.pdf is being downloaded.`);
+      } catch {
+        showToast("Could not download PDF", "Try again or use the Print option.");
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
   root.querySelectorAll("[data-guide-print]").forEach((button) => {
     button.addEventListener("click", () => {
       closeActionMenus(true);
-      showToast("Print dialog opened", "Choose Save as PDF to export this page.");
-      window.requestAnimationFrame(() => window.print());
+      window.print();
     });
   });
   document.addEventListener("pointerdown", (event) => {

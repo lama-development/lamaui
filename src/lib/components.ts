@@ -21,7 +21,16 @@ export const componentGroups: ComponentGroup[] = [
     name: "Actions",
     slug: "actions",
     icon: "actions",
-    components: [component("Icon", "icon", "A consistent stroke icon set for controls and navigation.", '<Icon name="settings" size={20} />'), component("Button", "button", "Triggers an action or links to another view.", '<Button variant="primary" size="md">Save</Button>'), component("IconButton", "icon-button", "A compact action with an accessible text label.", '<IconButton label="Copy"><Icon name="copy" /></IconButton>'), component("ButtonGroup", "button-group", "Joins related actions into one control group."), component("Toggle", "toggle", "A button that represents an on or off state."), component("ToggleGroup", "toggle-group", "A coordinated set of mutually exclusive toggles."), component("ThemePicker", "theme-picker", "Chooses System, Light, or Dark with compact icon buttons.", 'import ThemePicker from "@/components/ui/ThemePicker.astro";\n\n<ThemePicker label="Color theme" />')]
+    components: [
+      component("Icon", "icon", "A consistent stroke icon set for controls and navigation.", '<Icon name="settings" size={20} />'),
+      component("Button", "button", "Triggers an action or links to another view, with optional leading or trailing icons.", '<Button variant="primary" icon="plus">Create</Button>'),
+      component("SplitButton", "split-button", "Combines a primary action with a menu of closely related alternatives.", '<SplitButton\n  label="Download PDF"\n  icon="file-pdf"\n  href="/report.pdf"\n  download\n  options={[\n    { label: "Download Markdown", href: "/report.md", download: true, icon: "file-md" },\n    { label: "Copy as text", icon: "clipboard-text" }\n  ]}\n/>'),
+      component("IconButton", "icon-button", "A compact action with an accessible text label.", '<IconButton label="Copy"><Icon name="copy" /></IconButton>'),
+      component("ButtonGroup", "button-group", "Joins related actions into one control group."),
+      component("Toggle", "toggle", "A button that represents an on or off state."),
+      component("ToggleGroup", "toggle-group", "A coordinated set of mutually exclusive toggles."),
+      component("ThemePicker", "theme-picker", "Chooses System, Light, or Dark with compact icon buttons.", 'import ThemePicker from "@/components/ui/ThemePicker.astro";\n\n<ThemePicker label="Color theme" />')
+    ]
   },
   {
     name: "Forms",
