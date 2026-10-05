@@ -49,11 +49,11 @@ const year = new Date().getFullYear();
       import "@/scripts/surfaces";
     </script>
     <a href="#main-content" class="skip-link fixed inset-[8px_auto_auto_8px] z-200 transform-[translateY(-80px)] rounded-md bg-accent px-3 py-2 text-sm font-semibold text-accent-label focus:transform-[translateY(0)] print:hidden">Skip to content</a>
-    <header class="docs-mobile-header hidden print:hidden [@media(width<=860px)]:sticky [@media(width<=860px)]:top-0 [@media(width<=860px)]:z-40 [@media(width<=860px)]:flex [@media(width<=860px)]:min-h-14 [@media(width<=860px)]:items-center [@media(width<=860px)]:justify-between [@media(width<=860px)]:border-b [@media(width<=860px)]:border-outline [@media(width<=860px)]:bg-surface [@media(width<=860px)]:p-[0.375rem_0.75rem] [@media(width<=860px)]:[&_.docs-brand]:flex-none [@media(width<=860px)]:[&_.docs-brand_small]:hidden">
+    <header data-surface-level="2" class="docs-mobile-header hidden print:hidden [@media(width<=860px)]:sticky [@media(width<=860px)]:top-0 [@media(width<=860px)]:z-40 [@media(width<=860px)]:flex [@media(width<=860px)]:min-h-14 [@media(width<=860px)]:items-center [@media(width<=860px)]:justify-between [@media(width<=860px)]:border-b [@media(width<=860px)]:border-outline [@media(width<=860px)]:bg-surface [@media(width<=860px)]:p-[0.375rem_0.75rem] [@media(width<=860px)]:[&_.docs-brand]:flex-none [@media(width<=860px)]:[&_.docs-brand_small]:hidden">
       <div class="docs-brand flex min-w-0 flex-1 items-center gap-2.5 rounded-md text-label [&_strong]:block [&_strong]:text-lg [&_strong]:leading-none"><button type="button" class="docs-mascot grid size-8 flex-none place-items-center rounded-full border-0 bg-transparent p-0" aria-label="Play with the llama" data-brand-llama><Llama class="docs-mark size-8" width={32} height={32} aria-hidden="true" focusable="false" /></button><a href="/" class="rounded-sm no-underline"><strong>LamaUI</strong></a></div>
       <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles}`} aria-label="Open navigation" aria-controls="docs-navigation" aria-expanded="false" data-docs-open><Icon name="menu" /></button>
     </header>
-    <aside id="docs-navigation" class="docs-sidebar fixed inset-[0_auto_0_0] z-50 w-60 border-r border-outline bg-surface print:hidden [@media(width<=860px)]:z-80 [@media(width<=860px)]:transform-[translateX(-105%)] [@media(width<=860px)]:shadow-(--shadow-lg) [@media(width<=860px)]:data-[open=true]:transform-[translateX(0)]" data-open="false" aria-label="Documentation navigation">
+    <aside data-surface-level="2" id="docs-navigation" class="docs-sidebar fixed inset-[0_auto_0_0] z-50 w-60 border-r border-outline bg-surface print:hidden [@media(width<=860px)]:z-80 [@media(width<=860px)]:transform-[translateX(-105%)] [@media(width<=860px)]:shadow-(--shadow-lg) [@media(width<=860px)]:data-[open=true]:transform-[translateX(0)]" data-open="false" aria-label="Documentation navigation">
       <div class="docs-sidebar-inner flex h-full min-h-0 flex-col px-3 pb-3">
         <div class="docs-sidebar-head -mx-3 flex min-h-14 flex-none items-center gap-2 border-b border-outline px-3 py-1.5">
           <div class="docs-brand flex min-w-0 flex-1 items-center gap-2.5 rounded-md text-label [&_strong]:block [&_strong]:text-lg [&_strong]:leading-none"><button type="button" class="docs-mascot grid size-8 flex-none place-items-center rounded-full border-0 bg-transparent p-0" aria-label="Play with the llama" data-brand-llama><Llama class="docs-mark size-8" width={32} height={32} aria-hidden="true" focusable="false" /></button><a href="/" class="rounded-sm no-underline"><strong>LamaUI</strong></a></div>
@@ -91,7 +91,7 @@ const year = new Date().getFullYear();
             })
           }
         </nav>
-        <div class="docs-sidebar-foot -mx-3 flex flex-none items-center gap-2 border-t border-outline px-3 pt-3">
+        <div class="docs-sidebar-foot relative z-1 -mx-3 flex flex-none items-center gap-2 border-t border-outline px-3 pt-3">
           <ThemePicker />
           <AccentPicker id="sidebar-accent" />
         </div>

@@ -1,6 +1,7 @@
 ---
 import { controlStyles, ghostStyles, iconControlStyles } from "@/lib/styles";
 import Icon from "@/components/ui/Icon.astro";
+import Tooltip from "@/components/overlays/Tooltip.astro";
 interface Props {
   label?: string;
   class?: string;
@@ -14,13 +15,15 @@ const options = [
 ---
 
 <div class:list={["lamaui-theme-picker min-w-0", className]} data-theme-picker>
-  <div class="lamaui-theme-icons relative isolate inline-flex gap-1 rounded-lg border border-outline bg-surface p-1 [corner-shape:squircle]" role="group" aria-label={label}>
+  <div data-surface-level="2" data-surface-lift="1" class="lamaui-theme-icons lamaui-surface relative isolate inline-flex gap-1 rounded-lg border border-outline p-1 [corner-shape:squircle]" role="group" data-fluid-hover aria-label={label}>
     <span class="t-tabs-pill" aria-hidden="true"></span>
     {
       options.map((option) => (
-        <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} relative z-1 rounded-[calc(var(--radius-lg)-0.3125rem)] hover:text-label aria-pressed:text-label aria-pressed:hover:bg-transparent aria-pressed:hover:text-label`} aria-label={`${option.label} theme`} title={`${option.label} theme`} aria-pressed={option.value === "system"} data-theme-choice={option.value}>
-          <Icon name={option.icon} />
-        </button>
+        <Tooltip text={option.label}>
+          <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} relative z-1 rounded-[calc(var(--radius-lg)-0.3125rem)] hover:text-label aria-pressed:text-accent aria-pressed:hover:bg-transparent aria-pressed:hover:text-accent`} aria-label={option.label} aria-pressed={option.value === "system"} data-theme-choice={option.value}>
+            <Icon name={option.icon} />
+          </button>
+        </Tooltip>
       ))
     }
   </div>
@@ -39,7 +42,8 @@ const options = [
     if (!pill || !active) return;
     const previous = pill.style.transition;
     if (!animate) pill.style.transition = "none";
-    pill.style.transform = `translateX(${active.offsetLeft}px)`;
+    const tooltip = active.closest<HTMLElement>("[data-tooltip]");
+    pill.style.transform = `translateX(${tooltip?.offsetLeft ?? active.offsetLeft}px)`;
     pill.style.width = `${active.offsetWidth}px`;
     if (!animate) {
       void pill.offsetWidth;
@@ -192,7 +196,7 @@ const options = [
     pointer-events: none;
   }
   .lamaui-theme-icons {
-    --tabs-pill-bg: var(--muted);
+    --tabs-pill-bg: var(--accent-subtle);
   }
   .lamaui-theme-icons .t-tabs-pill {
     top: 4px;

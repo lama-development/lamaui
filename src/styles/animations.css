@@ -379,6 +379,18 @@ dialog[open]::backdrop {
   }
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+html:not(.theme-reveal)::view-transition-old(root),
+html:not(.theme-reveal)::view-transition-new(root) {
+  animation-duration: var(--duration-slow);
+  animation-timing-function: var(--ease-standard);
+}
+
 html.theme-reveal::view-transition-image-pair(root) {
   isolation: auto;
 }
