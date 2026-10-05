@@ -10,7 +10,7 @@ const { sections } = Astro.props;
     {
       sections.map((section) => (
         <li>
-          <a href={`#${section.id}`} data-guide-anchor={section.id} class="flex min-h-11 items-center rounded-md px-3 py-2 text-sm font-semibold leading-snug text-muted-label no-underline transition-[background-color,color] duration-(--duration-fast) [corner-shape:squircle] hover:bg-surface-hover hover:text-label aria-[current=location]:bg-accent-subtle aria-[current=location]:text-accent">
+          <a href={`#${section.id}`} data-guide-anchor={section.id} class="guide-index-anchor flex min-h-11 items-center rounded-md px-3 py-2 text-sm leading-snug font-semibold text-muted-label no-underline [corner-shape:squircle] hover:bg-surface-hover hover:text-label aria-[current=location]:bg-accent-subtle aria-[current=location]:text-accent">
             {section.label}
           </a>
         </li>

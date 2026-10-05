@@ -1,17 +1,9 @@
 @import "tailwindcss";
 @import "./theme.css";
-
-@font-face {
-  font-family: "Google Sans Flex";
-  src: url("/fonts/google-sans-flex.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-}
+@import "./fonts.css";
+@import "./animations.css";
 
 @theme inline {
-  --leading-tight: 1.15;
-  --leading-normal: 1.55;
   --color-page: var(--page);
   --color-label: var(--label);
   --color-heading: var(--heading);
@@ -47,15 +39,12 @@
   *::before,
   *::after {
     box-sizing: border-box;
-    transition-property: background-color;
-    transition-duration: var(--duration-fast);
-    transition-timing-function: var(--ease-standard);
   }
   * {
     scrollbar-width: none;
   }
-  .lui-icon,
-  .lui-checkbox {
+  .lamaui-icon,
+  .lamaui-checkbox {
     position: relative;
   }
   *::-webkit-scrollbar {
@@ -63,7 +52,6 @@
   }
   h1 {
     color: var(--heading);
-    font-weight: 700;
   }
   h2,
   h3,
@@ -71,7 +59,6 @@
   h5,
   h6 {
     color: var(--heading);
-    font-weight: 600;
   }
   html {
     background: var(--surface);
@@ -83,27 +70,6 @@
     margin: 0;
     background: var(--page);
     color: var(--label);
-    font-family: var(--font-sans);
-    font-size: var(--text-base);
-    font-weight: 400;
-    line-height: var(--leading-tight);
-    text-rendering: optimizeLegibility;
-  }
-  b,
-  strong {
-    font-weight: 700;
-  }
-  p,
-  li,
-  dd,
-  blockquote {
-    line-height: var(--leading-tight);
-  }
-  button,
-  input,
-  select,
-  textarea {
-    font: inherit;
   }
   a {
     color: inherit;
@@ -145,150 +111,11 @@
   }
 }
 
-dialog[open]:not([data-drawer]) {
-  animation: dialog-in var(--duration-normal) var(--ease-standard);
-}
-dialog[open]::backdrop {
-  animation: fade-in var(--duration-fast) ease-out;
-}
-[data-drawer][open] {
-  animation: drawer-in var(--duration-slow) var(--ease-standard);
-}
 [data-toast].flex {
   display: grid;
-}
-[data-toast].is-visible {
-  animation: toast-in var(--duration-normal) var(--ease-standard);
-}
-[data-toast].is-leaving {
-  animation: toast-out var(--duration-fast) ease-in forwards;
-}
-@keyframes dialog-in {
-  from {
-    opacity: 0;
-    transform: translateY(0.5rem) scale(0.975);
-  }
-}
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-}
-@keyframes drawer-in {
-  from {
-    opacity: 0;
-    transform: translateX(2rem);
-  }
-}
-@keyframes toast-in {
-  from {
-    opacity: 0;
-    transform: translateY(0.5rem);
-  }
-}
-@keyframes toast-out {
-  to {
-    opacity: 0;
-    transform: translateY(0.35rem) scale(0.985);
-  }
 }
 @media (max-width: 860px) {
   .docs-navigation-open {
     overflow: hidden;
   }
-}
-@keyframes navbar-menu-in {
-  from {
-    opacity: 0;
-    transform: translateY(-0.5rem);
-  }
-}
-
-/* Hover settles out slowly, while entering feels immediate. */
-:where([class*="hover:bg-"], .lui-control, .lui-interactive) {
-  transition-duration: 240ms;
-  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
-}
-
-/* Small controls get a quiet expanding state layer behind the click ripple. */
-.lui-icon::before,
-.lui-checkbox::after,
-[data-switch-thumb]::after {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-  border-radius: 50%;
-  background: currentColor;
-  opacity: 0;
-  transform: scale(0.55);
-  transition: transform 240ms cubic-bezier(0.2, 0, 0, 1), opacity 240ms ease-out;
-}
-.lui-icon::before {
-  inset: 2px;
-}
-.lui-checkbox::after,
-[data-switch-thumb]::after {
-  inset: -10px;
-  background: var(--accent);
-}
-@media (hover: hover) and (pointer: fine) {
-  :where([class*="hover:bg-"], .lui-control, .lui-interactive):hover {
-    transition-duration: 160ms;
-  }
-  .lui-icon:not(:disabled):not([aria-disabled="true"]):hover::before,
-  .lui-choice:not(:has(:disabled)):hover .lui-checkbox::after,
-  .lui-switch:not(:has(:disabled)):hover [data-switch-thumb]::after {
-    opacity: 0.08;
-    transform: scale(1);
-    transition-duration: 160ms;
-  }
-}
-.docs-mark {
-  transform-origin: 50% 85%;
-}
-.docs-brand strong {
-  transition: color 240ms ease-out;
-}
-.docs-brand:focus-within strong {
-  color: var(--accent);
-}
-@media (hover: hover) and (pointer: fine) {
-  .docs-brand:hover .docs-mark {
-    animation: llama-nod 700ms cubic-bezier(0.2, 0, 0.2, 1);
-  }
-  .docs-brand:hover strong {
-    color: var(--accent);
-  }
-}
-@keyframes llama-nod {
-  0%, 100% { transform: translateY(0) rotate(0); }
-  25% { transform: translateY(-3px) rotate(-10deg); }
-  55% { transform: translateY(-2px) rotate(7deg); }
-  80% { transform: translateY(-1px) rotate(-3deg); }
-}
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-  }
-}
-
-/* Reveal the new palette above a still snapshot of the previous theme. */
-html.theme-reveal::view-transition-image-pair(root) {
-  isolation: auto;
-}
-html.theme-reveal::view-transition-old(root),
-html.theme-reveal::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-html.theme-reveal::view-transition-old(root) {
-  z-index: 1;
-}
-html.theme-reveal::view-transition-new(root) {
-  z-index: 2;
 }

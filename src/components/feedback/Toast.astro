@@ -8,11 +8,11 @@ interface Props {
   class?: string;
   [key: string]: any;
 }
-const { id = "lui-toast", title = "Saved", variant = "success", class: className, ...rest } = Astro.props;
+const { id = "lamaui-toast", title = "Saved", variant = "success", class: className, ...rest } = Astro.props;
 ---
 
-<div {...rest} {id} role="status" aria-live="polite" class:list={["lui-toast fixed right-4 bottom-4 z-100 hidden w-[min(24rem,calc(100%-2rem))] grid-cols-[1.5rem_minmax(0,1fr)_2rem] items-start gap-x-3 rounded-2xl border border-outline bg-surface-elevated p-4 shadow-(--shadow-lg)", className]} data-toast>
-  <span class:list={["lui-toast-icon grid h-6 w-6 place-items-center self-center font-bold", variant === "success" ? "text-success" : variant === "warning" ? "text-warning" : "text-destructive"]}><Icon name={variant === "success" ? "check" : variant === "warning" ? "feedback" : "close"} size={20} /></span><div class="lui-toast-body min-w-0 *:first:leading-[1.35] [&>_div]:mt-0.75 [&>_div]:leading-tight">
+<div {...rest} {id} role="status" aria-live="polite" class:list={["lamaui-toast fixed right-4 bottom-4 z-100 hidden w-[min(24rem,calc(100%-2rem))] grid-cols-[1.5rem_minmax(0,1fr)_2rem] items-start gap-x-3 rounded-2xl border border-outline bg-surface-elevated p-4 shadow-(--shadow-lg)", className]} data-toast>
+  <span class:list={["lamaui-toast-icon grid h-6 w-6 place-items-center self-center font-bold", variant === "success" ? "text-success" : variant === "warning" ? "text-warning" : "text-destructive"]}><Icon name={variant === "success" ? "check" : variant === "warning" ? "feedback" : "close"} size={20} /></span><div class="lamaui-toast-body min-w-0 *:first:leading-[1.35] [&>_div]:mt-0.75 [&>_div]:leading-tight">
     <p class="m-0 font-bold">{title}</p><div class="muted text-sm text-muted-label">
       <slot />
     </div>

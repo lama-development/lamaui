@@ -30,8 +30,8 @@ const selected = options.find((o) => o.value === value) ?? options[0];
           </span>
         )
       }
-      <span data-select-value class="inline-block transition-[transform,filter,opacity] duration-(--duration-fast) [&.is-swapping]:-translate-y-1 [&.is-swapping]:opacity-0 [&.is-swapping]:blur-[2px]">{selected?.label}</span>
-    </span><Icon name="chevron-down" size={16} class="shrink-0 text-muted-label transition-transform group-aria-expanded:rotate-180" /></button
+      <span data-select-value class="custom-select-value inline-block [&.is-swapping]:-translate-y-1 [&.is-swapping]:opacity-0 [&.is-swapping]:blur-[2px]">{selected?.label}</span>
+    </span><Icon name="chevron-down" size={16} class="custom-select-chevron shrink-0 text-muted-label group-aria-expanded:rotate-180" /></button
   ><div id={`${id}-list`} role="listbox" aria-labelledby={`${id}-button`} class:list={[`${menuStyles} grid w-full gap-1`, placement === "top" ? "bottom-full mb-2" : "top-full mt-2"]} hidden data-select-list>
     {
       options.map((o) => (

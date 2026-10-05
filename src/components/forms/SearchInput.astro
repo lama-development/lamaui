@@ -9,4 +9,4 @@ interface Props {
 const { label = "Search", class: className, ...rest } = Astro.props;
 ---
 
-<div class:list={["lui-input-with-icon relative", className]}><span aria-hidden="true" class="lui-input-leading pointer-events-none absolute top-[50%] left-3.25 z-1 grid transform-[translateY(-50%)] place-items-center text-muted-label"><Icon name="search" size={18} /></span><Input {...rest} type="search" aria-label={label} class="lui-search-field" /></div>
+<div class:list={["lamaui-input-with-icon relative", className]}><span aria-hidden="true" class="lamaui-input-leading pointer-events-none absolute top-[50%] left-3.25 z-1 grid transform-[translateY(-50%)] place-items-center text-muted-label"><Icon name="search" size={18} /></span><Input {...rest} type="search" aria-label={label} class="lamaui-search-field" /></div>

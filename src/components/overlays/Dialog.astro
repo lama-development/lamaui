@@ -12,7 +12,7 @@ const { id, title, description, size = "md", class: className } = Astro.props;
 const sizes = { sm: "max-w-sm", md: "max-w-lg", lg: "max-w-2xl" };
 ---
 
-<dialog {id} class:list={["lui-dialog fixed inset-0 m-auto w-[calc(100%-2rem)] rounded-2xl border border-outline bg-surface-elevated p-0 text-label shadow-(--shadow-lg) backdrop:bg-overlay", sizes[size], className]}>
+<dialog {id} class:list={["lamaui-dialog fixed inset-0 m-auto w-[calc(100%-2rem)] rounded-2xl border border-outline bg-surface-elevated p-0 text-label shadow-(--shadow-lg) backdrop:bg-overlay", sizes[size], className]}>
   <div class="p-6">
     <header class="mb-5 flex gap-4">
       <div class="flex-1">

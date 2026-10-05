@@ -6,4 +6,4 @@ interface Props {
 const { label, class: className } = Astro.props;
 ---
 
-<div role="group" aria-label={label} class:list={["inline-flex [&_.lui-control]:-ml-px [&_.lui-control]:rounded-none [&_.lui-control:first-child]:ml-0 [&_.lui-control:first-child]:rounded-l-xl [&_.lui-control:last-child]:rounded-r-xl", className]}><slot /></div>
+<div role="group" aria-label={label} data-fluid-hover class:list={["inline-flex [&_.lamaui-control]:-ml-px [&_.lamaui-control]:rounded-none [&_.lamaui-control:first-child]:ml-0 [&_.lamaui-control:first-child]:rounded-l-xl [&_.lamaui-control:last-child]:rounded-r-xl", className]}><slot /></div>

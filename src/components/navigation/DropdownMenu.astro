@@ -9,4 +9,4 @@ interface Props {
 const { label, align = "start", class: className } = Astro.props;
 ---
 
-<details class:list={["group relative inline-block", className]}><summary class={`${controlStyles} ${secondaryStyles} list-none`}>{label}<Icon name="chevron-down" size={16} class="transition-transform group-open:rotate-180" /></summary><div class:list={[`${menuStyles} top-full mt-2`, align === "end" ? "right-0" : "left-0"]}><slot /></div></details>
+<details class:list={["group relative inline-block", className]}><summary class={`${controlStyles} ${secondaryStyles} list-none`}>{label}<Icon name="chevron-down" size={16} class="details-chevron group-open:rotate-180" /></summary><div data-fluid-hover class:list={[`${menuStyles} top-full mt-2`, align === "end" ? "right-0" : "left-0"]}><slot /></div></details>

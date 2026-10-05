@@ -10,10 +10,10 @@ interface Props {
 const { id, label, description, checked = false, disabled = false, ...rest } = Astro.props;
 ---
 
-<label for={id} class:list={["lui-choice grid cursor-pointer grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-3 has-[:disabled]:cursor-not-allowed has-[:disabled]:text-muted-label has-[:disabled]:opacity-50 [&.has-description]:items-start", description && "has-description"]}><input {...rest} {id} type="checkbox" {checked} {disabled} class="lui-checkbox lui-choice-control m-0 size-5 appearance-none rounded-[4px] border border-outline bg-input checked:border-accent checked:bg-accent focus-visible:outline-2 focus-visible:outline-ring" /><span><span class="block leading-5 font-semibold">{label}</span>{description && <span class="muted block text-sm text-muted-label">{description}</span>}</span></label>
+<label for={id} class:list={["lamaui-choice grid cursor-pointer grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-3 has-disabled:cursor-not-allowed has-disabled:text-muted-label has-disabled:opacity-50 [&.has-description]:items-start", description && "has-description"]}><input {...rest} {id} type="checkbox" {checked} {disabled} class="lamaui-checkbox lamaui-choice-control m-0 size-5 appearance-none rounded-sm border border-outline bg-input checked:border-accent checked:bg-accent focus-visible:outline-2 focus-visible:outline-ring" /><span><span class="block leading-5 font-semibold">{label}</span>{description && <span class="muted block text-sm text-muted-label">{description}</span>}</span></label>
 
 <style>
-  .lui-checkbox:checked::before {
+  .lamaui-checkbox:checked::before {
     content: "";
     display: block;
     width: 100%;

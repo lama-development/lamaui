@@ -7,15 +7,15 @@ interface Props {
 const { id = "accent-picker" } = Astro.props;
 ---
 
-<div class="lui-accent-picker relative flex-none rounded-lg border border-outline bg-surface p-1 [corner-shape:squircle]" data-accent-picker>
+<div class="lamaui-accent-picker relative flex-none rounded-lg border border-outline bg-surface p-1 [corner-shape:squircle]" data-accent-picker>
   <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} rounded-[calc(var(--radius-lg)-0.3125rem)]`} aria-label="Choose accent color, current: Lime" title="Accent color: Lime" aria-expanded="false" aria-controls={`${id}-colors`} data-accent-trigger>
     <span class="size-5 rounded-full border border-black/10 bg-accent" aria-hidden="true"></span>
   </button>
-  <div id={`${id}-colors`} class="lui-accent-dock absolute right-0 bottom-[calc(100%+0.5rem)] z-10 flex w-max flex-col gap-1 rounded-lg border border-outline bg-surface-elevated p-1 shadow-(--shadow-md) [corner-shape:squircle]" role="group" aria-label="Accent color" inert data-accent-dock>
+  <div id={`${id}-colors`} class="lamaui-accent-dock absolute right-0 bottom-[calc(100%+0.5rem)] z-10 flex w-max flex-col gap-1 rounded-lg border border-outline bg-surface-elevated p-1 shadow-(--shadow-md) [corner-shape:squircle]" role="group" aria-label="Accent color" inert data-accent-dock>
     {
       accentPresets.map((preset, index) => (
-        <button type="button" class="lui-accent-choice relative flex size-(--control-md) flex-none cursor-pointer items-center justify-center rounded-[calc(var(--radius-lg)-0.3125rem)] border border-transparent bg-transparent transition-colors duration-(--duration-fast) [corner-shape:squircle] hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" style={`--swatch-index:${index}`} aria-label={`${preset.label} accent`} aria-pressed={preset.value === "lime"} data-accent-choice={preset.value}>
-          <span class="lui-accent-swatch block size-5 rounded-full border border-black/10 shadow-(--shadow-sm)" style={`background: light-dark(${preset.light}, ${preset.dark})`} aria-hidden="true" />
+        <button type="button" class="lamaui-accent-choice relative flex size-(--control-md) flex-none cursor-pointer items-center justify-center rounded-[calc(var(--radius-lg)-0.3125rem)] border border-transparent bg-transparent [corner-shape:squircle] hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" style={`--swatch-index:${index}`} aria-label={`${preset.label} accent`} aria-pressed={preset.value === "lime"} data-accent-choice={preset.value}>
+          <span class="lamaui-accent-swatch block size-5 rounded-full border border-black/10 shadow-(--shadow-sm)" style={`background: light-dark(${preset.light}, ${preset.dark})`} aria-hidden="true" />
         </button>
       ))
     }
@@ -38,7 +38,7 @@ const { id = "accent-picker" } = Astro.props;
   };
   let savedAccent: string | null = null;
   try {
-    savedAccent = localStorage.getItem("lui-accent");
+    savedAccent = localStorage.getItem("lamaui-accent");
   } catch {}
   syncAccent(savedAccent);
   document.querySelectorAll<HTMLElement>("[data-accent-picker]").forEach((root) => {
@@ -86,60 +86,37 @@ const { id = "accent-picker" } = Astro.props;
       const accent = button.dataset.accentChoice!;
       syncAccent(accent);
       try {
-        localStorage.setItem("lui-accent", accent);
+        localStorage.setItem("lamaui-accent", accent);
       } catch {}
     });
   });
   window.addEventListener("storage", (event) => {
-    if (event.key === "lui-accent" || event.key === null) syncAccent(event.newValue);
+    if (event.key === "lamaui-accent" || event.key === null) syncAccent(event.newValue);
   });
 </script>
 
 <style>
-  .lui-accent-dock {
+  .lamaui-accent-dock {
     visibility: hidden;
     opacity: 0;
     transform: translateY(0.5rem) scaleY(0.72);
     transform-origin: bottom center;
   }
-  [data-open="true"] .lui-accent-dock {
+  [data-open="true"] .lamaui-accent-dock {
     visibility: visible;
     opacity: 1;
     transform: translateY(0) scaleY(1);
   }
-  .lui-accent-choice {
+  .lamaui-accent-choice {
     opacity: 0;
     transform: translateY(0.5rem) scale(0.9);
   }
-  [data-open="true"] .lui-accent-choice {
+  [data-open="true"] .lamaui-accent-choice {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
-  [aria-pressed="true"] .lui-accent-swatch {
+  [aria-pressed="true"] .lamaui-accent-swatch {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    .lui-accent-dock {
-      transition:
-        opacity var(--duration-normal) var(--ease-standard),
-        transform var(--duration-normal) var(--ease-standard),
-        visibility var(--duration-normal);
-    }
-    .lui-accent-choice {
-      transition:
-        opacity var(--duration-fast) var(--ease-standard),
-        transform var(--duration-normal) var(--ease-standard),
-        background-color var(--duration-fast);
-    }
-    [data-open="true"] .lui-accent-choice {
-      transition-delay: calc(var(--swatch-index) * 35ms);
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .lui-accent-dock,
-    .lui-accent-choice {
-      transition: none !important;
-    }
   }
 </style>

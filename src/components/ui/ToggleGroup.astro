@@ -6,4 +6,4 @@ interface Props {
 const { label, class: className } = Astro.props;
 ---
 
-<div role="group" aria-label={label} data-toggle-group class:list={["flex flex-wrap gap-2", className]}><slot /></div>
+<div role="group" aria-label={label} data-toggle-group data-fluid-hover class:list={["flex flex-wrap gap-2", className]}><slot /></div>

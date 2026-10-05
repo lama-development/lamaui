@@ -9,4 +9,4 @@ interface Props {
 const { pressed = false, label, disabled = false, class: className } = Astro.props;
 ---
 
-<button type="button" aria-pressed={pressed} {disabled} aria-label={label} data-toggle class:list={[`${controlStyles} ${outlineStyles} [&.lui-outline[aria-pressed=true]]:border-accent/20 aria-pressed:bg-accent-subtle aria-pressed:text-accent`, className]}><slot /></button>
+<button type="button" aria-pressed={pressed} {disabled} aria-label={label} data-toggle class:list={[`${controlStyles} ${outlineStyles} aria-pressed:bg-accent-subtle aria-pressed:text-accent [&.lamaui-outline[aria-pressed=true]]:border-accent/20`, className]}><slot /></button>

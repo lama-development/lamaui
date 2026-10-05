@@ -43,7 +43,7 @@ function markdown(node: Element): string {
 document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
   const content = root.querySelector<HTMLElement>("[data-guide-content]");
   const toast = root.querySelector<HTMLElement>("[data-guide-toast]");
-  const toastTitle = toast?.querySelector<HTMLElement>(".lui-toast-body p");
+  const toastTitle = toast?.querySelector<HTMLElement>(".lamaui-toast-body p");
   const toastMessage = toast?.querySelector<HTMLElement>("[data-guide-toast-message]");
   const actionMenus = Array.from(root.querySelectorAll<HTMLDetailsElement>("[data-guide-menu]"));
   let toastTimer: number | undefined;

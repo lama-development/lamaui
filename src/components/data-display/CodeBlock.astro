@@ -7,7 +7,7 @@ interface Props {
   label?: string;
 }
 const { code, language = "astro", label = language } = Astro.props;
-const actionStyles = "code-action inline-flex w-8 h-8 flex-none items-center justify-center gap-1 border-0 rounded-lg bg-transparent text-muted-label p-0 [transition:background_var(--duration-fast),color_var(--duration-fast),transform_var(--duration-fast)] [&>_span]:flex [&>_span]:items-center hover:bg-surface-hover hover:text-label aria-pressed:bg-surface-hover aria-pressed:text-label active:transform-[scale(0.96)]";
+const actionStyles = "code-action inline-flex w-8 h-8 flex-none items-center justify-center gap-1 border-0 rounded-lg bg-transparent text-muted-label p-0 [&>_span]:flex [&>_span]:items-center hover:bg-surface-hover hover:text-label aria-pressed:bg-surface-hover aria-pressed:text-label active:transform-[scale(0.96)]";
 const highlighted = await codeToHtml(code, {
   lang: language as any,
   themes: { light: "gruvbox-light-hard", dark: "gruvbox-dark-hard" },

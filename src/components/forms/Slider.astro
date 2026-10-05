@@ -11,15 +11,15 @@ const { label, min = 0, max = 100, value = 50, step = 1, name } = Astro.props;
 const progress = ((value - min) / (max - min)) * 100;
 ---
 
-<label class="lui-slider-field block"><span class="lui-slider-label mb-2.5 flex items-center justify-between gap-4 text-sm font-semibold [&_output]:min-w-8 [&_output]:rounded-lg [&_output]:border [&_output]:border-outline [&_output]:bg-surface [&_output]:p-[0.1875rem_0.4375rem] [&_output]:text-center [&_output]:text-xs [&_output]:leading-none [&_output]:text-muted-label"><span>{label}</span><output data-slider-output>{value}</output></span><input type="range" {name} {min} {max} {value} {step} class="lui-slider m-0 h-5 w-full cursor-pointer appearance-none border-0 bg-transparent [outline:0]" style={`--slider-progress:${progress}%`} data-slider /></label>
+<label class="lamaui-slider-field block"><span class="lamaui-slider-label mb-2.5 flex items-center justify-between gap-4 text-sm font-semibold [&_output]:min-w-8 [&_output]:rounded-lg [&_output]:border [&_output]:border-outline [&_output]:bg-surface [&_output]:p-[0.1875rem_0.4375rem] [&_output]:text-center [&_output]:text-xs [&_output]:leading-none [&_output]:text-muted-label"><span>{label}</span><output data-slider-output>{value}</output></span><input type="range" {name} {min} {max} {value} {step} class="lamaui-slider m-0 h-5 w-full cursor-pointer appearance-none border-0 bg-transparent [outline:0]" style={`--slider-progress:${progress}%`} data-slider /></label>
 
 <style>
-  .lui-slider::-webkit-slider-runnable-track {
+  .lamaui-slider::-webkit-slider-runnable-track {
     height: 0.375rem;
     border-radius: var(--radius-full);
     background: linear-gradient(to right, var(--accent) 0 var(--slider-progress), var(--outline) var(--slider-progress) 100%);
   }
-  .lui-slider::-webkit-slider-thumb {
+  .lamaui-slider::-webkit-slider-thumb {
     width: 1.125rem;
     height: 1.125rem;
     margin-top: -0.375rem;
@@ -30,21 +30,18 @@ const progress = ((value - min) / (max - min)) * 100;
     box-shadow:
       0 0 0 1px var(--accent),
       var(--shadow-sm);
-    transition:
-      transform var(--duration-fast),
-      box-shadow var(--duration-fast);
   }
-  .lui-slider::-moz-range-track {
+  .lamaui-slider::-moz-range-track {
     height: 0.375rem;
     border-radius: var(--radius-full);
     background: var(--outline);
   }
-  .lui-slider::-moz-range-progress {
+  .lamaui-slider::-moz-range-progress {
     height: 0.375rem;
     border-radius: var(--radius-full);
     background: var(--accent);
   }
-  .lui-slider::-moz-range-thumb {
+  .lamaui-slider::-moz-range-thumb {
     width: 0.875rem;
     height: 0.875rem;
     border: 3px solid var(--surface);
@@ -54,12 +51,12 @@ const progress = ((value - min) / (max - min)) * 100;
       0 0 0 1px var(--accent),
       var(--shadow-sm);
   }
-  .lui-slider:hover::-webkit-slider-thumb,
-  .lui-slider:focus-visible::-webkit-slider-thumb {
+  .lamaui-slider:hover::-webkit-slider-thumb,
+  .lamaui-slider:focus-visible::-webkit-slider-thumb {
     transform: scale(1.1);
     box-shadow: 0 0 0 4px var(--accent-ring);
   }
-  .lui-slider:focus-visible {
+  .lamaui-slider:focus-visible {
     outline: none;
   }
 </style>

@@ -13,8 +13,8 @@ const options = [
 ];
 ---
 
-<div class:list={["lui-theme-picker min-w-0", className]} data-theme-picker>
-  <div class="lui-theme-icons relative isolate inline-flex gap-1 rounded-lg border border-outline bg-surface p-1 [corner-shape:squircle]" role="group" aria-label={label}>
+<div class:list={["lamaui-theme-picker min-w-0", className]} data-theme-picker>
+  <div class="lamaui-theme-icons relative isolate inline-flex gap-1 rounded-lg border border-outline bg-surface p-1 [corner-shape:squircle]" role="group" aria-label={label}>
     <span class="t-tabs-pill" aria-hidden="true"></span>
     {
       options.map((option) => (
@@ -30,7 +30,7 @@ const options = [
   const isTheme = (value: unknown): value is Theme => value === "system" || value === "light" || value === "dark";
   let theme: Theme = "system";
   try {
-    const stored = localStorage.getItem("lui-theme");
+    const stored = localStorage.getItem("lamaui-theme");
     if (isTheme(stored)) theme = stored;
   } catch {}
   const moveHighlight = (root: HTMLElement, animate: boolean) => {
@@ -67,7 +67,7 @@ const options = [
     const y = bounds.top + bounds.height / 2;
     const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
     const reveal = document.createElement("span");
-    reveal.className = "lui-theme-circle";
+    reveal.className = "lamaui-theme-circle";
     reveal.style.left = `${x}px`;
     reveal.style.top = `${y}px`;
     reveal.style.background = getComputedStyle(document.querySelector(".docs-sidebar") ?? document.body).backgroundColor;
@@ -97,7 +97,7 @@ const options = [
     const update = () => {
       theme = value;
       try {
-        localStorage.setItem("lui-theme", theme);
+        localStorage.setItem("lamaui-theme", theme);
       } catch {}
       sync();
     };
@@ -157,7 +157,7 @@ const options = [
     );
   });
   window.addEventListener("storage", (event) => {
-    if (event.key === "lui-theme" || event.key === null) {
+    if (event.key === "lamaui-theme" || event.key === null) {
       latestRequest++;
       activeTransition?.skipTransition();
       theme = isTheme(event.newValue) ? event.newValue : "system";
@@ -171,7 +171,7 @@ const options = [
 </script>
 
 <style>
-  :global(.lui-theme-circle) {
+  :global(.lamaui-theme-circle) {
     position: fixed;
     z-index: 2147483647;
     width: 2px;
@@ -188,27 +188,16 @@ const options = [
     background: var(--tabs-pill-bg);
     border-radius: 48px;
     transform: translateX(0);
-    transition:
-      transform var(--tabs-dur) var(--tabs-ease),
-      width var(--tabs-dur) var(--tabs-ease);
-    will-change: transform, width;
     z-index: 0;
     pointer-events: none;
   }
-  .lui-theme-icons {
-    --tabs-dur: var(--duration-normal);
-    --tabs-ease: var(--ease-standard);
+  .lamaui-theme-icons {
     --tabs-pill-bg: var(--muted);
   }
-  .lui-theme-icons .t-tabs-pill {
+  .lamaui-theme-icons .t-tabs-pill {
     top: 4px;
     height: var(--control-md);
     border-radius: calc(var(--radius-lg) - 0.3125rem);
     corner-shape: squircle;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .t-tabs-pill {
-      transition: none !important;
-    }
   }
 </style>

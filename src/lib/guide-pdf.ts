@@ -34,14 +34,23 @@ export function downloadGuidePdf(content: HTMLElement, title: string, descriptio
     if (!text) return;
     if (/^H[1-6]$/.test(node.tagName)) {
       y += 8;
-      if (y + 64 > bottom) { pdf.addPage(); y = margin; }
+      if (y + 64 > bottom) {
+        pdf.addPage();
+        y = margin;
+      }
       write(text, node.tagName === "H2" ? 18 : 14, "helvetica", "bold");
     } else if (node.tagName === "PRE") write(text, 9, "courier", "normal", true);
     else if (node.tagName === "P") write(text);
     else if (node.tagName === "UL" || node.tagName === "OL") {
       Array.from(node.children).forEach((item, index) => write(`${node.tagName === "OL" ? `${index + 1}.` : "•"} ${item.textContent?.trim() || ""}`));
     } else if (node.tagName === "TABLE") {
-      node.querySelectorAll("tr").forEach((row) => write(Array.from(row.children).map((cell) => cell.textContent?.trim()).join(" | ")));
+      node.querySelectorAll("tr").forEach((row) =>
+        write(
+          Array.from(row.children)
+            .map((cell) => cell.textContent?.trim())
+            .join(" | ")
+        )
+      );
     } else Array.from(node.children).forEach(visit);
   };
 

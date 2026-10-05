@@ -15,7 +15,7 @@ const messageId = help || error ? `${id}-message` : undefined;
 <div class={className}>
   <Label for={id} {required}>{label}</Label><slot aria-describedby={messageId} />{
     (error || help) && (
-      <p id={messageId} class:list={["lui-help m-[0.35rem_0_0] text-sm leading-tight text-muted-label", error && "lui-error text-destructive"]}>
+      <p id={messageId} class:list={["lamaui-help m-[0.35rem_0_0] text-sm leading-tight text-muted-label", error && "lamaui-error text-destructive"]}>
         {error || help}
       </p>
     )

@@ -29,11 +29,11 @@ const { label, options, href, download, icon, variant = "primary", menuLabel = `
 const variantStyles = variant === "primary" ? primaryStyles : secondaryStyles;
 ---
 
-<div class:list={["lui-split-button relative inline-flex items-stretch", className]} data-split-button>
+<div class:list={["lamaui-split-button relative inline-flex items-stretch", className]} data-split-button>
   <Button {...rest} {variant} {href} {download} {icon} class="flex-1 rounded-r-none">{label}</Button>
   <details class="group -ml-px" data-split-menu>
-    <summary class={cx(controlStyles, variantStyles, iconControlStyles, "lui-split-trigger h-full list-none rounded-l-none [&::-webkit-details-marker]:hidden")} aria-label={menuLabel} title={menuLabel}>
-      <Icon name="chevron-down" size={16} class="transition-transform group-open:rotate-180" />
+    <summary class={cx(controlStyles, variantStyles, iconControlStyles, "lamaui-split-trigger h-full list-none rounded-l-none [&::-webkit-details-marker]:hidden")} aria-label={menuLabel} title={menuLabel}>
+      <Icon name="chevron-down" size={16} class="details-chevron group-open:rotate-180" />
     </summary>
     <div class={cx(menuStyles, "right-0 mt-2 grid w-full min-w-52 gap-0.5")}>
       {
@@ -56,7 +56,7 @@ const variantStyles = variant === "primary" ? primaryStyles : secondaryStyles;
 </div>
 
 <style>
-  .lui-split-trigger {
+  .lamaui-split-trigger {
     border-left-color: color-mix(in srgb, currentColor 28%, transparent);
     background-image: linear-gradient(color-mix(in srgb, currentColor 6%, transparent), color-mix(in srgb, currentColor 6%, transparent));
   }
