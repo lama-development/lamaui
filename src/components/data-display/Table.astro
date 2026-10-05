@@ -12,7 +12,7 @@ interface Props {
 const { columns, rows, caption } = Astro.props;
 ---
 
-<div class="overflow-x-auto rounded-2xl border border-outline bg-surface">
+<div class="max-w-full overflow-x-auto rounded-lg border border-outline bg-surface [corner-shape:squircle]">
   <table class="w-full border-collapse text-sm">
     {caption && <caption class="sr-only">{caption}</caption>}<thead
       ><tr
@@ -27,9 +27,9 @@ const { columns, rows, caption } = Astro.props;
     ><tbody
       >{
         rows.map((row) => (
-          <tr class="hover:bg-surface-hover">
+          <tr class="border-b border-outline last:border-b-0 hover:bg-surface-hover">
             {columns.map((c) => (
-              <td class:list={["border-b border-outline px-4 py-3 last:border-0", c.align === "right" ? "text-right" : c.align === "center" ? "text-center" : "text-left"]}>{row[c.key]}</td>
+              <td class:list={["px-4 py-3", c.align === "right" ? "text-right" : c.align === "center" ? "text-center" : "text-left"]}>{row[c.key]}</td>
             ))}
           </tr>
         ))

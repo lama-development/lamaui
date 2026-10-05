@@ -19,7 +19,7 @@ const { name, label, options, value, inline = false } = Astro.props;
   <legend class="lamaui-label mb-1.5 block text-sm font-semibold">{label}</legend><div data-fluid-hover class:list={["flex gap-3", inline ? "flex-row flex-wrap" : "flex-col"]}>
     {
       options.map((o) => (
-        <label class:list={["lamaui-choice grid cursor-pointer grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-3 has-disabled:cursor-not-allowed has-disabled:text-muted-label has-disabled:opacity-50 [&.has-description]:items-start", o.description && "has-description"]}>
+        <label class:list={["lamaui-choice grid cursor-pointer grid-cols-[1.25rem_minmax(0,1fr)] items-center gap-3 rounded-md p-2 [corner-shape:squircle] has-disabled:cursor-not-allowed has-disabled:text-muted-label has-disabled:opacity-50 [&.has-description]:items-start", o.description && "has-description"]}>
           <>
             <input type="radio" {name} value={o.value} checked={o.value === value} disabled={o.disabled} class="lamaui-choice-control m-0 size-5 appearance-none rounded-full border-[5px] border-input bg-input outline outline-outline checked:bg-accent checked:outline-accent" />
             <span>

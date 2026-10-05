@@ -14,7 +14,7 @@ interface FluidHoverState {
 const states = new Map<HTMLElement, FluidHoverState>();
 
 function eligibleItems(group: HTMLElement) {
-  return Array.from(group.querySelectorAll<HTMLElement>(itemSelector)).filter((item) => !item.matches(':disabled, [aria-disabled="true"]') && !item.closest("[inert]") && item.getClientRects().length > 0);
+  return Array.from(group.querySelectorAll<HTMLElement>(itemSelector)).filter((item) => !item.matches(':disabled, [aria-disabled="true"], .lamaui-choice:has(:disabled)') && !item.closest("[inert]") && item.getClientRects().length > 0);
 }
 
 function nearestItem(group: HTMLElement, x: number, y: number) {

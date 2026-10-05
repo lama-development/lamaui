@@ -12,7 +12,7 @@ const { title, slug, description, sections } = Astro.props;
 ---
 
 <div data-guide data-guide-title={title} data-guide-slug={slug} data-guide-description={description}>
-  <div class="flex items-center justify-between gap-4">
+  <div class="flex flex-wrap items-center justify-between gap-4">
     <slot name="breadcrumb" />
     <GuideActions />
   </div>

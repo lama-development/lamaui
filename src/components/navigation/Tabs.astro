@@ -14,11 +14,11 @@ const { tabs, active = tabs[0]?.id, id = "tabs", class: className } = Astro.prop
 ---
 
 <div data-tabs class={className}>
-  <div role="tablist" aria-label="Tabs" data-fluid-hover class="lamaui-tabs relative isolate inline-flex gap-1 rounded-lg border border-outline bg-muted p-1">
+  <div role="tablist" aria-label="Tabs" data-fluid-hover class="lamaui-tabs relative isolate inline-flex max-w-full gap-1 overflow-x-auto rounded-lg border border-outline bg-muted p-1">
     <span class="lamaui-tab-highlight absolute top-1 bottom-1 left-0 rounded-[calc(var(--radius-lg)-0.25rem)] bg-surface shadow-(--shadow-sm)" aria-hidden="true"></span>
     {
       tabs.map((tab) => (
-        <button id={`${id}-${tab.id}-tab`} type="button" role="tab" aria-selected={tab.id === active} aria-controls={`${id}-${tab.id}-panel`} tabindex={tab.id === active ? 0 : -1} disabled={tab.disabled} class="lamaui-tab relative z-1 min-h-10 rounded-[calc(var(--radius-lg)-0.25rem)] border-0 bg-transparent px-3 py-2 text-sm font-semibold text-muted-label disabled:opacity-[0.4] aria-selected:text-label" data-tab={tab.id}>
+        <button id={`${id}-${tab.id}-tab`} type="button" role="tab" aria-selected={tab.id === active} aria-controls={`${id}-${tab.id}-panel`} tabindex={tab.id === active ? 0 : -1} disabled={tab.disabled} class="lamaui-tab relative z-1 min-h-10 shrink-0 rounded-[calc(var(--radius-lg)-0.25rem)] border-0 bg-transparent px-3 py-2 text-sm font-semibold text-muted-label disabled:opacity-[0.4] aria-selected:text-label" data-tab={tab.id}>
           {tab.label}
         </button>
       ))

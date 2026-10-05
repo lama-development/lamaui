@@ -10,7 +10,7 @@ const { current, total, href = "?page=", label = "Pagination" } = Astro.props;
 const pages = Array.from({ length: total }, (_, i) => i + 1);
 ---
 
-<nav aria-label={label} class="flex items-center gap-1">
+<nav aria-label={label} class="flex flex-wrap items-center gap-1">
   <a href={`${href}${Math.max(1, current - 1)}`} aria-disabled={current === 1} class={`${controlStyles} ${ghostStyles} ${smallControlStyles}`}>←</a>{
     pages.map((page) => (
       <a href={`${href}${page}`} aria-current={page === current ? "page" : undefined} class={`${controlStyles} ${ghostStyles} ${smallControlStyles} min-w-10 aria-[current=page]:bg-accent aria-[current=page]:text-accent-label`}>
