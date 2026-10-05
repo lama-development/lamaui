@@ -1,6 +1,7 @@
 ---
 import { codeToHtml } from "shiki";
 import Icon from "@/components/ui/Icon.astro";
+import Tooltip from "@/components/overlays/Tooltip.astro";
 interface Props {
   code: string;
   language?: string;
@@ -19,12 +20,16 @@ const highlighted = await codeToHtml(code, {
   <figcaption class="code-head flex min-h-12 items-center justify-between gap-4 pt-2.5 pr-3 pb-1.5 pl-4 text-muted-label">
     <span class="code-language inline-flex min-w-0 items-center gap-2 [font:600_0.875rem/1_var(--font-sans)]"><Icon name="code" size={20} /><span>{label}</span></span>
     <span class="code-actions flex items-center gap-1 print:hidden">
-      <button type="button" class={actionStyles} aria-label="Wrap lines" aria-pressed="false" title="Wrap lines" data-code-wrap><span data-wrap-off><Icon name="wrap" size={20} /></span><span data-wrap-on hidden><Icon name="wrap-on" size={20} /></span></button>
-      <button type="button" class:list={[actionStyles, "code-copy"]} aria-label="Copy code" title="Copy code" data-copy-code>
-        <span data-copy-default><Icon name="copy" size={20} /></span>
-        <span data-copy-success hidden><Icon name="check" size={20} /></span>
-        <span class="sr-only" data-copy-label>Copy</span>
-      </button>
+      <Tooltip text="Wrap lines" position="bottom">
+        <button type="button" class={actionStyles} aria-label="Wrap lines" aria-pressed="false" data-code-wrap><span data-wrap-off><Icon name="wrap" size={20} /></span><span data-wrap-on hidden><Icon name="wrap-on" size={20} /></span></button>
+      </Tooltip>
+      <Tooltip text="Copy code" position="bottom">
+        <button type="button" class:list={[actionStyles, "code-copy"]} aria-label="Copy code" data-copy-code>
+          <span data-copy-default><Icon name="copy" size={20} /></span>
+          <span data-copy-success hidden><Icon name="check" size={20} /></span>
+          <span class="sr-only" data-copy-label>Copy</span>
+        </button>
+      </Tooltip>
     </span>
   </figcaption>
   <div class="code-render overflow-auto print:overflow-visible" set:html={highlighted} />
@@ -57,7 +62,8 @@ const highlighted = await codeToHtml(code, {
   .code-render pre {
     display: block;
   }
-  .code-block.is-wrapped .code-render pre {
+  .code-block.is-wrapped .code-render pre,
+  .code-block.is-wrapped .code-render code {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
   }

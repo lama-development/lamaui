@@ -50,6 +50,7 @@ import Drawer from "@/components/overlays/Drawer.astro";
 import Popover from "@/components/overlays/Popover.astro";
 import Tooltip from "@/components/overlays/Tooltip.astro";
 import Container from "@/components/layout/Container.astro";
+import Surface from "@/components/layout/Surface.astro";
 import Stack from "@/components/layout/Stack.astro";
 import Inline from "@/components/layout/Inline.astro";
 import Grid from "@/components/layout/Grid.astro";
@@ -75,7 +76,7 @@ const selectOptions = [
 ];
 ---
 
-<div class="component-preview flex min-h-48 items-center justify-center rounded-md bg-surface p-8 [border:1px_dashed_color-mix(in_srgb,var(--outline),var(--muted-label)_22%)] [@media(width<=620px)]:min-h-40 [@media(width<=620px)]:p-4">
+<div class="component-preview flex min-h-48 items-center justify-center rounded-md bg-surface bg-[linear-gradient(color-mix(in_srgb,var(--outline)_45%,transparent)_1px,transparent_1px),linear-gradient(90deg,color-mix(in_srgb,var(--outline)_45%,transparent)_1px,transparent_1px)] bg-size-[24px_24px] p-8 [border:1px_dashed_color-mix(in_srgb,var(--outline),var(--muted-label)_22%)] [@media(width<=620px)]:min-h-40 [@media(width<=620px)]:p-4">
   <div class="component-preview-column w-[min(100%,36rem)]">
     {slug === "theme-picker" && <ThemePicker label="Preview color theme" />}
     {
@@ -567,6 +568,29 @@ const selectOptions = [
       )
     }
 
+    {
+      slug === "surface" && (
+        <Surface level={1} class="grid gap-4 border border-outline">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <strong>Page substrate</strong>
+              <p class="mt-1 mb-0 text-sm text-muted-label">Each child lifts from the surface around it.</p>
+            </div>
+            <span class="text-xs font-semibold text-muted-label">Level 1</span>
+          </div>
+          <Surface lift={1} class="grid gap-4 border border-outline">
+            <div class="flex items-center justify-between gap-4">
+              <strong>Card</strong>
+              <span class="text-xs font-semibold text-muted-label">Level 2</span>
+            </div>
+            <Surface lift={1} class="flex items-center justify-between gap-4 border border-outline" padding="sm">
+              <span class="text-sm font-semibold">Nested popover</span>
+              <span class="text-xs font-semibold text-muted-label">Level 3</span>
+            </Surface>
+          </Surface>
+        </Surface>
+      )
+    }
     {
       slug === "container" && (
         <Container size="sm" class="border border-dashed border-accent py-5">

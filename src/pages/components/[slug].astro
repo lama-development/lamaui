@@ -5,6 +5,8 @@ import DocsLayout from "@/layouts/DocsLayout.astro";
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/data-display/CodeBlock.astro";
 import Breadcrumb from "@/components/navigation/Breadcrumb.astro";
+import Icon from "@/components/ui/Icon.astro";
+import Tooltip from "@/components/overlays/Tooltip.astro";
 import { components, type ComponentDoc } from "@/lib/components";
 
 export function getStaticPaths() {
@@ -19,7 +21,7 @@ const index = components.findIndex((item) => item.slug === component.slug);
 const previous = components[index - 1];
 const next = components[index + 1];
 const sections = [
-  { id: "preview-heading", label: "Live preview" },
+  { id: "preview-heading", label: "Preview" },
   { id: "usage-heading", label: "Quick start" }
 ];
 const usage = component.usage;
@@ -34,8 +36,15 @@ const usage = component.usage;
       <div class="component-meta mt-4 flex flex-wrap gap-1 text-[0.8125rem] text-muted-label [&_span]:inline-flex [&_span]:min-h-7 [&_span]:items-center [&_span]:rounded-(--radius-full) [&_span]:border [&_span]:border-outline [&_span]:bg-surface [&_span]:p-[0.25rem_0.625rem] [&_span]:leading-none"><span>Astro component</span><span>Keyboard accessible</span><span>Theme tokens</span></div>
     </header>
 
-    <section data-guide-no-export class="component-section mt-10 print:hidden [&_h2]:m-[0_0_1rem] [&_h2]:text-2xl" aria-labelledby="preview-heading">
-      <h2 id="preview-heading" class="scroll-mt-24">Live preview</h2>
+    <section data-guide-no-export class="component-section mt-10 print:hidden [&_h2]:text-2xl" aria-labelledby="preview-heading">
+      <div class="mb-4 flex items-center gap-2">
+        <h2 id="preview-heading" class="m-0 scroll-mt-24">Preview</h2>
+        <Tooltip text="Reset preview">
+          <button type="button" class="inline-flex size-8 items-center justify-center rounded-lg border-0 bg-transparent p-0 text-muted-label hover:bg-surface-hover hover:text-label active:scale-[0.96]" aria-label="Reset preview" data-preview-reset>
+            <Icon name="reset" size={20} />
+          </button>
+        </Tooltip>
+      </div>
       <ComponentPreview slug={component.slug} />
     </section>
 

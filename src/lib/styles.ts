@@ -9,7 +9,7 @@ export const cardStyles = cx("lamaui-card rounded-lg border border-card-outline 
 
 export const interactiveStyles = cx("lamaui-interactive hover:bg-surface-hover");
 
-export const menuStyles = cx("lamaui-menu absolute z-60 min-w-52 origin-top -translate-y-1 scale-[.97] rounded-lg border border-outline bg-surface-elevated p-1.5 opacity-0 shadow-(--shadow-dropdown) [corner-shape:squircle] [&.is-closing]:-translate-y-0.5 [&.is-closing]:scale-[.99] [&.is-closing]:opacity-0 [&.is-open]:translate-y-0 [&.is-open]:scale-100 [&.is-open]:opacity-100 [details[open]>&]:translate-y-0 [details[open]>&]:scale-100 [details[open]>&]:opacity-100");
+export const menuStyles = cx("lamaui-menu absolute z-60 min-w-52 rounded-lg border border-outline bg-surface-elevated p-1.5 shadow-(--shadow-dropdown) [corner-shape:squircle]");
 
 export const menuItemStyles = cx("lamaui-menu-item flex w-full cursor-pointer items-center gap-2.5 rounded-[.625rem] border-0 bg-transparent px-3 py-2.5 text-left text-label no-underline hover:bg-surface-hover focus-visible:bg-surface-hover");
 

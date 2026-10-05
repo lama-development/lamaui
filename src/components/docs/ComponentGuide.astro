@@ -1,7 +1,7 @@
 ---
 import GuideActions from "./GuideActions.astro";
 import GuideTableOfContents from "./GuideTableOfContents.astro";
-import Toast from "@/components/feedback/Toast.astro";
+import Alert from "@/components/feedback/Alert.astro";
 interface Props {
   title: string;
   slug: string;
@@ -16,9 +16,12 @@ const { title, slug, description, sections } = Astro.props;
     <slot name="breadcrumb" />
     <GuideActions />
   </div>
-  <Toast id={`guide-export-toast-${slug}`} title="Export complete" data-guide-toast>
-    <span data-guide-toast-message>Page export completed.</span>
-  </Toast>
+  <Alert variant="success" title="Action complete" class="fixed right-4 bottom-4 z-100 w-[min(24rem,calc(100%-2rem))] shadow-(--shadow-lg)" data-guide-alert="success" data-dismiss-hide hidden>
+    <span data-guide-alert-message>Page action completed.</span>
+  </Alert>
+  <Alert variant="destructive" title="Action failed" class="fixed right-4 bottom-4 z-100 w-[min(24rem,calc(100%-2rem))] shadow-(--shadow-lg)" data-guide-alert="error" data-dismiss-hide hidden>
+    <span data-guide-alert-message>Try again.</span>
+  </Alert>
   <GuideTableOfContents {sections} variant="mobile" />
   <div class="grid min-w-0 gap-8 min-[1280px]:grid-cols-[minmax(0,1fr)_16rem] print:block">
     <article class="min-w-0" data-guide-content><slot /></article>

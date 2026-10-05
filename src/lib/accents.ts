@@ -34,5 +34,11 @@ export const accentPresets = [
     label: "Teal",
     light: "#0f766e",
     dark: "#5eead4"
+  },
+  {
+    value: "neutral",
+    label: "Neutral",
+    light: "#000000",
+    dark: "#ffffff"
   }
 ] as const;

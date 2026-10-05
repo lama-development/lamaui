@@ -8,6 +8,24 @@
   --surface: color-mix(in srgb, var(--accent) 3%, light-dark(#ffffff, #1c1b1d));
   --surface-hover: color-mix(in srgb, var(--accent) 6%, light-dark(#eceef1, #27262a));
   --surface-elevated: color-mix(in srgb, var(--accent) 3%, light-dark(#ffffff, #222124));
+  /* Eight composable elevation steps. Light surfaces flatten after level 2;
+     dark surfaces keep gaining luminance so nested panels remain legible. */
+  --surface-1: color-mix(in srgb, var(--accent) 4%, light-dark(#f4f5f6, #141314));
+  --surface-2: color-mix(in srgb, var(--accent) 3%, light-dark(#ffffff, #1c1b1d));
+  --surface-3: color-mix(in srgb, var(--accent) 3%, light-dark(#ffffff, #232225));
+  --surface-4: color-mix(in srgb, var(--accent) 3%, light-dark(#ffffff, #2a292d));
+  --surface-5: color-mix(in srgb, var(--accent) 3%, light-dark(#ffffff, #313034));
+  --surface-6: color-mix(in srgb, var(--accent) 3%, light-dark(#ffffff, #38373c));
+  --surface-7: color-mix(in srgb, var(--accent) 3%, light-dark(#ffffff, #403f45));
+  --surface-8: color-mix(in srgb, var(--accent) 3%, light-dark(#ffffff, #48474e));
+  --surface-1-hover: color-mix(in srgb, var(--accent) 6%, light-dark(#e9ebee, #201f22));
+  --surface-2-hover: color-mix(in srgb, var(--accent) 6%, light-dark(#f1f2f4, #29282c));
+  --surface-3-hover: color-mix(in srgb, white 6%, var(--surface-3));
+  --surface-4-hover: color-mix(in srgb, white 6%, var(--surface-4));
+  --surface-5-hover: color-mix(in srgb, white 6%, var(--surface-5));
+  --surface-6-hover: color-mix(in srgb, white 6%, var(--surface-6));
+  --surface-7-hover: color-mix(in srgb, white 6%, var(--surface-7));
+  --surface-8-hover: color-mix(in srgb, white 6%, var(--surface-8));
   --card-surface: color-mix(in srgb, var(--accent) 4%, light-dark(#ffffff, #1c1b1d));
   --muted: color-mix(in srgb, var(--accent) 5%, light-dark(#eceef1, #0e0e0f));
   --muted-label: color-mix(in srgb, var(--accent) 5%, light-dark(#5b6068, #a1a1a6));
@@ -54,6 +72,14 @@
   --shadow-dropdown: 0 4px 8px light-dark(rgb(5 12 20 / 12%), rgb(0 0 0 / 28%)), 0 16px 40px light-dark(rgb(5 12 20 / 22%), rgb(0 0 0 / 48%));
   --shadow-lg: 0 20px 48px rgb(5 12 20 / 16%);
   --shadow-control: inset 0 -2px 0 rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 10%);
+  --surface-shadow-1: none;
+  --surface-shadow-2: 0 1px 2px light-dark(rgb(5 12 20 / 8%), rgb(0 0 0 / 24%));
+  --surface-shadow-3: 0 2px 5px light-dark(rgb(5 12 20 / 8%), rgb(0 0 0 / 26%)), 0 8px 20px light-dark(rgb(5 12 20 / 6%), rgb(0 0 0 / 18%));
+  --surface-shadow-4: 0 3px 8px light-dark(rgb(5 12 20 / 10%), rgb(0 0 0 / 30%)), 0 12px 28px light-dark(rgb(5 12 20 / 8%), rgb(0 0 0 / 22%));
+  --surface-shadow-5: 0 4px 10px light-dark(rgb(5 12 20 / 11%), rgb(0 0 0 / 32%)), 0 18px 40px light-dark(rgb(5 12 20 / 10%), rgb(0 0 0 / 26%));
+  --surface-shadow-6: 0 5px 12px light-dark(rgb(5 12 20 / 12%), rgb(0 0 0 / 34%)), 0 22px 48px light-dark(rgb(5 12 20 / 11%), rgb(0 0 0 / 28%));
+  --surface-shadow-7: 0 6px 14px light-dark(rgb(5 12 20 / 13%), rgb(0 0 0 / 36%)), 0 26px 56px light-dark(rgb(5 12 20 / 12%), rgb(0 0 0 / 30%));
+  --surface-shadow-8: 0 8px 18px light-dark(rgb(5 12 20 / 14%), rgb(0 0 0 / 38%)), 0 30px 64px light-dark(rgb(5 12 20 / 13%), rgb(0 0 0 / 32%));
 
   --control-sm: 2.5rem;
   --control-md: 2.75rem;
@@ -113,4 +139,10 @@
   --accent-hover: light-dark(color-mix(in srgb, #0f766e 85%, black), color-mix(in srgb, #5eead4 85%, white));
   --accent-subtle: light-dark(color-mix(in srgb, #0f766e 10%, white), color-mix(in srgb, #5eead4 15%, #141314));
   --accent-label: light-dark(#ffffff, #121417);
+}
+:root[data-accent="neutral"] {
+  --accent: light-dark(#000000, #ffffff);
+  --accent-hover: light-dark(#262626, #d9d9d9);
+  --accent-subtle: light-dark(#e6e6e6, #363636);
+  --accent-label: light-dark(#ffffff, #000000);
 }

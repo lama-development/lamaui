@@ -31,11 +31,11 @@ const variantStyles = variant === "primary" ? primaryStyles : secondaryStyles;
 
 <div class:list={["lamaui-split-button relative inline-flex items-stretch", className]} data-split-button>
   <Button {...rest} {variant} {href} {download} {icon} class="flex-1 rounded-r-none">{label}</Button>
-  <details class="group -ml-px" data-split-menu>
+  <details class="group -ml-px" data-split-menu data-animated-menu>
     <summary class={cx(controlStyles, variantStyles, iconControlStyles, "lamaui-split-trigger h-full list-none rounded-l-none [&::-webkit-details-marker]:hidden")} aria-label={menuLabel} title={menuLabel}>
       <Icon name="chevron-down" size={16} class="details-chevron group-open:rotate-180" />
     </summary>
-    <div class={cx(menuStyles, "right-0 mt-2 grid w-full min-w-52 gap-0.5")}>
+    <div class={cx(menuStyles, "t-dropdown right-0 mt-2 grid w-full min-w-52 gap-0.5")} data-origin="top-right">
       {
         options.map((option) =>
           option.href ? (
@@ -63,14 +63,10 @@ const variantStyles = variant === "primary" ? primaryStyles : secondaryStyles;
 </style>
 
 <script>
+  import { requestDetailsMenuClose } from "@/scripts/details-menu";
+
   document.querySelectorAll<HTMLElement>("[data-split-button]").forEach((root) => {
     const details = root.querySelector<HTMLDetailsElement>("[data-split-menu]");
-    root.querySelectorAll("a, button").forEach((item) => item.addEventListener("click", () => window.setTimeout(() => details?.removeAttribute("open"))));
-    document.addEventListener("pointerdown", (event) => {
-      if (!root.contains(event.target as Node)) details?.removeAttribute("open");
-    });
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") details?.removeAttribute("open");
-    });
+    details?.querySelectorAll("a, button").forEach((item) => item.addEventListener("click", () => requestDetailsMenuClose(details)));
   });
 </script>

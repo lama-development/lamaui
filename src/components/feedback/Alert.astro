@@ -12,8 +12,9 @@ interface Props {
   background?: string;
   borderColor?: string;
   class?: string;
+  [key: string]: any;
 }
-const { variant = "info", title, dismissible = false, icon, color, background, borderColor, class: className } = Astro.props;
+const { variant = "info", title, dismissible = true, icon, color, background, borderColor, class: className, ...rest } = Astro.props;
 const colors = {
   info: ["var(--info)", "var(--info-subtle)"],
   success: ["var(--success)", "var(--success-subtle)"],
@@ -24,14 +25,14 @@ const icons = { info: "feedback", success: "check", warning: "warning", destruct
 const alertStyle = `color:${color ?? colors[variant][0]};background:${background ?? colors[variant][1]};border-color:${borderColor ?? "color-mix(in srgb, currentColor 15%, transparent)"}`;
 ---
 
-<div role={variant === "destructive" ? "alert" : "status"} class:list={["lamaui-alert grid grid-cols-[1.5rem_minmax(0,1fr)_auto] items-start gap-x-3 rounded-2xl border p-4", className]} style={alertStyle}>
+<div {...rest} role={variant === "destructive" ? "alert" : "status"} class:list={["lamaui-alert grid grid-cols-[1.5rem_minmax(0,1fr)_auto] items-start gap-x-3 rounded-2xl border p-4", className]} style={alertStyle}>
   <span aria-hidden="true" class="lamaui-alert-icon grid h-6 w-6 place-items-center self-center"><Icon name={icon ?? icons[variant]} size={20} /></span><div class="lamaui-alert-body min-w-0 *:first:leading-[1.35] [&>_div]:mt-0.75 [&>_div]:leading-tight">
     {title && <p class="m-0 font-bold">{title}</p>}<div class="text-sm opacity-90">
       <slot />
     </div>
   </div>{
     dismissible && (
-      <button type="button" aria-label="Dismiss" class={alertCloseStyles} data-dismiss>
+      <button type="button" aria-label="Dismiss alert" class={alertCloseStyles} data-dismiss>
         <Icon name="close" size={16} />
       </button>
     )

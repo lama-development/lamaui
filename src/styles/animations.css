@@ -1,12 +1,30 @@
 :root {
-  --duration-fast: 150ms;
-  --duration-normal: 250ms;
-  --duration-slow: 400ms;
-  --ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
-  --acc-expand: 250ms;
-  --acc-collapse: 250ms;
-  --acc-chevron: 250ms;
-  --acc-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Fluid motion tiers: larger travel receives the slower spring. */
+  --spring-fast-duration: 80ms;
+  --spring-fast-exit: 60ms;
+  --spring-moderate-duration: 160ms;
+  --spring-moderate-exit: 120ms;
+  --spring-slow-duration: 240ms;
+  --spring-slow-exit: 160ms;
+  --spring-fast-ease: cubic-bezier(0.2, 0, 0, 1);
+  --spring-moderate-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --spring-slow-ease: cubic-bezier(0.34, 1.12, 0.64, 1);
+  --spring-exit-ease: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Backwards-compatible semantic aliases for existing components. */
+  --duration-fast: var(--spring-fast-duration);
+  --duration-normal: var(--spring-moderate-duration);
+  --duration-slow: var(--spring-slow-duration);
+  --ease-standard: var(--spring-moderate-ease);
+  --acc-expand: var(--spring-moderate-duration);
+  --acc-collapse: var(--spring-moderate-exit);
+  --acc-chevron: var(--spring-moderate-duration);
+  --acc-ease: var(--spring-moderate-ease);
+  --dropdown-open-dur: 250ms;
+  --dropdown-close-dur: 150ms;
+  --dropdown-pre-scale: 0.97;
+  --dropdown-closing-scale: 0.99;
+  --dropdown-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .lamaui-fluid-hover {
@@ -108,6 +126,49 @@
     transform var(--duration-normal) var(--ease-standard),
     opacity var(--duration-normal) var(--ease-standard);
 }
+.lamaui-menu.is-closing {
+  transition-duration: var(--spring-moderate-exit);
+  transition-timing-function: var(--spring-exit-ease);
+}
+.t-dropdown {
+  transform-origin: top left;
+  transform: scale(var(--dropdown-pre-scale));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--dropdown-open-dur) var(--dropdown-ease),
+    opacity var(--dropdown-open-dur) var(--dropdown-ease);
+  will-change: transform, opacity;
+}
+.t-dropdown[data-origin="top-right"] {
+  transform-origin: top right;
+}
+.t-dropdown[data-origin="top-center"] {
+  transform-origin: top center;
+}
+.t-dropdown[data-origin="bottom-left"] {
+  transform-origin: bottom left;
+}
+.t-dropdown[data-origin="bottom-center"] {
+  transform-origin: bottom center;
+}
+.t-dropdown[data-origin="bottom-right"] {
+  transform-origin: bottom right;
+}
+
+.t-dropdown.is-open {
+  transform: scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+.t-dropdown.is-closing {
+  transform: scale(var(--dropdown-closing-scale));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform var(--dropdown-close-dur) var(--dropdown-ease),
+    opacity var(--dropdown-close-dur) var(--dropdown-ease);
+}
 .lamaui-alert-close,
 .lamaui-toast-close,
 .lamaui-dialog-close {
@@ -135,13 +196,13 @@ dialog[open]::backdrop {
   animation: fade-in var(--duration-fast) ease-out;
 }
 [data-drawer][open] {
-  animation: drawer-in var(--duration-slow) var(--ease-standard);
+  animation: drawer-in var(--duration-slow) var(--spring-slow-ease);
 }
 [data-toast].is-visible {
   animation: toast-in var(--duration-normal) var(--ease-standard);
 }
 [data-toast].is-leaving {
-  animation: toast-out var(--duration-fast) ease-in forwards;
+  animation: toast-out var(--spring-slow-exit) var(--spring-exit-ease) forwards;
 }
 
 @keyframes dialog-in {
@@ -321,6 +382,9 @@ html.theme-reveal::view-transition-new(root) {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .t-dropdown {
+    transition: none !important;
+  }
   *,
   *::before,
   *::after {

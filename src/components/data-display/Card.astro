@@ -11,7 +11,7 @@ const { title, description, padding = "md", interactive = false, class: classNam
 const pads = { sm: "p-4", md: "p-5", lg: "p-7" };
 ---
 
-<article class:list={[cardStyles, pads[padding], interactive && interactiveStyles, className]}>
+<article data-surface-level="2" data-surface-lift="1" class:list={[cardStyles, pads[padding], interactive && interactiveStyles, className]}>
   {
     (title || description) && (
       <header class="mb-4">

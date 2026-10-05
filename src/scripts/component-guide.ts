@@ -1,3 +1,5 @@
+import { requestDetailsMenuClose } from "@/scripts/details-menu";
+
 function inline(node: Node): string {
   if (node.nodeType === Node.TEXT_NODE) return node.textContent || "";
   if (!(node instanceof HTMLElement) || node.hidden || node.classList.contains("sr-only")) return "";
@@ -42,44 +44,39 @@ function markdown(node: Element): string {
 
 document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
   const content = root.querySelector<HTMLElement>("[data-guide-content]");
-  const toast = root.querySelector<HTMLElement>("[data-guide-toast]");
-  const toastTitle = toast?.querySelector<HTMLElement>(".lamaui-toast-body p");
-  const toastMessage = toast?.querySelector<HTMLElement>("[data-guide-toast-message]");
+  const successAlert = root.querySelector<HTMLElement>('[data-guide-alert="success"]');
+  const errorAlert = root.querySelector<HTMLElement>('[data-guide-alert="error"]');
   const actionMenus = Array.from(root.querySelectorAll<HTMLDetailsElement>("[data-guide-menu]"));
-  let toastTimer: number | undefined;
+  let alertTimer: number | undefined;
   if (!content) return;
   const documentMarkdown = () => `# ${root.dataset.guideTitle}\n\n${root.dataset.guideDescription}\n\n${markdown(content)}Source: ${location.origin}${location.pathname}\n`;
   const closeActionMenus = (restoreFocus = false) => {
     actionMenus.forEach((menu) => {
       if (!menu.open) return;
-      menu.open = false;
-      if (restoreFocus) menu.querySelector("summary")?.focus();
+      requestDetailsMenuClose(menu, restoreFocus);
     });
   };
-  const showToast = (title: string, message: string) => {
-    if (!toast) return;
-    if (toastTitle) toastTitle.textContent = title;
-    if (toastMessage) toastMessage.textContent = message;
-    toast.classList.remove("hidden", "is-leaving");
-    toast.classList.add("flex", "is-visible");
-    window.clearTimeout(toastTimer);
-    toastTimer = window.setTimeout(() => {
-      toast.classList.remove("is-visible");
-      toast.classList.add("is-leaving");
-      window.setTimeout(() => {
-        toast.classList.remove("flex", "is-leaving");
-        toast.classList.add("hidden");
-      }, 160);
-    }, 3500);
+  const showAlert = (title: string, message: string, error = false) => {
+    const alert = error ? errorAlert : successAlert;
+    const otherAlert = error ? successAlert : errorAlert;
+    if (!alert) return;
+    const alertTitle = alert.querySelector<HTMLElement>(".lamaui-alert-body p");
+    const alertMessage = alert.querySelector<HTMLElement>("[data-guide-alert-message]");
+    if (alertTitle) alertTitle.textContent = title;
+    if (alertMessage) alertMessage.textContent = message;
+    if (otherAlert) otherAlert.hidden = true;
+    alert.hidden = false;
+    window.clearTimeout(alertTimer);
+    if (!error) alertTimer = window.setTimeout(() => (alert.hidden = true), 3500);
   };
   root.querySelectorAll<HTMLElement>("[data-guide-copy]").forEach((button) => {
     button.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(documentMarkdown());
-        showToast("Page copied", "Markdown copied to the clipboard.");
+        showAlert("Page copied", "Markdown copied to the clipboard.");
         closeActionMenus(true);
       } catch {
-        showToast("Could not copy", "Download the Markdown file instead.");
+        showAlert("Could not copy", "Download the Markdown file instead.", true);
       }
     });
   });
@@ -88,9 +85,9 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
       try {
         await navigator.clipboard.writeText(`${location.origin}${location.pathname}`);
         closeActionMenus(true);
-        showToast("Link copied", "Page link copied to the clipboard.");
+        showAlert("Link copied", "Page link copied to the clipboard.");
       } catch {
-        showToast("Could not copy link", "Copy the page address from your browser instead.");
+        showAlert("Could not copy link", "Copy the page address from your browser instead.", true);
       }
     });
   });
@@ -105,7 +102,7 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
       link.remove();
       window.setTimeout(() => URL.revokeObjectURL(url), 1000);
       closeActionMenus(true);
-      showToast("Download started", `${root.dataset.guideSlug}.md is being downloaded.`);
+      showAlert("Download started", `${root.dataset.guideSlug}.md is being downloaded.`);
     });
   });
   root.querySelectorAll<HTMLButtonElement>("[data-guide-pdf]").forEach((button) => {
@@ -115,9 +112,9 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
       try {
         const { downloadGuidePdf } = await import("@/lib/guide-pdf");
         downloadGuidePdf(content, root.dataset.guideTitle || "Guide", root.dataset.guideDescription || "", root.dataset.guideSlug || "guide", `${location.origin}${location.pathname}`);
-        showToast("Download started", `${root.dataset.guideSlug}.pdf is being downloaded.`);
+        showAlert("Download started", `${root.dataset.guideSlug}.pdf is being downloaded.`);
       } catch {
-        showToast("Could not download PDF", "Try again or use the Print option.");
+        showAlert("Could not download PDF", "Try again or use the Print option.", true);
       } finally {
         button.disabled = false;
       }
@@ -129,19 +126,9 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
       window.print();
     });
   });
-  document.addEventListener("pointerdown", (event) => {
-    const target = event.target;
-    if (target instanceof Node && !actionMenus.some((menu) => menu.contains(target))) closeActionMenus();
-  });
   actionMenus.forEach((menu) => {
     menu.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        closeActionMenus(true);
-      }
-    });
-    menu.addEventListener("focusout", (event) => {
-      if (event.relatedTarget instanceof Node && !menu.contains(event.relatedTarget)) closeActionMenus();
+      if (event.key === "Escape") event.preventDefault();
     });
   });
 

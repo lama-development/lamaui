@@ -2,6 +2,7 @@
 @import "./theme.css";
 @import "./fonts.css";
 @import "./animations.css";
+@import "./scrollbars.css";
 
 @theme inline {
   --color-page: var(--page);
@@ -10,6 +11,14 @@
   --color-surface: var(--surface);
   --color-surface-hover: var(--surface-hover);
   --color-surface-elevated: var(--surface-elevated);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-surface-4: var(--surface-4);
+  --color-surface-5: var(--surface-5);
+  --color-surface-6: var(--surface-6);
+  --color-surface-7: var(--surface-7);
+  --color-surface-8: var(--surface-8);
   --color-muted: var(--muted);
   --color-muted-label: var(--muted-label);
   --color-outline: var(--outline);
@@ -34,21 +43,58 @@
   --color-overlay: var(--overlay);
 }
 
+@layer components {
+  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="1"] {
+    --surface-hover: var(--surface-1-hover);
+    background-color: var(--surface-1);
+    box-shadow: var(--surface-shadow-1);
+  }
+  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="2"] {
+    --surface-hover: var(--surface-2-hover);
+    background-color: var(--surface-2);
+    box-shadow: var(--surface-shadow-2);
+  }
+  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="3"] {
+    --surface-hover: var(--surface-3-hover);
+    background-color: var(--surface-3);
+    box-shadow: var(--surface-shadow-3);
+  }
+  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="4"] {
+    --surface-hover: var(--surface-4-hover);
+    background-color: var(--surface-4);
+    box-shadow: var(--surface-shadow-4);
+  }
+  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="5"] {
+    --surface-hover: var(--surface-5-hover);
+    background-color: var(--surface-5);
+    box-shadow: var(--surface-shadow-5);
+  }
+  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="6"] {
+    --surface-hover: var(--surface-6-hover);
+    background-color: var(--surface-6);
+    box-shadow: var(--surface-shadow-6);
+  }
+  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="7"] {
+    --surface-hover: var(--surface-7-hover);
+    background-color: var(--surface-7);
+    box-shadow: var(--surface-shadow-7);
+  }
+  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="8"] {
+    --surface-hover: var(--surface-8-hover);
+    background-color: var(--surface-8);
+    box-shadow: var(--surface-shadow-8);
+  }
+}
+
 @layer base {
   *,
   *::before,
   *::after {
     box-sizing: border-box;
   }
-  * {
-    scrollbar-width: none;
-  }
   .lamaui-icon,
   .lamaui-checkbox {
     position: relative;
-  }
-  *::-webkit-scrollbar {
-    display: none;
   }
   h1 {
     color: var(--heading);

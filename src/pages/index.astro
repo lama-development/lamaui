@@ -2,6 +2,7 @@
 import DocsLayout from "@/layouts/DocsLayout.astro";
 import Icon from "@/components/ui/Icon.astro";
 import Chip from "@/components/data-display/Chip.astro";
+import Alert from "@/components/feedback/Alert.astro";
 import { componentGroups } from "@/lib/components";
 ---
 
@@ -10,6 +11,8 @@ import { componentGroups } from "@/lib/components";
     <h1>Components</h1>
     <p>Reusable Astro components built from the dashboard’s surfaces, spacing, controls, navigation, and motion patterns.</p>
   </header>
+
+  <Alert title="LamaUI is evolving" class="mb-8"> Component APIs may change before the first stable release. </Alert>
 
   {
     componentGroups.map((group) => (

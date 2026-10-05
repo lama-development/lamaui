@@ -1,0 +1,16 @@
+---
+interface Props {
+  as?: "div" | "section" | "article" | "aside";
+  level?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+  lift?: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  padding?: "none" | "sm" | "md" | "lg";
+  class?: string;
+}
+const { as: Element = "div", level, lift = 1, padding = "md", class: className } = Astro.props;
+const pads = { none: "", sm: "p-3", md: "p-5", lg: "p-7" };
+const fallbackLevel = level ?? Math.min(8, 1 + lift);
+---
+
+<Element class:list={["lamaui-surface rounded-lg [corner-shape:squircle]", pads[padding], className]} data-surface-level={fallbackLevel} data-surface-lift={level ? undefined : lift}>
+  <slot />
+</Element>

@@ -1,0 +1,102 @@
+@property --scroll-fade-start {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
+@property --scroll-fade-end {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+
+@keyframes scroll-fade-reveal-start {
+  from {
+    --scroll-fade-start: 1;
+  }
+  to {
+    --scroll-fade-start: 0;
+  }
+}
+
+@keyframes scroll-fade-reveal-end {
+  from {
+    --scroll-fade-end: 0;
+  }
+  to {
+    --scroll-fade-end: 1;
+  }
+}
+
+.scroll-fade,
+.scroll-fade-x {
+  --scroll-fade-size: 3rem;
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-fade {
+    -webkit-mask-image: linear-gradient(to bottom, rgb(0 0 0 / var(--scroll-fade-start)) 0, #000 var(--scroll-fade-size), #000 calc(100% - var(--scroll-fade-size)), rgb(0 0 0 / var(--scroll-fade-end)) 100%);
+    mask-image: linear-gradient(to bottom, rgb(0 0 0 / var(--scroll-fade-start)) 0, #000 var(--scroll-fade-size), #000 calc(100% - var(--scroll-fade-size)), rgb(0 0 0 / var(--scroll-fade-end)) 100%);
+    animation:
+      scroll-fade-reveal-start both linear,
+      scroll-fade-reveal-end both linear;
+    animation-timeline: scroll(self), scroll(self);
+    animation-range:
+      0 var(--scroll-fade-size),
+      calc(100% - var(--scroll-fade-size)) 100%;
+  }
+
+  .scroll-fade-x {
+    -webkit-mask-image: linear-gradient(to right, rgb(0 0 0 / var(--scroll-fade-start)) 0, #000 var(--scroll-fade-size), #000 calc(100% - var(--scroll-fade-size)), rgb(0 0 0 / var(--scroll-fade-end)) 100%);
+    mask-image: linear-gradient(to right, rgb(0 0 0 / var(--scroll-fade-start)) 0, #000 var(--scroll-fade-size), #000 calc(100% - var(--scroll-fade-size)), rgb(0 0 0 / var(--scroll-fade-end)) 100%);
+    animation:
+      scroll-fade-reveal-start both linear,
+      scroll-fade-reveal-end both linear;
+    animation-timeline: scroll(self inline), scroll(self inline);
+    animation-range:
+      0 var(--scroll-fade-size),
+      calc(100% - var(--scroll-fade-size)) 100%;
+  }
+}
+
+@media (pointer: fine) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--label) 8%, transparent) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  *::-webkit-scrollbar-track,
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    border: 3px solid transparent;
+    border-radius: var(--radius-full);
+    background-color: color-mix(in srgb, var(--label) 8%, transparent);
+    background-clip: content-box;
+  }
+
+  *::-webkit-scrollbar-thumb:vertical {
+    border-right-width: 5px;
+    border-left-width: 1px;
+  }
+
+  *::-webkit-scrollbar-thumb:horizontal {
+    border-top-width: 1px;
+    border-bottom-width: 5px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in srgb, var(--label) 12%, transparent);
+  }
+
+  *::-webkit-scrollbar-thumb:active {
+    background-color: color-mix(in srgb, var(--label) 16%, transparent);
+  }
+}

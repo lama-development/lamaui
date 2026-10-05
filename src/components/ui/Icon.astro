@@ -39,8 +39,9 @@ import exportIcon from "@phosphor-icons/core/duotone/export-duotone.svg?raw";
 import download from "@phosphor-icons/core/duotone/download-simple-duotone.svg?raw";
 import link from "@phosphor-icons/core/duotone/link-duotone.svg?raw";
 import print from "@phosphor-icons/core/duotone/printer-duotone.svg?raw";
+import reset from "@phosphor-icons/core/bold/arrow-counter-clockwise-bold.svg?raw";
 
-export type IconName = "menu" | "close" | "sun" | "moon" | "chevron-right" | "chevron-down" | "copy" | "plus" | "heart" | "more" | "pin" | "home" | "actions" | "forms" | "navigation" | "data" | "feedback" | "overlays" | "layout" | "marketing" | "check" | "user" | "settings" | "search" | "mail" | "code" | "external" | "wrap" | "wrap-on" | "eye" | "eye-slash" | "warning" | "system" | "file-md" | "file-pdf" | "clipboard-text" | "export" | "download" | "print" | "link";
+export type IconName = "menu" | "close" | "sun" | "moon" | "chevron-right" | "chevron-down" | "copy" | "plus" | "heart" | "more" | "pin" | "home" | "actions" | "forms" | "navigation" | "data" | "feedback" | "overlays" | "layout" | "marketing" | "check" | "user" | "settings" | "search" | "mail" | "code" | "external" | "wrap" | "wrap-on" | "eye" | "eye-slash" | "warning" | "system" | "file-md" | "file-pdf" | "clipboard-text" | "export" | "download" | "print" | "link" | "reset";
 interface Props {
   name: IconName;
   size?: number;
@@ -88,6 +89,7 @@ const icons: Record<IconName, string> = {
   download,
   print,
   link,
+  reset,
   "wrap-on": wrapOn
 };
 const paths = icons[name].replace(/^<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
