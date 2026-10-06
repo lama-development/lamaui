@@ -46,6 +46,7 @@ const year = new Date().getFullYear();
       import "@/scripts/hover";
       import "@/scripts/brand";
       import "@/scripts/surfaces";
+      import "@/scripts/drawer";
     </script>
     <a href="#main-content" class="skip-link fixed inset-[8px_auto_auto_8px] z-200 transform-[translateY(-80px)] rounded-md bg-accent px-3 py-2 text-sm font-semibold text-accent-label focus:transform-[translateY(0)] print:hidden">Skip to content</a>
     <header class="docs-mobile-header hidden print:hidden [@media(width<=860px)]:sticky [@media(width<=860px)]:top-0 [@media(width<=860px)]:z-40 [@media(width<=860px)]:flex [@media(width<=860px)]:min-h-14 [@media(width<=860px)]:items-center [@media(width<=860px)]:justify-between [@media(width<=860px)]:border-b [@media(width<=860px)]:border-outline [@media(width<=860px)]:bg-surface [@media(width<=860px)]:p-[0.375rem_0.75rem] [@media(width<=860px)]:[backdrop-filter:blur(12px)] [@media(width<=860px)]:[&_.docs-brand]:flex-none [@media(width<=860px)]:[&_.docs-brand_small]:hidden">
@@ -324,33 +325,79 @@ const year = new Date().getFullYear();
         snapHighlight();
         new ResizeObserver(snapHighlight).observe(root);
       });
-      $$("[data-dialog-open]").forEach((button) => button.addEventListener("click", () => document.getElementById(button.dataset.dialogOpen)?.showModal()));
-      $$("[data-dialog-close]").forEach((button) => button.addEventListener("click", () => button.closest("dialog")?.close()));
-      $$("dialog").forEach((dialog) =>
-        dialog.addEventListener("click", (event) => {
-          if (event.target === dialog) dialog.close();
+      $$("[data-dialog-open]").forEach((button) =>
+        button.addEventListener("click", () => {
+          const dialog = document.getElementById(button.dataset.dialogOpen);
+          if (!dialog?.hasAttribute("data-drawer")) dialog?.showModal();
         })
       );
+      $$("[data-dialog-close]").forEach((button) =>
+        button.addEventListener("click", () => {
+          const dialog = button.closest("dialog");
+          if (!dialog?.hasAttribute("data-drawer")) dialog?.close();
+        })
+      );
+      $$("dialog").forEach((dialog) =>
+        dialog.addEventListener("click", (event) => {
+          if (event.target === dialog && !dialog.hasAttribute("data-drawer")) dialog.close();
+        })
+      );
+      const syncToastStack = (region) => {
+        if (!region) return;
+        const toasts = $$(":scope > [data-toast]:not(.hidden)", region);
+        toasts.forEach((toast, position) => {
+          const index = toasts.length - position - 1;
+          toast.style.setProperty("--toast-stack-index", Math.min(index, 3));
+          toast.style.zIndex = String(toasts.length - index);
+          toast.toggleAttribute("inert", index > 0);
+          toast.toggleAttribute("data-toast-covered", index > 3);
+        });
+      };
       const hideToast = (toast) => {
         if (!toast || toast.classList.contains("hidden")) return;
-        toast.classList.remove("is-visible");
-        toast.classList.add("is-leaving");
-        window.setTimeout(() => {
-          toast.classList.remove("flex", "is-leaving");
-          toast.classList.add("hidden");
-        }, 160);
+        const region = toast.closest("[data-toast-region]");
+        toast.classList.remove("is-open");
+        let finished = false;
+        const finish = () => {
+          if (finished) return;
+          finished = true;
+          toast.removeEventListener("transitionend", finishAfterOpacity);
+          if (toast.hasAttribute("data-toast-transient")) toast.remove();
+          else {
+            toast.classList.remove("grid");
+            toast.classList.add("hidden");
+          }
+          syncToastStack(region);
+        };
+        const finishAfterOpacity = (event) => {
+          if (event.target === toast && event.propertyName === "opacity") finish();
+        };
+        toast.addEventListener("transitionend", finishAfterOpacity);
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return finish();
+        window.setTimeout(finish, 400);
       };
       $$("[data-toast-open]").forEach((button) =>
         button.addEventListener("click", () => {
-          const toast = document.getElementById(button.dataset.toastOpen);
-          if (!toast) return;
-          toast.classList.remove("hidden", "is-leaving");
-          toast.classList.add("flex", "is-visible");
-          window.clearTimeout(toast._hideTimer);
-          toast._hideTimer = window.setTimeout(() => hideToast(toast), 3500);
+          const source = document.getElementById(button.dataset.toastOpen);
+          const region = source?.closest("[data-toast-region]");
+          if (!source || !region) return;
+          const toast = source.cloneNode(true);
+          toast.removeAttribute("id");
+          toast.dataset.toastTransient = "true";
+          toast.classList.remove("hidden");
+          toast.classList.add("grid");
+          region.append(toast);
+          syncToastStack(region);
+          requestAnimationFrame(() => toast.classList.add("is-open"));
+          if (toast.getAttribute("role") !== "alert") toast._hideTimer = window.setTimeout(() => hideToast(toast), 5000);
         })
       );
-      $$("[data-toast-close]").forEach((button) => button.addEventListener("click", () => hideToast(button.closest("[data-toast]"))));
+      document.addEventListener("click", (event) => {
+        const button = event.target instanceof Element ? event.target.closest("[data-toast-close]") : null;
+        if (button) hideToast(button.closest("[data-toast]"));
+      });
+      document.addEventListener("toast:dismiss", (event) => hideToast(event.target?.closest?.("[data-toast]")));
+      document.addEventListener("toast:added", (event) => syncToastStack(event.target?.closest?.("[data-toast-region]")));
       $$("[data-dismiss]").forEach((button) =>
         button.addEventListener("click", () => {
           const alert = button.closest('[role="alert"],[role="status"]');

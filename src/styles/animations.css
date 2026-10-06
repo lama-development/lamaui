@@ -25,6 +25,12 @@
   --dropdown-pre-scale: 0.97;
   --dropdown-closing-scale: 0.99;
   --dropdown-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --toast-open: 350ms;
+  --toast-close: 250ms;
+  --toast-distance: 16px;
+  --toast-blur: 2px;
+  --toast-scale: 0.97;
+  --toast-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .lamaui-fluid-hover {
@@ -195,14 +201,39 @@ dialog[open]:not([data-drawer]) {
 dialog[open]::backdrop {
   animation: fade-in var(--duration-fast) ease-out;
 }
-[data-drawer][open] {
-  animation: drawer-in var(--duration-slow) var(--spring-slow-ease);
+[data-drawer][data-drawer-side="right"][open] {
+  animation: drawer-in-right var(--duration-slow) var(--spring-slow-ease);
 }
-[data-toast].is-visible {
-  animation: toast-in var(--duration-normal) var(--ease-standard);
+[data-drawer][data-drawer-side="left"][open] {
+  animation: drawer-in-left var(--duration-slow) var(--spring-slow-ease);
 }
-[data-toast].is-leaving {
-  animation: toast-out var(--spring-slow-exit) var(--spring-exit-ease) forwards;
+[data-drawer] {
+  transition: transform var(--spring-slow-exit) var(--spring-exit-ease);
+}
+[data-drawer][data-drawer-side="right"].is-closing {
+  transform: translateX(100%);
+}
+[data-drawer][data-drawer-side="left"].is-closing {
+  transform: translateX(-100%);
+}
+.t-toast {
+  opacity: 0;
+  transform: translateY(var(--toast-distance)) scale(var(--toast-scale));
+  filter: blur(var(--toast-blur));
+  will-change: transform, opacity, filter;
+  transition:
+    opacity var(--toast-close) var(--toast-ease),
+    transform var(--toast-close) var(--toast-ease),
+    filter var(--toast-close) var(--toast-ease);
+}
+.t-toast.is-open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+  transition:
+    opacity var(--toast-open) var(--toast-ease),
+    transform var(--toast-open) var(--toast-ease),
+    filter var(--toast-open) var(--toast-ease);
 }
 
 @keyframes dialog-in {
@@ -216,22 +247,16 @@ dialog[open]::backdrop {
     opacity: 0;
   }
 }
-@keyframes drawer-in {
+@keyframes drawer-in-right {
   from {
     opacity: 0;
     transform: translateX(2rem);
   }
 }
-@keyframes toast-in {
+@keyframes drawer-in-left {
   from {
     opacity: 0;
-    transform: translateY(0.5rem);
-  }
-}
-@keyframes toast-out {
-  to {
-    opacity: 0;
-    transform: translateY(0.35rem) scale(0.985);
+    transform: translateX(-2rem);
   }
 }
 @keyframes navbar-menu-in {
@@ -280,6 +305,29 @@ dialog[open]::backdrop {
   }
   .lamaui-navbar-menu[data-open="true"] {
     animation: navbar-menu-in var(--duration-normal) var(--ease-standard);
+  }
+}
+
+@media (max-width: 620px) {
+  [data-drawer][data-drawer-side][open] {
+    animation-name: bottom-sheet-in;
+  }
+  [data-drawer] {
+    transform: translateY(var(--drawer-drag-y, 0px));
+    transition: transform var(--spring-slow-exit) var(--spring-moderate-ease);
+  }
+  [data-drawer].is-dragging {
+    transition: none;
+  }
+  [data-drawer].is-closing {
+    transform: translateY(var(--drawer-drag-y, 100%));
+  }
+}
+
+@keyframes bottom-sheet-in {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
   }
 }
 
@@ -382,7 +430,13 @@ html.theme-reveal::view-transition-new(root) {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .t-toast {
+    transition: none !important;
+  }
   .t-dropdown {
+    transition: none !important;
+  }
+  [data-drawer] {
     transition: none !important;
   }
   *,

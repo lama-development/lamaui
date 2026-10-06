@@ -8,12 +8,16 @@ interface Props {
   class?: string;
 }
 const { id, title, side = "right", class: className } = Astro.props;
+const titleId = `${id}-title`;
 ---
 
-<dialog {id} data-drawer data-surface-level="5" data-surface-lift="4" class:list={["lamaui-drawer fixed inset-y-0 h-dvh max-h-none w-[min(26rem,90vw)] border-0 bg-surface-elevated p-0 text-label shadow-(--shadow-lg) backdrop:bg-overlay", side === "right" ? "mr-0 ml-auto" : "mr-auto ml-0", className]}>
-  <div class="flex h-full flex-col">
+<dialog {id} aria-labelledby={titleId} data-drawer data-drawer-side={side} data-surface-level="5" data-surface-lift="4" class:list={["lamaui-drawer fixed inset-y-0 h-dvh max-h-none w-[min(26rem,90vw)] border-0 bg-surface-elevated p-0 text-label shadow-(--shadow-lg) backdrop:bg-overlay", side === "right" ? "mr-0 ml-auto" : "mr-auto ml-0", className]}>
+  <div class="lamaui-drawer-shell flex h-full flex-col">
+    <div class="lamaui-drawer-drag-zone" data-drawer-drag-zone aria-hidden="true">
+      <span class="lamaui-drawer-handle"></span>
+    </div>
     <header class="flex items-center gap-3 border-b border-outline p-4">
-      <h2 class="m-0 flex-1 text-lg font-bold">{title}</h2><button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles}`} aria-label="Close drawer" data-dialog-close><Icon name="close" /></button>
-    </header><div class="flex-1 overflow-auto p-5"><slot /></div>
+      <h2 id={titleId} class="m-0 flex-1 text-lg font-bold">{title}</h2><button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles}`} aria-label="Close drawer" data-dialog-close><Icon name="close" /></button>
+    </header><div class="lamaui-drawer-body min-h-0 flex-1 overflow-auto p-5"><slot /></div>
   </div>
 </dialog>

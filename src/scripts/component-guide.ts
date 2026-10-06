@@ -44,10 +44,8 @@ function markdown(node: Element): string {
 
 document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
   const content = root.querySelector<HTMLElement>("[data-guide-content]");
-  const successAlert = root.querySelector<HTMLElement>('[data-guide-alert="success"]');
-  const errorAlert = root.querySelector<HTMLElement>('[data-guide-alert="error"]');
+  const toastRegion = root.querySelector<HTMLElement>("[data-guide-toast-region]");
   const actionMenus = Array.from(root.querySelectorAll<HTMLDetailsElement>("[data-guide-menu]"));
-  let alertTimer: number | undefined;
   if (!content) return;
   const documentMarkdown = () => `# ${root.dataset.guideTitle}\n\n${root.dataset.guideDescription}\n\n${markdown(content)}Source: ${location.origin}${location.pathname}\n`;
   const closeActionMenus = (restoreFocus = false) => {
@@ -56,27 +54,31 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
       requestDetailsMenuClose(menu, restoreFocus);
     });
   };
-  const showAlert = (title: string, message: string, error = false) => {
-    const alert = error ? errorAlert : successAlert;
-    const otherAlert = error ? successAlert : errorAlert;
-    if (!alert) return;
-    const alertTitle = alert.querySelector<HTMLElement>(".lamaui-alert-body p");
-    const alertMessage = alert.querySelector<HTMLElement>("[data-guide-alert-message]");
-    if (alertTitle) alertTitle.textContent = title;
-    if (alertMessage) alertMessage.textContent = message;
-    if (otherAlert) otherAlert.hidden = true;
-    alert.hidden = false;
-    window.clearTimeout(alertTimer);
-    if (!error) alertTimer = window.setTimeout(() => (alert.hidden = true), 3500);
+  const showToast = (title: string, message: string, error = false) => {
+    const template = toastRegion?.querySelector<HTMLTemplateElement>(`[data-guide-toast-template="${error ? "destructive" : "success"}"]`);
+    const toast = template?.content.firstElementChild?.cloneNode(true);
+    if (!(toast instanceof HTMLElement) || !toastRegion) return;
+    const toastTitle = toast.querySelector<HTMLElement>(".lamaui-toast-body p");
+    const toastMessage = toast.querySelector<HTMLElement>("[data-guide-toast-message]");
+    if (toastTitle) toastTitle.textContent = title;
+    if (toastMessage) toastMessage.textContent = message;
+    toast.removeAttribute("id");
+    toast.dataset.toastTransient = "true";
+    toast.classList.remove("hidden");
+    toast.classList.add("grid");
+    toastRegion.append(toast);
+    toast.dispatchEvent(new CustomEvent("toast:added", { bubbles: true }));
+    requestAnimationFrame(() => toast.classList.add("is-open"));
+    if (!error) window.setTimeout(() => toast.dispatchEvent(new CustomEvent("toast:dismiss", { bubbles: true })), 5000);
   };
   root.querySelectorAll<HTMLElement>("[data-guide-copy]").forEach((button) => {
     button.addEventListener("click", async () => {
       try {
         await navigator.clipboard.writeText(documentMarkdown());
-        showAlert("Page copied", "Markdown copied to the clipboard.");
+        showToast("Page copied", "Markdown copied to the clipboard.");
         closeActionMenus(true);
       } catch {
-        showAlert("Could not copy", "Download the Markdown file instead.", true);
+        showToast("Could not copy", "Download the Markdown file instead.", true);
       }
     });
   });
@@ -85,9 +87,9 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
       try {
         await navigator.clipboard.writeText(`${location.origin}${location.pathname}`);
         closeActionMenus(true);
-        showAlert("Link copied", "Page link copied to the clipboard.");
+        showToast("Link copied", "Page link copied to the clipboard.");
       } catch {
-        showAlert("Could not copy link", "Copy the page address from your browser instead.", true);
+        showToast("Could not copy link", "Copy the page address from your browser instead.", true);
       }
     });
   });
@@ -102,7 +104,7 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
       link.remove();
       window.setTimeout(() => URL.revokeObjectURL(url), 1000);
       closeActionMenus(true);
-      showAlert("Download started", `${root.dataset.guideSlug}.md is being downloaded.`);
+      showToast("Download started", `${root.dataset.guideSlug}.md is being downloaded.`);
     });
   });
   root.querySelectorAll<HTMLButtonElement>("[data-guide-pdf]").forEach((button) => {
@@ -112,9 +114,9 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
       try {
         const { downloadGuidePdf } = await import("@/lib/guide-pdf");
         downloadGuidePdf(content, root.dataset.guideTitle || "Guide", root.dataset.guideDescription || "", root.dataset.guideSlug || "guide", `${location.origin}${location.pathname}`);
-        showAlert("Download started", `${root.dataset.guideSlug}.pdf is being downloaded.`);
+        showToast("Download started", `${root.dataset.guideSlug}.pdf is being downloaded.`);
       } catch {
-        showAlert("Could not download PDF", "Try again or use the Print option.", true);
+        showToast("Could not download PDF", "Try again or use the Print option.", true);
       } finally {
         button.disabled = false;
       }

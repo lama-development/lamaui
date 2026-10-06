@@ -44,6 +44,7 @@ import CodeBlock from "@/components/data-display/CodeBlock.astro";
 import EmptyState from "@/components/data-display/EmptyState.astro";
 import Alert from "@/components/feedback/Alert.astro";
 import Toast from "@/components/feedback/Toast.astro";
+import ToastRegion from "@/components/feedback/ToastRegion.astro";
 import Spinner from "@/components/feedback/Spinner.astro";
 import Dialog from "@/components/overlays/Dialog.astro";
 import Drawer from "@/components/overlays/Drawer.astro";
@@ -493,9 +494,11 @@ const selectOptions = [
         <>
           <>
             <Button data-toast-open="preview-toast">Show toast</Button>
-            <Toast id="preview-toast" title="Preferences saved">
-              Your changes are ready.
-            </Toast>
+            <ToastRegion>
+              <Toast id="preview-toast" title="Preferences saved">
+                Your changes are ready.
+              </Toast>
+            </ToastRegion>
           </>
         </>
       )

@@ -1,0 +1,12 @@
+---
+interface Props {
+  label?: string;
+  class?: string;
+  [key: string]: any;
+}
+const { label = "Notifications", class: className, ...rest } = Astro.props;
+---
+
+<section {...rest} aria-label={label} class:list={["lamaui-toast-region pointer-events-none fixed right-4 bottom-4 z-100 grid w-[min(24rem,calc(100%-2rem))]", className]} data-toast-region>
+  <slot />
+</section>

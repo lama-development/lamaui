@@ -157,11 +157,64 @@
   }
 }
 
-[data-toast].flex {
+[data-toast].grid {
   display: grid;
+}
+.lamaui-drawer-drag-zone {
+  display: none;
+}
+.lamaui-toast-region > [data-toast] {
+  grid-area: 1 / 1;
+  align-self: end;
+  translate: 0 calc(var(--toast-stack-index, 0) * -0.75rem);
+  scale: calc(1 - var(--toast-stack-index, 0) * 0.025);
+  transform-origin: bottom center;
+}
+.lamaui-toast-region > [data-toast][data-toast-covered] {
+  visibility: hidden;
 }
 @media (max-width: 860px) {
   .docs-navigation-open {
     overflow: hidden;
+  }
+}
+
+@media (max-width: 620px) {
+  .lamaui-drawer {
+    inset: auto 0 0;
+    width: 100%;
+    height: auto;
+    max-height: min(90dvh, 48rem);
+    margin: auto 0 0;
+    border-radius: 1.5rem 1.5rem 0 0;
+    overflow: hidden;
+    overscroll-behavior: contain;
+  }
+  .lamaui-drawer-shell {
+    height: auto;
+    max-height: min(90dvh, 48rem);
+  }
+  .lamaui-drawer-drag-zone {
+    display: flex;
+    min-height: 2rem;
+    flex: none;
+    touch-action: none;
+    align-items: center;
+    justify-content: center;
+    cursor: grab;
+  }
+  .lamaui-drawer-drag-zone:active {
+    cursor: grabbing;
+  }
+  .lamaui-drawer-handle {
+    width: 2.25rem;
+    height: 0.25rem;
+    border-radius: 999px;
+    background: var(--muted-label);
+    opacity: 0.45;
+  }
+  .lamaui-drawer-body {
+    padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+    overscroll-behavior: contain;
   }
 }
