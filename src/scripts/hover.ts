@@ -14,7 +14,7 @@ interface FluidHoverState {
 const states = new Map<HTMLElement, FluidHoverState>();
 
 function eligibleItems(group: HTMLElement) {
-  return Array.from(group.querySelectorAll<HTMLElement>(itemSelector)).filter((item) => !item.matches(':disabled, [aria-disabled="true"]') && !item.closest("[inert]") && item.getClientRects().length > 0);
+  return Array.from(group.querySelectorAll<HTMLElement>(itemSelector)).filter((item) => item.closest(groupSelector) === group && !item.matches(':disabled, [aria-disabled="true"], .lamaui-choice:has(:disabled)') && !item.closest("[inert]") && item.getClientRects().length > 0);
 }
 
 function nearestItem(group: HTMLElement, x: number, y: number) {
@@ -76,6 +76,14 @@ function hide(state: FluidHoverState, immediately = false) {
 document.addEventListener("pointermove", (event) => {
   if (!hoverEnabled.matches || event.pointerType !== "mouse" || !(event.target instanceof Element)) return;
   const group = event.target.closest<HTMLElement>(groupSelector);
+  // Sidebar hover layers live above the page; do not let them cover an open color dock.
+  if (group?.matches(".docs-nav") && group.closest(".docs-sidebar")?.querySelector('[data-accent-picker][data-open="true"]')) {
+    clear();
+    return;
+  }
+  for (const state of states.values()) {
+    if (state.group !== group && state.current) hide(state);
+  }
   if (!group) return;
   const item = nearestItem(group, event.clientX, event.clientY);
   if (!item) return;
@@ -99,3 +107,14 @@ document.addEventListener("scroll", clear, { capture: true, passive: true });
 window.addEventListener("resize", clear);
 window.addEventListener("blur", clear);
 hoverEnabled.addEventListener("change", clear);
+
+// Closing a picker can hide its hovered choice without a pointerout event.
+new MutationObserver((records) => {
+  if (records.some((record) => record.type === "attributes" && record.attributeName === "data-open" && record.target instanceof Element && record.target.matches("[data-accent-picker]"))) {
+    clear();
+    return;
+  }
+  for (const state of [...states.values()]) {
+    if (!state.group.isConnected || state.group.closest("[inert], [hidden]") || getComputedStyle(state.group).visibility === "hidden") hide(state, true);
+  }
+}).observe(document.body, { subtree: true, attributes: true, attributeFilter: ["inert", "hidden", "data-open"], childList: true });

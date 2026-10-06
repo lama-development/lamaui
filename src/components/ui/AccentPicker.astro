@@ -7,11 +7,11 @@ interface Props {
 const { id = "accent-picker" } = Astro.props;
 ---
 
-<div class="lamaui-accent-picker relative flex-none rounded-lg border border-outline bg-surface p-1 [corner-shape:squircle]" data-accent-picker>
+<div data-surface-level="2" data-surface-lift="1" class="lamaui-accent-picker lamaui-surface relative flex-none rounded-lg border border-outline p-1 [corner-shape:squircle]" data-accent-picker data-fluid-hover>
   <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} rounded-[calc(var(--radius-lg)-0.3125rem)]`} aria-label="Choose accent color, current: Lime" title="Accent color: Lime" aria-expanded="false" aria-controls={`${id}-colors`} data-accent-trigger>
     <span class="size-5 rounded-full border border-black/10 bg-accent" aria-hidden="true"></span>
   </button>
-  <div id={`${id}-colors`} class="lamaui-accent-dock absolute right-0 bottom-[calc(100%+0.5rem)] z-10 flex w-max flex-col gap-1 rounded-lg border border-outline bg-surface-elevated p-1 shadow-(--shadow-md) [corner-shape:squircle]" role="group" aria-label="Accent color" inert data-accent-dock>
+  <div id={`${id}-colors`} data-surface-level="3" data-surface-lift="1" class="lamaui-accent-dock lamaui-surface absolute right-0 bottom-[calc(100%+0.5rem)] z-10 flex w-max flex-col gap-1 rounded-lg border border-outline p-1 [corner-shape:squircle]" role="group" data-fluid-hover aria-label="Accent color" inert data-accent-dock>
     {
       accentPresets.map((preset, index) => (
         <button type="button" class="lamaui-accent-choice relative flex size-(--control-md) flex-none cursor-pointer items-center justify-center rounded-[calc(var(--radius-lg)-0.3125rem)] border border-transparent bg-transparent [corner-shape:squircle] hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" style={`--swatch-index:${index}`} aria-label={`${preset.label} accent`} aria-pressed={preset.value === "lime"} data-accent-choice={preset.value}>

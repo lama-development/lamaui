@@ -414,6 +414,31 @@ dialog[open]::backdrop {
     box-shadow var(--duration-fast);
 }
 
+@media (max-width: 860px) {
+  .docs-mobile-header {
+    transform: translateY(var(--navbar-scroll-offset, 0px));
+    transition: background-color var(--duration-fast) var(--ease-standard);
+  }
+  .docs-mobile-header:focus-within {
+    transform: translateY(0);
+  }
+  .docs-mobile-header[data-scroll-hidden]:not(:focus-within) {
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+html:not(.theme-reveal)::view-transition-old(root),
+html:not(.theme-reveal)::view-transition-new(root) {
+  animation-duration: var(--duration-slow);
+  animation-timing-function: var(--ease-standard);
+}
+
 html.theme-reveal::view-transition-image-pair(root) {
   isolation: auto;
 }
