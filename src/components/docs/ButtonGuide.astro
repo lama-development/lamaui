@@ -1,0 +1,162 @@
+---
+import Table from "@/components/data-display/Table.astro";
+import Card from "@/components/data-display/Card.astro";
+import Alert from "@/components/feedback/Alert.astro";
+import InlineCode from "@/components/data-display/InlineCode.astro";
+import DocsText from "./DocsText.astro";
+import CodeBlock from "@/components/data-display/CodeBlock.astro";
+const props = [
+  ["variant", '"primary" | "secondary" | "outline" | "ghost" | "destructive"', '"primary"', "Visual emphasis and action intent."],
+  ["size", '"sm" | "md" | "lg"', '"md"', "Control height and padding."],
+  ["type", '"button" | "submit" | "reset"', '"button"', "Native button behavior; applies without href."],
+  ["href", "string", "—", "Renders a navigation link instead of a button."],
+  ["disabled", "boolean", "false", "Prevents activation; disabled links lose their destination and leave the tab order."],
+  ["loading", "boolean", "false", "Shows a spinner, sets aria-busy, and prevents activation."],
+  ["icon", "IconName", "—", "Optional decorative icon."],
+  ["iconPosition", '"start" | "end"', '"start"', "Places the icon before or after the label."],
+  ["fullWidth", "boolean", "false", "Fills the width of its container."],
+  ["class", "string", "—", "Additional classes for layout or customization."]
+];
+const examples = [
+  { title: "Variants", description: "Choose the emphasis: `primary` for the main action, `secondary` or `outline` for supporting actions, `ghost` for subtle controls, and `destructive` for deletion.", code: '<Button>Primary</Button>\n<Button variant="secondary">Secondary</Button>\n<Button variant="outline">Outline</Button>\n<Button variant="ghost">Ghost</Button>\n<Button variant="destructive">Delete</Button>' },
+  { title: "Sizes", description: "Choose a size for the context; `md` is the default.", code: '<Button size="sm">Small</Button>\n<Button>Medium</Button>\n<Button size="lg">Large</Button>' },
+  { title: "Icons and links", description: "Add an icon before or after the label. Set `href` to navigate. For icon-only actions, use `IconButton`.", code: '<Button icon="plus">Create</Button>\n<Button variant="secondary" href="/components/icon" icon="external" iconPosition="end">Browse icons</Button>' },
+  { title: "States", description: "Disable unavailable actions. Set `loading` while a request is running to show a spinner and prevent repeated clicks.", code: '<Button disabled>Disabled</Button>\n<Button loading>Saving…</Button>\n<Button variant="secondary" loading>Uploading…</Button>\n<Button href="/" disabled variant="outline">Disabled link</Button>' },
+  { title: "Full width", description: "Width follows the parent container.", code: "<Button fullWidth>Continue</Button>" },
+  { title: "Forms", description: 'Set `type="submit"` to submit a form. The default is `type="button"`.', code: '<form action="/save" method="post">\n  <Button type="submit" name="intent" value="save">Save changes</Button>\n</form>' }
+];
+---
+
+<div class="button-guide">
+  <section class="guide-section" aria-labelledby="examples">
+    <header class="section-heading"><h2 id="examples">Examples</h2><p>Common ways to use Button.</p></header>
+    <div class="example-list">
+      {
+        examples.map((example) => (
+          <div class="example-row">
+            <div class="example-description">
+              <>
+                <h3>{example.title}</h3>
+                <p>
+                  <DocsText text={example.description} />
+                </p>
+              </>
+            </div>
+            <div class="example-code">
+              <CodeBlock code={example.code} />
+              {example.title === "States" && (
+                <Alert title="You control the loading state" class="mt-4">
+                  Set <InlineCode>loading</InlineCode> when the request starts, clear it when it finishes, and announce the result in a status message.
+                </Alert>
+              )}
+              {example.title === "Icons and links" && (
+                <p class="mt-4 mb-0 text-base leading-normal text-muted-label">
+                  For an icon-only button, use{" "}
+                  <a href="/components/icon-button" class="text-accent underline underline-offset-4">
+                    IconButton
+                  </a>{" "}
+                  with an accessible label.
+                </p>
+              )}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+  <section class="guide-section" aria-labelledby="props">
+    <header class="section-heading"><h2 id="props">Props</h2><p>Place the button label in the default slot. Standard HTML attributes pass through to the button or link.</p></header>
+    <Table
+      caption="Button props, defaults, and behavior"
+      columns={[
+        { key: "name", label: "Prop", code: true },
+        { key: "type", label: "Type", code: true, wrap: true },
+        { key: "default", label: "Default", code: true },
+        { key: "description", label: "Description" }
+      ]}
+      rows={props.map(([name, type, value, description]) => ({ name, type, default: value, description }))}
+    />
+  </section>
+  <section class="guide-section" aria-labelledby="accessibility">
+    <header class="section-heading"><h2 id="accessibility">Accessibility</h2><p>Use descriptive labels and the right element for the action.</p></header>
+    <Card>
+      <dl class="m-0 [&_dd]:m-0 [&_dd]:text-base [&_dd]:leading-normal [&_dd]:text-muted-label [&_dt]:text-base [&_dt]:leading-normal [&_dt]:font-semibold [&>div]:grid [&>div]:grid-cols-[7rem_minmax(0,1fr)] [&>div]:gap-5 [&>div]:py-4 max-[620px]:[&>div]:grid-cols-1 max-[620px]:[&>div]:gap-2 [&>div+div]:border-t [&>div+div]:border-outline [&>div:first-child]:pt-0 [&>div:last-child]:pb-0">
+        <div><dt>Keyboard</dt><dd>Buttons activate with <InlineCode>Enter</InlineCode> or <InlineCode>Space</InlineCode>; links activate with <InlineCode>Enter</InlineCode>. Keyboard focus has a visible ring.</dd></div>
+        <div><dt>Loading</dt><dd><InlineCode>loading</InlineCode> prevents activation and sets <InlineCode>aria-busy</InlineCode>. The spinner is decorative; your page announces the result.</dd></div>
+        <div><dt>Disabled</dt><dd>Disabled controls leave the tab order. Links also lose their destination and expose <InlineCode>aria-disabled</InlineCode>.</dd></div>
+        <div><dt>Motion</dt><dd>Hover and pressed states use shared theme tokens. Animations respect reduced motion preferences.</dd></div>
+      </dl>
+    </Card>
+  </section>
+</div>
+
+<style>
+  .button-guide {
+    margin-top: 3.5rem;
+  }
+  .guide-section + .guide-section {
+    margin-top: 3.5rem;
+  }
+  .section-heading {
+    margin-bottom: 1.5rem;
+  }
+  .section-heading h2 {
+    margin: 0;
+    scroll-margin-top: 6rem;
+    font-size: 1.375rem;
+    line-height: 1.3;
+    font-weight: 650;
+    letter-spacing: -0.025em;
+  }
+  .section-heading p {
+    max-width: 62ch;
+    margin: 0.625rem 0 0;
+    color: var(--muted-label);
+    font-size: var(--text-base);
+    line-height: 1.65;
+  }
+  .example-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+    padding: 1.75rem 0;
+    border-top: 1px solid var(--outline);
+  }
+  .example-description h3 {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    font-weight: 650;
+  }
+  .example-description p {
+    margin: 0.625rem 0 0;
+    max-width: 55ch;
+    font-size: var(--text-base);
+    line-height: 1.7;
+    color: var(--muted-label);
+  }
+  .example-code {
+    min-width: 0;
+  }
+  @media (min-width: 1000px) {
+    .example-row {
+      grid-template-columns: minmax(12rem, 0.8fr) minmax(0, 2fr);
+      gap: 2rem;
+    }
+  }
+  @media (max-width: 620px) {
+    .button-guide,
+    .guide-section + .guide-section {
+      margin-top: 2.5rem;
+    }
+    .example-row {
+      padding: 1.25rem 0;
+    }
+  }
+  @media print {
+    .example-row {
+      grid-template-columns: minmax(0, 1fr);
+      break-inside: avoid;
+    }
+  }
+</style>

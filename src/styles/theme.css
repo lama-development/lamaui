@@ -44,8 +44,8 @@
   --ring: var(--accent);
   --overlay: light-dark(rgb(5 12 20 / 55%), rgb(0 0 0 / 70%));
 
-  --accent: light-dark(#749e00, #a3cc39);
-  --accent-hover: light-dark(#638700, #b4db50);
+  --accent: light-dark(#5b7d00, #a3cc39);
+  --accent-hover: light-dark(#4c6900, #b4db50);
   --accent-subtle: light-dark(#eff5df, #242f12);
   --accent-label: light-dark(#ffffff, #121a00);
   --accent-ring: color-mix(in srgb, var(--accent) 35%, transparent);

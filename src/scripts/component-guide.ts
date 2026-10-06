@@ -1,9 +1,12 @@
 import { requestDetailsMenuClose } from "@/scripts/details-menu";
+import linkIcon from "@phosphor-icons/core/duotone/link-duotone.svg?raw";
 
 function inline(node: Node): string {
   if (node.nodeType === Node.TEXT_NODE) return node.textContent || "";
   if (!(node instanceof HTMLElement) || node.hidden || node.classList.contains("sr-only")) return "";
   const text = Array.from(node.childNodes).map(inline).join("");
+  if (node.matches("[data-guide-permalink]")) return text;
+  if (node.matches("[data-guide-no-export]")) return "";
   if (node.tagName === "CODE") return `\`${text}\``;
   if (node.tagName === "STRONG" || node.tagName === "B") return `**${text}**`;
   if (node.tagName === "A") return `[${text}](${node.getAttribute("href") || ""})`;
@@ -71,6 +74,46 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
     requestAnimationFrame(() => toast.classList.add("is-open"));
     if (!error) window.setTimeout(() => toast.dispatchEvent(new CustomEvent("toast:dismiss", { bubbles: true })), 5000);
   };
+  content.querySelectorAll<HTMLElement>("h2[id]").forEach((heading) => {
+    if (heading.closest(".component-preview, .lamaui-card") || heading.querySelector("[data-guide-permalink]")) return;
+    const title = heading.textContent?.trim() || "Section";
+    const link = document.createElement("a");
+    link.href = `#${heading.id}`;
+    link.className = "guide-heading-link";
+    link.dataset.guidePermalink = "";
+    link.title = `Copy link to ${title}`;
+    link.setAttribute("aria-label", `${title}: copy section link`);
+    while (heading.firstChild) link.append(heading.firstChild);
+    const icon = document.createElement("span");
+    icon.className = "guide-heading-link-icon";
+    icon.innerHTML = linkIcon;
+    icon.setAttribute("aria-hidden", "true");
+    icon.dataset.guideNoExport = "";
+    if (heading.id !== "preview") link.append(icon);
+    heading.append(link);
+    link.addEventListener("click", async (event) => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      const url = new URL(location.href);
+      url.hash = heading.id;
+      try {
+        await navigator.clipboard.writeText(url.href);
+        history.replaceState(history.state, "", url.href);
+        showToast("Link copied", `Link to ${title} copied to the clipboard.`);
+      } catch {
+        history.replaceState(history.state, "", url.href);
+        showToast("Could not copy link", "Copy the section address from your browser instead.", true);
+      }
+    });
+  });
+  if (location.hash) {
+    let sectionId = location.hash.slice(1);
+    try {
+      sectionId = decodeURIComponent(sectionId);
+    } catch {}
+    const target = document.getElementById(sectionId);
+    if (target && content.contains(target)) requestAnimationFrame(() => target.scrollIntoView());
+  }
   root.querySelectorAll<HTMLElement>("[data-guide-copy]").forEach((button) => {
     button.addEventListener("click", async () => {
       try {
@@ -142,7 +185,9 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
   const syncIndex = () => {
     scheduled = false;
     const scrollPadding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
-    const active = headings.filter((heading) => heading.getBoundingClientRect().top <= scrollPadding + (parseFloat(getComputedStyle(heading).scrollMarginTop) || 0) + 1).at(-1) || headings[0];
+    const scroller = document.scrollingElement ?? document.documentElement;
+    const atBottom = scroller.scrollTop > 0 && scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 2;
+    const active = atBottom ? headings.at(-1) : headings.filter((heading) => heading.getBoundingClientRect().top <= scrollPadding + (parseFloat(getComputedStyle(heading).scrollMarginTop) || 0) + 1).at(-1) || headings[0];
     links.forEach((link) => {
       if (link.dataset.guideAnchor === active?.id) link.setAttribute("aria-current", "location");
       else link.removeAttribute("aria-current");

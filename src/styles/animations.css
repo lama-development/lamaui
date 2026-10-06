@@ -220,10 +220,12 @@ dialog[open]::backdrop {
   opacity: 0;
   transform: translateY(var(--toast-distance)) scale(var(--toast-scale));
   filter: blur(var(--toast-blur));
-  will-change: transform, opacity, filter;
+  will-change: transform, translate, scale, opacity, filter;
   transition:
     opacity var(--toast-close) var(--toast-ease),
     transform var(--toast-close) var(--toast-ease),
+    translate var(--toast-open) var(--toast-ease),
+    scale var(--toast-open) var(--toast-ease),
     filter var(--toast-close) var(--toast-ease);
 }
 .t-toast.is-open {
@@ -233,6 +235,8 @@ dialog[open]::backdrop {
   transition:
     opacity var(--toast-open) var(--toast-ease),
     transform var(--toast-open) var(--toast-ease),
+    translate var(--toast-open) var(--toast-ease),
+    scale var(--toast-open) var(--toast-ease),
     filter var(--toast-open) var(--toast-ease);
 }
 
@@ -281,17 +285,17 @@ dialog[open]::backdrop {
   }
 }
 
-@keyframes lamaui-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
 @keyframes lamaui-pulse {
   50% {
     opacity: 0.5;
   }
 }
 
+@keyframes lamaui-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
 .lamaui-spinner {
   animation: lamaui-spin 1s linear infinite;
 }

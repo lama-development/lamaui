@@ -1,5 +1,6 @@
 ---
 import GuideIndex from "./GuideIndex.astro";
+import GuideActions from "./GuideActions.astro";
 import Icon from "@/components/ui/Icon.astro";
 import { cardStyles, controlStyles, primaryStyles, menuStyles, menuItemStyles } from "@/lib/styles";
 
@@ -61,14 +62,17 @@ const { sections, variant } = Astro.props;
       </details>
     </div>
   ) : (
-    <aside class:list={[cardStyles, "hidden self-start p-3 min-[1280px]:sticky min-[1280px]:top-8 min-[1280px]:mt-3 min-[1280px]:block print:hidden"]}>
-      <div class="mb-3 flex items-center gap-3 border-b border-outline pb-3 text-sm font-semibold">
-        <span class="grid size-8 shrink-0 place-items-center rounded-sm bg-accent-subtle text-accent [corner-shape:squircle]">
-          <Icon name="clipboard-text" size={18} />
-        </span>
-        <span>On this page</span>
+    <aside class="hidden self-start min-[1280px]:sticky min-[1280px]:top-8 min-[1280px]:mt-3 min-[1280px]:flex min-[1280px]:flex-col min-[1280px]:gap-4 print:hidden">
+      <GuideActions />
+      <div class:list={[cardStyles, "p-3"]}>
+        <div class="mb-3 flex items-center gap-3 border-b border-outline pb-3 text-sm font-semibold">
+          <span class="grid size-8 shrink-0 place-items-center rounded-sm bg-accent-subtle text-accent [corner-shape:squircle]">
+            <Icon name="clipboard-text" size={18} />
+          </span>
+          <span>On this page</span>
+        </div>
+        <GuideIndex {sections} />
       </div>
-      <GuideIndex {sections} />
     </aside>
   )
 }

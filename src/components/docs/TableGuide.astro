@@ -1,0 +1,110 @@
+---
+import Card from "@/components/data-display/Card.astro";
+import Table from "@/components/data-display/Table.astro";
+import CodeBlock from "@/components/data-display/CodeBlock.astro";
+import Alert from "@/components/feedback/Alert.astro";
+import InlineCode from "@/components/data-display/InlineCode.astro";
+const columns = [
+  { key: "name", label: "Name", rowHeader: true },
+  { key: "role", label: "Role" },
+  { key: "projects", label: "Projects", align: "right" as const }
+];
+const rows = [
+  { name: "Ari Lane", role: "Designer", projects: 8 },
+  { name: "Mina Park", role: "Engineer", projects: 12 },
+  { name: "Theo Moss", role: "Researcher", projects: 4 }
+];
+const props = [
+  { name: "columns", type: "Column[]", default: "Required", description: "Ordered column definitions." },
+  { name: "rows", type: "Record[]", default: "Required", description: "Objects keyed by column key; values are strings, numbers, null, or undefined." },
+  { name: "caption", type: "string", default: "—", description: "Screen-reader caption describing the data." },
+  { name: "hoverable", type: "boolean", default: "false", description: "Highlights a row on hover; adds no click behavior." },
+  { name: "striped", type: "boolean", default: "false", description: "Adds a subtle background to alternating rows." },
+  { name: "density", type: '"compact" | "comfortable" | "spacious"', default: '"comfortable"', description: "Controls header and cell padding." },
+  { name: "emptyMessage", type: "string", default: '"No results found."', description: "Message displayed when rows is empty." },
+  { name: "class", type: "string", default: "—", description: "Additional classes on the native table." }
+];
+const columnProps = [
+  { name: "key", description: "Required. Matches a key in each row object." },
+  { name: "label", description: "Required. Text for the column heading." },
+  { name: "align", description: '"left" (default), "center", or "right". Right-align numeric values.' },
+  { name: "rowHeader", description: "Uses a header cell with scope=row to identify each record." },
+  { name: "code", description: "Formats cell values as inline code." },
+  { name: "wrap", description: "Allows code values to wrap at spaces. Default false; applies with code=true." }
+];
+---
+
+<div class="mt-14 flex flex-col gap-14">
+  <section aria-labelledby="examples">
+    <h2 id="examples" class="mt-0 mb-6 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Examples</h2>
+    <div class="flex flex-col gap-10">
+      <div class="flex flex-col gap-4">
+        <h3 class="m-0 text-base font-semibold">Row highlighting</h3>
+        <p class="m-0 max-w-[62ch] text-base leading-normal text-muted-label">Use <InlineCode>hoverable</InlineCode> to help readers follow a row across columns in dense data. Documentation tables keep this off.</p>
+        <Table {columns} {rows} hoverable caption="Members with row highlighting" />
+        <CodeBlock code={'<Table columns={columns} rows={rows} hoverable caption="Members" />'} />
+        <Alert title="Highlighting does not make a row clickable">Put links or buttons inside interactive cells. Hover alone does not provide a keyboard action.</Alert>
+      </div>
+      <div class="flex flex-col gap-4">
+        <h3 class="m-0 text-base font-semibold">Density</h3>
+        <p class="m-0 max-w-[62ch] text-base leading-normal text-muted-label">Choose padding for the amount of data. The default is <InlineCode>comfortable</InlineCode>.</p>
+        {
+          (["compact", "comfortable", "spacious"] as const).map((density) => (
+            <div class="flex flex-col gap-3">
+              <>
+                <p class="m-0 text-sm font-medium capitalize">{density}</p>
+                <Table {columns} {rows} {density} caption={`Members with ${density} spacing`} />
+              </>
+            </div>
+          ))
+        }
+        <CodeBlock code={'<Table columns={columns} rows={rows} density="compact" />\n<Table columns={columns} rows={rows} />\n<Table columns={columns} rows={rows} density="spacious" />'} />
+      </div>
+      <div class="flex flex-col gap-4">
+        <h3 class="m-0 text-base font-semibold">Striped rows</h3>
+        <p class="m-0 max-w-[62ch] text-base leading-normal text-muted-label">Alternating backgrounds help separate adjacent records without requiring a pointer.</p>
+        <Table {columns} {rows} striped caption="Members with striped rows" />
+        <CodeBlock code={"<Table columns={columns} rows={rows} striped />"} />
+      </div>
+      <div class="flex flex-col gap-4">
+        <h3 class="m-0 text-base font-semibold">Empty state</h3>
+        <p class="m-0 max-w-[62ch] text-base leading-normal text-muted-label">Keep the column headings visible and explain why no records are shown.</p>
+        <Table {columns} rows={[]} emptyMessage="No members match your filters." caption="Filtered members" />
+        <CodeBlock code={'<Table columns={columns} rows={[]} emptyMessage="No members match your filters." />'} />
+      </div>
+    </div>
+  </section>
+  <section aria-labelledby="props" class="flex flex-col gap-5">
+    <h2 id="props" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Props</h2>
+    <p class="m-0 max-w-[62ch] text-base leading-normal text-muted-label">Native table attributes, including <InlineCode>id</InlineCode> and <InlineCode>aria-label</InlineCode>, pass through to the table.</p>
+    <Table
+      columns={[
+        { key: "name", label: "Prop", code: true, rowHeader: true },
+        { key: "type", label: "Type", code: true, wrap: true },
+        { key: "default", label: "Default", code: true },
+        { key: "description", label: "Description" }
+      ]}
+      rows={props}
+      caption="Table props"
+    />
+    <h3 class="m-0 pt-3 text-base font-semibold">Column definition</h3>
+    <Table
+      columns={[
+        { key: "name", label: "Property", code: true, rowHeader: true },
+        { key: "description", label: "Description" }
+      ]}
+      rows={columnProps}
+      caption="Column properties"
+    />
+  </section>
+  <section aria-labelledby="accessibility" class="flex flex-col gap-4">
+    <h2 id="accessibility" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Accessibility</h2>
+    <Card>
+      <dl class="m-0 [&_dd]:m-0 [&_dd]:text-base [&_dd]:leading-normal [&_dd]:text-muted-label [&_dt]:text-base [&_dt]:leading-normal [&_dt]:font-semibold [&>div]:grid [&>div]:grid-cols-[7rem_minmax(0,1fr)] [&>div]:gap-5 [&>div]:py-4 max-[620px]:[&>div]:grid-cols-1 max-[620px]:[&>div]:gap-2 [&>div+div]:border-t [&>div+div]:border-outline [&>div:first-child]:pt-0 [&>div:last-child]:pb-0">
+        <div><dt>Semantics</dt><dd>Column headings use <InlineCode>scope="col"</InlineCode>. Set <InlineCode>rowHeader</InlineCode> on the column that identifies each record, and provide a caption or accessible label.</dd></div>
+        <div><dt>Scrolling</dt><dd>Wide tables scroll horizontally within their container. Prop names and code values stay intact.</dd></div>
+        <div><dt>Data behavior</dt><dd>Rows render in the order supplied. Your page controls sorting, filtering, pagination, and selection.</dd></div>
+      </dl>
+    </Card>
+  </section>
+</div>

@@ -2,7 +2,7 @@ export const accentPresets = [
   {
     value: "lime",
     label: "Lime",
-    light: "#749E00",
+    light: "#5B7D00",
     dark: "#a3cc39"
   },
   {

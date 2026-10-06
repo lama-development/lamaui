@@ -12,10 +12,10 @@ interface Props {
 const { title, slug, description, sections } = Astro.props;
 ---
 
-<div data-guide data-guide-title={title} data-guide-slug={slug} data-guide-description={description}>
+<div class="mx-auto max-w-[80rem]" data-guide data-guide-title={title} data-guide-slug={slug} data-guide-description={description}>
   <div class="flex flex-wrap items-center justify-between gap-4">
     <slot name="breadcrumb" />
-    <GuideActions />
+    <div class="min-[1280px]:hidden"><GuideActions /></div>
   </div>
   <ToastRegion data-guide-toast-region>
     <template data-guide-toast-template="success">
@@ -34,3 +34,56 @@ const { title, slug, description, sections } = Astro.props;
 <script>
   import "@/scripts/component-guide";
 </script>
+
+<style is:global>
+  [data-guide-content] .guide-heading-link {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    max-width: calc(100% - 1.5rem);
+    color: inherit;
+    text-decoration: none;
+    border-radius: 0.25rem;
+  }
+  [data-guide-content] .guide-heading-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+  }
+  [data-guide-content] .guide-heading-link-icon {
+    position: absolute;
+    left: calc(100% + 0.5rem);
+    top: 50%;
+    display: inline-flex;
+    width: 1rem;
+    height: 1rem;
+    transform: translateY(-50%);
+    color: var(--muted-label);
+    opacity: 0;
+  }
+  [data-guide-content] .guide-heading-link-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    [data-guide-content] .guide-heading-link-icon {
+      transition:
+        opacity 150ms ease,
+        color 150ms ease;
+    }
+  }
+  [data-guide-content] .guide-heading-link:hover .guide-heading-link-icon,
+  [data-guide-content] .guide-heading-link:focus-visible .guide-heading-link-icon {
+    color: var(--accent);
+    opacity: 1;
+  }
+  @media (hover: none) {
+    [data-guide-content] .guide-heading-link-icon {
+      opacity: 0.5;
+    }
+  }
+  @media print {
+    [data-guide-content] .guide-heading-link-icon {
+      display: none;
+    }
+  }
+</style>

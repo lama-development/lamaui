@@ -1,38 +1,43 @@
 ---
 import { controlStyles, primaryStyles, secondaryStyles, outlineStyles, ghostStyles, destructiveStyles, smallControlStyles, largeControlStyles } from "@/lib/styles";
+import Spinner from "@/components/feedback/Spinner.astro";
 import Icon, { type IconName } from "@/components/ui/Icon.astro";
 import type { Size, Variant } from "@/types";
 import { cx } from "@/lib/classes";
-interface Props {
+import type { HTMLAttributes } from "astro/types";
+type Props = Omit<HTMLAttributes<"button"> & HTMLAttributes<"a">, "type"> & {
   variant?: Variant;
   size?: Size;
   href?: string;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
+  loading?: boolean;
   fullWidth?: boolean;
   icon?: IconName;
   iconPosition?: "start" | "end";
   class?: string;
-  [key: string]: any;
-}
-const { variant = "primary", size = "md", href, type = "button", disabled = false, fullWidth = false, icon, iconPosition = "start", class: className, ...rest } = Astro.props;
+};
+const { variant = "primary", size = "md", href, type = "button", disabled = false, loading = false, fullWidth = false, icon, iconPosition = "start", class: className, ...rest } = Astro.props;
+const unavailable = disabled || loading;
 const variants = { primary: primaryStyles, secondary: secondaryStyles, outline: outlineStyles, ghost: ghostStyles, destructive: destructiveStyles };
 const sizes = { sm: smallControlStyles, md: "", lg: largeControlStyles };
-const classes = cx(controlStyles, variants[variant], sizes[size], (variant === "primary" || variant === "secondary") && "[&:not(.lamaui-icon)]:min-w-32", fullWidth && "w-full", className);
+const classes = cx(controlStyles, variants[variant], sizes[size], "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent", loading && "data-[loading]:opacity-100", (variant === "primary" || variant === "secondary") && "[&:not(.lamaui-icon)]:min-w-32", fullWidth && "w-full", className);
 ---
 
 {
   href ? (
-    <a {...rest} href={disabled ? undefined : href} aria-disabled={disabled || undefined} class={classes}>
-      {icon && iconPosition === "start" && <Icon name={icon} size={18} />}
+    <a {...rest} href={unavailable ? undefined : href} role={unavailable ? "link" : undefined} tabindex={unavailable ? -1 : rest.tabindex} aria-disabled={unavailable || undefined} aria-busy={loading || undefined} data-loading={loading || undefined} class={classes}>
+      {loading && <Spinner size="sm" decorative />}
+      {!loading && icon && iconPosition === "start" && <Icon name={icon} size={18} />}
       <slot />
-      {icon && iconPosition === "end" && <Icon name={icon} size={18} />}
+      {!loading && icon && iconPosition === "end" && <Icon name={icon} size={18} />}
     </a>
   ) : (
-    <button {...rest} {type} {disabled} class={classes}>
-      {icon && iconPosition === "start" && <Icon name={icon} size={18} />}
+    <button {...rest} {type} disabled={unavailable} aria-busy={loading || undefined} data-loading={loading || undefined} class={classes}>
+      {loading && <Spinner size="sm" decorative />}
+      {!loading && icon && iconPosition === "start" && <Icon name={icon} size={18} />}
       <slot />
-      {icon && iconPosition === "end" && <Icon name={icon} size={18} />}
+      {!loading && icon && iconPosition === "end" && <Icon name={icon} size={18} />}
     </button>
   )
 }

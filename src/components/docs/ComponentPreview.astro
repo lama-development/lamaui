@@ -96,18 +96,69 @@ const selectOptions = [
     }
     {
       slug === "button" && (
-        <div class="demo-row flex flex-wrap items-center gap-2.5">
-          <>
-            <Button>Primary</Button>
-            <Button variant="secondary">Secondary</Button>
-            <Button icon="plus">With icon</Button>
-            <Button variant="secondary" icon="external" iconPosition="end">
-              Open link
-            </Button>
-            <Button variant="ghost">Ghost</Button>
-            <Button variant="destructive">Delete</Button>
-            <Button disabled>Disabled</Button>
-          </>
+        <div class="space-y-6">
+          <div>
+            <>
+              <p class="mb-3 text-sm font-semibold text-muted-label">Variants</p>
+              <div class="flex flex-wrap items-center gap-2.5">
+                <>
+                  <Button>Primary</Button>
+                  <Button variant="secondary">Secondary</Button>
+                  <Button variant="outline">Outline</Button>
+                  <Button variant="ghost">Ghost</Button>
+                  <Button variant="destructive">Delete</Button>
+                </>
+              </div>
+            </>
+          </div>
+          <div>
+            <>
+              <p class="mb-3 text-sm font-semibold text-muted-label">Sizes</p>
+              <div class="flex flex-wrap items-center gap-2.5">
+                <>
+                  <Button size="sm">Small</Button>
+                  <Button>Medium</Button>
+                  <Button size="lg">Large</Button>
+                </>
+              </div>
+            </>
+          </div>
+          <div>
+            <>
+              <p class="mb-3 text-sm font-semibold text-muted-label">Icons and links</p>
+              <div class="flex flex-wrap items-center gap-2.5">
+                <>
+                  <Button icon="plus">Create</Button>
+                  <Button variant="secondary" href="/components/icon" icon="external" iconPosition="end">
+                    Browse icons
+                  </Button>
+                </>
+              </div>
+            </>
+          </div>
+          <div>
+            <>
+              <p class="mb-3 text-sm font-semibold text-muted-label">States</p>
+              <div class="flex flex-wrap items-center gap-2.5">
+                <>
+                  <Button disabled>Disabled</Button>
+                  <Button loading>Saving…</Button>
+                  <Button variant="secondary" loading>
+                    Uploading…
+                  </Button>
+                  <Button href="/" disabled variant="outline">
+                    Disabled link
+                  </Button>
+                </>
+              </div>
+            </>
+          </div>
+          <div>
+            <>
+              <p class="mb-3 text-sm font-semibold text-muted-label">Full width</p>
+              <Button fullWidth>Continue</Button>
+            </>
+          </div>
         </div>
       )
     }
@@ -379,7 +430,7 @@ const selectOptions = [
         <Table
           caption="Members"
           columns={[
-            { key: "name", label: "Name" },
+            { key: "name", label: "Name", rowHeader: true },
             { key: "role", label: "Role" },
             { key: "status", label: "Status", align: "right" }
           ]}

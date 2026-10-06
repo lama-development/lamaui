@@ -1,0 +1,28 @@
+---
+interface Props {
+  wrap?: boolean;
+}
+const { wrap = false } = Astro.props;
+---
+
+<code class:list={["lamaui-inline-code rounded-sm bg-muted [box-decoration-break:clone] px-1.5 py-0.5 font-mono text-[0.875em] font-normal break-normal [overflow-wrap:normal] text-label", wrap ? "whitespace-normal" : "whitespace-nowrap"]}><slot /></code>
+
+<style is:global>
+  .lamaui-inline-code {
+    border-radius: 0.25rem;
+    background: color-mix(in srgb, var(--label) 9%, var(--page));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--label) 12%, transparent);
+  }
+  :is(.lamaui-table, .lamaui-card, .lamaui-surface) .lamaui-inline-code {
+    background: var(--muted);
+    box-shadow: none;
+  }
+  .lamaui-alert .lamaui-inline-code {
+    background: transparent;
+    box-shadow: none;
+    color: inherit;
+    padding: 0;
+    border-radius: 0;
+    font-weight: 600;
+  }
+</style>

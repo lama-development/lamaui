@@ -23,7 +23,7 @@ export const componentGroups: ComponentGroup[] = [
     icon: "actions",
     components: [
       component("Icon", "icon", "A consistent stroke icon set for controls and navigation.", '<Icon name="settings" size={20} />'),
-      component("Button", "button", "Triggers an action or links to another view, with optional leading or trailing icons.", '<Button variant="primary" icon="plus">Create</Button>'),
+      component("Button", "button", "Triggers an action or links to another view, with optional leading or trailing icons.", 'import Button from "@/components/ui/Button.astro";\n\n<Button variant="primary" icon="plus">Create</Button>'),
       component("SplitButton", "split-button", "Combines a primary action with a menu of closely related alternatives.", '<SplitButton\n  label="Download PDF"\n  icon="file-pdf"\n  href="/report.pdf"\n  download\n  options={[\n    { label: "Download Markdown", href: "/report.md", download: true, icon: "file-md" },\n    { label: "Copy as text", icon: "clipboard-text" }\n  ]}\n/>'),
       component("IconButton", "icon-button", "A compact action with an accessible text label.", '<IconButton label="Copy"><Icon name="copy" /></IconButton>'),
       component("ButtonGroup", "button-group", "Joins related actions into one control group."),
@@ -62,7 +62,7 @@ export const componentGroups: ComponentGroup[] = [
       component("Chip", "chip", "A compact text label for status or classification."),
       component("Avatar", "avatar", "Represents a person with an image or initials."),
       component("AvatarGroup", "avatar-group", "Displays several avatars in a compact stack."),
-      component("Table", "table", "Displays structured row and column data."),
+      component("Table", "table", "Displays structured data with configurable spacing and optional row highlighting.", 'import Table from "@/components/data-display/Table.astro";\n\nconst columns = [\n  { key: "name", label: "Name", rowHeader: true },\n  { key: "role", label: "Role" },\n  { key: "status", label: "Status", align: "right" as const }\n];\nconst rows = [\n  { name: "Ari Lane", role: "Designer", status: "Active" },\n  { name: "Mina Park", role: "Engineer", status: "Away" },\n  { name: "Theo Moss", role: "Researcher", status: "Active" }\n];\n\n<Table columns={columns} rows={rows} caption="Members" />'),
       component("DescriptionList", "description-list", "Pairs terms with descriptive values."),
       component("Stat", "stat", "Highlights a key value and its recent direction."),
       component("Progress", "progress", "Shows completion against a known total."),
