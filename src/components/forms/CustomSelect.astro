@@ -32,7 +32,7 @@ const selected = options.find((o) => o.value === value) ?? options[0];
       }
       <span data-select-value class="custom-select-value inline-block [&.is-swapping]:-translate-y-1 [&.is-swapping]:opacity-0 [&.is-swapping]:blur-[2px]">{selected?.label}</span>
     </span><Icon name="chevron-down" size={16} class="custom-select-chevron shrink-0 text-muted-label group-aria-expanded:rotate-180" /></button
-  ><div id={`${id}-list`} role="listbox" aria-labelledby={`${id}-button`} class:list={[`${menuStyles} grid w-full gap-1`, placement === "top" ? "bottom-full mb-2" : "top-full mt-2"]} hidden data-select-list>
+  ><div data-surface-level="2" data-surface-lift="1" id={`${id}-list`} role="listbox" aria-labelledby={`${id}-button`} class:list={[`${menuStyles} grid w-full gap-1`, placement === "top" ? "bottom-full mb-2" : "top-full mt-2"]} hidden data-select-list>
     {
       options.map((o) => (
         <button type="button" role="option" tabindex="-1" aria-selected={o.value === value} disabled={o.disabled} data-value={o.value} data-label={o.label} class={`${menuItemStyles} aria-selected:bg-accent-subtle aria-selected:text-accent`}>

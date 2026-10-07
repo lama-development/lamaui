@@ -77,8 +77,19 @@ const selectOptions = [
 ];
 ---
 
-<div data-surface-level="2" class="component-preview flex min-h-48 items-center justify-center rounded-md bg-surface bg-[linear-gradient(color-mix(in_srgb,var(--outline)_45%,transparent)_1px,transparent_1px),linear-gradient(90deg,color-mix(in_srgb,var(--outline)_45%,transparent)_1px,transparent_1px)] bg-size-[24px_24px] p-8 [border:1px_dashed_color-mix(in_srgb,var(--outline),var(--muted-label)_22%)] [@media(width<=620px)]:min-h-40 [@media(width<=620px)]:p-4">
-  <div class="component-preview-column w-[min(100%,36rem)] min-w-0">
+<div data-surface-level="2" class="component-preview relative flex min-h-48 items-center justify-center rounded-lg bg-surface-2 bg-[linear-gradient(color-mix(in_srgb,var(--outline)_45%,transparent)_1px,transparent_1px),linear-gradient(90deg,color-mix(in_srgb,var(--outline)_45%,transparent)_1px,transparent_1px)] bg-size-[24px_24px] p-8 [border:1px_dashed_color-mix(in_srgb,var(--outline),var(--muted-label)_22%)] [corner-shape:squircle] [@media(width<=620px)]:min-h-40 [@media(width<=620px)]:p-4">
+  {
+    ["alert", "tag"].includes(slug) && (
+      <div class="absolute top-2 right-2 z-10">
+        <Tooltip text="Reset preview" position="bottom">
+          <button type="button" class="inline-flex size-8 items-center justify-center rounded-lg border-0 bg-surface p-0 text-muted-label hover:bg-surface-hover hover:text-label active:scale-[0.96]" aria-label="Reset preview" data-preview-reset>
+            <Icon name="reset" size={20} />
+          </button>
+        </Tooltip>
+      </div>
+    )
+  }
+  <div class:list={["component-preview-column w-[min(100%,36rem)] min-w-0", ["alert", "tag"].includes(slug) && "pt-8"]}>
     {slug === "theme-picker" && <ThemePicker label="Preview color theme" />}
     {
       slug === "icon" && (
@@ -523,7 +534,9 @@ const selectOptions = [
       slug === "alert" && (
         <Stack gap={3}>
           <>
-            <Alert title="Information">Your changes are saved locally.</Alert>
+            <Alert title="Information" dismissible data-dismiss-hide>
+              Your changes are saved locally.
+            </Alert>
             <Alert variant="success" title="Published">
               The new version is available.
             </Alert>

@@ -2,41 +2,52 @@ const header = document.querySelector<HTMLElement>(".docs-mobile-header");
 
 if (header) {
   const mobile = window.matchMedia("(max-width: 860px)");
-  let previousY = window.scrollY;
-  let offset = 0;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const hideThreshold = 24;
+  const revealThreshold = 8;
+  let previousY = 0;
+  let travel = 0;
+  let direction = 0;
   let frame = 0;
+  let headerHeight = header.getBoundingClientRect().height;
 
-  const show = () => {
-    offset = 0;
-    header.style.removeProperty("--navbar-scroll-offset");
-    header.removeAttribute("data-scroll-hidden");
-  };
+  // Ignore rubber-band movement at both ends of the page.
+  const scrollPosition = () => Math.min(Math.max(0, document.documentElement.scrollHeight - window.innerHeight), Math.max(0, window.scrollY));
+  const show = () => header.removeAttribute("data-scroll-hidden");
   const reset = () => {
+    if (frame) window.cancelAnimationFrame(frame);
+    frame = 0;
+    previousY = scrollPosition();
+    travel = 0;
+    direction = 0;
     show();
-    previousY = window.scrollY;
   };
 
   const update = () => {
     frame = 0;
-    // Clamp rubber-band overscroll so Safari's bounce cannot reverse direction.
-    const maximumY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
-    const y = Math.min(maximumY, Math.max(0, window.scrollY));
+    const y = scrollPosition();
     const delta = y - previousY;
     previousY = y;
 
-    if (!mobile.matches || y <= 0 || document.body.classList.contains("docs-navigation-open") || header.contains(document.activeElement)) {
+    // Touch focus must not pin the bar after closing the navigation drawer.
+    const keyboardFocus = header.querySelector(":focus-visible") !== null;
+    if (!mobile.matches || reducedMotion.matches || y <= headerHeight || document.body.classList.contains("docs-navigation-open") || keyboardFocus) {
+      travel = 0;
+      direction = 0;
       show();
       return;
     }
+    if (delta === 0) return;
 
-    if (!delta) return;
-    // Move one pixel per scrolled pixel, including slow drags and inertial scrolling.
-    // Keep partial positions rather than snapping after a direction threshold.
-    // Leave the bottom border at the viewport edge when the header is tucked away.
-    const hiddenOffset = Math.max(0, header.offsetHeight - 1);
-    offset = Math.min(hiddenOffset, y, Math.max(0, offset + delta));
-    header.style.setProperty("--navbar-scroll-offset", `${-offset}px`);
-    header.toggleAttribute("data-scroll-hidden", offset >= hiddenOffset);
+    const nextDirection = Math.sign(delta);
+    if (nextDirection !== direction) travel = 0;
+    direction = nextDirection;
+    travel += Math.abs(delta);
+
+    // CSS owns the animation, including reversal from its current position.
+    // Small scroll fluctuations never leave the navbar halfway off screen.
+    if (direction > 0 && travel >= hideThreshold) header.setAttribute("data-scroll-hidden", "");
+    else if (direction < 0 && travel >= revealThreshold) show();
   };
 
   window.addEventListener(
@@ -46,10 +57,14 @@ if (header) {
     },
     { passive: true }
   );
-  window.addEventListener("resize", reset);
   window.addEventListener("pageshow", reset);
   mobile.addEventListener("change", reset);
+  reducedMotion.addEventListener("change", reset);
   header.addEventListener("focusin", reset);
+  new ResizeObserver(() => {
+    headerHeight = header.getBoundingClientRect().height;
+    reset();
+  }).observe(header);
   new MutationObserver(reset).observe(document.body, { attributes: true, attributeFilter: ["class"] });
   reset();
 }

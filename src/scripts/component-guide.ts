@@ -89,7 +89,7 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
     icon.innerHTML = linkIcon;
     icon.setAttribute("aria-hidden", "true");
     icon.dataset.guideNoExport = "";
-    if (heading.id !== "preview") link.append(icon);
+    link.append(icon);
     heading.append(link);
     link.addEventListener("click", async (event) => {
       if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;

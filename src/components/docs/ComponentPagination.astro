@@ -23,7 +23,7 @@ const titleStyles = "block truncate font-semibold text-[.8125rem] leading-[1.1] 
 <nav class:list={["component-pagination mt-10 grid grid-cols-2 gap-3", (!previous || !next) && "component-pagination-single max-[861px]:grid-cols-1"]} aria-label="Component pages">
   {
     previous ? (
-      <a href={`/components/${previous.slug}`} class={linkStyles}>
+      <a data-surface-level="2" data-surface-lift="1" href={`/components/${previous.slug}`} class={linkStyles}>
         <Icon name="chevron-right" class="size-4 rotate-180 min-[861px]:size-5" />
         <span class="min-w-0">
           <>
@@ -38,7 +38,7 @@ const titleStyles = "block truncate font-semibold text-[.8125rem] leading-[1.1] 
   }
   {
     next ? (
-      <a href={`/components/${next.slug}`} class:list={[linkStyles, "component-pagination-next justify-end text-right"]}>
+      <a data-surface-level="2" data-surface-lift="1" href={`/components/${next.slug}`} class:list={[linkStyles, "component-pagination-next justify-end text-right"]}>
         <span class="min-w-0">
           <>
             <small class={labelStyles}>Next</small>

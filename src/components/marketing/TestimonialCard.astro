@@ -10,7 +10,7 @@ interface Props {
 const { quote, name, role, initials = "LM", class: className } = Astro.props;
 ---
 
-<figure class:list={[`${cardStyles} m-0 p-6`, className]}>
+<figure data-surface-level="2" data-surface-lift="1" class:list={[`${cardStyles} m-0 p-6`, className]}>
   <blockquote class="m-0 text-lg leading-tight">
     “{quote}”
   </blockquote><figcaption class="mt-5 flex items-center gap-3">

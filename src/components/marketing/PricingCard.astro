@@ -12,7 +12,7 @@ interface Props {
 const { name, price, period = "/month", description, features, featured = false, class: className } = Astro.props;
 ---
 
-<article class:list={[`${cardStyles} relative flex flex-col p-6`, featured && "border-accent shadow-(--shadow-md)", className]}>
+<article data-surface-level="2" data-surface-lift="1" class:list={[`${cardStyles} relative flex flex-col p-6`, featured && "border-accent shadow-(--shadow-md)", className]}>
   {featured && <span class="absolute top-4 right-4 rounded-full bg-accent-subtle px-2 py-1 text-xs font-bold text-accent">Popular</span>}<h3 class="m-0 text-lg font-semibold">{name}</h3>{description && <p class="muted mt-1 mb-4 text-sm text-muted-label">{description}</p>}<p class="my-3">
     <span class="text-4xl font-bold">{price}</span><span class="muted text-sm text-muted-label"> {period}</span>
   </p><ul class="my-5 flex-1 space-y-2 pl-0">

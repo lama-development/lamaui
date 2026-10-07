@@ -201,21 +201,6 @@ dialog[open]:not([data-drawer]) {
 dialog[open]::backdrop {
   animation: fade-in var(--duration-fast) ease-out;
 }
-[data-drawer][data-drawer-side="right"][open] {
-  animation: drawer-in-right var(--duration-slow) var(--spring-slow-ease);
-}
-[data-drawer][data-drawer-side="left"][open] {
-  animation: drawer-in-left var(--duration-slow) var(--spring-slow-ease);
-}
-[data-drawer] {
-  transition: transform var(--spring-slow-exit) var(--spring-exit-ease);
-}
-[data-drawer][data-drawer-side="right"].is-closing {
-  transform: translateX(100%);
-}
-[data-drawer][data-drawer-side="left"].is-closing {
-  transform: translateX(-100%);
-}
 .t-toast {
   opacity: 0;
   transform: translateY(var(--toast-distance)) scale(var(--toast-scale));
@@ -329,29 +314,6 @@ dialog[open]::backdrop {
   }
 }
 
-@media (max-width: 620px) {
-  [data-drawer][data-drawer-side][open] {
-    animation-name: bottom-sheet-in;
-  }
-  [data-drawer] {
-    transform: translateY(var(--drawer-drag-y, 0px));
-    transition: transform var(--spring-slow-exit) var(--spring-moderate-ease);
-  }
-  [data-drawer].is-dragging {
-    transition: none;
-  }
-  [data-drawer].is-closing {
-    transform: translateY(var(--drawer-drag-y, 100%));
-  }
-}
-
-@keyframes bottom-sheet-in {
-  from {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-}
-
 :where([class*="hover:bg-"], .lamaui-control, .lamaui-interactive) {
   transition-duration: 240ms;
   transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
@@ -437,14 +399,19 @@ dialog[open]::backdrop {
 
 @media (max-width: 860px) {
   .docs-mobile-header {
-    transform: translateY(var(--navbar-scroll-offset, 0px));
-    transition: background-color var(--duration-fast) var(--ease-standard);
-  }
-  .docs-mobile-header:focus-within {
     transform: translateY(0);
+    transition:
+      transform 220ms cubic-bezier(0.2, 0, 0, 1),
+      background-color var(--duration-fast) var(--ease-standard);
   }
-  .docs-mobile-header[data-scroll-hidden]:not(:focus-within) {
+  .docs-mobile-header[data-scroll-hidden] {
+    transform: translateY(calc(-100% + 1px));
     pointer-events: none;
+  }
+  .docs-mobile-header:has(:focus-visible),
+  .docs-navigation-open .docs-mobile-header {
+    transform: translateY(0);
+    pointer-events: auto;
   }
 }
 

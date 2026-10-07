@@ -5,6 +5,6 @@ interface Props {
 const { class: className } = Astro.props;
 ---
 
-<div class:list={["min-h-screen bg-page", className]}>
+<div data-surface-level="1" class:list={["min-h-screen bg-page", className]}>
   <slot name="navigation" /><main><slot /></main><slot name="footer" />
 </div>

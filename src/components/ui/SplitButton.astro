@@ -35,7 +35,7 @@ const variantStyles = variant === "primary" ? primaryStyles : secondaryStyles;
     <summary class={cx(controlStyles, variantStyles, iconControlStyles, "lamaui-split-trigger h-full list-none rounded-l-none [&::-webkit-details-marker]:hidden")} aria-label={menuLabel} title={menuLabel}>
       <Icon name="chevron-down" size={16} class="details-chevron group-open:rotate-180" />
     </summary>
-    <div class={cx(menuStyles, "t-dropdown right-0 mt-2 grid w-full min-w-52 gap-0.5")} data-origin="top-right">
+    <div data-surface-level="2" data-surface-lift="1" class={cx(menuStyles, "t-dropdown right-0 mt-2 grid w-full min-w-52 gap-0.5")} data-origin="top-right">
       {
         options.map((option) =>
           option.href ? (

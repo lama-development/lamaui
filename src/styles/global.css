@@ -44,45 +44,73 @@
 }
 
 @layer components {
-  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="1"] {
+  /* Standalone data panels share the surface shadow. Their containing panel
+     provides elevation when they are nested, avoiding stacked shadows. */
+  :is(.lamaui-table, .code-block)[data-surface-level] {
+    box-shadow: var(--surface-shadow);
+  }
+  [data-surface-level]:not([data-surface-level="1"]) :is(.lamaui-table, .code-block) {
+    box-shadow: none;
+  }
+  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level] {
+    background-color: var(--surface);
+    box-shadow: var(--surface-shadow);
+  }
+  [data-surface-level="1"] {
+    --surface: var(--surface-1);
+    --surface-elevated: var(--surface-1);
+    --card-surface: var(--surface-1);
     --surface-hover: var(--surface-1-hover);
-    background-color: var(--surface-1);
-    box-shadow: var(--surface-shadow-1);
+    --surface-shadow: var(--surface-shadow-1);
   }
-  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="2"] {
+  [data-surface-level="2"] {
+    --surface: var(--surface-2);
+    --surface-elevated: var(--surface-2);
+    --card-surface: var(--surface-2);
     --surface-hover: var(--surface-2-hover);
-    background-color: var(--surface-2);
-    box-shadow: var(--surface-shadow-2);
+    --surface-shadow: var(--surface-shadow-2);
   }
-  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="3"] {
+  [data-surface-level="3"] {
+    --surface: var(--surface-3);
+    --surface-elevated: var(--surface-3);
+    --card-surface: var(--surface-3);
     --surface-hover: var(--surface-3-hover);
-    background-color: var(--surface-3);
-    box-shadow: var(--surface-shadow-3);
+    --surface-shadow: var(--surface-shadow-3);
   }
-  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="4"] {
+  [data-surface-level="4"] {
+    --surface: var(--surface-4);
+    --surface-elevated: var(--surface-4);
+    --card-surface: var(--surface-4);
     --surface-hover: var(--surface-4-hover);
-    background-color: var(--surface-4);
-    box-shadow: var(--surface-shadow-4);
+    --surface-shadow: var(--surface-shadow-4);
   }
-  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="5"] {
+  [data-surface-level="5"] {
+    --surface: var(--surface-5);
+    --surface-elevated: var(--surface-5);
+    --card-surface: var(--surface-5);
     --surface-hover: var(--surface-5-hover);
-    background-color: var(--surface-5);
-    box-shadow: var(--surface-shadow-5);
+    --surface-shadow: var(--surface-shadow-5);
   }
-  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="6"] {
+  [data-surface-level="6"] {
+    --surface: var(--surface-6);
+    --surface-elevated: var(--surface-6);
+    --card-surface: var(--surface-6);
     --surface-hover: var(--surface-6-hover);
-    background-color: var(--surface-6);
-    box-shadow: var(--surface-shadow-6);
+    --surface-shadow: var(--surface-shadow-6);
   }
-  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="7"] {
+  [data-surface-level="7"] {
+    --surface: var(--surface-7);
+    --surface-elevated: var(--surface-7);
+    --card-surface: var(--surface-7);
     --surface-hover: var(--surface-7-hover);
-    background-color: var(--surface-7);
-    box-shadow: var(--surface-shadow-7);
+    --surface-shadow: var(--surface-shadow-7);
   }
-  :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level="8"] {
+  [data-surface-level="8"] {
+    --surface: var(--surface-8);
+    --surface-elevated: var(--surface-8);
+    --card-surface: var(--surface-8);
     --surface-hover: var(--surface-8-hover);
-    background-color: var(--surface-8);
-    box-shadow: var(--surface-shadow-8);
+    --surface-shadow: var(--surface-shadow-8);
   }
 }
 
@@ -183,6 +211,7 @@
   .lamaui-drawer {
     inset: auto 0 0;
     width: 100%;
+    max-width: none;
     height: auto;
     max-height: min(90dvh, 48rem);
     margin: auto 0 0;
@@ -194,9 +223,13 @@
     height: auto;
     max-height: min(90dvh, 48rem);
   }
+  .lamaui-drawer-drag-area {
+    touch-action: none;
+    cursor: grab;
+  }
   .lamaui-drawer-drag-zone {
     display: flex;
-    min-height: 2rem;
+    min-height: 2.75rem;
     flex: none;
     touch-action: none;
     align-items: center;
@@ -214,7 +247,26 @@
     opacity: 0.45;
   }
   .lamaui-drawer-body {
+    overscroll-behavior: contain;
     padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
     overscroll-behavior: contain;
+  }
+}
+
+@media screen and (max-width: 860px) {
+  .lamaui-table-scroll[data-edge-scroll] {
+    box-sizing: border-box;
+    width: calc(100% + var(--table-inset-start) + var(--table-inset-end));
+    margin-left: calc(-1 * var(--table-inset-start));
+    padding-left: var(--table-inset-start);
+    padding-right: var(--table-inset-end);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+  .lamaui-table-scroll[data-edge-scroll] > .lamaui-table {
+    width: 100%;
+    min-width: min-content;
+    max-width: none;
+    overflow: clip;
   }
 }

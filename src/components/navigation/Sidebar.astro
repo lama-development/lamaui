@@ -14,7 +14,7 @@ interface Props {
 const { label = "Sidebar navigation", items, class: className } = Astro.props;
 ---
 
-<aside class:list={["w-64 border-r border-outline bg-surface p-3", className]}>
+<aside data-surface-level="2" data-surface-lift="1" class:list={["w-64 border-r border-outline bg-surface p-3", className]}>
   <nav aria-label={label}>
     <ul class="m-0 list-none space-y-1 p-0">
       {

@@ -28,7 +28,7 @@ import { componentGroups } from "@/lib/components";
         </div>
         <div class="docs-component-grid grid grid-cols-4 gap-4 [@media(width<=1020px)]:grid-cols-2 [@media(width<=620px)]:grid-cols-1">
           {group.components.map((item) => (
-            <a href={`/components/${item.slug}`} class="docs-component-card flex min-h-28 items-center gap-4 rounded-lg border border-outline bg-surface p-5 text-label no-underline [corner-shape:squircle] hover:bg-surface-hover [&_h3]:m-0 [&_h3]:text-base [&_p]:m-[0.25rem_0_0] [&_p]:text-sm [&_p]:leading-tight [&_p]:text-muted-label [&>_svg]:flex-none [&>_svg]:text-muted-label">
+            <a href={`/components/${item.slug}`} data-surface-level="2" data-surface-lift="1" class="docs-component-card flex min-h-28 items-center gap-4 rounded-lg border border-outline bg-surface p-5 text-label no-underline [corner-shape:squircle] hover:bg-surface-hover [&_h3]:m-0 [&_h3]:text-base [&_p]:m-[0.25rem_0_0] [&_p]:text-sm [&_p]:leading-tight [&_p]:text-muted-label [&>_svg]:flex-none [&>_svg]:text-muted-label">
               <div class="min-w-0 flex-1">
                 <h3>{item.name}</h3>
                 <p>{item.description}</p>

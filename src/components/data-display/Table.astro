@@ -15,49 +15,56 @@ interface Props extends HTMLAttributes<"table"> {
   caption?: string;
   hoverable?: boolean;
   striped?: boolean;
+  columnBorders?: boolean;
   density?: "compact" | "comfortable" | "spacious";
   emptyMessage?: string;
 }
-const { columns, rows, caption, hoverable = false, striped = false, density = "comfortable", emptyMessage = "No results found.", class: className, ...rest } = Astro.props;
+const { columns, rows, caption, hoverable = false, striped = false, columnBorders = false, density = "comfortable", emptyMessage = "No results found.", class: className, ...rest } = Astro.props;
 const padding = { compact: "px-3 py-2", comfortable: "px-4 py-3", spacious: "px-5 py-4" };
 ---
 
-<div class="lamaui-table max-w-full overflow-x-auto rounded-lg border border-outline bg-surface [corner-shape:squircle]">
-  <table {...rest} class:list={["w-full border-collapse text-sm leading-normal", className]}>
-    {caption && <caption class="sr-only">{caption}</caption>}<thead
-      ><tr
+<div class="lamaui-table-scroll">
+  <div data-surface-level="2" data-surface-lift="1" class="lamaui-table max-w-full overflow-x-auto rounded-lg border border-outline bg-surface [corner-shape:squircle]">
+    <table {...rest} class:list={["w-full border-collapse text-sm leading-normal", columnBorders && "[&_tr>*+*]:border-l [&_tr>*+*]:border-outline", className]}>
+      {caption && <caption class="sr-only">{caption}</caption>}<thead
+        ><tr
+          >{
+            columns.map((c) => (
+              <th scope="col" class:list={["border-b border-outline bg-muted font-semibold", padding[density], c.align === "right" ? "text-right" : c.align === "center" ? "text-center" : "text-left"]}>
+                {c.label}
+              </th>
+            ))
+          }</tr
+        ></thead
+      ><tbody
         >{
-          columns.map((c) => (
-            <th scope="col" class:list={["border-b border-outline bg-muted font-semibold", padding[density], c.align === "right" ? "text-right" : c.align === "center" ? "text-center" : "text-left"]}>
-              {c.label}
-            </th>
+          rows.map((row) => (
+            <tr class:list={["border-b border-outline last:border-b-0", striped && "even:bg-muted", hoverable && "hover:bg-surface-hover"]}>
+              {columns.map((c) => {
+                const Cell = c.rowHeader ? "th" : "td";
+                return (
+                  <Cell scope={c.rowHeader ? "row" : undefined} class:list={[padding[density], "align-top", c.rowHeader && "font-medium", c.align === "right" ? "text-right" : c.align === "center" ? "text-center" : "text-left"]}>
+                    {c.code ? <InlineCode wrap={c.wrap}>{row[c.key]}</InlineCode> : row[c.key]}
+                  </Cell>
+                );
+              })}
+            </tr>
           ))
-        }</tr
-      ></thead
-    ><tbody
-      >{
-        rows.map((row) => (
-          <tr class:list={["border-b border-outline last:border-b-0", striped && "even:bg-muted", hoverable && "hover:bg-surface-hover"]}>
-            {columns.map((c) => {
-              const Cell = c.rowHeader ? "th" : "td";
-              return (
-                <Cell scope={c.rowHeader ? "row" : undefined} class:list={[padding[density], "align-top", c.rowHeader && "font-medium", c.align === "right" ? "text-right" : c.align === "center" ? "text-center" : "text-left"]}>
-                  {c.code ? <InlineCode wrap={c.wrap}>{row[c.key]}</InlineCode> : row[c.key]}
-                </Cell>
-              );
-            })}
-          </tr>
-        ))
-      }
-      {
-        rows.length === 0 && (
-          <tr>
-            <td colspan={Math.max(1, columns.length)} class="px-4 py-10 text-center text-muted-label">
-              {emptyMessage}
-            </td>
-          </tr>
-        )
-      }
-    </tbody>
-  </table>
+        }
+        {
+          rows.length === 0 && (
+            <tr>
+              <td colspan={Math.max(1, columns.length)} class="px-4 py-10 text-center text-muted-label">
+                {emptyMessage}
+              </td>
+            </tr>
+          )
+        }
+      </tbody>
+    </table>
+  </div>
 </div>
+
+<script>
+  import "@/scripts/table-scroll";
+</script>
