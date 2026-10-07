@@ -305,7 +305,24 @@ dialog[open]::backdrop {
 
 @media (max-width: 860px) {
   .docs-sidebar {
-    transition: transform var(--duration-slow) var(--ease-standard);
+    transition: transform var(--spring-slow-duration) var(--spring-moderate-ease);
+    will-change: transform;
+  }
+  .docs-sidebar[data-open="false"] {
+    transition-duration: var(--spring-slow-exit);
+    transition-timing-function: var(--spring-exit-ease);
+  }
+  .docs-scrim {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--spring-moderate-exit) var(--spring-exit-ease);
+    will-change: opacity;
+  }
+  .docs-scrim[data-open="true"] {
+    opacity: 1;
+    pointer-events: auto;
+    transition-duration: var(--spring-moderate-duration);
+    transition-timing-function: var(--spring-moderate-ease);
   }
   .lamaui-navbar-menu[data-open="true"] {
     animation: navbar-menu-in var(--duration-normal) var(--ease-standard);
@@ -478,6 +495,8 @@ html.theme-reveal::view-transition-new(root) {
   }
   .docs-nav-panel,
   .docs-nav-chevron,
+  .docs-sidebar,
+  .docs-scrim,
   .lamaui-accent-dock,
   .lamaui-accent-choice,
   .t-acc-panel,

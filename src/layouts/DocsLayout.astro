@@ -98,7 +98,7 @@ const year = new Date().getFullYear();
         </div>
       </div>
     </aside>
-    <button class="docs-scrim print:hidden [@media(width<=860px)]:fixed [@media(width<=860px)]:inset-0 [@media(width<=860px)]:z-70 [@media(width<=860px)]:border-0 [@media(width<=860px)]:bg-overlay" aria-label="Close navigation" data-docs-scrim hidden></button>
+    <button class="docs-scrim print:hidden [@media(width<=860px)]:fixed [@media(width<=860px)]:inset-0 [@media(width<=860px)]:z-70 [@media(width<=860px)]:border-0 [@media(width<=860px)]:bg-overlay" aria-label="Close navigation" data-docs-scrim data-open="false" hidden></button>
     <div class="docs-page min-h-screen bg-page pl-60 print:pl-0 [@media(width<=860px)]:pl-0">
       <main id="main-content" class="docs-content mx-auto min-h-[calc(100vh-4rem)] w-[min(100%-6rem,98rem)] pt-12 pb-20 print:min-h-0 print:w-full print:p-0 [@media(620px<width<=860px)]:w-[min(100%-4rem,98rem)] [@media(620px<width<=860px)]:pt-8 [@media(width<=620px)]:w-[min(100%-2rem,98rem)] [@media(width<=620px)]:pt-5 [@media(width<=620px)]:pb-12"><slot /></main>
       <footer class="docs-footer mx-auto flex w-[min(100%-6rem,98rem)] flex-wrap items-center justify-between gap-[0.75rem_1.5rem] border-t border-outline pt-4 pb-8 text-[0.8125rem] text-muted-label print:hidden [@media(620px<width<=860px)]:w-[min(100%-4rem,98rem)] [@media(width<=620px)]:w-[min(100%-2rem,98rem)] [@media(width<=620px)]:flex-col [@media(width<=620px)]:justify-center [@media(width<=620px)]:gap-2 [@media(width<=620px)]:pb-5 [@media(width<=620px)]:text-center">
@@ -115,19 +115,58 @@ const year = new Date().getFullYear();
       const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
       const sidebar = $("#docs-navigation"),
         scrim = $("[data-docs-scrim]"),
-        opener = $("[data-docs-open]");
+        opener = $("[data-docs-open]"),
+        closer = $("[data-docs-close]"),
+        mobileNavigation = window.matchMedia("(max-width: 860px)");
+      let scrimHideTimer, navigationFrame;
       const setNavigation = (open) => {
+        if (!sidebar || !scrim || !opener) return;
+        window.clearTimeout(scrimHideTimer);
+        cancelAnimationFrame(navigationFrame);
+        if (open) {
+          scrim.hidden = false;
+          sidebar.inert = false;
+          navigationFrame = requestAnimationFrame(() => {
+            sidebar.dataset.open = "true";
+            scrim.dataset.open = "true";
+            opener.setAttribute("aria-expanded", "true");
+            document.body.classList.add("docs-navigation-open");
+            closer?.focus();
+          });
+          return;
+        }
         sidebar?.setAttribute("data-open", String(open));
         opener?.setAttribute("aria-expanded", String(open));
-        scrim?.toggleAttribute("hidden", !open);
+        scrim.dataset.open = "false";
         document.body.classList.toggle("docs-navigation-open", open);
+        if (mobileNavigation.matches) sidebar.inert = true;
+        scrimHideTimer = window.setTimeout(() => {
+          if (scrim.dataset.open === "false") scrim.hidden = true;
+        }, 180);
+        opener.focus();
       };
       opener?.addEventListener("click", () => setNavigation(true));
-      $("[data-docs-close]")?.addEventListener("click", () => setNavigation(false));
+      closer?.addEventListener("click", () => setNavigation(false));
       scrim?.addEventListener("click", () => setNavigation(false));
       document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") setNavigation(false);
+        if (event.key === "Escape" && sidebar?.dataset.open === "true") setNavigation(false);
       });
+      const syncNavigationMode = () => {
+        if (mobileNavigation.matches) {
+          sidebar.inert = sidebar.dataset.open !== "true";
+          return;
+        }
+        window.clearTimeout(scrimHideTimer);
+        cancelAnimationFrame(navigationFrame);
+        sidebar.inert = false;
+        sidebar.dataset.open = "false";
+        scrim.dataset.open = "false";
+        scrim.hidden = true;
+        opener.setAttribute("aria-expanded", "false");
+        document.body.classList.remove("docs-navigation-open");
+      };
+      mobileNavigation.addEventListener("change", syncNavigationMode);
+      syncNavigationMode();
       $$(".docs-nav-group").forEach((group) => {
         const toggle = $("[data-docs-group-toggle]", group);
         toggle?.addEventListener("click", () => {
