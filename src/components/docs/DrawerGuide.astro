@@ -1,0 +1,50 @@
+---
+import Card from "@/components/data-display/Card.astro";
+import CodeBlock from "@/components/data-display/CodeBlock.astro";
+import InlineCode from "@/components/data-display/InlineCode.astro";
+import Table from "@/components/data-display/Table.astro";
+
+const props = [
+  { name: "id", type: "string", default: "Required", description: "Connects the drawer to controls that use data-dialog-open." },
+  { name: "title", type: "string", default: "Required", description: "Visible heading and accessible name for the drawer." },
+  { name: "side", type: '"left" | "right"', default: '"right"', description: "Desktop edge from which the drawer opens. Mobile drawers open from the bottom." },
+  { name: "class", type: "string", default: "—", description: "Additional classes for layout or customization." }
+];
+---
+
+<div class="mt-14 flex flex-col gap-14">
+  <section aria-labelledby="examples">
+    <header class="mb-6">
+      <h2 id="examples" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Example</h2>
+      <p class="mt-2.5 mb-0 max-w-4xl text-base leading-normal text-muted-label">Use a drawer for supporting content that should remain separate from the page.</p>
+    </header>
+    <CodeBlock code={'<div class="flex gap-3">\n  <Button data-dialog-open="left-drawer">Open left drawer</Button>\n  <Drawer id="left-drawer" title="Left drawer" side="left">\n    <p>Drawer content.</p>\n  </Drawer>\n\n  <Button data-dialog-open="right-drawer">Open right drawer</Button>\n  <Drawer id="right-drawer" title="Right drawer" side="right">\n    <p>Drawer content.</p>\n  </Drawer>\n</div>'} />
+  </section>
+
+  <section aria-labelledby="props" class="flex flex-col gap-5">
+    <h2 id="props" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Props</h2>
+    <Table
+      columnBorders
+      columns={[
+        { key: "name", label: "Prop", code: true, rowHeader: true },
+        { key: "type", label: "Type", code: true, wrap: true },
+        { key: "default", label: "Default", code: true },
+        { key: "description", label: "Description" }
+      ]}
+      rows={props}
+      caption="Drawer props"
+    />
+  </section>
+
+  <section aria-labelledby="accessibility" class="flex flex-col gap-4">
+    <h2 id="accessibility" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Accessibility</h2>
+    <Card>
+      <dl class="m-0 [&_dd]:m-0 [&_dd]:text-base [&_dd]:leading-normal [&_dd]:text-muted-label [&_dt]:text-base [&_dt]:leading-normal [&_dt]:font-semibold [&>div]:grid [&>div]:grid-cols-[8rem_minmax(0,1fr)] [&>div]:gap-5 [&>div]:py-4 max-[620px]:[&>div]:grid-cols-1 max-[620px]:[&>div]:gap-2 [&>div+div]:border-t [&>div+div]:border-outline [&>div:first-child]:pt-0 [&>div:last-child]:pb-0">
+        <div><dt>Keyboard</dt><dd><InlineCode>Escape</InlineCode> closes the drawer. Modal focus stays inside and returns to the opener after closing.</dd></div>
+        <div><dt>Scrolling</dt><dd>The page stays fixed while drawer content scrolls independently.</dd></div>
+        <div><dt>Mobile</dt><dd>The drawer becomes a bottom sheet. Drag its header down to close it.</dd></div>
+        <div><dt>Safe area</dt><dd>Bottom padding includes the device safe area so content remains reachable.</dd></div>
+      </dl>
+    </Card>
+  </section>
+</div>

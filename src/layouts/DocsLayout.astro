@@ -113,6 +113,13 @@ const year = new Date().getFullYear();
     <script is:inline>
       const $ = (selector, root = document) => root.querySelector(selector);
       const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+      const syncScrollbarCompensation = () => {
+        if ($$("dialog[open]").length) return;
+        const needsCompensation = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+        document.documentElement.style.setProperty("--scrollbar-compensation", `${needsCompensation ? window.innerWidth - document.documentElement.clientWidth : 0}px`);
+      };
+      syncScrollbarCompensation();
+      window.addEventListener("resize", syncScrollbarCompensation);
       const sidebar = $("#docs-navigation"),
         scrim = $("[data-docs-scrim]"),
         opener = $("[data-docs-open]"),
@@ -218,7 +225,6 @@ const year = new Date().getFullYear();
         tooltip.setAttribute("aria-hidden", "false");
         activeTooltip = root;
         window.clearTimeout(tooltipTimer);
-        tooltipTimer = window.setTimeout(() => closeTooltip(root), 1800);
       };
       tooltipRoots.forEach((root, index) => {
         const trigger = $("button,a,[tabindex]", root),
@@ -226,14 +232,23 @@ const year = new Date().getFullYear();
         if (!trigger || !tooltip) return;
         tooltip.id ||= `lamaui-tooltip-${index + 1}`;
         trigger.setAttribute("aria-describedby", tooltip.id);
-        root.addEventListener("pointerenter", () => openTooltip(root));
+        root.addEventListener("pointerenter", (event) => {
+          if (event.pointerType !== "touch") openTooltip(root);
+        });
         root.addEventListener("pointerleave", () => closeTooltip(root));
-        root.addEventListener("focusin", () => openTooltip(root));
+        root.addEventListener("focusin", () => {
+          requestAnimationFrame(() => {
+            if (trigger.matches(":focus-visible")) openTooltip(root);
+          });
+        });
         root.addEventListener("focusout", () => closeTooltip(root));
         trigger.addEventListener("click", () => {
           window.clearTimeout(tooltipTimer);
           tooltipTimer = window.setTimeout(() => closeTooltip(root), 900);
         });
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") closeTooltip();
       });
       window.addEventListener("scroll", () => closeTooltip(), { passive: true });
       $$("[data-copy-code]").forEach((button) =>

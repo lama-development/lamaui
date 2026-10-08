@@ -41,14 +41,14 @@ const columnProps = [
     <div class="flex flex-col gap-10">
       <div class="flex flex-col gap-4">
         <h3 class="m-0 text-base font-semibold">Row highlighting</h3>
-        <p class="m-0 max-w-[62ch] text-base leading-normal text-muted-label">Use <InlineCode>hoverable</InlineCode> to help readers follow a row across columns in dense data. Documentation tables keep this off.</p>
+        <p class="m-0 max-w-4xl text-base leading-normal text-muted-label">Use <InlineCode>hoverable</InlineCode> to help readers follow a row across columns in dense data. Documentation tables keep this off.</p>
         <Table {columns} {rows} hoverable caption="Members with row highlighting" />
         <CodeBlock code={'<Table columns={columns} rows={rows} hoverable caption="Members" />'} />
         <Alert title="Highlighting does not make a row clickable">Put links or buttons inside interactive cells. Hover alone does not provide a keyboard action.</Alert>
       </div>
       <div class="flex flex-col gap-4">
         <h3 class="m-0 text-base font-semibold">Density</h3>
-        <p class="m-0 max-w-[62ch] text-base leading-normal text-muted-label">Choose padding for the amount of data. The default is <InlineCode>comfortable</InlineCode>.</p>
+        <p class="m-0 max-w-4xl text-base leading-normal text-muted-label">Choose padding for the amount of data. The default is <InlineCode>comfortable</InlineCode>.</p>
         {
           (["compact", "comfortable", "spacious"] as const).map((density) => (
             <div class="flex flex-col gap-3">
@@ -63,19 +63,19 @@ const columnProps = [
       </div>
       <div class="flex flex-col gap-4">
         <h3 class="m-0 text-base font-semibold">Striped rows</h3>
-        <p class="m-0 max-w-[62ch] text-base leading-normal text-muted-label">Alternating backgrounds help separate adjacent records without requiring a pointer.</p>
+        <p class="m-0 max-w-4xl text-base leading-normal text-muted-label">Alternating backgrounds help separate adjacent records without requiring a pointer.</p>
         <Table {columns} {rows} striped caption="Members with striped rows" />
         <CodeBlock code={"<Table columns={columns} rows={rows} striped />"} />
       </div>
       <div class="flex flex-col gap-4">
         <h3 class="m-0 text-base font-semibold">Column borders</h3>
-        <p class="m-0 max-w-[62ch] text-base leading-normal text-muted-label">Use <InlineCode>columnBorders</InlineCode> to separate columns. Tutorial reference tables use this option to make properties and descriptions easier to scan.</p>
+        <p class="m-0 max-w-4xl text-base leading-normal text-muted-label">Use <InlineCode>columnBorders</InlineCode> to separate columns. Tutorial reference tables use this option to make properties and descriptions easier to scan.</p>
         <Table {columns} {rows} columnBorders caption="Members with column borders" />
         <CodeBlock code={"<Table columns={columns} rows={rows} columnBorders />"} />
       </div>
       <div class="flex flex-col gap-4">
         <h3 class="m-0 text-base font-semibold">Empty state</h3>
-        <p class="m-0 max-w-[62ch] text-base leading-normal text-muted-label">Keep the column headings visible and explain why no records are shown.</p>
+        <p class="m-0 max-w-4xl text-base leading-normal text-muted-label">Keep the column headings visible and explain why no records are shown.</p>
         <Table {columns} rows={[]} emptyMessage="No members match your filters." caption="Filtered members" />
         <CodeBlock code={'<Table columns={columns} rows={[]} emptyMessage="No members match your filters." />'} />
       </div>
@@ -83,7 +83,7 @@ const columnProps = [
   </section>
   <section aria-labelledby="props" class="flex flex-col gap-5">
     <h2 id="props" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Props</h2>
-    <p class="m-0 max-w-[62ch] text-base leading-normal text-muted-label">Native table attributes, including <InlineCode>id</InlineCode> and <InlineCode>aria-label</InlineCode>, pass through to the table.</p>
+    <p class="m-0 max-w-4xl text-base leading-normal text-muted-label">Native table attributes, including <InlineCode>id</InlineCode> and <InlineCode>aria-label</InlineCode>, pass through to the table.</p>
     <Table
       columnBorders
       columns={[

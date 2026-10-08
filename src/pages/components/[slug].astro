@@ -1,6 +1,10 @@
 ---
 import TableGuide from "@/components/docs/TableGuide.astro";
 import ButtonGuide from "@/components/docs/ButtonGuide.astro";
+import DialogGuide from "@/components/docs/DialogGuide.astro";
+import DrawerGuide from "@/components/docs/DrawerGuide.astro";
+import PopoverGuide from "@/components/docs/PopoverGuide.astro";
+import TooltipGuide from "@/components/docs/TooltipGuide.astro";
 import ComponentGuide from "@/components/docs/ComponentGuide.astro";
 import ComponentPagination from "@/components/docs/ComponentPagination.astro";
 import DocsLayout from "@/layouts/DocsLayout.astro";
@@ -26,13 +30,17 @@ const sections = [
 ];
 if (component.slug === "button") sections.push({ id: "examples", label: "Examples" }, { id: "props", label: "Props" }, { id: "accessibility", label: "Accessibility" });
 if (component.slug === "table") sections.push({ id: "examples", label: "Examples" }, { id: "props", label: "Props" }, { id: "accessibility", label: "Accessibility" });
+if (component.slug === "dialog") sections.push({ id: "examples", label: "Examples" }, { id: "props", label: "Props" }, { id: "accessibility", label: "Accessibility" });
+if (component.slug === "drawer") sections.push({ id: "examples", label: "Example" }, { id: "props", label: "Props" }, { id: "accessibility", label: "Accessibility" });
+if (component.slug === "popover") sections.push({ id: "examples", label: "Example" }, { id: "props", label: "Props" }, { id: "accessibility", label: "Accessibility" });
+if (component.slug === "tooltip") sections.push({ id: "examples", label: "Example" }, { id: "props", label: "Props" }, { id: "accessibility", label: "Accessibility" });
 const usage = component.usage;
 ---
 
 <DocsLayout title={`${component.name} - LamaUI`} description={component.description} currentSlug={component.slug}>
   <ComponentGuide title={component.name} slug={component.slug} description={component.description} {sections}>
     <Breadcrumb slot="breadcrumb" items={[{ label: "Components", href: "/" }, { label: component.group, href: `/#${component.groupSlug}` }, { label: component.name }]} />
-    <header data-guide-no-export class="docs-page-header mt-4 mb-8 [&_h1]:m-0 [&_h1]:text-[clamp(2rem,4vw,2.75rem)] [&_h1]:leading-[1.08] [&_h1]:tracking-[-0.035em] [&_p]:m-[0.75rem_0_0] [&_p]:max-w-[60ch] [&_p]:text-base [&_p]:leading-relaxed [&_p]:text-muted-label">
+    <header data-guide-no-export class="docs-page-header mt-4 mb-8 [&_h1]:m-0 [&_h1]:text-[clamp(2rem,4vw,2.75rem)] [&_h1]:leading-[1.08] [&_h1]:tracking-[-0.035em] [&_p]:m-[0.75rem_0_0] [&_p]:max-w-4xl [&_p]:text-base [&_p]:leading-relaxed [&_p]:text-muted-label">
       <h1>{component.name}</h1>
       <p>{component.description}</p>
       <div class="component-meta mt-4 flex flex-wrap gap-1 text-[0.8125rem] text-muted-label [&_span]:inline-flex [&_span]:min-h-7 [&_span]:items-center [&_span]:rounded-(--radius-full) [&_span]:border [&_span]:border-outline [&_span]:bg-surface [&_span]:p-[0.25rem_0.625rem] [&_span]:leading-none"><span data-surface-level="2" data-surface-lift="1">Astro component</span><span data-surface-level="2" data-surface-lift="1">Keyboard accessible</span><span data-surface-level="2" data-surface-lift="1">Theme tokens</span></div>
@@ -52,6 +60,10 @@ const usage = component.usage;
 
     {component.slug === "button" && <ButtonGuide />}
     {component.slug === "table" && <TableGuide />}
+    {component.slug === "dialog" && <DialogGuide />}
+    {component.slug === "drawer" && <DrawerGuide />}
+    {component.slug === "popover" && <PopoverGuide />}
+    {component.slug === "tooltip" && <TooltipGuide />}
 
     <div data-guide-no-export class="print:hidden"><ComponentPagination {previous} {next} /></div>
   </ComponentGuide>

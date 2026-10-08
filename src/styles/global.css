@@ -140,6 +140,14 @@
     scroll-padding-top: 5rem;
     interpolate-size: allow-keywords;
   }
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    body:has(dialog[open]) {
+      padding-inline-end: var(--scrollbar-compensation, 0px);
+    }
+  }
   body {
     margin: 0;
     background: var(--page);

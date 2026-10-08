@@ -1,0 +1,49 @@
+---
+import Card from "@/components/data-display/Card.astro";
+import CodeBlock from "@/components/data-display/CodeBlock.astro";
+import InlineCode from "@/components/data-display/InlineCode.astro";
+import Table from "@/components/data-display/Table.astro";
+
+const props = [
+  { name: "text", type: "string", default: "Required", description: "Short supplemental label shown in the tooltip." },
+  { name: "position", type: '"top" | "bottom"', default: '"top"', description: "Preferred position. The tooltip flips when space is limited." },
+  { name: "class", type: "string", default: "—", description: "Additional classes for layout or customization." }
+];
+---
+
+<div class="mt-14 flex flex-col gap-14">
+  <section aria-labelledby="examples">
+    <header class="mb-6">
+      <h2 id="examples" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Example</h2>
+      <p class="mt-2.5 mb-0 max-w-4xl text-base leading-normal text-muted-label">Use a tooltip to supplement an already accessible control with a short label.</p>
+    </header>
+    <CodeBlock code={'<div class="flex gap-3">\n  <Tooltip text="Copy component" position="top">\n    <IconButton label="Copy component">\n      <Icon name="copy" />\n    </IconButton>\n  </Tooltip>\n\n  <Tooltip text="Open documentation" position="bottom">\n    <IconButton label="Open documentation">\n      <Icon name="external" />\n    </IconButton>\n  </Tooltip>\n</div>'} />
+  </section>
+
+  <section aria-labelledby="props" class="flex flex-col gap-5">
+    <h2 id="props" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Props</h2>
+    <Table
+      columnBorders
+      columns={[
+        { key: "name", label: "Prop", code: true, rowHeader: true },
+        { key: "type", label: "Type", code: true, wrap: true },
+        { key: "default", label: "Default", code: true },
+        { key: "description", label: "Description" }
+      ]}
+      rows={props}
+      caption="Tooltip props"
+    />
+  </section>
+
+  <section aria-labelledby="accessibility" class="flex flex-col gap-4">
+    <h2 id="accessibility" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Accessibility</h2>
+    <Card>
+      <dl class="m-0 [&_dd]:m-0 [&_dd]:text-base [&_dd]:leading-normal [&_dd]:text-muted-label [&_dt]:text-base [&_dt]:leading-normal [&_dt]:font-semibold [&>div]:grid [&>div]:grid-cols-[8rem_minmax(0,1fr)] [&>div]:gap-5 [&>div]:py-4 max-[620px]:[&>div]:grid-cols-1 max-[620px]:[&>div]:gap-2 [&>div+div]:border-t [&>div+div]:border-outline [&>div:first-child]:pt-0 [&>div:last-child]:pb-0">
+        <div><dt>Label</dt><dd>The trigger still needs its own accessible name. Tooltip text is supplemental and connected with <InlineCode>aria-describedby</InlineCode>.</dd></div>
+        <div><dt>Keyboard</dt><dd>Focusing the trigger shows the tooltip. Moving focus away or pressing <InlineCode>Escape</InlineCode> hides it.</dd></div>
+        <div><dt>Pointer</dt><dd>Hover shows the tooltip and moving away hides it. It remains visible while hovered or focused.</dd></div>
+        <div><dt>Touch</dt><dd>Touch does not require or intercept a tap to show the tooltip. Essential information belongs in a visible label or the control’s accessible name.</dd></div>
+      </dl>
+    </Card>
+  </section>
+</div>

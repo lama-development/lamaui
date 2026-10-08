@@ -36,6 +36,14 @@ const { title, slug, description, sections } = Astro.props;
 </script>
 
 <style is:global>
+  .docs-page-header :is(h1, h2),
+  [data-guide-content] :is(h2, h3) {
+    text-wrap: balance;
+  }
+  .docs-page-header p,
+  [data-guide-content] p {
+    text-wrap: pretty;
+  }
   [data-guide-content] .guide-heading-link {
     position: relative;
     display: inline-flex;

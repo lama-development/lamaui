@@ -74,7 +74,17 @@ export const componentGroups: ComponentGroup[] = [
     ]
   },
   { name: "Feedback", slug: "feedback", icon: "feedback", components: [component("Alert", "alert", "Communicates persistent informational or status messages.", '<Alert variant="warning" title="Review required">\n  Two fields need attention.\n</Alert>'), component("Toast", "toast", "Shows a temporary result without interrupting work."), component("Spinner", "spinner", "Indicates indeterminate background activity.")] },
-  { name: "Overlays", slug: "overlays", icon: "overlays", components: [component("Dialog", "dialog", "Focuses attention on a decision or short task."), component("Drawer", "drawer", "Shows supplementary controls from the edge of the viewport."), component("Popover", "popover", "Displays concise contextual content near its trigger."), component("Tooltip", "tooltip", "Provides a short label for an icon or unfamiliar control.")] },
+  {
+    name: "Overlays",
+    slug: "overlays",
+    icon: "overlays",
+    components: [
+      component("Dialog", "dialog", "Focuses attention on a decision or short task.", 'import Dialog from "@/components/overlays/Dialog.astro";\n\n<Button data-dialog-open="publish-dialog">Publish</Button>\n<Dialog id="publish-dialog" title="Publish changes?" description="This creates a new component version.">\n  <!-- Dialog content and actions -->\n</Dialog>'),
+      component("Drawer", "drawer", "Shows supplementary controls from the edge of the viewport.", 'import Drawer from "@/components/overlays/Drawer.astro";\n\n<Button data-dialog-open="example-drawer">Open drawer</Button>\n<Drawer id="example-drawer" title="Drawer title">\n  <p>Drawer content.</p>\n</Drawer>'),
+      component("Popover", "popover", "Displays concise contextual content near its trigger.", 'import Popover from "@/components/overlays/Popover.astro";\n\n<Popover label="Open popover">\n  <p>Contextual content.</p>\n</Popover>'),
+      component("Tooltip", "tooltip", "Provides a short label for an icon or unfamiliar control.", 'import Tooltip from "@/components/overlays/Tooltip.astro";\n\n<Tooltip text="Copy component">\n  <IconButton label="Copy component"><Icon name="copy" /></IconButton>\n</Tooltip>')
+    ]
+  },
   { name: "Layout", slug: "layout", icon: "layout", components: [component("Surface", "surface", "Creates an explicit substrate or lifts a panel relative to its nearest surface.", "<Surface level={1}>\n  <Surface lift={1}>Elevated content</Surface>\n</Surface>"), component("Container", "container", "Constrains content width and horizontal padding."), component("Stack", "stack", "Arranges children vertically with a consistent gap."), component("Inline", "inline", "Arranges children horizontally with wrapping support."), component("Grid", "grid", "Creates responsive multi-column layouts."), component("Section", "section", "Applies consistent vertical section spacing."), component("PageShell", "page-shell", "Composes page navigation, main content, and footer.")] },
   { name: "Marketing", slug: "marketing", icon: "marketing", components: [component("Hero", "hero", "Introduces a product or page with focused actions."), component("FeatureCard", "feature-card", "Explains one reusable product capability."), component("FeatureGrid", "feature-grid", "Arranges feature cards responsively."), component("CTA", "cta", "Pairs a concise message with a primary action."), component("PricingCard", "pricing-card", "Presents a plan, price, features, and action."), component("TestimonialCard", "testimonial-card", "Displays a quotation with attribution."), component("SectionHeader", "section-header", "Introduces a content section with clear hierarchy."), component("Footer", "footer", "Closes a page with brand and secondary information.")] }
 ];

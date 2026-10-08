@@ -74,8 +74,9 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
     requestAnimationFrame(() => toast.classList.add("is-open"));
     if (!error) window.setTimeout(() => toast.dispatchEvent(new CustomEvent("toast:dismiss", { bubbles: true })), 5000);
   };
+  const documentedSectionIds = new Set(Array.from(root.querySelectorAll<HTMLElement>("[data-guide-anchor]")).map((link) => link.dataset.guideAnchor));
   content.querySelectorAll<HTMLElement>("h2[id]").forEach((heading) => {
-    if (heading.closest(".component-preview, .lamaui-card") || heading.querySelector("[data-guide-permalink]")) return;
+    if (!documentedSectionIds.has(heading.id) || heading.querySelector("[data-guide-permalink]")) return;
     const title = heading.textContent?.trim() || "Section";
     const link = document.createElement("a");
     link.href = `#${heading.id}`;

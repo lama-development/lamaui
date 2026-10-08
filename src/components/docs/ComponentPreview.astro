@@ -603,35 +603,52 @@ const selectOptions = [
     }
     {
       slug === "drawer" && (
-        <>
-          <>
-            <Button data-dialog-open="preview-drawer">Open drawer</Button>
-            <Drawer id="preview-drawer" title="Component settings">
-              <FormField id="drawer-name" label="Name">
-                <Input id="drawer-name" value="Primary button" />
-              </FormField>
-            </Drawer>
-          </>
-        </>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <Button variant="secondary" data-dialog-open="preview-left-drawer">
+            Open left drawer
+          </Button>
+          <Drawer id="preview-left-drawer" title="Left drawer" side="left">
+            <p class="m-0 text-sm text-muted-label">Drawer content.</p>
+          </Drawer>
+          <Button data-dialog-open="preview-drawer">Open right drawer</Button>
+          <Drawer id="preview-drawer" title="Right drawer" side="right">
+            <p class="m-0 text-sm text-muted-label">Drawer content.</p>
+          </Drawer>
+        </div>
       )
     }
     {
       slug === "popover" && (
-        <Popover label="Open popover">
-          <>
-            <strong>Quick actions</strong>
-            <p class="muted mb-0 text-sm text-muted-label">Contextual content stays close to its trigger.</p>
-          </>
-        </Popover>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <Popover label="Left aligned" position="left">
+            <>
+              <strong>Left aligned</strong>
+              <p class="muted mb-0 text-sm text-muted-label">The panel starts at the trigger’s left edge.</p>
+            </>
+          </Popover>
+          <Popover label="Right aligned" position="right">
+            <>
+              <strong>Right aligned</strong>
+              <p class="muted mb-0 text-sm text-muted-label">The panel ends at the trigger’s right edge.</p>
+            </>
+          </Popover>
+        </div>
       )
     }
     {
       slug === "tooltip" && (
-        <Tooltip text="Copy component">
-          <IconButton label="Copy component" variant="secondary">
-            <Icon name="copy" />
-          </IconButton>
-        </Tooltip>
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <Tooltip text="Copy component" position="top">
+            <IconButton label="Copy component" variant="secondary">
+              <Icon name="copy" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip text="Open documentation" position="bottom">
+            <IconButton label="Open documentation" variant="secondary">
+              <Icon name="external" />
+            </IconButton>
+          </Tooltip>
+        </div>
       )
     }
 
