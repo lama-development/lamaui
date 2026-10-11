@@ -1,9 +1,17 @@
 ---
+import CategoryIcon from "@/components/docs/CategoryIcon.astro";
+import svgSearch from "@phosphor-icons/core/duotone/magnifying-glass-duotone.svg?raw";
+import svgMenu from "@phosphor-icons/core/bold/list-bold.svg?raw";
+import svgClose from "@phosphor-icons/core/bold/x-bold.svg?raw";
+import svgHome from "@phosphor-icons/core/duotone/house-duotone.svg?raw";
+import svgChevronDown from "@phosphor-icons/core/bold/caret-down-bold.svg?raw";
+import svgExternal from "@phosphor-icons/core/duotone/arrow-square-out-duotone.svg?raw";
 import { controlStyles, ghostStyles, iconControlStyles } from "@/lib/styles";
 import "@/styles/global.css";
 import Icon from "@/components/ui/Icon.astro";
 import AccentPicker from "@/components/ui/AccentPicker.astro";
 import ThemePicker from "@/components/ui/ThemePicker.astro";
+import DocsSearch from "@/components/docs/DocsSearch.astro";
 import Llama from "@/assets/icons/llama.svg";
 import { componentGroups } from "@/lib/components";
 import { version } from "../../package.json";
@@ -41,27 +49,26 @@ const year = new Date().getFullYear();
   </head>
   <body class="bg-surface-1" data-surface-level="1">
     <script>
-      import "@/scripts/browser-theme";
+      import "@/scripts/components";
       import "@/scripts/navbar-scroll";
-      import "@/scripts/ripple";
-      import "@/scripts/hover";
-      import "@/scripts/brand";
-      import "@/scripts/surfaces";
-      import "@/scripts/drawer";
     </script>
     <a href="#main-content" class="skip-link fixed inset-[8px_auto_auto_8px] z-200 transform-[translateY(-80px)] rounded-md bg-accent px-3 py-2 text-sm font-semibold text-accent-label focus:transform-[translateY(0)] print:hidden">Skip to content</a>
-    <header data-surface-level="2" class="docs-mobile-header hidden print:hidden [@media(width<=860px)]:sticky [@media(width<=860px)]:top-0 [@media(width<=860px)]:z-40 [@media(width<=860px)]:flex [@media(width<=860px)]:min-h-14 [@media(width<=860px)]:items-center [@media(width<=860px)]:justify-between [@media(width<=860px)]:border-b [@media(width<=860px)]:border-outline [@media(width<=860px)]:bg-surface-2 [@media(width<=860px)]:p-[0.375rem_0.75rem] [@media(width<=860px)]:[&_.docs-brand]:flex-none [@media(width<=860px)]:[&_.docs-brand_small]:hidden">
-      <div class="docs-brand flex min-w-0 flex-1 items-center gap-2.5 rounded-md text-label [&_strong]:block [&_strong]:text-lg [&_strong]:leading-none"><button type="button" class="docs-mascot grid size-8 flex-none place-items-center rounded-full border-0 bg-transparent p-0" aria-label="Play with the llama" data-brand-llama><Llama class="docs-mark size-8" width={32} height={32} aria-hidden="true" focusable="false" /></button><a href="/" class="rounded-sm no-underline"><strong>LamaUI</strong></a></div>
-      <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles}`} aria-label="Open navigation" aria-controls="docs-navigation" aria-expanded="false" data-docs-open><Icon name="menu" /></button>
+    <header data-surface-level="2" class="docs-mobile-header hidden print:hidden [@media(width<=860px)]:sticky [@media(width<=860px)]:top-0 [@media(width<=860px)]:z-40 [@media(width<=860px)]:flex [@media(width<=860px)]:min-h-14 [@media(width<=860px)]:items-center [@media(width<=860px)]:justify-between [@media(width<=860px)]:border-b [@media(width<=860px)]:border-outline [@media(width<=860px)]:bg-surface-2 [@media(width<=860px)]:p-[0.375rem_0.75rem] [@media(width<=860px)]:[&_.docs-brand_small]:hidden">
+      <a href="/" aria-label="LamaUI home" class="docs-brand flex min-w-0 flex-1 items-center gap-2.5 rounded-md text-label no-underline [&_strong]:block [&_strong]:text-lg [&_strong]:leading-none"><Llama class="docs-mark size-8 flex-none" width={32} height={32} aria-hidden="true" focusable="false" /><strong>LamaUI</strong></a>
+      <div class="ml-auto flex shrink-0 items-center gap-1">
+        <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles}`} aria-label="Search documentation" aria-haspopup="dialog" aria-controls="docs-search" aria-expanded="false" aria-keyshortcuts="Meta+K Control+K" data-search-open><Icon src={svgSearch} /></button>
+        <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles}`} aria-label="Open navigation" aria-controls="docs-navigation" aria-expanded="false" data-docs-open><Icon src={svgMenu} /></button>
+      </div>
     </header>
     <aside data-surface-level="2" id="docs-navigation" class="docs-sidebar fixed inset-[0_auto_0_0] z-50 w-60 border-r border-outline bg-surface-2 print:hidden [@media(width<=860px)]:z-80 [@media(width<=860px)]:transform-[translateX(-105%)] [@media(width<=860px)]:shadow-(--shadow-lg) [@media(width<=860px)]:data-[open=true]:transform-[translateX(0)]" data-open="false" aria-label="Documentation navigation">
       <div class="docs-sidebar-inner flex h-full min-h-0 flex-col px-3 pb-3">
         <div class="docs-sidebar-head -mx-3 flex min-h-14 flex-none items-center gap-2 border-b border-outline px-3 py-1.5">
-          <div class="docs-brand flex min-w-0 flex-1 items-center gap-2.5 rounded-md text-label [&_strong]:block [&_strong]:text-lg [&_strong]:leading-none"><button type="button" class="docs-mascot grid size-8 flex-none place-items-center rounded-full border-0 bg-transparent p-0" aria-label="Play with the llama" data-brand-llama><Llama class="docs-mark size-8" width={32} height={32} aria-hidden="true" focusable="false" /></button><a href="/" class="rounded-sm no-underline"><strong>LamaUI</strong></a></div>
-          <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} docs-sidebar-close min-[861px]:hidden!`} aria-label="Close navigation" data-docs-close><Icon name="close" /></button>
+          <a href="/" aria-label="LamaUI home" class="docs-brand flex min-w-0 flex-1 items-center gap-2.5 rounded-md text-label no-underline [&_strong]:block [&_strong]:text-lg [&_strong]:leading-none"><Llama class="docs-mark size-8 flex-none" width={32} height={32} aria-hidden="true" focusable="false" /><strong>LamaUI</strong></a>
+          <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} docs-sidebar-close min-[861px]:hidden!`} aria-label="Close navigation" data-docs-close><Icon src={svgClose} /></button>
         </div>
-        <nav class="docs-nav scrollbar-gutter:stable -me-3 min-h-0 flex-1 overflow-auto py-3 pe-3 [&>_*_+_*]:mt-1">
-          <a href="/" aria-current={!currentSlug ? "page" : undefined} class="docs-nav-row flex min-h-11 cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-label no-underline [corner-shape:squircle] hover:bg-surface-hover hover:text-label aria-[current=page]:bg-accent-subtle aria-[current=page]:font-semibold aria-[current=page]:text-accent hover:aria-[current=page]:bg-accent-subtle hover:aria-[current=page]:text-accent [&_span]:flex-1 [&_svg]:flex-none"><Icon name="home" /><span>Overview</span></a>
+        <button type="button" class="mt-3 flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-md border border-outline bg-surface px-3 text-sm text-muted-label hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-ring" aria-haspopup="dialog" aria-controls="docs-search" aria-expanded="false" aria-label="Search documentation" aria-keyshortcuts="Meta+K Control+K" data-search-open><Icon src={svgSearch} size={18} /><span class="flex-1 text-left">Search docs…</span><kbd data-search-shortcut class="rounded border border-outline px-1.5 py-0.5 text-[0.6875rem]">⌘ K</kbd></button>
+        <nav class="docs-nav scrollbar-gutter:stable -me-3 min-h-0 flex-1 overflow-auto py-3 pe-3 [&>_*_+_*]:mt-1" aria-label="Components">
+          <a href="/" aria-current={!currentSlug ? "page" : undefined} class="docs-nav-row flex min-h-11 cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-label no-underline [corner-shape:squircle] hover:bg-surface-hover hover:text-label aria-[current=page]:bg-accent-subtle aria-[current=page]:font-semibold aria-[current=page]:text-accent hover:aria-[current=page]:bg-accent-subtle hover:aria-[current=page]:text-accent [&_span]:flex-1 [&_svg]:flex-none"><Icon src={svgHome} /><span>Overview</span></a>
           {
             componentGroups.map((group) => {
               const containsCurrent = group.components.some((item) => item.slug === currentSlug);
@@ -69,9 +76,9 @@ const year = new Date().getFullYear();
                 <div class="docs-nav-group [&_li_a]:flex [&_li_a]:min-h-9 [&_li_a]:items-center [&_li_a]:rounded-[0.625rem] [&_li_a]:p-[0.375rem_0.75rem] [&_li_a]:text-sm [&_li_a]:leading-tight [&_li_a]:text-muted-label [&_li_a]:no-underline [&_li_a:hover]:bg-surface-hover [&_li_a:hover]:text-label [&_li_a[aria-current=page]]:bg-accent-subtle [&_li_a[aria-current=page]]:font-semibold [&_li_a[aria-current=page]]:text-accent [&_li_a[aria-current=page]:hover]:bg-accent-subtle [&_li_a[aria-current=page]:hover]:text-accent [&_li+li]:mt-1 [&_ul]:m-0 [&_ul]:list-none [&_ul]:p-[0.25rem_0_0.375rem_2rem] [&[data-open=true]_.docs-nav-chevron]:transform-[rotate(180deg)]" data-open={String(containsCurrent)}>
                   <button type="button" class:list={["docs-nav-row flex min-h-11 w-full cursor-pointer items-center gap-3 rounded-md border-0 bg-transparent px-3 py-2 text-left text-sm text-muted-label no-underline [corner-shape:squircle] hover:bg-surface-hover hover:text-label [&_span]:flex-1 [&_svg]:flex-none", containsCurrent && "font-semibold text-accent hover:text-accent"]} aria-expanded={containsCurrent} aria-controls={`docs-nav-${group.slug}`} data-docs-group-toggle>
                     <>
-                      <Icon name={group.icon} />
+                      <CategoryIcon group={group.slug} />
                       <span>{group.name}</span>
-                      <Icon name="chevron-down" size={16} class="docs-nav-chevron" />
+                      <Icon src={svgChevronDown} size={16} class="docs-nav-chevron" />
                     </>
                   </button>
                   <div id={`docs-nav-${group.slug}`} class="docs-nav-panel" inert={!containsCurrent}>
@@ -106,10 +113,11 @@ const year = new Date().getFullYear();
         <div class="docs-footer-links ms-auto flex items-center gap-2 [&_a]:inline-flex [&_a]:items-center [&_a]:gap-1.5 [&_a]:no-underline [&_a:hover]:underline [@media(width<=620px)]:ms-0">
           <span>v{version}</span>
           <span class="size-1 rounded-full bg-current opacity-70" aria-hidden="true"></span>
-          <a href="https://github.com/lama-development/lamaui/issues/new" target="_blank" rel="noopener noreferrer">Report a problem<Icon name="external" size={16} /><span class="sr-only"> (opens in a new tab)</span></a>
+          <a href="https://github.com/lama-development/lamaui/issues/new" target="_blank" rel="noopener noreferrer">Report a problem<Icon src={svgExternal} size={16} /><span class="sr-only"> (opens in a new tab)</span></a>
         </div>
       </footer>
     </div>
+    <DocsSearch />
     <script is:inline>
       const $ = (selector, root = document) => root.querySelector(selector);
       const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
@@ -126,6 +134,10 @@ const year = new Date().getFullYear();
         closer = $("[data-docs-close]"),
         mobileNavigation = window.matchMedia("(max-width: 860px)");
       let scrimHideTimer, navigationFrame;
+      const setBackgroundInert = (inert) => {
+        $(".docs-page").inert = inert;
+        $(".docs-mobile-header").inert = inert;
+      };
       const setNavigation = (open) => {
         if (!sidebar || !scrim || !opener) return;
         window.clearTimeout(scrimHideTimer);
@@ -133,6 +145,9 @@ const year = new Date().getFullYear();
         if (open) {
           scrim.hidden = false;
           sidebar.inert = false;
+          sidebar.setAttribute("role", "dialog");
+          sidebar.setAttribute("aria-modal", "true");
+          setBackgroundInert(true);
           navigationFrame = requestAnimationFrame(() => {
             sidebar.dataset.open = "true";
             scrim.dataset.open = "true";
@@ -145,6 +160,9 @@ const year = new Date().getFullYear();
         sidebar?.setAttribute("data-open", String(open));
         opener?.setAttribute("aria-expanded", String(open));
         scrim.dataset.open = "false";
+        sidebar.removeAttribute("role");
+        sidebar.removeAttribute("aria-modal");
+        setBackgroundInert(false);
         document.body.classList.toggle("docs-navigation-open", open);
         if (mobileNavigation.matches) sidebar.inert = true;
         scrimHideTimer = window.setTimeout(() => {
@@ -156,7 +174,20 @@ const year = new Date().getFullYear();
       closer?.addEventListener("click", () => setNavigation(false));
       scrim?.addEventListener("click", () => setNavigation(false));
       document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape" && sidebar?.dataset.open === "true") setNavigation(false);
+        if (sidebar?.dataset.open !== "true" || document.querySelector("dialog[open]")) return;
+        if (event.key === "Escape") setNavigation(false);
+        if (event.key === "Tab") {
+          const focusable = $$("a[href], button:not(:disabled), input:not(:disabled), [tabindex='0']", sidebar).filter((element) => element.offsetParent !== null && !element.closest("[inert]"));
+          const first = focusable[0],
+            last = focusable[focusable.length - 1];
+          if (event.shiftKey && (document.activeElement === first || !sidebar.contains(document.activeElement))) {
+            event.preventDefault();
+            last?.focus();
+          } else if (!event.shiftKey && (document.activeElement === last || !sidebar.contains(document.activeElement))) {
+            event.preventDefault();
+            first?.focus();
+          }
+        }
       });
       const syncNavigationMode = () => {
         if (mobileNavigation.matches) {
@@ -166,6 +197,9 @@ const year = new Date().getFullYear();
         window.clearTimeout(scrimHideTimer);
         cancelAnimationFrame(navigationFrame);
         sidebar.inert = false;
+        sidebar.removeAttribute("role");
+        sidebar.removeAttribute("aria-modal");
+        setBackgroundInert(false);
         sidebar.dataset.open = "false";
         scrim.dataset.open = "false";
         scrim.hidden = true;
@@ -187,280 +221,6 @@ const year = new Date().getFullYear();
           });
         });
       });
-      const tooltipRoots = $$("[data-tooltip]");
-      let activeTooltip, tooltipTimer;
-      const closeTooltip = (root = activeTooltip) => {
-        if (!root) return;
-        const tooltip = $("[role=tooltip]", root);
-        if (!tooltip) return;
-        window.clearTimeout(tooltipTimer);
-        tooltip.removeAttribute("data-open");
-        tooltip.setAttribute("aria-hidden", "true");
-        if (typeof tooltip.hidePopover === "function" && tooltip.matches(":popover-open")) tooltip.hidePopover();
-        if (activeTooltip === root) activeTooltip = null;
-      };
-      const openTooltip = (root) => {
-        const trigger = $("button,a,[tabindex]", root),
-          tooltip = $("[role=tooltip]", root);
-        if (!trigger || !tooltip) return;
-        if (activeTooltip && activeTooltip !== root) closeTooltip(activeTooltip);
-        const rect = trigger.getBoundingClientRect();
-        if (typeof tooltip.showPopover === "function" && !tooltip.matches(":popover-open")) tooltip.showPopover();
-        const tooltipRect = tooltip.getBoundingClientRect(),
-          roomAbove = rect.top >= tooltipRect.height + 12,
-          roomBelow = window.innerHeight - rect.bottom >= tooltipRect.height + 12,
-          prefersAbove = root.dataset.tooltipPosition !== "bottom",
-          above = prefersAbove ? roomAbove || !roomBelow : !roomBelow && roomAbove,
-          halfWidth = tooltipRect.width / 2,
-          center = Math.min(window.innerWidth - halfWidth - 8, Math.max(halfWidth + 8, rect.left + rect.width / 2));
-        tooltip.style.left = `${center}px`;
-        tooltip.style.top = `${above ? rect.top - 8 : rect.bottom + 8}px`;
-        tooltip.style.transform = above ? "translate(-50%, -100%)" : "translate(-50%, 0)";
-        const arrow = $("[data-tooltip-arrow]", tooltip);
-        if (arrow) {
-          arrow.style.top = above ? "auto" : "-0.2rem";
-          arrow.style.bottom = above ? "-0.2rem" : "auto";
-        }
-        tooltip.dataset.open = "true";
-        tooltip.setAttribute("aria-hidden", "false");
-        activeTooltip = root;
-        window.clearTimeout(tooltipTimer);
-      };
-      tooltipRoots.forEach((root, index) => {
-        const trigger = $("button,a,[tabindex]", root),
-          tooltip = $("[role=tooltip]", root);
-        if (!trigger || !tooltip) return;
-        tooltip.id ||= `lamaui-tooltip-${index + 1}`;
-        trigger.setAttribute("aria-describedby", tooltip.id);
-        root.addEventListener("pointerenter", (event) => {
-          if (event.pointerType !== "touch") openTooltip(root);
-        });
-        root.addEventListener("pointerleave", () => closeTooltip(root));
-        root.addEventListener("focusin", () => {
-          requestAnimationFrame(() => {
-            if (trigger.matches(":focus-visible")) openTooltip(root);
-          });
-        });
-        root.addEventListener("focusout", () => closeTooltip(root));
-        trigger.addEventListener("click", () => {
-          window.clearTimeout(tooltipTimer);
-          tooltipTimer = window.setTimeout(() => closeTooltip(root), 900);
-        });
-      });
-      document.addEventListener("keydown", (event) => {
-        if (event.key === "Escape") closeTooltip();
-      });
-      window.addEventListener("scroll", () => closeTooltip(), { passive: true });
-      $$("[data-copy-code]").forEach((button) =>
-        button.addEventListener("click", async () => {
-          const block = button.closest("[data-code-block]"),
-            code = $("code", block)?.textContent ?? "",
-            label = $("[data-copy-label]", button),
-            defaultIcon = $("[data-copy-default]", button),
-            successIcon = $("[data-copy-success]", button);
-          const tooltip = $("[data-tooltip-label]", button.closest("[data-tooltip]"));
-          try {
-            await navigator.clipboard.writeText(code);
-            defaultIcon?.toggleAttribute("hidden", true);
-            successIcon?.toggleAttribute("hidden", false);
-            if (label) label.textContent = "Copied";
-            button.setAttribute("aria-label", "Code copied");
-            if (tooltip) tooltip.textContent = "Copied";
-            window.setTimeout(() => {
-              defaultIcon?.toggleAttribute("hidden", false);
-              successIcon?.toggleAttribute("hidden", true);
-              if (label) label.textContent = "Copy";
-              button.setAttribute("aria-label", "Copy code");
-              if (tooltip) tooltip.textContent = "Copy code";
-            }, 1800);
-          } catch {
-            if (label) label.textContent = "Copy failed";
-            if (tooltip) tooltip.textContent = "Copy failed";
-          }
-        })
-      );
-      $$("[data-code-wrap]").forEach((button) =>
-        button.addEventListener("click", () => {
-          const block = button.closest("[data-code-block]"),
-            wrapped = !block.classList.contains("is-wrapped");
-          block.classList.toggle("is-wrapped", wrapped);
-          button.setAttribute("aria-pressed", String(wrapped));
-          button.setAttribute("aria-label", wrapped ? "Unwrap lines" : "Wrap lines");
-          const tooltip = $("[data-tooltip-label]", button.closest("[data-tooltip]"));
-          if (tooltip) tooltip.textContent = wrapped ? "Unwrap lines" : "Wrap lines";
-          $("[data-wrap-off]", button)?.toggleAttribute("hidden", wrapped);
-          $("[data-wrap-on]", button)?.toggleAttribute("hidden", !wrapped);
-        })
-      );
-      $$("[data-toggle]").forEach((button) => button.addEventListener("click", () => button.setAttribute("aria-pressed", String(button.getAttribute("aria-pressed") !== "true"))));
-      $$("[data-toggle-group]").forEach((group) =>
-        group.addEventListener("click", (event) => {
-          const button = event.target.closest("[data-toggle]");
-          if (!button) return;
-          $$("[data-toggle]", group).forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
-        })
-      );
-      $$("[data-password-toggle]").forEach((button) =>
-        button.addEventListener("click", () => {
-          const input = button.closest("[data-password]").querySelector("[data-password-input]");
-          const show = input.type === "password";
-          input.type = show ? "text" : "password";
-          $("[data-password-show]", button)?.toggleAttribute("hidden", show);
-          $("[data-password-hide]", button)?.toggleAttribute("hidden", !show);
-          button.setAttribute("aria-label", `${show ? "Hide" : "Show"} password`);
-          button.title = `${show ? "Hide" : "Show"} password`;
-        })
-      );
-      $$("[data-slider]").forEach((slider) => {
-        const output = $("[data-slider-output]", slider.closest("label"));
-        const update = () => {
-          const min = Number(slider.min),
-            max = Number(slider.max),
-            value = Number(slider.value),
-            progress = ((value - min) / (max - min)) * 100;
-          slider.style.setProperty("--slider-progress", `${progress}%`);
-          if (output) output.value = slider.value;
-        };
-        slider.addEventListener("input", update);
-        update();
-      });
-      $$("[data-tabs]").forEach((root) => {
-        const tabs = $$('[role="tab"]', root),
-          panels = $$('[role="tabpanel"]', root);
-        const highlight = $(".lamaui-tab-highlight", root);
-        const moveHighlight = (tab, animate = true) => {
-          if (!highlight || !tab) return;
-          const previous = highlight.style.transition;
-          if (!animate) highlight.style.transition = "none";
-          highlight.style.transform = `translateX(${tab.offsetLeft}px)`;
-          highlight.style.width = `${tab.offsetWidth}px`;
-          if (!animate) {
-            void highlight.offsetWidth;
-            highlight.style.transition = previous;
-          }
-        };
-        const activate = (tab) => {
-          if (!tab || tab.disabled) return;
-          const changed = tab.getAttribute("aria-selected") !== "true";
-          tabs.forEach((item) => {
-            item.setAttribute("aria-selected", String(item === tab));
-            item.tabIndex = item === tab ? 0 : -1;
-          });
-          panels.forEach((panel) => (panel.hidden = panel.dataset.tabPanel !== tab.dataset.tab));
-          moveHighlight(tab);
-          if (changed && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-            const panel = panels.find((item) => !item.hidden);
-            if (panel) {
-              panel.getAnimations().forEach((animation) => animation.cancel());
-              const styles = getComputedStyle(root);
-              panel.animate(
-                [
-                  { opacity: 0, transform: "translateY(8px)", filter: "blur(2px)" },
-                  { opacity: 1, transform: "translateY(0)", filter: "blur(0)" }
-                ],
-                { duration: parseFloat(styles.getPropertyValue("--duration-normal")), easing: styles.getPropertyValue("--ease-standard").trim() }
-              );
-            }
-          }
-          tab.focus();
-        };
-        tabs.forEach((tab) => tab.addEventListener("click", () => activate(tab)));
-        root.addEventListener("keydown", (event) => {
-          if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key) || !tabs.includes(document.activeElement)) return;
-          event.preventDefault();
-          const enabled = tabs.filter((tab) => !tab.disabled);
-          const index = enabled.indexOf(document.activeElement);
-          activate(enabled[event.key === "Home" ? 0 : event.key === "End" ? enabled.length - 1 : (index + (event.key === "ArrowRight" ? 1 : -1) + enabled.length) % enabled.length]);
-        });
-        const snapHighlight = () =>
-          moveHighlight(
-            tabs.find((tab) => tab.getAttribute("aria-selected") === "true"),
-            false
-          );
-        snapHighlight();
-        new ResizeObserver(snapHighlight).observe(root);
-      });
-      $$("[data-dialog-open]").forEach((button) =>
-        button.addEventListener("click", () => {
-          const dialog = document.getElementById(button.dataset.dialogOpen);
-          if (!dialog?.hasAttribute("data-drawer")) dialog?.showModal();
-        })
-      );
-      $$("[data-dialog-close]").forEach((button) =>
-        button.addEventListener("click", () => {
-          const dialog = button.closest("dialog");
-          if (!dialog?.hasAttribute("data-drawer")) dialog?.close();
-        })
-      );
-      $$("dialog").forEach((dialog) =>
-        dialog.addEventListener("click", (event) => {
-          if (event.target === dialog && !dialog.hasAttribute("data-drawer")) dialog.close();
-        })
-      );
-      const syncToastStack = (region) => {
-        if (!region) return;
-        const toasts = $$(":scope > [data-toast]:not(.hidden)", region);
-        toasts.forEach((toast, position) => {
-          const index = toasts.length - position - 1;
-          toast.style.setProperty("--toast-stack-index", Math.min(index, 3));
-          toast.style.zIndex = String(toasts.length - index);
-          toast.toggleAttribute("inert", index > 0);
-          toast.toggleAttribute("data-toast-covered", index > 3);
-        });
-      };
-      const hideToast = (toast) => {
-        if (!toast || toast.classList.contains("hidden")) return;
-        const region = toast.closest("[data-toast-region]");
-        toast.classList.remove("is-open");
-        let finished = false;
-        const finish = () => {
-          if (finished) return;
-          finished = true;
-          toast.removeEventListener("transitionend", finishAfterOpacity);
-          if (toast.hasAttribute("data-toast-transient")) toast.remove();
-          else {
-            toast.classList.remove("grid");
-            toast.classList.add("hidden");
-          }
-          syncToastStack(region);
-        };
-        const finishAfterOpacity = (event) => {
-          if (event.target === toast && event.propertyName === "opacity") finish();
-        };
-        toast.addEventListener("transitionend", finishAfterOpacity);
-        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return finish();
-        window.setTimeout(finish, 400);
-      };
-      $$("[data-toast-open]").forEach((button) =>
-        button.addEventListener("click", () => {
-          const source = document.getElementById(button.dataset.toastOpen);
-          const region = source?.closest("[data-toast-region]");
-          if (!source || !region) return;
-          const toast = source.cloneNode(true);
-          toast.removeAttribute("id");
-          toast.dataset.toastTransient = "true";
-          toast.classList.remove("hidden");
-          toast.classList.add("grid");
-          region.append(toast);
-          syncToastStack(region);
-          requestAnimationFrame(() => toast.classList.add("is-open"));
-          if (toast.getAttribute("role") !== "alert") toast._hideTimer = window.setTimeout(() => hideToast(toast), 5000);
-        })
-      );
-      document.addEventListener("click", (event) => {
-        const button = event.target instanceof Element ? event.target.closest("[data-toast-close]") : null;
-        if (button) hideToast(button.closest("[data-toast]"));
-      });
-      document.addEventListener("toast:dismiss", (event) => hideToast(event.target?.closest?.("[data-toast]")));
-      document.addEventListener("toast:added", (event) => syncToastStack(event.target?.closest?.("[data-toast-region]")));
-      $$("[data-dismiss]").forEach((button) =>
-        button.addEventListener("click", () => {
-          const alert = button.closest('[role="alert"],[role="status"]');
-          if (!alert) return;
-          if (alert.hasAttribute("data-dismiss-hide")) alert.hidden = true;
-          else alert.remove();
-        })
-      );
       $$("[data-preview-reset]").forEach((button) => {
         const preview = button.closest(".component-preview");
         const tagRow = $(".tag-row", preview);
@@ -470,17 +230,6 @@ const year = new Date().getFullYear();
           if (tagRow) tagRow.replaceChildren(...initialTags.map((node) => node.cloneNode(true)));
         });
       });
-      $$("[data-nav-toggle]").forEach((button) =>
-        button.addEventListener("click", () => {
-          const nav = document.getElementById(button.getAttribute("aria-controls"));
-          const opening = nav?.dataset.open !== "true";
-          nav.dataset.open = String(opening);
-          button.setAttribute("aria-expanded", String(opening));
-          button.setAttribute("aria-label", opening ? "Close navigation" : "Open navigation");
-          button.querySelector("[data-nav-open-icon]")?.toggleAttribute("hidden", opening);
-          button.querySelector("[data-nav-close-icon]")?.toggleAttribute("hidden", !opening);
-        })
-      );
     </script>
   </body>
 </html>

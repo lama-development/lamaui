@@ -1,0 +1,1372 @@
+---
+import svgHome from "@phosphor-icons/core/duotone/house-duotone.svg?raw";
+import svgHeart from "@phosphor-icons/core/duotone/heart-duotone.svg?raw";
+import svgSettings from "@phosphor-icons/core/duotone/gear-six-duotone.svg?raw";
+import svgMail from "@phosphor-icons/core/duotone/envelope-duotone.svg?raw";
+import svgPin from "@phosphor-icons/core/duotone/push-pin-duotone.svg?raw";
+import svgPlus from "@phosphor-icons/core/bold/plus-bold.svg?raw";
+import svgDownload from "@phosphor-icons/core/duotone/download-simple-duotone.svg?raw";
+import svgChevronDown from "@phosphor-icons/core/bold/caret-down-bold.svg?raw";
+import svgMore from "@phosphor-icons/core/bold/dots-three-bold.svg?raw";
+import svgSystem from "@phosphor-icons/core/duotone/desktop-duotone.svg?raw";
+import svgSun from "@phosphor-icons/core/duotone/sun-duotone.svg?raw";
+import svgMoon from "@phosphor-icons/core/duotone/moon-duotone.svg?raw";
+import svgCheck from "@phosphor-icons/core/bold/check-bold.svg?raw";
+import svgSearch from "@phosphor-icons/core/duotone/magnifying-glass-duotone.svg?raw";
+import svgEye from "@phosphor-icons/core/duotone/eye-duotone.svg?raw";
+import svgCode from "@phosphor-icons/core/bold/code-bold.svg?raw";
+import svgCopy from "@phosphor-icons/core/duotone/copy-duotone.svg?raw";
+import svgExport from "@phosphor-icons/core/duotone/export-duotone.svg?raw";
+import svgLayout from "@phosphor-icons/core/duotone/layout-duotone.svg?raw";
+import svgChevronRight from "@phosphor-icons/core/bold/caret-right-bold.svg?raw";
+import svgClose from "@phosphor-icons/core/bold/x-bold.svg?raw";
+import Icon from "@/components/ui/Icon.astro";
+import ButtonGroup from "@/components/ui/ButtonGroup.astro";
+import { controlStyles, secondaryStyles, smallControlStyles } from "@/lib/styles";
+interface Props {
+  slug: string;
+  group: string;
+}
+const { slug, group } = Astro.props;
+---
+
+<div class="catalog-preview" data-preview-kind={slug} aria-hidden="true">
+  {
+    slug === "icon" && (
+      <div class="cp-icons">
+        <>
+          <Icon src={svgHome} />
+          <Icon src={svgHeart} />
+          <Icon src={svgSettings} />
+          <Icon src={svgMail} />
+          <Icon src={svgPin} />
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "button" && (
+      <div class="cp-row">
+        <>
+          <span class="cp-button cp-primary">
+            <Icon src={svgPlus} size={13} /> Create project
+          </span>
+          <span class="cp-button cp-icon">
+            <Icon src={svgHeart} size={15} />
+          </span>
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "split-button" && (
+      <div class="cp-split">
+        <>
+          <span class="cp-button cp-primary">
+            <Icon src={svgDownload} size={14} /> Download
+          </span>
+          <span class="cp-button cp-primary">
+            <Icon src={svgChevronDown} size={12} />
+          </span>
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "icon-button" && (
+      <div class="cp-row">
+        <>
+          <span class="cp-button cp-icon">
+            <Icon src={svgPlus} size={16} />
+          </span>
+          <span class="cp-button cp-icon cp-primary">
+            <Icon src={svgHeart} size={16} />
+          </span>
+          <span class="cp-button cp-icon">
+            <Icon src={svgMore} size={17} />
+          </span>
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "button-group" && (
+      <ButtonGroup label="Alignment" class="cp-button-group">
+        <>
+          {["Left", "Center", "Right"].map((label) => (
+            <span class={`${controlStyles} ${secondaryStyles} ${smallControlStyles}`}>{label}</span>
+          ))}
+        </>
+      </ButtonGroup>
+    )
+  }
+  {
+    ["toggle", "toggle-group"].includes(slug) && (
+      <div class="cp-row cp-toggles">
+        <>
+          <span class="cp-selected">
+            <b>B</b>
+          </span>
+          <span>
+            <i>I</i>
+          </span>
+          <span>
+            <u>U</u>
+          </span>
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "accent-picker" && (
+      <div class="cp-swatches">
+        {["#769944", "#5f8fe0", "#9e80cc", "#d47e98", "#d99656", "#5b9d93", "#6e7478"].map((color, index) => (
+          <span style={`--swatch:${color}`} class:list={[index === 0 && "cp-swatch-active"]} />
+        ))}
+      </div>
+    )
+  }
+  {
+    slug === "theme-picker" && (
+      <div class="cp-segments cp-theme">
+        <>
+          <span class="cp-selected">
+            <Icon src={svgSystem} size={18} />
+          </span>
+          <span>
+            <Icon src={svgSun} size={18} />
+          </span>
+          <span>
+            <Icon src={svgMoon} size={18} />
+          </span>
+        </>
+      </div>
+    )
+  }
+
+  {
+    group === "forms" && (
+      <div class="cp-form">
+        {slug === "label" ? (
+          <>
+            <span class="cp-label">
+              Email address <span class="cp-required">*</span>
+            </span>
+            <span class="cp-label-note">Required field</span>
+          </>
+        ) : slug === "checkbox" ? (
+          <>
+            <span class="cp-choice">
+              <span class="cp-checkbox cp-primary">
+                <Icon src={svgCheck} size={11} />
+              </span>{" "}
+              Design systems
+            </span>
+            <span class="cp-choice">
+              <span class="cp-checkbox" /> Product design
+            </span>
+          </>
+        ) : slug === "radio-group" ? (
+          <>
+            <span class="cp-choice">
+              <span class="cp-radio cp-radio-active" /> Personal
+            </span>
+            <span class="cp-choice">
+              <span class="cp-radio" /> Team
+            </span>
+          </>
+        ) : slug === "switch" ? (
+          <div class="cp-row cp-switch-row">
+            <span>Notifications</span>
+            <span class="cp-switch">
+              <i />
+            </span>
+          </div>
+        ) : slug === "slider" ? (
+          <>
+            <div class="cp-between">
+              <span>Volume</span>
+              <span>64%</span>
+            </div>
+            <span class="cp-slider">
+              <i />
+            </span>
+          </>
+        ) : slug === "number-input" ? (
+          <>
+            <span class="cp-label">Quantity</span>
+            <div class="cp-field cp-between">
+              <span>−</span>
+              <span>12</span>
+              <span>+</span>
+            </div>
+          </>
+        ) : slug === "search-input" ? (
+          <div class="cp-field">
+            <Icon src={svgSearch} size={15} />
+            <span class="cp-faint">Search…</span>
+            <kbd>⌘ K</kbd>
+          </div>
+        ) : slug === "password-input" ? (
+          <>
+            <span class="cp-label">Password</span>
+            <div class="cp-field cp-between">
+              <span class="cp-password">••••••••••</span>
+              <Icon src={svgEye} size={15} />
+            </div>
+          </>
+        ) : ["select", "custom-select"].includes(slug) ? (
+          <>
+            {slug === "select" && <span class="cp-label">Your team</span>}
+            <div class="cp-field cp-between">
+              <span class="cp-row">
+                <span class="cp-small-dot" /> Design
+              </span>
+              <Icon src={svgChevronDown} size={12} />
+            </div>
+            {slug === "custom-select" && (
+              <span class="cp-select-option">
+                <Icon src={svgCode} size={13} /> Engineering
+              </span>
+            )}
+          </>
+        ) : slug === "textarea" ? (
+          <>
+            <span class="cp-label">Description</span>
+            <div class="cp-field cp-textarea">
+              <span class="cp-faint">Enter a description…</span>
+              <span class="cp-resize">⫽</span>
+            </div>
+          </>
+        ) : (
+          <>
+            <span class="cp-label">Email address</span>
+            <div class="cp-field">
+              <Icon src={svgMail} size={14} />
+              <span class="cp-faint">you@somewhere.nice</span>
+            </div>
+            {slug === "form-field" && <span class="cp-label-note">Use your work email.</span>}
+          </>
+        )}
+      </div>
+    )
+  }
+
+  {
+    slug === "breadcrumb" && (
+      <div class="cp-row cp-breadcrumb">
+        <>
+          <Icon src={svgHome} size={14} />
+          <span>/</span>
+          <span>Workspace</span>
+          <span>/</span>
+          <strong>Project</strong>
+        </>
+      </div>
+    )
+  }
+  {
+    ["tabs", "tab-panel"].includes(slug) && (
+      <div class="cp-tabs">
+        <div class="cp-segments">
+          <>
+            <span class="cp-selected">Overview</span>
+            <span>Activity</span>
+            <span>Settings</span>
+          </>
+        </div>
+        {slug === "tab-panel" && (
+          <div class="cp-panel-lines">
+            <i />
+            <i />
+          </div>
+        )}
+      </div>
+    )
+  }
+  {
+    slug === "pagination" && (
+      <div class="cp-pagination">
+        <>
+          <span>‹</span>
+          <span class="cp-selected">1</span>
+          <span>2</span>
+          <span>3</span>
+          <span>…</span>
+          <span>›</span>
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "stepper" && (
+      <div class="cp-stepper">
+        <>
+          <span class="cp-primary">
+            <Icon src={svgCheck} size={12} />
+          </span>
+          <i />
+          <span class="cp-step-active">2</span>
+          <i />
+          <span>3</span>
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "dropdown-menu" && (
+      <div class="cp-menu">
+        <>
+          <span>
+            <Icon src={svgCopy} size={13} /> Duplicate <small>⌘ D</small>
+          </span>
+          <span class="cp-selected">
+            <Icon src={svgExport} size={13} /> Share project <small>↗</small>
+          </span>
+        </>
+      </div>
+    )
+  }
+
+  {
+    slug === "card" && (
+      <div class="cp-mini-card">
+        <>
+          <span class="cp-card-icon">
+            <Icon src={svgLayout} size={18} />
+          </span>
+          <div>
+            <>
+              <strong>Project overview</strong>
+              <span>Updated 2 minutes ago</span>
+            </>
+          </div>
+          <Icon src={svgChevronRight} size={12} />
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "chip" && (
+      <div class="cp-row">
+        <>
+          <span class="cp-chip">
+            <span class="cp-small-dot" /> In progress
+          </span>
+          <span class="cp-chip cp-chip-neutral">Draft</span>
+        </>
+      </div>
+    )
+  }
+  {
+    ["avatar", "avatar-group"].includes(slug) && (
+      <div class:list={["cp-avatars", slug === "avatar-group" && "cp-avatar-stack"]}>
+        <span>JD</span>
+        {slug === "avatar-group" && <span>+4</span>}
+      </div>
+    )
+  }
+  {
+    slug === "table" && (
+      <div class="cp-table">
+        <>
+          <div>
+            <>
+              <strong>Name</strong>
+              <strong>Role</strong>
+              <strong>Status</strong>
+            </>
+          </div>
+          <div>
+            <>
+              <span>Alex Lee</span>
+              <span>Designer</span>
+              <span class="cp-table-status">Active</span>
+            </>
+          </div>
+          <div>
+            <>
+              <span>Mina Kim</span>
+              <span>Engineer</span>
+              <span class="cp-table-status">Active</span>
+            </>
+          </div>
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "description-list" && (
+      <div class="cp-description">
+        <>
+          <span>Project</span>
+          <strong>Website redesign</strong>
+          <span>Created</span>
+          <strong>Just a moment ago</strong>
+          <span>Status</span>
+          <strong class="cp-accent-text">Active</strong>
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "progress" && (
+      <div class="cp-form">
+        <>
+          <div class="cp-between">
+            <>
+              <span>Almost there</span>
+              <strong>72%</strong>
+            </>
+          </div>
+          <span class="cp-progress">
+            <i />
+          </span>
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "skeleton" && (
+      <div class="cp-skeleton">
+        <>
+          <span />
+          <div>
+            <>
+              <i />
+              <i />
+              <i />
+            </>
+          </div>
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "divider" && (
+      <div class="cp-form cp-divider">
+        <>
+          <span>Section one</span>
+          <i />
+          <span>Section two</span>
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "tag" && (
+      <div class="cp-row">
+        <>
+          <span class="cp-chip cp-chip-neutral">
+            Design <Icon src={svgClose} size={10} />
+          </span>
+          <span class="cp-chip">
+            Astro <Icon src={svgClose} size={10} />
+          </span>
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "inline-code" && (
+      <div class="cp-row">
+        <>
+          <span>Import</span>
+          <code class="cp-inline-code">&lt;LamaUI /&gt;</code>
+        </>
+      </div>
+    )
+  }
+  {
+    slug === "code-block" && (
+      <div class="cp-code">
+        <>
+          <span>
+            <i>import</i> Button <i>from</i> <b>"@/ui"</b>;
+          </span>
+          <span>
+            &lt;<i>Button</i>&gt;Hello, world&lt;/<i>Button</i>&gt;
+          </span>
+        </>
+      </div>
+    )
+  }
+
+  {
+    group === "feedback" &&
+      (slug === "spinner" ? (
+        <div class="cp-row">
+          <>
+            <span class="cp-spinner" />
+            <span class="cp-faint">Loading…</span>
+          </>
+        </div>
+      ) : (
+        <div class="cp-notice">
+          <>
+            <span class="cp-notice-check">
+              <Icon src={svgCheck} size={13} />
+            </span>
+            <div>
+              <>
+                <strong>{slug === "alert" ? "Changes saved" : "Changes saved"}</strong>
+                <span>{slug === "alert" ? "Your settings have been updated." : "Your settings have been updated."}</span>
+              </>
+            </div>
+            <Icon src={svgClose} size={10} />
+          </>
+        </div>
+      ))
+  }
+
+  {
+    group === "overlays" &&
+      (slug === "tooltip" ? (
+        <div class="cp-tooltip-wrap">
+          <>
+            <span class="cp-tooltip">Copy to clipboard</span>
+            <span class="cp-button cp-icon">
+              <Icon src={svgCopy} size={15} />
+            </span>
+          </>
+        </div>
+      ) : slug === "popover" ? (
+        <div class="cp-popover">
+          <>
+            <strong>Project details</strong>
+            <span>View settings and activity.</span>
+          </>
+        </div>
+      ) : (
+        <div class:list={["cp-window", slug === "drawer" && "cp-drawer"]}>
+          <>
+            <span class="cp-window-bar">
+              <>
+                <i />
+                <i />
+                <i />
+              </>
+            </span>
+            <div class="cp-window-content">
+              <>
+                <strong>{slug === "drawer" ? "Settings" : "Ready to share?"}</strong>
+                <span class="cp-window-line" />
+                <span class="cp-window-line cp-short" />
+                <span class="cp-button cp-primary">{slug === "drawer" ? "Save changes" : "Publish"}</span>
+              </>
+            </div>
+          </>
+        </div>
+      ))
+  }
+  {
+    group === "layout" && (
+      <div class={`cp-layout cp-layout-${slug}`}>
+        <>
+          <div class="cp-layout-header" />
+          <div class="cp-layout-blocks">
+            <>
+              <span />
+              <span />
+              <span />
+            </>
+          </div>
+        </>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .catalog-preview {
+    --docs-preview: var(--surface-1);
+    --docs-panel: var(--surface-2);
+    --docs-border: var(--outline);
+    --docs-text: var(--label);
+    --docs-muted: var(--muted-label);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 112px;
+    padding: 20px;
+    overflow: hidden;
+    background: var(--docs-preview);
+    border-bottom: 1px solid var(--docs-border);
+    color: var(--docs-text);
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .cp-row,
+  .cp-between {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cp-between {
+    justify-content: space-between;
+    width: 100%;
+  }
+  .cp-faint {
+    color: var(--docs-muted);
+  }
+  .cp-primary {
+    background: var(--accent) !important;
+    color: var(--accent-label) !important;
+    border-color: var(--accent) !important;
+  }
+  .cp-selected {
+    background: var(--accent-subtle);
+    color: var(--accent);
+  }
+  .cp-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: 32px;
+    padding: 6px 12px;
+    border: 1px solid var(--docs-border);
+    border-radius: var(--radius-md);
+    corner-shape: squircle;
+    background: var(--docs-panel);
+    font-size: 12px;
+    font-weight: 600;
+    box-shadow: var(--shadow-control);
+  }
+  .cp-icon {
+    width: 32px;
+    padding: 0;
+  }
+  .catalog-preview :global(.cp-button-group .lamaui-control) {
+    min-height: 32px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  .cp-icons {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    width: 191px;
+    max-width: 100%;
+    color: var(--docs-muted);
+  }
+  .cp-icons :global(svg) {
+    width: 23px;
+    height: 23px;
+  }
+  .cp-icons :global(svg:nth-child(2)) {
+    color: var(--accent);
+  }
+  .cp-split {
+    display: flex;
+    gap: 1px;
+  }
+  .cp-split .cp-button:first-child {
+    border-radius: 7px 0 0 7px;
+  }
+  .cp-split .cp-button:last-child {
+    border-radius: 0 7px 7px 0;
+    padding: 6px 8px;
+  }
+  .cp-segments {
+    display: flex;
+    border: 1px solid var(--docs-border);
+    padding: 4px;
+    border-radius: var(--radius-lg);
+    corner-shape: squircle;
+    background: var(--docs-panel);
+    gap: 3px;
+  }
+  .cp-segments > span {
+    display: grid;
+    place-items: center;
+    padding: 7px 12px;
+    border-radius: 5px;
+    font-weight: 500;
+  }
+  .cp-theme > span {
+    padding: 6px 10px;
+  }
+  .cp-toggles > span {
+    display: grid;
+    place-items: center;
+    height: 31px;
+    width: 31px;
+    border-radius: var(--radius-sm);
+    corner-shape: squircle;
+    font-family: Georgia, serif;
+    font-size: 17px;
+  }
+  .cp-swatches {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 8px;
+    width: 208px;
+    max-width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--docs-panel);
+    border: 1px solid var(--docs-border);
+  }
+  .cp-swatches > span {
+    width: 100%;
+    max-width: 18px;
+    aspect-ratio: 1;
+    justify-self: center;
+    background: var(--swatch);
+    border-radius: 50%;
+  }
+  .cp-swatch-active {
+    outline: 2px solid var(--swatch);
+    outline-offset: 3px;
+  }
+  .cp-form {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    width: 210px;
+    max-width: 100%;
+  }
+  .cp-label {
+    font-weight: 600;
+    font-size: 10px;
+  }
+  .cp-label-note {
+    color: var(--docs-muted);
+    font-size: 9px;
+  }
+  .cp-required {
+    color: var(--destructive);
+  }
+  .cp-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 33px;
+    border: 1px solid var(--docs-border);
+    border-radius: var(--radius-sm);
+    corner-shape: squircle;
+    background: var(--input);
+    padding: 7px 10px;
+  }
+  .cp-field kbd {
+    margin-left: auto;
+    font-size: 8px;
+    color: var(--docs-muted);
+  }
+  .cp-choice {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 0;
+  }
+  .cp-checkbox,
+  .cp-radio {
+    display: grid;
+    place-items: center;
+    height: 16px;
+    width: 16px;
+    background: var(--docs-panel);
+    border: 1px solid var(--docs-border);
+    border-radius: 4px;
+  }
+  .cp-radio {
+    border-radius: 50%;
+  }
+  .cp-radio-active {
+    border: 5px solid var(--accent);
+  }
+  .cp-switch-row {
+    justify-content: space-between;
+  }
+  .cp-switch {
+    display: flex;
+    justify-content: flex-end;
+    padding: 3px;
+    width: 33px;
+    height: 20px;
+    background: var(--accent);
+    border-radius: 20px;
+  }
+  .cp-switch > i {
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    background: var(--accent-label);
+  }
+  .cp-slider,
+  .cp-progress {
+    height: 5px;
+    background: var(--docs-border);
+    border-radius: 10px;
+    display: block;
+    position: relative;
+    margin-top: 6px;
+  }
+  .cp-slider:before,
+  .cp-progress > i {
+    content: "";
+    display: block;
+    width: 64%;
+    height: 100%;
+    background: var(--accent);
+    border-radius: 10px;
+  }
+  .cp-slider > i {
+    position: absolute;
+    left: 64%;
+    top: -5px;
+    width: 15px;
+    height: 15px;
+    border: 3px solid var(--docs-panel);
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 1px var(--docs-border);
+  }
+  .cp-progress > i {
+    width: 72%;
+  }
+  .cp-password {
+    letter-spacing: 2px;
+  }
+  .cp-small-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .cp-select-option {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 10px;
+    border: 1px solid var(--docs-border);
+    border-radius: 5px;
+    background: var(--docs-panel);
+  }
+  .cp-textarea {
+    position: relative;
+    min-height: 55px;
+    align-items: flex-start;
+  }
+  .cp-resize {
+    position: absolute;
+    right: 5px;
+    bottom: 2px;
+    color: var(--docs-muted);
+  }
+  .cp-breadcrumb {
+    gap: 12px;
+    font-size: 10px;
+    color: var(--docs-muted);
+  }
+  .cp-breadcrumb strong {
+    font-weight: 500;
+    color: var(--docs-text);
+  }
+  .cp-tabs {
+    display: grid;
+    gap: 6px;
+    width: fit-content;
+    max-width: 100%;
+  }
+  .cp-tabs .cp-segments {
+    border-radius: var(--radius-md);
+    border-color: var(--tab-border);
+    background: var(--tab-track);
+    color: var(--tab-muted-label);
+  }
+  .cp-tabs .cp-segments > span {
+    padding: 6px 9px;
+    border-radius: var(--radius-sm);
+    font-size: 10px;
+  }
+  .cp-tabs .cp-selected {
+    background: var(--tab-selected);
+    color: var(--tab-label);
+    box-shadow: inset 0 0 0 1px var(--tab-selected-border);
+  }
+  .cp-panel-lines {
+    display: grid;
+    gap: 5px;
+    padding: 8px 10px;
+    border: 1px solid var(--docs-border);
+    border-radius: 5px;
+    background: var(--docs-panel);
+  }
+  .cp-panel-lines > i,
+  .cp-window-line {
+    display: block;
+    background: var(--docs-border);
+    width: 90%;
+    height: 4px;
+    border-radius: 4px;
+    margin: 4px 0;
+  }
+  .cp-panel-lines > i:last-child {
+    width: 65%;
+  }
+  .cp-panel-lines > i {
+    height: 3px;
+    margin: 0;
+  }
+  .cp-pagination {
+    display: flex;
+    width: 192px;
+    max-width: 100%;
+    align-items: center;
+    gap: 6px;
+  }
+  .cp-pagination > span {
+    flex: 1;
+    min-width: 0;
+    height: 27px;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-sm);
+    corner-shape: squircle;
+  }
+  .cp-stepper {
+    display: flex;
+    align-items: center;
+    width: 187px;
+    max-width: 100%;
+  }
+  .cp-stepper > span {
+    flex-shrink: 0;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--docs-panel);
+    border: 1px solid var(--docs-border);
+  }
+  .cp-stepper > i {
+    flex: 1;
+    height: 1px;
+    background: var(--docs-border);
+    margin: 0 6px;
+  }
+  .cp-stepper .cp-step-active {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+  }
+  .cp-menu {
+    width: 185px;
+    padding: 5px;
+    border: 1px solid var(--docs-border);
+    border-radius: var(--radius-lg);
+    corner-shape: squircle;
+    background: var(--docs-panel);
+    box-shadow: 0 5px 12px rgb(0 0 0 / 4%);
+  }
+  .cp-menu > span {
+    display: flex;
+    align-items: center;
+    padding: 6px 7px;
+    border-radius: 4px;
+    gap: 8px;
+    font-size: 10px;
+  }
+  .cp-menu small {
+    margin-left: auto;
+    color: var(--docs-muted);
+    font-size: 8px;
+  }
+  .cp-mini-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--docs-border);
+    border-radius: var(--radius-lg);
+    corner-shape: squircle;
+    background: var(--docs-panel);
+    box-shadow: 0 3px 8px rgb(0 0 0 / 3%);
+  }
+  .cp-card-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    height: 33px;
+    width: 33px;
+    border-radius: var(--radius-md);
+    corner-shape: squircle;
+    background: var(--accent-subtle);
+    color: var(--accent);
+  }
+  .cp-mini-card strong,
+  .cp-mini-card div > span {
+    display: block;
+    font-size: 10px;
+  }
+  .cp-mini-card div > span {
+    margin-top: 3px;
+    font-size: 8px;
+    color: var(--docs-muted);
+  }
+  .cp-mini-card > div,
+  .cp-notice > div {
+    min-width: 0;
+  }
+  .cp-chip {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+    background: var(--accent-subtle);
+    color: var(--accent);
+    padding: 4px 8px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 500;
+  }
+  .cp-chip-neutral {
+    color: var(--docs-muted);
+    background: var(--docs-panel);
+    border-color: var(--docs-border);
+  }
+  .cp-avatars {
+    display: flex;
+    gap: 10px;
+  }
+  .cp-avatars > span {
+    width: 38px;
+    height: 38px;
+    border: 3px solid var(--docs-preview);
+    border-radius: 50%;
+    background: light-dark(#e4e8d7, #37402d);
+    color: light-dark(#576640, #d0ddba);
+    display: grid;
+    place-items: center;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .cp-avatars > span:nth-child(2) {
+    background: light-dark(#e3dfed, #3d3549);
+    color: light-dark(#7a678f, #d3b9ee);
+  }
+  .cp-avatars > span:nth-child(3) {
+    background: light-dark(#f0e2d5, #4a3b2c);
+    color: light-dark(#9b785a, #e2c4a7);
+  }
+  .cp-avatars > span:nth-child(4) {
+    background: var(--docs-panel);
+    color: var(--docs-muted);
+  }
+  .cp-avatar-stack {
+    gap: 0;
+  }
+  .cp-avatar-stack > span + span {
+    margin-left: -10px;
+  }
+  .cp-table {
+    width: 240px;
+    max-width: 100%;
+    border: 1px solid var(--docs-border);
+    border-radius: var(--radius-sm);
+    corner-shape: squircle;
+    overflow: hidden;
+    background: var(--docs-panel);
+    font-size: 8px;
+  }
+  .cp-table > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr 40px;
+    gap: 10px;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--docs-border);
+    align-items: center;
+  }
+  .cp-table > div:last-child {
+    border: 0;
+  }
+  .cp-table > div:first-child {
+    background: var(--docs-preview);
+    color: var(--docs-muted);
+  }
+  .cp-table-status {
+    justify-self: start;
+    color: var(--accent);
+    font-size: 7px;
+    background: var(--accent-subtle);
+    border-radius: var(--radius-lg);
+    corner-shape: squircle;
+    padding: 1px 5px;
+  }
+  .cp-description {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    gap: 8px 20px;
+    font-size: 9px;
+  }
+  .cp-description > span {
+    color: var(--docs-muted);
+  }
+  .cp-description > strong {
+    font-weight: 500;
+  }
+  .cp-accent-text {
+    color: var(--accent);
+  }
+  .cp-skeleton {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    width: 190px;
+  }
+  .cp-skeleton > span {
+    height: 36px;
+    width: 36px;
+    background: var(--docs-border);
+    border-radius: 50%;
+  }
+  .cp-skeleton > div {
+    flex: 1;
+  }
+  .cp-skeleton i {
+    display: block;
+    height: 6px;
+    border-radius: 4px;
+    background: var(--docs-border);
+    margin: 7px 0;
+  }
+  .cp-skeleton i:nth-child(2) {
+    width: 80%;
+  }
+  .cp-skeleton i:last-child {
+    width: 60%;
+  }
+  .cp-divider {
+    text-align: center;
+    color: var(--docs-muted);
+    font-size: 10px;
+    gap: 12px;
+  }
+  .cp-divider > i {
+    width: 100%;
+    height: 1px;
+    background: var(--docs-border);
+  }
+  .cp-inline-code {
+    font-family: var(--font-mono);
+    border: 1px solid var(--docs-border);
+    background: var(--docs-panel);
+    color: var(--accent);
+    border-radius: 5px;
+    padding: 4px 7px;
+    font-size: 10px;
+  }
+  .cp-code {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border: 1px solid var(--docs-border);
+    background: var(--docs-panel);
+    border-radius: var(--radius-lg);
+    corner-shape: squircle;
+    font: 9px var(--font-mono);
+  }
+  .cp-code i {
+    font-style: normal;
+    color: var(--accent);
+  }
+  .cp-code b {
+    font-weight: 400;
+    color: light-dark(#a87c56, #d4af87);
+  }
+  .cp-notice {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 13px;
+    background: var(--docs-panel);
+    border: 1px solid var(--docs-border);
+    border-radius: var(--radius-lg);
+    corner-shape: squircle;
+    box-shadow: 0 4px 12px rgb(0 0 0 / 3%);
+  }
+  .cp-notice-check {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background: var(--accent-subtle);
+    color: var(--accent);
+  }
+  .cp-notice strong,
+  .cp-notice div > span {
+    display: block;
+    font-size: 10px;
+  }
+  .cp-notice div > span {
+    font-size: 8px;
+    color: var(--docs-muted);
+    margin-top: 3px;
+  }
+  .cp-notice > :last-child {
+    align-self: flex-start;
+    color: var(--docs-muted);
+  }
+  .cp-spinner {
+    width: 19px;
+    height: 19px;
+    border: 2px solid var(--docs-border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+  }
+  .cp-tooltip-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .cp-tooltip {
+    position: relative;
+    background: var(--docs-text);
+    color: var(--docs-panel);
+    padding: 5px 9px;
+    border-radius: 5px;
+    font-size: 9px;
+  }
+  .cp-tooltip:after {
+    content: "";
+    position: absolute;
+    bottom: -3px;
+    left: 50%;
+    height: 6px;
+    width: 6px;
+    background: var(--docs-text);
+    transform: rotate(45deg);
+  }
+  .cp-popover {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    background: var(--docs-panel);
+    border: 1px solid var(--docs-border);
+    border-radius: var(--radius-lg);
+    corner-shape: squircle;
+    gap: 5px;
+    box-shadow: 0 5px 15px rgb(0 0 0 / 5%);
+  }
+  .cp-popover strong {
+    font-size: 10px;
+  }
+  .cp-popover > span {
+    font-size: 9px;
+    color: var(--docs-muted);
+  }
+  .cp-window {
+    width: 180px;
+    border: 1px solid var(--docs-border);
+    border-radius: var(--radius-md);
+    corner-shape: squircle;
+    background: var(--docs-panel);
+    box-shadow: 0 4px 13px rgb(0 0 0 / 5%);
+    overflow: hidden;
+  }
+  .cp-window-bar {
+    display: flex;
+    gap: 3px;
+    padding: 5px 7px;
+    border-bottom: 1px solid var(--docs-border);
+  }
+  .cp-window-bar > i {
+    height: 3px;
+    width: 3px;
+    background: var(--docs-border);
+    border-radius: 50%;
+  }
+  .cp-window-content {
+    padding: 8px 10px;
+  }
+  .cp-window-content strong {
+    font-size: 10px;
+  }
+  .cp-window-content .cp-button {
+    min-height: 19px;
+    padding: 3px 7px;
+    font-size: 7px;
+    margin-top: 4px;
+    margin-left: auto;
+    display: table;
+    border-radius: 4px;
+  }
+  .cp-window-line {
+    height: 3px;
+    margin: 3px 0;
+  }
+  .cp-short {
+    width: 55%;
+  }
+  .cp-drawer {
+    width: 180px;
+    padding-left: 65px;
+    background: var(--docs-preview);
+  }
+  .cp-drawer .cp-window-bar,
+  .cp-drawer .cp-window-content {
+    background: var(--docs-panel);
+    border-left: 1px solid var(--docs-border);
+  }
+  .cp-drawer .cp-window-content strong {
+    font-size: 8px;
+  }
+  .cp-layout {
+    width: 180px;
+    padding: 8px;
+    border: 1px dashed color-mix(in srgb, var(--accent) 35%, var(--docs-border));
+    border-radius: var(--radius-sm);
+    corner-shape: squircle;
+    background: var(--docs-panel);
+  }
+  .cp-layout-header {
+    height: 12px;
+    background: var(--accent-subtle);
+    border-radius: 3px;
+    margin-bottom: 5px;
+  }
+  .cp-layout-blocks {
+    display: flex;
+    gap: 5px;
+  }
+  .cp-layout-blocks > span {
+    flex: 1;
+    height: 35px;
+    background: color-mix(in srgb, var(--accent) 9%, var(--docs-panel));
+    border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--docs-border));
+    border-radius: 3px;
+  }
+  .cp-layout-stack .cp-layout-blocks {
+    flex-direction: column;
+  }
+  .cp-layout-stack .cp-layout-blocks > span {
+    min-height: 11px;
+  }
+  .cp-layout-stack .cp-layout-header {
+    display: none;
+  }
+  .cp-layout-inline .cp-layout-header {
+    display: none;
+  }
+  .cp-layout-inline .cp-layout-blocks > span {
+    height: 24px;
+  }
+  .cp-layout-container {
+    padding: 10px 22px;
+  }
+  .cp-layout-surface {
+    box-shadow:
+      4px 4px 0 var(--docs-border),
+      8px 8px 0 var(--docs-panel);
+  }
+  .cp-layout-section {
+    padding: 14px 9px;
+  }
+</style>

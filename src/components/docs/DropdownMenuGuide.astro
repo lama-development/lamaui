@@ -1,0 +1,47 @@
+---
+import GuideNote from "./GuideNote.astro";
+import ComponentExample from "./ComponentExample.astro";
+import InlineCode from "@/components/data-display/InlineCode.astro";
+import Table from "./ReferenceTable.astro";
+
+const props = [
+  { name: "label", type: "string", default: "Required", description: "Visible trigger text and accessible name for the menu." },
+  { name: "align", type: '"start" | "end"', default: '"start"', description: "Aligns the panel to the trigger’s left or right edge." },
+  { name: "class", type: "string", default: "—", description: "Additional classes applied to the outer details element." }
+];
+---
+
+<div class="guide-sections">
+  <section aria-labelledby="examples" class="guide-section">
+    <header>
+      <h2 id="examples" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Examples</h2>
+    </header>
+    <ComponentExample slug="dropdown-actions" title={"Contextual actions"} description={"Use a dropdown for a short list of contextual actions. The default slot accepts buttons, links, and separators. Use CustomSelect when choosing a form value, and Popover for forms or other rich content."} note={"Attach application handlers to the slotted buttons. Selecting an enabled item closes the menu and restores trigger focus; links retain their normal navigation. DropdownMenu does not perform the action or confirm deletion for you."} />
+  </section>
+
+  <section aria-labelledby="props" class="guide-section">
+    <h2 id="props" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Props</h2>
+    <Table
+      columns={[
+        { key: "name", label: "Prop", code: true, rowHeader: true },
+        { key: "type", label: "Type", code: true, wrap: true },
+        { key: "default", label: "Default", code: true },
+        { key: "description", label: "Description" }
+      ]}
+      rows={props}
+      caption="DropdownMenu props"
+    />
+    <GuideNote><p class="m-0">Give every action <InlineCode>role="menuitem"</InlineCode> and <InlineCode>tabindex="-1"</InlineCode>. Use <InlineCode>type="button"</InlineCode> to avoid submitting surrounding forms. Disable buttons with <InlineCode>disabled</InlineCode>; use <InlineCode>aria-disabled="true"</InlineCode> for unavailable links. Disabled items are skipped during navigation and cannot be activated. Use <InlineCode>role="separator"</InlineCode> for visual dividers.</p></GuideNote>
+  </section>
+
+  <section aria-labelledby="accessibility" class="guide-section">
+    <h2 id="accessibility" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Accessibility</h2>
+    <dl data-surface-level="2" data-surface-lift="1" class="guide-definition lamaui-surface">
+      <div><dt>Semantics</dt><dd>The trigger exposes <InlineCode>aria-haspopup="menu"</InlineCode>, expanded state, and its controlled panel. The menu is labelled by the trigger. Keep its label specific to the actions it offers.</dd></div>
+      <div><dt>Opening</dt><dd><InlineCode>Enter</InlineCode>, <InlineCode>Space</InlineCode>, or <InlineCode>ArrowDown</InlineCode> opens the menu and focuses the first enabled action. <InlineCode>ArrowUp</InlineCode> opens at the last action.</dd></div>
+      <div><dt>Navigation</dt><dd>Up and down arrows move between enabled actions and wrap at either end. <InlineCode>Home</InlineCode> and <InlineCode>End</InlineCode> jump to the first and last actions. Enter or Space activates the focused action.</dd></div>
+      <div><dt>Dismissal</dt><dd><InlineCode>Escape</InlineCode> closes the menu and restores trigger focus. Tab or Shift+Tab closes it and continues through the page. Clicking or moving focus outside closes it without taking focus away from the new target.</dd></div>
+      <div><dt>Touch & layout</dt><dd>Tap to open or select an action; tap outside to dismiss. On narrow viewports or at 200% zoom, choose the alignment that leaves room for the panel and keep labels short. Avoid containers that clip overflow. Theme tokens support dark mode, and menu animations respect reduced motion.</dd></div>
+    </dl>
+  </section>
+</div>

@@ -1,0 +1,16 @@
+---
+import Button from "@/components/ui/Button.astro";
+import Drawer from "@/components/overlays/Drawer.astro";
+---
+
+<div class="flex flex-wrap gap-3">
+  <Button data-dialog-open="left-drawer">Open left drawer</Button>
+  <Drawer id="left-drawer" title="Left drawer" side="left">
+    <p>Drawer content.</p>
+  </Drawer>
+
+  <Button data-dialog-open="right-drawer">Open right drawer</Button>
+  <Drawer id="right-drawer" title="Right drawer" side="right">
+    <p>Drawer content.</p>
+  </Drawer>
+</div>

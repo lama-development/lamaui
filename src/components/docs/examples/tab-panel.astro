@@ -1,0 +1,11 @@
+---
+import Tabs from "@/components/navigation/Tabs.astro";
+import TabPanel from "@/components/navigation/TabPanel.astro";
+import Switch from "@/components/forms/Switch.astro";
+---
+
+<Tabs id="preferences" active="alerts" tabs={[{ id: "alerts", label: "Alerts" }]}>
+  <TabPanel id="alerts" tabsId="preferences" active>
+    <Switch label="Email alerts" name="alerts" checked />
+  </TabPanel>
+</Tabs>

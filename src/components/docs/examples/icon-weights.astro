@@ -1,0 +1,30 @@
+---
+import thin from "@phosphor-icons/core/thin/planet-thin.svg?raw";
+import light from "@phosphor-icons/core/light/planet-light.svg?raw";
+import regular from "@phosphor-icons/core/regular/planet.svg?raw";
+import bold from "@phosphor-icons/core/bold/planet-bold.svg?raw";
+import fill from "@phosphor-icons/core/fill/planet-fill.svg?raw";
+import duotone from "@phosphor-icons/core/duotone/planet-duotone.svg?raw";
+import Icon from "@/components/ui/Icon.astro";
+const weights = [
+  { label: "Thin", src: thin },
+  { label: "Light", src: light },
+  { label: "Regular", src: regular },
+  { label: "Bold", src: bold },
+  { label: "Fill", src: fill },
+  { label: "Duotone", src: duotone }
+];
+---
+
+<div data-phosphor-preview class="grid grid-cols-3 gap-x-6 gap-y-8 sm:grid-cols-6">
+  {
+    weights.map(({ label, src }) => (
+      <div class="grid justify-items-center gap-3">
+        <>
+          <Icon {src} size={32} />
+          <span class="text-sm font-medium text-muted-label">{label}</span>
+        </>
+      </div>
+    ))
+  }
+</div>

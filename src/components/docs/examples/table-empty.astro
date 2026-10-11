@@ -1,0 +1,10 @@
+---
+import Table from "@/components/data-display/Table.astro";
+const columns = [
+  { key: "name", label: "Name", rowHeader: true },
+  { key: "role", label: "Role" },
+  { key: "projects", label: "Projects", align: "right" as const }
+];
+---
+
+<Table columns={columns} rows={[]} emptyMessage="No members match your filters." caption="Filtered members" />

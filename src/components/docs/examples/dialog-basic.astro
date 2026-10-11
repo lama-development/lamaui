@@ -1,0 +1,10 @@
+---
+import Button from "@/components/ui/Button.astro";
+import Dialog from "@/components/overlays/Dialog.astro";
+---
+
+<Button data-dialog-open="example-dialog">Open dialog</Button>
+
+<Dialog id="example-dialog" title="Dialog title" description="Short description.">
+  <Button data-dialog-close>Close</Button>
+</Dialog>

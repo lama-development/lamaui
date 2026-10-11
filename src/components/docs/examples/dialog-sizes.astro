@@ -1,0 +1,10 @@
+---
+import Dialog from "@/components/overlays/Dialog.astro";
+import Button from "@/components/ui/Button.astro";
+---
+
+<Button variant="secondary" data-dialog-open="project-review">Open large dialog</Button>
+<Dialog id="project-review" title="Review project" size="lg">
+  <p>Check ownership, dates, and visibility before publishing.</p>
+  <Button data-dialog-close>Done</Button>
+</Dialog>

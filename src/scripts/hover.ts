@@ -1,7 +1,7 @@
 import { copyEffectShape } from "./effect-shape";
 
 const hoverEnabled = window.matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
-const itemSelector = '[class*="hover:bg-"], .lamaui-control, .lamaui-interactive, .lamaui-choice, .docs-nav-row, .docs-nav-group a';
+const itemSelector = '[class*="hover:bg-"], .lamaui-tab, .lamaui-control, .lamaui-interactive, .lamaui-choice, .docs-nav-row, .docs-nav-group a';
 const groupSelector = '[data-fluid-hover], [role="tablist"], [role="radiogroup"], [data-toggle-group], .lamaui-menu, .docs-nav';
 
 interface FluidHoverState {
@@ -37,7 +37,7 @@ function createState(group: HTMLElement) {
   const layer = document.createElement("span");
   layer.className = "lamaui-fluid-hover";
   layer.setAttribute("aria-hidden", "true");
-  (group.closest("dialog[open]") ?? document.body).append(layer);
+  (group.matches(".lamaui-tabs") ? group : (group.closest("dialog[open]") ?? document.body)).append(layer);
   const state: FluidHoverState = { group, layer, current: null };
   states.set(group, state);
   return state;
@@ -48,10 +48,11 @@ function move(state: FluidHoverState, item: HTMLElement) {
   state.current = item;
   const rect = item.getBoundingClientRect();
   const styles = getComputedStyle(item);
+  const local = state.group.matches(".lamaui-tabs");
   copyEffectShape(state.layer, styles);
   Object.assign(state.layer.style, {
-    left: `${rect.left}px`,
-    top: `${rect.top}px`,
+    left: `${local ? item.offsetLeft : rect.left}px`,
+    top: `${local ? item.offsetTop : rect.top}px`,
     width: `${rect.width}px`,
     height: `${rect.height}px`,
     borderRadius: styles.borderRadius,

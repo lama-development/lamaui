@@ -1,0 +1,30 @@
+---
+import CustomSelect from "@/components/forms/CustomSelect.astro";
+---
+
+<div class="grid gap-5">
+  <CustomSelect
+    id="review-team"
+    name="reviewTeam"
+    label="Review team"
+    options={[
+      { value: "design", label: "Design" },
+      { value: "engineering", label: "Engineering" }
+    ]}
+    placement="top"
+    error="Choose a team with an available reviewer."
+  />
+
+  <CustomSelect
+    id="locked-select"
+    name="assignedTeam"
+    label="Assigned team"
+    options={[
+      { value: "design", label: "Design" },
+      { value: "engineering", label: "Engineering" }
+    ]}
+    disabled
+    help="Only workspace admins can change this."
+  />
+  <CustomSelect id="empty-select" name="empty" label="Available teams" options={[]} help="No teams are available in this workspace." />
+</div>

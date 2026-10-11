@@ -17,7 +17,8 @@ export default defineConfig({
     }
   ],
   webServer: {
-    command: "npm run dev -- --port 4321",
+    // Keep Astro in the foreground so Playwright owns the server lifecycle.
+    command: "npm run dev -- --port 4321 --ignore-lock",
     url: "http://127.0.0.1:4321",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000

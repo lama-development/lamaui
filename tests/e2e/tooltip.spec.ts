@@ -5,8 +5,8 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("connects the trigger and shows on hover", async ({ page }) => {
-  const trigger = page.getByRole("button", { name: "Copy component" });
-  const tooltip = page.locator('[role="tooltip"]', { hasText: "Copy component" });
+  const trigger = page.locator(".component-preview").getByRole("button", { name: "Copy component" });
+  const tooltip = page.locator('.component-preview [role="tooltip"]', { hasText: "Copy component" });
 
   const tooltipId = await tooltip.getAttribute("id");
   if (!tooltipId) throw new Error("Tooltip id is missing");
@@ -22,8 +22,8 @@ test("connects the trigger and shows on hover", async ({ page }) => {
 });
 
 test("stays visible while focused and closes with Escape", async ({ page }) => {
-  const trigger = page.getByRole("button", { name: "Copy component" });
-  const tooltip = page.locator('[role="tooltip"]', { hasText: "Copy component" });
+  const trigger = page.locator(".component-preview").getByRole("button", { name: "Copy component" });
+  const tooltip = page.locator('.component-preview [role="tooltip"]', { hasText: "Copy component" });
 
   await page.keyboard.press("Tab");
   await trigger.focus();
@@ -39,8 +39,8 @@ test.describe("touch", () => {
   test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
 
   test("does not flash or intercept the control tap", async ({ page }) => {
-    const trigger = page.getByRole("button", { name: "Copy component" });
-    const tooltip = page.locator('[role="tooltip"]', { hasText: "Copy component" });
+    const trigger = page.locator(".component-preview").getByRole("button", { name: "Copy component" });
+    const tooltip = page.locator('.component-preview [role="tooltip"]', { hasText: "Copy component" });
 
     await trigger.tap();
     await expect(tooltip).toBeHidden();
@@ -48,9 +48,9 @@ test.describe("touch", () => {
 });
 
 test("shows both position variants", async ({ page }) => {
-  const topTrigger = page.getByRole("button", { name: "Copy component" });
-  const bottomTrigger = page.getByRole("button", { name: "Open documentation" });
-  const bottomTooltip = page.locator('[role="tooltip"]', { hasText: "Open documentation" });
+  const topTrigger = page.locator(".component-preview").getByRole("button", { name: "Copy component" });
+  const bottomTrigger = page.locator(".component-preview").getByRole("button", { name: "Open documentation" });
+  const bottomTooltip = page.locator('.component-preview [role="tooltip"]', { hasText: "Open documentation" });
 
   await expect(topTrigger).toBeVisible();
   await bottomTrigger.hover();

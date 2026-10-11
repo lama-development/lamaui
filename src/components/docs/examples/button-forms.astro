@@ -1,0 +1,17 @@
+---
+import Button from "@/components/ui/Button.astro";
+---
+
+<form id="button-form-example" class="grid justify-items-start gap-4">
+  <Button type="submit" name="intent" value="save">Submit form</Button>
+  <output aria-live="polite">The submit button’s name and value are included in the form.</output>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("#button-form-example")!;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const submitter = (event as SubmitEvent).submitter;
+    form.querySelector("output")!.textContent = JSON.stringify(Object.fromEntries(new FormData(form, submitter)));
+  });
+</script>

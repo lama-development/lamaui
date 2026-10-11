@@ -15,4 +15,14 @@ const sizes = {
 };
 ---
 
-<span class:list={["relative inline-grid shrink-0 place-items-center rounded-full bg-accent font-bold text-accent-label ring-2 ring-surface", sizes[size], className]}>{src ? <img {src} {alt} class="size-full rounded-full object-cover" /> : <span aria-label={alt}>{initials}</span>}{status && <span title={status} class:list={["absolute right-0 bottom-0 size-2.5 rounded-full ring-2 ring-surface", status === "online" ? "bg-success" : "bg-muted-label"]} />}</span>
+<span class:list={["relative inline-grid shrink-0 place-items-center rounded-full bg-accent font-bold text-accent-label ring-2 ring-surface", sizes[size], className]}
+  >{
+    src ? (
+      <img {src} {alt} class="size-full rounded-full object-cover" />
+    ) : (
+      <span role={alt ? "img" : undefined} aria-label={alt || undefined} aria-hidden={!alt || undefined}>
+        {initials}
+      </span>
+    )
+  }{status && <span title={status} aria-hidden="true" class:list={["absolute right-0 bottom-0 size-2.5 rounded-full ring-2 ring-surface", status === "online" ? "bg-success" : "bg-muted-label"]} />}</span
+>

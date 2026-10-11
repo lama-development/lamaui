@@ -1,4 +1,9 @@
 ---
+import svgCode from "@phosphor-icons/core/bold/code-bold.svg?raw";
+import svgWrap from "@/assets/icons/wrap-off.svg?raw";
+import svgWrapOn from "@/assets/icons/wrap-on.svg?raw";
+import svgCopy from "@phosphor-icons/core/duotone/copy-duotone.svg?raw";
+import svgCheck from "@phosphor-icons/core/bold/check-bold.svg?raw";
 import { codeToHtml } from "shiki";
 import Icon from "@/components/ui/Icon.astro";
 import Tooltip from "@/components/overlays/Tooltip.astro";
@@ -18,15 +23,15 @@ const highlighted = await codeToHtml(code, {
 
 <figure data-surface-level="2" data-surface-lift="1" class="code-block m-0 overflow-hidden rounded-md border border-outline bg-surface print:break-inside-avoid print:[&_.shiki]:break-all print:[&_.shiki]:whitespace-pre-wrap" data-code-block>
   <figcaption class="code-head flex min-h-12 items-center justify-between gap-4 pt-2.5 pr-3 pb-1.5 pl-4 text-muted-label">
-    <span class="code-language inline-flex min-w-0 items-center gap-2 [font:600_0.875rem/1_var(--font-sans)]"><Icon name="code" size={20} /><span>{label}</span></span>
+    <span class="code-language inline-flex min-w-0 items-center gap-2 [font:600_0.875rem/1_var(--font-sans)]"><Icon src={svgCode} size={20} /><span>{label}</span></span>
     <span class="code-actions flex items-center gap-1 print:hidden">
       <Tooltip text="Wrap lines" position="bottom">
-        <button type="button" class={actionStyles} aria-label="Wrap lines" aria-pressed="false" data-code-wrap><span data-wrap-off><Icon name="wrap" size={20} /></span><span data-wrap-on hidden><Icon name="wrap-on" size={20} /></span></button>
+        <button type="button" class={actionStyles} aria-label="Wrap lines" aria-pressed="false" data-code-wrap><span data-wrap-off><Icon src={svgWrap} size={20} /></span><span data-wrap-on hidden><Icon src={svgWrapOn} size={20} /></span></button>
       </Tooltip>
       <Tooltip text="Copy code" position="bottom">
         <button type="button" class:list={[actionStyles, "code-copy"]} aria-label="Copy code" data-copy-code>
-          <span data-copy-default><Icon name="copy" size={20} /></span>
-          <span data-copy-success hidden><Icon name="check" size={20} /></span>
+          <span data-copy-default><Icon src={svgCopy} size={20} /></span>
+          <span data-copy-success hidden><Icon src={svgCheck} size={20} /></span>
           <span class="sr-only" data-copy-label>Copy</span>
         </button>
       </Tooltip>

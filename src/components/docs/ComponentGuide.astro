@@ -13,10 +13,6 @@ const { title, slug, description, sections } = Astro.props;
 ---
 
 <div data-guide data-guide-title={title} data-guide-slug={slug} data-guide-description={description}>
-  <div class="flex flex-wrap items-center justify-between gap-4">
-    <slot name="breadcrumb" />
-    <div class="min-[1280px]:hidden"><GuideActions /></div>
-  </div>
   <ToastRegion data-guide-toast-region>
     <template data-guide-toast-template="success">
       <Toast title="Action complete"><span data-guide-toast-message>Page action completed.</span></Toast>
@@ -25,10 +21,13 @@ const { title, slug, description, sections } = Astro.props;
       <Toast variant="destructive" title="Action failed"><span data-guide-toast-message>Try again.</span></Toast>
     </template>
   </ToastRegion>
-  <GuideTableOfContents {sections} variant="mobile" />
-  <div class="grid min-w-0 gap-8 min-[1280px]:grid-cols-[minmax(0,1fr)_16rem] print:block">
-    <article class="min-w-0" data-guide-content><slot /></article>
-    <GuideTableOfContents {sections} variant="desktop" />
+  <div class="guide-layout">
+    <div class="guide-breadcrumb print:hidden"><slot name="breadcrumb" /></div>
+    <article class="guide-content min-w-0" data-guide-content><slot name="header" /><GuideTableOfContents {sections} variant="mobile" /><slot /></article>
+    <aside class="guide-rail print:hidden">
+      <GuideActions />
+      <GuideTableOfContents {sections} variant="desktop" />
+    </aside>
   </div>
 </div>
 <script>
@@ -36,6 +35,185 @@ const { title, slug, description, sections } = Astro.props;
 </script>
 
 <style is:global>
+  .guide-layout {
+    display: grid;
+    grid-template-areas: "breadcrumb" "rail" "content";
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 2.75rem 1fr;
+    gap: 1rem;
+  }
+  .guide-breadcrumb {
+    grid-area: breadcrumb;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+  .guide-content {
+    grid-area: content;
+  }
+  .guide-content h2[id] {
+    scroll-margin-top: 6rem;
+  }
+  .guide-content .guide-sections {
+    display: grid;
+    min-width: 0;
+    gap: 3.5rem;
+    margin-top: 3.5rem;
+  }
+  .guide-content .guide-section {
+    display: grid;
+    min-width: 0;
+    gap: 1.25rem;
+  }
+  .guide-content .guide-section > header {
+    margin: 0;
+  }
+  .guide-content .guide-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 650;
+    line-height: 1.35;
+    letter-spacing: -0.025em;
+  }
+  .guide-content .guide-example-list {
+    display: grid;
+    min-width: 0;
+    gap: 2.75rem;
+  }
+  .guide-installation > p {
+    max-width: 72ch;
+  }
+  .guide-content :is(.guide-note, .example-heading, .example-note, .guide-definition) .lamaui-inline-code {
+    padding: 0.125rem 0.3rem;
+    background: var(--surface-hover);
+    box-shadow: none;
+  }
+  .guide-content .code-copy {
+    width: auto;
+    gap: 0.375rem;
+    padding: 0 0.5rem;
+  }
+  .guide-content .code-copy [data-copy-label] {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    clip-path: none;
+    white-space: nowrap;
+    font: 500 0.875rem/1.25 var(--font-sans);
+  }
+  .guide-content .guide-definition {
+    margin: 0;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--outline);
+    border-radius: var(--radius-lg);
+    corner-shape: squircle;
+  }
+  .guide-definition > div {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr);
+    gap: 1.5rem;
+    padding: 1.25rem 1.5rem;
+  }
+  .guide-definition > div + div {
+    border-top: 1px solid var(--outline);
+  }
+  .guide-definition dt {
+    font-size: 1rem;
+    font-weight: 650;
+    line-height: 1.65;
+  }
+  .guide-definition dd {
+    margin: 0;
+    color: var(--muted-label);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  .guide-definition a {
+    color: var(--label);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  @media (width <= 620px) {
+    .guide-definition > div {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.375rem;
+      padding: 1.125rem 1.25rem;
+    }
+    .guide-content .guide-sections {
+      margin-top: 2.5rem;
+      gap: 2.5rem;
+    }
+    .guide-content > .guide-section.mt-14 {
+      margin-top: 2.5rem;
+    }
+    .guide-content .guide-example-list {
+      gap: 2.25rem;
+    }
+  }
+  .guide-rail {
+    grid-area: rail;
+    grid-row: 2 / -1;
+    position: sticky;
+    top: 1rem;
+    z-index: 30;
+    align-self: start;
+    display: grid;
+    gap: 0.75rem;
+    min-width: 0;
+    background: var(--page);
+    box-shadow: 0 -1rem 0 var(--page);
+  }
+  @media (width <= 860px) {
+    .guide-rail {
+      top: 4.5rem;
+    }
+    body:has(.docs-mobile-header[data-scroll-hidden]) .guide-rail {
+      top: 1rem;
+    }
+    .guide-content h2[id] {
+      scroll-margin-top: 9rem;
+    }
+  }
+  @media (width <= 860px) and (prefers-reduced-motion: no-preference) {
+    .guide-rail {
+      transition: top 220ms cubic-bezier(0.2, 0, 0, 1);
+    }
+  }
+  @media (width >= 1280px) {
+    .guide-layout {
+      grid-template-areas: "breadcrumb rail" "content rail";
+      grid-template-columns: minmax(0, 1fr) 14rem;
+      grid-template-rows: auto 1fr;
+      gap: 1.5rem 2rem;
+    }
+    .guide-breadcrumb {
+      min-height: 2.75rem;
+    }
+    .guide-rail {
+      grid-row: 1 / -1;
+      top: 2rem;
+      background: transparent;
+      box-shadow: none;
+    }
+    .guide-rail [data-guide-toc] {
+      max-height: calc(100dvh - 8rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+  }
+  @media print {
+    .guide-layout {
+      display: block;
+    }
+    .guide-breadcrumb,
+    .guide-rail {
+      display: none;
+    }
+  }
   .docs-page-header :is(h1, h2),
   [data-guide-content] :is(h2, h3) {
     text-wrap: balance;

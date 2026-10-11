@@ -1,7 +1,7 @@
 ---
 import { controlStyles, primaryStyles, secondaryStyles, outlineStyles, ghostStyles, destructiveStyles, smallControlStyles, largeControlStyles } from "@/lib/styles";
 import Spinner from "@/components/feedback/Spinner.astro";
-import Icon, { type IconName } from "@/components/ui/Icon.astro";
+import Icon from "@/components/ui/Icon.astro";
 import type { Size, Variant } from "@/types";
 import { cx } from "@/lib/classes";
 import type { HTMLAttributes } from "astro/types";
@@ -13,7 +13,7 @@ type Props = Omit<HTMLAttributes<"button"> & HTMLAttributes<"a">, "type"> & {
   disabled?: boolean;
   loading?: boolean;
   fullWidth?: boolean;
-  icon?: IconName;
+  icon?: string;
   iconPosition?: "start" | "end";
   class?: string;
 };
@@ -28,16 +28,16 @@ const classes = cx(controlStyles, variants[variant], sizes[size], "focus-visible
   href ? (
     <a {...rest} href={unavailable ? undefined : href} role={unavailable ? "link" : undefined} tabindex={unavailable ? -1 : rest.tabindex} aria-disabled={unavailable || undefined} aria-busy={loading || undefined} data-loading={loading || undefined} class={classes}>
       {loading && <Spinner size="sm" decorative />}
-      {!loading && icon && iconPosition === "start" && <Icon name={icon} size={18} />}
+      {!loading && icon && iconPosition === "start" && <Icon src={icon} size={18} />}
       <slot />
-      {!loading && icon && iconPosition === "end" && <Icon name={icon} size={18} />}
+      {!loading && icon && iconPosition === "end" && <Icon src={icon} size={18} />}
     </a>
   ) : (
     <button {...rest} {type} disabled={unavailable} aria-busy={loading || undefined} data-loading={loading || undefined} class={classes}>
       {loading && <Spinner size="sm" decorative />}
-      {!loading && icon && iconPosition === "start" && <Icon name={icon} size={18} />}
+      {!loading && icon && iconPosition === "start" && <Icon src={icon} size={18} />}
       <slot />
-      {!loading && icon && iconPosition === "end" && <Icon name={icon} size={18} />}
+      {!loading && icon && iconPosition === "end" && <Icon src={icon} size={18} />}
     </button>
   )
 }

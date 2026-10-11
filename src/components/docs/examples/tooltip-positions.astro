@@ -1,0 +1,21 @@
+---
+import svgCopy from "@phosphor-icons/core/duotone/copy-duotone.svg?raw";
+import svgExternal from "@phosphor-icons/core/duotone/arrow-square-out-duotone.svg?raw";
+import Tooltip from "@/components/overlays/Tooltip.astro";
+import IconButton from "@/components/ui/IconButton.astro";
+import Icon from "@/components/ui/Icon.astro";
+---
+
+<div class="flex flex-wrap gap-3">
+  <Tooltip text="Copy component" position="top">
+    <IconButton label="Copy component">
+      <Icon src={svgCopy} />
+    </IconButton>
+  </Tooltip>
+
+  <Tooltip text="Open documentation" position="bottom">
+    <IconButton label="Open documentation">
+      <Icon src={svgExternal} />
+    </IconButton>
+  </Tooltip>
+</div>

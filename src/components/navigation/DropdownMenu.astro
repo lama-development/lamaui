@@ -1,4 +1,5 @@
 ---
+import svgChevronDown from "@phosphor-icons/core/bold/caret-down-bold.svg?raw";
 import { controlStyles, menuStyles, secondaryStyles } from "@/lib/styles";
 import Icon from "@/components/ui/Icon.astro";
 interface Props {
@@ -7,10 +8,11 @@ interface Props {
   class?: string;
 }
 const { label, align = "start", class: className } = Astro.props;
+const id = `dropdown-${crypto.randomUUID()}`;
 ---
 
-<details class:list={["group relative inline-block", className]} data-animated-menu><summary class={`${controlStyles} ${secondaryStyles} list-none`}>{label}<Icon name="chevron-down" size={16} class="details-chevron group-open:rotate-180" /></summary><div data-surface-level="2" data-surface-lift="1" data-fluid-hover data-origin={align === "end" ? "top-right" : "top-left"} class:list={[`${menuStyles} t-dropdown top-full mt-2`, align === "end" ? "right-0" : "left-0"]}><slot /></div></details>
+<details class:list={["group relative inline-block", className]} data-animated-menu data-dropdown-menu><summary id={`${id}-trigger`} aria-haspopup="menu" aria-controls={id} aria-expanded="false" class={`${controlStyles} ${secondaryStyles} list-none`}>{label}<Icon src={svgChevronDown} size={16} class="details-chevron group-open:rotate-180" /></summary><div id={id} role="menu" aria-labelledby={`${id}-trigger`} data-surface-level="2" data-surface-lift="1" data-fluid-hover data-origin={align === "end" ? "top-right" : "top-left"} class:list={[`${menuStyles} t-dropdown top-full mt-2 max-w-[calc(100vw-4rem)]`, align === "end" ? "right-0" : "left-0"]}><slot /></div></details>
 
 <script>
-  import "@/scripts/details-menu";
+  import "@/scripts/dropdown-menu";
 </script>

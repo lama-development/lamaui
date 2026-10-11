@@ -76,6 +76,8 @@ test.describe("mobile bottom sheet", () => {
 
   test("uses safe-area padding and closes with a downward drag", async ({ page }) => {
     const { drawer, opener } = await openDrawer(page);
+    // Wait for the opening animation before measuring the drag target.
+    await expect.poll(() => drawer.evaluate((element) => element.getAnimations().some((animation) => animation.playState === "running"))).toBe(false);
     const body = drawer.locator(".lamaui-drawer-body");
     const drawerBounds = await drawer.boundingBox();
     expect(drawerBounds?.x).toBe(0);

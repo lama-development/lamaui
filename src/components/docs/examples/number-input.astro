@@ -1,0 +1,27 @@
+---
+import Label from "@/components/forms/Label.astro";
+import NumberInput from "@/components/forms/NumberInput.astro";
+import Button from "@/components/ui/Button.astro";
+---
+
+<form data-native-example="number-input" class="grid gap-4">
+  <Label for="unit-price">Unit price (€)</Label>
+  <NumberInput id="unit-price" name="price" min={0} step={0.01} value={12.5} />
+  <div class="flex flex-wrap gap-2">
+    <Button type="submit">Read form value</Button>
+    <Button type="reset" variant="secondary">Reset</Button>
+  </div>
+  <output aria-live="polite" class="block text-sm text-muted-label">Submit to inspect the value. Data stays in this preview.</output>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-native-example="number-input"]')!;
+  const output = form.querySelector<HTMLOutputElement>(":scope > output")!;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    output.textContent = JSON.stringify(Object.fromEntries(new FormData(form)));
+  });
+  form.addEventListener("reset", () => {
+    output.textContent = "Form reset to its initial value.";
+  });
+</script>

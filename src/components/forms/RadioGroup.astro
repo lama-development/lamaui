@@ -24,7 +24,7 @@ const { name, label, options, value, inline = false } = Astro.props;
             <input type="radio" {name} value={o.value} checked={o.value === value} disabled={o.disabled} class="lamaui-choice-control m-0 size-5 appearance-none rounded-full border-[5px] border-input bg-input outline outline-outline checked:bg-accent checked:outline-accent" />
             <span>
               <span class="block leading-5 font-semibold">{o.label}</span>
-              {o.description && <span class="muted block text-sm text-muted-label">{o.description}</span>}
+              {o.description && <span class="muted mt-1 block text-[0.9375rem] leading-normal text-muted-label">{o.description}</span>}
             </span>
           </>
         </label>

@@ -1,98 +1,15 @@
 ---
-import menu from "@phosphor-icons/core/bold/list-bold.svg?raw";
-import close from "@phosphor-icons/core/bold/x-bold.svg?raw";
-import sun from "@phosphor-icons/core/duotone/sun-duotone.svg?raw";
-import moon from "@phosphor-icons/core/duotone/moon-duotone.svg?raw";
-import chevronRight from "@phosphor-icons/core/bold/caret-right-bold.svg?raw";
-import chevronDown from "@phosphor-icons/core/bold/caret-down-bold.svg?raw";
-import copy from "@phosphor-icons/core/duotone/copy-duotone.svg?raw";
-import plus from "@phosphor-icons/core/bold/plus-bold.svg?raw";
-import heart from "@phosphor-icons/core/duotone/heart-duotone.svg?raw";
-import more from "@phosphor-icons/core/bold/dots-three-bold.svg?raw";
-import pin from "@phosphor-icons/core/duotone/push-pin-duotone.svg?raw";
-import home from "@phosphor-icons/core/duotone/house-duotone.svg?raw";
-import actions from "@phosphor-icons/core/duotone/toggle-left-duotone.svg?raw";
-import forms from "@phosphor-icons/core/duotone/note-pencil-duotone.svg?raw";
-import navigation from "@phosphor-icons/core/duotone/compass-duotone.svg?raw";
-import data from "@phosphor-icons/core/duotone/database-duotone.svg?raw";
-import feedback from "@phosphor-icons/core/duotone/chat-circle-text-duotone.svg?raw";
-import overlays from "@phosphor-icons/core/duotone/stack-duotone.svg?raw";
-import layout from "@phosphor-icons/core/duotone/layout-duotone.svg?raw";
-import marketing from "@phosphor-icons/core/duotone/megaphone-duotone.svg?raw";
-import check from "@phosphor-icons/core/bold/check-bold.svg?raw";
-import user from "@phosphor-icons/core/duotone/user-duotone.svg?raw";
-import settings from "@phosphor-icons/core/duotone/gear-six-duotone.svg?raw";
-import search from "@phosphor-icons/core/duotone/magnifying-glass-duotone.svg?raw";
-import mail from "@phosphor-icons/core/duotone/envelope-duotone.svg?raw";
-import code from "@phosphor-icons/core/bold/code-bold.svg?raw";
-import external from "@phosphor-icons/core/duotone/arrow-square-out-duotone.svg?raw";
-import wrap from "@/assets/icons/wrap-off.svg?raw";
-import wrapOn from "@/assets/icons/wrap-on.svg?raw";
-import eye from "@phosphor-icons/core/duotone/eye-duotone.svg?raw";
-import eyeSlash from "@phosphor-icons/core/duotone/eye-slash-duotone.svg?raw";
-import warning from "@phosphor-icons/core/bold/warning-circle-bold.svg?raw";
-import system from "@phosphor-icons/core/duotone/desktop-duotone.svg?raw";
-import fileMd from "@phosphor-icons/core/duotone/file-md-duotone.svg?raw";
-import filePdf from "@phosphor-icons/core/duotone/file-pdf-duotone.svg?raw";
-import clipboardText from "@phosphor-icons/core/duotone/clipboard-text-duotone.svg?raw";
-import exportIcon from "@phosphor-icons/core/duotone/export-duotone.svg?raw";
-import download from "@phosphor-icons/core/duotone/download-simple-duotone.svg?raw";
-import link from "@phosphor-icons/core/duotone/link-duotone.svg?raw";
-import print from "@phosphor-icons/core/duotone/printer-duotone.svg?raw";
-import reset from "@phosphor-icons/core/bold/arrow-counter-clockwise-bold.svg?raw";
+import type { HTMLAttributes } from "astro/types";
 
-export type IconName = "menu" | "close" | "sun" | "moon" | "chevron-right" | "chevron-down" | "copy" | "plus" | "heart" | "more" | "pin" | "home" | "actions" | "forms" | "navigation" | "data" | "feedback" | "overlays" | "layout" | "marketing" | "check" | "user" | "settings" | "search" | "mail" | "code" | "external" | "wrap" | "wrap-on" | "eye" | "eye-slash" | "warning" | "system" | "file-md" | "file-pdf" | "clipboard-text" | "export" | "download" | "print" | "link" | "reset";
-interface Props {
-  name: IconName;
+interface Props extends Omit<HTMLAttributes<"svg">, "set:html"> {
+  src: string;
   size?: number;
   class?: string;
-  [key: string]: any;
 }
-const { name, size = 20, class: className, ...rest } = Astro.props;
-const icons: Record<IconName, string> = {
-  menu,
-  close,
-  sun,
-  moon,
-  "chevron-right": chevronRight,
-  "chevron-down": chevronDown,
-  copy,
-  plus,
-  heart,
-  more,
-  pin,
-  home,
-  actions,
-  forms,
-  navigation,
-  data,
-  feedback,
-  overlays,
-  layout,
-  marketing,
-  check,
-  user,
-  settings,
-  search,
-  mail,
-  code,
-  external,
-  wrap,
-  eye,
-  "eye-slash": eyeSlash,
-  warning,
-  system,
-  "file-md": fileMd,
-  "file-pdf": filePdf,
-  "clipboard-text": clipboardText,
-  export: exportIcon,
-  download,
-  print,
-  link,
-  reset,
-  "wrap-on": wrapOn
-};
-const paths = icons[name].replace(/^<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
+const { src, size = 20, class: className, ...rest } = Astro.props;
+const svg = src.match(/<svg\b([^>]*)>([\s\S]*?)<\/svg>/i);
+if (!svg) throw new Error("Icon src must be SVG markup. Import an SVG with ?raw.");
+const attributes = Object.fromEntries(Array.from(svg[1].matchAll(/([:\w-]+)\s*=\s*(["'])(.*?)\2/gs), (match) => [match[1], match[3]]));
 ---
 
-<svg {...rest} class:list={["lamaui-icon-svg block flex-none", className]} width={size} height={size} viewBox="0 0 256 256" fill="currentColor" aria-hidden="true" set:html={paths} />
+<svg fill="currentColor" {...attributes} {...rest} class:list={["lamaui-icon-svg block flex-none", className]} width={size} height={size} viewBox={attributes.viewBox ?? "0 0 256 256"} aria-hidden="true" set:html={svg[2]} />

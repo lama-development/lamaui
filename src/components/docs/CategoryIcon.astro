@@ -1,0 +1,19 @@
+---
+import actions from "@phosphor-icons/core/duotone/toggle-left-duotone.svg?raw";
+import forms from "@phosphor-icons/core/duotone/note-pencil-duotone.svg?raw";
+import navigation from "@phosphor-icons/core/duotone/compass-duotone.svg?raw";
+import data from "@phosphor-icons/core/duotone/database-duotone.svg?raw";
+import feedback from "@phosphor-icons/core/duotone/chat-circle-text-duotone.svg?raw";
+import overlays from "@phosphor-icons/core/duotone/stack-duotone.svg?raw";
+import layout from "@phosphor-icons/core/duotone/layout-duotone.svg?raw";
+import Icon from "@/components/ui/Icon.astro";
+interface Props {
+  group: string;
+  size?: number;
+  class?: string;
+}
+const { group, ...rest } = Astro.props;
+const icons: Record<string, string> = { actions, forms, navigation, "data-display": data, feedback, overlays, layout };
+---
+
+<Icon src={icons[group]} {...rest} />

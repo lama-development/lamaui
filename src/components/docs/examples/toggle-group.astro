@@ -1,0 +1,12 @@
+---
+import svgMenu from "@phosphor-icons/core/bold/list-bold.svg?raw";
+import svgLayout from "@phosphor-icons/core/duotone/layout-duotone.svg?raw";
+import ToggleGroup from "@/components/ui/ToggleGroup.astro";
+import Toggle from "@/components/ui/Toggle.astro";
+import Icon from "@/components/ui/Icon.astro";
+---
+
+<ToggleGroup label="View style">
+  <Toggle label="List view" pressed><Icon src={svgMenu} /></Toggle>
+  <Toggle label="Grid view"><Icon src={svgLayout} /></Toggle>
+</ToggleGroup>

@@ -1,0 +1,19 @@
+---
+import DropdownMenu from "@/components/navigation/DropdownMenu.astro";
+import Dialog from "@/components/overlays/Dialog.astro";
+import Button from "@/components/ui/Button.astro";
+import { menuItemStyles } from "@/lib/styles";
+---
+
+<div class="grid justify-items-start gap-4">
+  <DropdownMenu label="Example actions" align="start">
+    <a role="menuitem" tabindex="-1" href="#quick-start" class={menuItemStyles}>View usage</a>
+    <button type="button" role="menuitem" tabindex="-1" disabled class={`${menuItemStyles} opacity-50`}>Archive (unavailable)</button>
+    <div role="separator" class="my-1 border-t border-outline"></div>
+    <button type="button" role="menuitem" tabindex="-1" data-dialog-open="menu-confirmation" class={`${menuItemStyles} text-destructive`}>Review deletion</button>
+  </DropdownMenu>
+  <Dialog id="menu-confirmation" title="Delete this item?" size="sm">
+    <p>This example opens a confirmation before an action. No item will be deleted.</p>
+    <Button data-dialog-close variant="secondary" autofocus>Cancel</Button>
+  </Dialog>
+</div>

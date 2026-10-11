@@ -15,7 +15,7 @@ function inline(node: Node): string {
 }
 
 function markdown(node: Element): string {
-  if (!(node instanceof HTMLElement) || node.hidden || node.matches("[data-guide-no-export],button,svg,figcaption")) return "";
+  if (!(node instanceof HTMLElement) || (node.hidden && !node.classList.contains("example-source-panel")) || node.matches("[data-guide-no-export],button,svg,figcaption,[role=tablist]")) return "";
   if (/^H[1-6]$/.test(node.tagName)) return `${"#".repeat(Number(node.tagName[1]))} ${inline(node).trim()}\n\n`;
   if (node.tagName === "P") return `${inline(node).trim()}\n\n`;
   if (node.tagName === "PRE") return `\`\`\`astro\n${node.textContent?.trim()}\n\`\`\`\n\n`;
@@ -48,7 +48,7 @@ function markdown(node: Element): string {
 document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
   const content = root.querySelector<HTMLElement>("[data-guide-content]");
   const toastRegion = root.querySelector<HTMLElement>("[data-guide-toast-region]");
-  const actionMenus = Array.from(root.querySelectorAll<HTMLDetailsElement>("[data-guide-menu]"));
+  const actionMenus = Array.from(root.querySelectorAll<HTMLDetailsElement>("[data-guide-actions] [data-split-menu]"));
   if (!content) return;
   const documentMarkdown = () => `# ${root.dataset.guideTitle}\n\n${root.dataset.guideDescription}\n\n${markdown(content)}Source: ${location.origin}${location.pathname}\n`;
   const closeActionMenus = (restoreFocus = false) => {
@@ -205,16 +205,5 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
     { passive: true }
   );
   window.addEventListener("resize", syncIndex);
-  const mobileIndex = root.querySelector<HTMLElement>("[data-guide-mobile-index]");
-  const mobileIndexToggle = mobileIndex?.querySelector<HTMLButtonElement>("[data-guide-index-toggle]");
-  const setMobileIndex = (open: boolean) => {
-    if (!mobileIndex || !mobileIndexToggle) return;
-    mobileIndex.dataset.open = String(open);
-    mobileIndexToggle.setAttribute("aria-expanded", String(open));
-  };
-  mobileIndexToggle?.addEventListener("click", () => setMobileIndex(mobileIndex?.dataset.open !== "true"));
-  mobileIndex?.addEventListener("click", (event) => {
-    if (event.target instanceof Element && event.target.closest("a")) setMobileIndex(false);
-  });
   syncIndex();
 });

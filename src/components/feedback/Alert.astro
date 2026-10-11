@@ -1,13 +1,16 @@
 ---
+import svgClose from "@phosphor-icons/core/bold/x-bold.svg?raw";
+import svgFeedback from "@phosphor-icons/core/duotone/chat-circle-text-duotone.svg?raw";
+import svgCheck from "@phosphor-icons/core/bold/check-bold.svg?raw";
+import svgWarning from "@phosphor-icons/core/bold/warning-circle-bold.svg?raw";
 import { alertCloseStyles } from "@/lib/styles";
 import type { Status } from "@/types";
 import Icon from "@/components/ui/Icon.astro";
-import type { IconName } from "@/components/ui/Icon.astro";
 interface Props {
   variant?: Exclude<Status, "neutral">;
   title?: string;
   dismissible?: boolean;
-  icon?: IconName;
+  icon?: string;
   color?: string;
   background?: string;
   borderColor?: string;
@@ -21,19 +24,19 @@ const colors = {
   warning: ["var(--warning)", "var(--warning-subtle)"],
   destructive: ["var(--destructive)", "var(--destructive-subtle)"]
 };
-const icons = { info: "feedback", success: "check", warning: "warning", destructive: "close" } as const;
+const icons = { info: svgFeedback, success: svgCheck, warning: svgWarning, destructive: svgClose } as const;
 const alertStyle = `color:${color ?? colors[variant][0]};background:${background ?? colors[variant][1]};border-color:${borderColor ?? "color-mix(in srgb, currentColor 15%, transparent)"}`;
 ---
 
 <div {...rest} role={variant === "destructive" ? "alert" : "status"} class:list={["lamaui-alert grid grid-cols-[1.5rem_minmax(0,1fr)_auto] items-start gap-x-3 rounded-2xl border p-4", className]} style={alertStyle}>
-  <span aria-hidden="true" class="lamaui-alert-icon grid h-6 w-6 place-items-center self-center"><Icon name={icon ?? icons[variant]} size={20} /></span><div class="lamaui-alert-body min-w-0 *:first:leading-[1.35] [&>_div]:mt-0.75 [&>_div]:leading-tight">
+  <span aria-hidden="true" class="lamaui-alert-icon grid h-6 w-6 place-items-center self-center"><Icon src={icon ?? icons[variant]} size={20} /></span><div class="lamaui-alert-body min-w-0 *:first:leading-[1.35] [&>_div]:mt-0.75 [&>_div]:leading-tight">
     {title && <p class="m-0 font-bold">{title}</p>}<div class="text-sm opacity-90">
       <slot />
     </div>
   </div>{
     dismissible && (
       <button type="button" aria-label="Dismiss alert" class={alertCloseStyles} data-dismiss>
-        <Icon name="close" size={16} />
+        <Icon src={svgClose} size={16} />
       </button>
     )
   }

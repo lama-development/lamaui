@@ -1,0 +1,13 @@
+---
+import Dialog from "@/components/overlays/Dialog.astro";
+import Button from "@/components/ui/Button.astro";
+---
+
+<Button variant="destructive" data-dialog-open="delete-project">Review deletion</Button>
+<Dialog id="delete-project" title="Delete this project?" size="sm">
+  <p>This is a confirmation example. No project will be deleted.</p>
+  <form method="dialog" class="flex flex-wrap justify-end gap-2">
+    <Button type="submit" value="cancel" variant="secondary" autofocus>Cancel</Button>
+    <Button type="submit" value="delete" variant="destructive">Confirm deletion</Button>
+  </form>
+</Dialog>

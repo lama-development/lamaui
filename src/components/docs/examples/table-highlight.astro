@@ -1,0 +1,15 @@
+---
+import Table from "@/components/data-display/Table.astro";
+const columns = [
+  { key: "name", label: "Name", rowHeader: true },
+  { key: "role", label: "Role" },
+  { key: "projects", label: "Projects", align: "right" as const }
+];
+const rows = [
+  { name: "Ari Lane", role: "Designer", projects: 8 },
+  { name: "Mina Park", role: "Engineer", projects: 12 },
+  { name: "Theo Moss", role: "Researcher", projects: 4 }
+];
+---
+
+<Table columns={columns} rows={rows} hoverable caption="Members with row highlighting" />

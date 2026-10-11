@@ -1,0 +1,83 @@
+/* The catalog uses LamaUI's own surfaces, controls, type, and geometry. */
+.catalog {
+  scroll-margin-top: 5rem;
+}
+.catalog-tabs,
+.catalog-panel {
+  min-width: 0;
+}
+.catalog-tabs > .lamaui-tabs {
+  display: flex;
+  width: fit-content;
+}
+.catalog-tabs > div:last-child {
+  margin-top: 2rem;
+}
+.catalog-groups {
+  display: grid;
+  min-width: 0;
+  gap: 2.5rem;
+}
+.docs-category {
+  scroll-margin-top: 5rem;
+}
+.docs-component-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+.docs-component-card {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--outline);
+  border-radius: var(--radius-lg);
+  corner-shape: squircle;
+  background: var(--surface);
+  color: var(--label);
+  text-decoration: none;
+}
+.docs-component-card:hover {
+  background: var(--surface-hover);
+}
+.catalog-card-copy {
+  padding: 1rem 1.125rem 1.25rem;
+}
+.catalog-card-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.catalog-card-title h3 {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.catalog-card-title > svg {
+  flex: none;
+  color: var(--muted-label);
+}
+.catalog-card-copy p {
+  margin: 0.5rem 0 0;
+  color: var(--muted-label);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+@media (max-width: 1200px) {
+  .docs-component-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1020px) {
+  .docs-component-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 620px) {
+  .docs-component-grid {
+    grid-template-columns: 1fr;
+  }
+}

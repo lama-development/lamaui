@@ -29,7 +29,7 @@ export function downloadGuidePdf(content: HTMLElement, title: string, descriptio
   };
 
   const visit = (node: Element) => {
-    if (!(node instanceof HTMLElement) || node.hidden || node.matches("[data-guide-no-export],button,svg,figcaption")) return;
+    if (!(node instanceof HTMLElement) || (node.hidden && !node.classList.contains("example-source-panel")) || node.matches("[data-guide-no-export],button,svg,figcaption,[role=tablist]")) return;
     const text = node.textContent?.trim() || "";
     if (!text) return;
     if (/^H[1-6]$/.test(node.tagName)) {

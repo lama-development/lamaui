@@ -1,0 +1,11 @@
+---
+import ToastRegion from "@/components/feedback/ToastRegion.astro";
+import Toast from "@/components/feedback/Toast.astro";
+import Button from "@/components/ui/Button.astro";
+---
+
+<ToastRegion label="Project notifications">
+  <Toast id="project-saved" title="Project saved">Changes are available to the team.</Toast>
+  <Toast id="project-failed" title="Save failed" variant="destructive">Try again when your connection returns.</Toast>
+</ToastRegion>
+<Button data-toast-open="project-failed">Show error</Button>

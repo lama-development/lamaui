@@ -1,0 +1,20 @@
+---
+import Button from "@/components/ui/Button.astro";
+import Dialog from "@/components/overlays/Dialog.astro";
+---
+
+<Button data-dialog-open="confirm-publish">Review publish</Button>
+<Dialog id="confirm-publish" title="Publish this project?">
+  <form method="dialog" class="flex flex-wrap gap-2">
+    <Button type="submit" value="cancel" variant="secondary">Cancel</Button>
+    <Button type="submit" value="publish">Publish project</Button>
+  </form>
+</Dialog>
+<output id="publish-decision" aria-live="polite" class="text-sm text-muted-label">Choose an action to inspect the dialog’s return value.</output>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>("#confirm-publish")!;
+  dialog.addEventListener("close", () => {
+    document.querySelector("#publish-decision")!.textContent = dialog.returnValue ? `Return value: ${dialog.returnValue}.` : "Dialog dismissed.";
+  });
+</script>

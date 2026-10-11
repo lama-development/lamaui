@@ -1,0 +1,12 @@
+---
+import rocket from "@phosphor-icons/core/duotone/rocket-duotone.svg?raw";
+import bell from "@phosphor-icons/core/regular/bell.svg?raw";
+import Button from "@/components/ui/Button.astro";
+import IconButton from "@/components/ui/IconButton.astro";
+import Icon from "@/components/ui/Icon.astro";
+---
+
+<div class="flex flex-wrap items-center gap-3">
+  <Button icon={rocket}>Launch project</Button>
+  <IconButton label="Notifications" variant="secondary"><Icon src={bell} /></IconButton>
+</div>

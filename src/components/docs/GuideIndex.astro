@@ -1,16 +1,17 @@
 ---
 interface Props {
   sections: { id: string; label: string }[];
+  horizontal?: boolean;
 }
-const { sections } = Astro.props;
+const { sections, horizontal = false } = Astro.props;
 ---
 
-<nav aria-label="On this page">
-  <ul class="m-0 grid list-none gap-1 p-0">
+<nav aria-label="On this page" data-fluid-hover class:list={["min-w-0", horizontal && "overflow-x-auto"]}>
+  <ul class:list={["m-0 list-none p-0", horizontal ? "flex w-max gap-1" : "grid gap-1"]}>
     {
       sections.map((section) => (
         <li>
-          <a href={`#${section.id}`} data-guide-anchor={section.id} class="guide-index-anchor flex min-h-11 items-center rounded-md px-3 py-2 text-sm leading-snug font-semibold text-muted-label no-underline [corner-shape:squircle] hover:bg-surface-hover hover:text-label aria-[current=location]:bg-accent-subtle aria-[current=location]:text-accent">
+          <a href={`#${section.id}`} data-guide-anchor={section.id} class:list={["guide-index-anchor flex min-h-11 items-center rounded-md px-3 py-2 text-sm leading-snug font-semibold text-muted-label no-underline [corner-shape:squircle] hover:bg-surface-hover hover:text-label aria-[current=location]:bg-accent-subtle aria-[current=location]:text-accent", horizontal && "whitespace-nowrap"]}>
             {section.label}
           </a>
         </li>

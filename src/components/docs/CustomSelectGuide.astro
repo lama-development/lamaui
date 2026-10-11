@@ -1,0 +1,74 @@
+---
+import GuideNote from "./GuideNote.astro";
+import ComponentExample from "./ComponentExample.astro";
+import InlineCode from "@/components/data-display/InlineCode.astro";
+import Table from "./ReferenceTable.astro";
+const props = [
+  { name: "id", type: "string", default: "Required", description: "Unique ID for the hidden input. The trigger uses the ID with a -button suffix." },
+  { name: "name", type: "string", default: "Required", description: "Field name included in form submission." },
+  { name: "label", type: "string", default: "Required", description: "Visible label associated with the trigger and listbox." },
+  { name: "options", type: "Option[]", default: "Required", description: "Choices with unique values, labels, and optional icons and disabled states." },
+  { name: "value", type: "string", default: "First enabled option", description: "Initial selection. Missing, unknown, or disabled values fall back to the first enabled option." },
+  { name: "placement", type: '"top" | "bottom"', default: '"bottom"', description: "Opens the panel above or below the control." },
+  { name: "help", type: "string", default: "—", description: "Supporting text connected to the trigger through aria-describedby." },
+  { name: "error", type: "string", default: "—", description: "Validation message; replaces help text and marks the trigger invalid." },
+  { name: "disabled", type: "boolean", default: "false", description: "Disables the trigger and excludes its hidden input from form submission." },
+  { name: "class", type: "string", default: "—", description: "Additional classes applied to the outer wrapper." }
+];
+const optionProps = [
+  { name: "value", type: "string", description: "Unique value submitted with the form." },
+  { name: "label", type: "string", description: "Visible text and the text searched by type-ahead." },
+  { name: "icon", type: "string (optional)", description: "SVG markup imported with ?raw, shown in the option and selected value." },
+  { name: "disabled", type: "boolean (optional)", description: "Makes the option unavailable and skips it during keyboard navigation." }
+];
+const columns = [
+  { key: "name", label: "Prop", code: true, rowHeader: true },
+  { key: "type", label: "Type", code: true, wrap: true },
+  { key: "default", label: "Default", code: true },
+  { key: "description", label: "Description" }
+];
+---
+
+<div class="guide-sections">
+  <section aria-labelledby="examples" class="guide-section">
+    <header>
+      <h2 id="examples" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Examples</h2>
+    </header>
+    <div class="guide-example-list">
+      <ComponentExample slug="custom-select-form" title="Form submission and reset" description="Read the selected value with `FormData`. Reset restores the initial label, value, and icon." note="The `value` prop sets the initial selection. Listen for the bubbling `change` event on the hidden input to respond to selection changes." />
+      <ComponentExample slug="custom-select-states" title="Errors and unavailable choices" description="Show a specific error when a choice needs attention. Disabled and empty fields are excluded from form submission." note="Validate values in your application. A hidden input does not participate in native required-field validation; use native `Select` when you need the browser’s built-in validation and mobile picker." />
+    </div>
+  </section>
+
+  <section aria-labelledby="props" class="guide-section">
+    <h2 id="props" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Props</h2>
+    <Table {columns} rows={props} caption="CustomSelect props" />
+    <Table columns={columns.filter((column) => column.key !== "default")} rows={optionProps} caption="Option properties" />
+    <GuideNote><p class="m-0">CustomSelect renders its own label and help or error message. Use a unique ID for each instance and keep option values unique. There are no content slots.</p></GuideNote>
+  </section>
+
+  <section aria-labelledby="accessibility" class="guide-section">
+    <h2 id="accessibility" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Accessibility</h2>
+    <dl data-surface-level="2" data-surface-lift="1" class="guide-definition lamaui-surface">
+      <div><dt>Labels & errors</dt><dd>The trigger’s accessible name includes the label and current value. The listbox uses the field label. Help and errors are connected with <InlineCode>aria-describedby</InlineCode>; errors also set <InlineCode>aria-invalid="true"</InlineCode>.</dd></div>
+      <div><dt>Opening</dt><dd>Enter or Space opens at the selected option. ArrowDown opens at the first enabled option; ArrowUp opens at the last. Clicking the label activates the trigger.</dd></div>
+      <div><dt>Navigation</dt><dd>Up and down arrows move focus and wrap at the ends, skipping disabled options. Home and End jump to the first and last options. Focus alone does not change the submitted value; Enter, Space, or a click commits the selection.</dd></div>
+      <div><dt>Type-ahead</dt><dd>Type an option’s label to move focus to its match. Repeating a letter cycles through matches. The search resets after 700 milliseconds of inactivity. Typing while closed opens at the matching option without changing the value.</dd></div>
+      <div><dt>Dismissal</dt><dd>Escape closes without changing the selection and restores trigger focus. Tab and Shift+Tab close and continue through the page. Clicking or focusing outside dismisses without moving focus back.</dd></div>
+      <div><dt>Touch & layout</dt><dd>Tap the trigger and then an option to select it, or tap outside to dismiss. Long lists scroll inside the panel. Give the field enough width for its labels at narrow viewports and 200% zoom; use top placement when needed and avoid clipping containers. Theme tokens support dark mode and the existing animation styles respect reduced motion.</dd></div>
+    </dl>
+  </section>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>("[data-select-demo]").forEach((form) => {
+    const result = form.querySelector<HTMLOutputElement>("[data-select-demo-result]")!;
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      result.textContent = `Assigned to ${new FormData(form).get("team")}.`;
+    });
+    form.addEventListener("reset", () => {
+      result.textContent = "Choose a team, then save the assignment.";
+    });
+  });
+</script>

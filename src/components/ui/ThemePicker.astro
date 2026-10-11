@@ -1,4 +1,7 @@
 ---
+import svgSystem from "@phosphor-icons/core/duotone/desktop-duotone.svg?raw";
+import svgSun from "@phosphor-icons/core/duotone/sun-duotone.svg?raw";
+import svgMoon from "@phosphor-icons/core/duotone/moon-duotone.svg?raw";
 import { controlStyles, ghostStyles, iconControlStyles } from "@/lib/styles";
 import Icon from "@/components/ui/Icon.astro";
 import Tooltip from "@/components/overlays/Tooltip.astro";
@@ -8,9 +11,9 @@ interface Props {
 }
 const { label = "Color theme", class: className } = Astro.props;
 const options = [
-  { value: "system", label: "System", icon: "system" as const },
-  { value: "light", label: "Light", icon: "sun" as const },
-  { value: "dark", label: "Dark", icon: "moon" as const }
+  { value: "system", label: "System", icon: svgSystem },
+  { value: "light", label: "Light", icon: svgSun },
+  { value: "dark", label: "Dark", icon: svgMoon }
 ];
 ---
 
@@ -21,7 +24,7 @@ const options = [
       options.map((option) => (
         <Tooltip text={option.label}>
           <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} relative z-1 rounded-[calc(var(--radius-lg)-0.3125rem)] hover:text-label aria-pressed:text-accent aria-pressed:hover:bg-transparent aria-pressed:hover:text-accent`} aria-label={option.label} aria-pressed={option.value === "system"} data-theme-choice={option.value}>
-            <Icon name={option.icon} />
+            <Icon src={option.icon} />
           </button>
         </Tooltip>
       ))

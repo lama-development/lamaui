@@ -1,0 +1,25 @@
+---
+import Checkbox from "@/components/forms/Checkbox.astro";
+import Button from "@/components/ui/Button.astro";
+---
+
+<form data-native-example="checkbox" class="grid gap-4">
+  <Checkbox id="terms" name="terms" value="accepted" label="I agree to the workspace terms" required />
+  <div class="flex flex-wrap gap-2">
+    <Button type="submit">Read form value</Button>
+    <Button type="reset" variant="secondary">Reset</Button>
+  </div>
+  <output aria-live="polite" class="block text-sm text-muted-label">Submit to inspect the value. Data stays in this preview.</output>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-native-example="checkbox"]')!;
+  const output = form.querySelector<HTMLOutputElement>(":scope > output")!;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    output.textContent = JSON.stringify(Object.fromEntries(new FormData(form)));
+  });
+  form.addEventListener("reset", () => {
+    output.textContent = "Form reset to its initial value.";
+  });
+</script>

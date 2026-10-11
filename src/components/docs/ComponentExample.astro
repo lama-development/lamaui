@@ -1,0 +1,17 @@
+---
+import ExampleFrame from "./ExampleFrame.astro";
+interface Props {
+  slug: string;
+  title?: string;
+  description?: string;
+  note?: string;
+}
+const { slug, ...rest } = Astro.props;
+const examples = import.meta.glob<{ default: any }>("./examples/*.astro", { eager: true });
+const sources = import.meta.glob<string>("./examples/*.astro", { query: "?raw", import: "default", eager: true });
+const path = `./examples/${slug}.astro`;
+const Example = examples[path]?.default;
+if (!Example) throw new Error(`Missing executable example for ${slug}`);
+---
+
+<ExampleFrame id={`example-${slug}`} code={sources[path]} resettable={slug === "alert"} {...rest}><Example /></ExampleFrame>

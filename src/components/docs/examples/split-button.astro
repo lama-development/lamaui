@@ -1,0 +1,21 @@
+---
+import svgLink from "@phosphor-icons/core/duotone/link-duotone.svg?raw";
+import SplitButton from "@/components/ui/SplitButton.astro";
+---
+
+<div class="grid justify-items-start gap-4">
+  <SplitButton label="Download sample" href="/examples/report.txt" download options={[{ label: "Copy sample link", icon: svgLink, attributes: { "data-copy-report": "" } }]} />
+  <output data-report-result aria-live="polite" class="text-sm text-muted-label">Download a text file, or copy its link from the menu.</output>
+</div>
+
+<script>
+  document.querySelector("[data-copy-report]")?.addEventListener("click", async () => {
+    const result = document.querySelector("[data-report-result]")!;
+    try {
+      await navigator.clipboard.writeText(new URL("/examples/report.txt", location.origin).href);
+      result.textContent = "Sample link copied.";
+    } catch {
+      result.textContent = "Copy failed. Use the download action to open the sample.";
+    }
+  });
+</script>

@@ -1,0 +1,72 @@
+---
+import svgSearch from "@phosphor-icons/core/duotone/magnifying-glass-duotone.svg?raw";
+import svgClose from "@phosphor-icons/core/bold/x-bold.svg?raw";
+import Icon from "@/components/ui/Icon.astro";
+import { components } from "@/lib/components";
+import { guideContent } from "@/lib/guide-content";
+import { componentReference } from "@/lib/component-reference";
+import { searchAliases, type SearchEntry } from "@/lib/search";
+const sections = [
+  { id: "quick-start", title: "Quick start", keywords: "usage import install getting started" },
+  { id: "setup", title: "Installation", keywords: "setup install styles runtime integration dependencies" },
+  { id: "examples", title: "Examples", keywords: "variants composition demo" },
+  { id: "props", title: "Props", keywords: "api reference attributes options defaults" },
+  { id: "accessibility", title: "Accessibility", keywords: "keyboard focus aria responsive reduced motion" },
+  { id: "slots", title: "Slots and data types", keywords: "children content interfaces types" }
+];
+const entries: SearchEntry[] = [
+  { title: "All components", component: "All components", group: "Documentation", href: "/", description: "Browse every reusable building block.", keywords: "overview catalog primitives" },
+  ...components.flatMap((component) => {
+    const content = guideContent[component.slug];
+    const reference = componentReference(component.name, content?.props);
+    const base = { component: component.name, group: component.group, description: component.description, keywords: searchAliases(component.slug) };
+    const availableSections = sections.filter((section) => section.id !== "slots" || reference.slots.length > 0 || reference.types.length > 0);
+    return [{ ...base, title: component.name, href: `/components/${component.slug}` }, ...availableSections.map((section) => ({ ...base, title: `${component.name} · ${section.title}`, section: section.title, href: `/components/${component.slug}#${section.id}`, description: section.id === "examples" ? (content?.example.description ?? component.description) : section.id === "accessibility" ? (content?.accessibility ?? component.description) : component.description, keywords: `${base.keywords} ${section.keywords} ${section.id === "props" ? reference.props.map((prop) => prop.name).join(" ") : ""}` }))];
+  })
+];
+---
+
+<dialog id="docs-search" aria-labelledby="docs-search-title" data-surface-level="5" class="docs-search fixed inset-x-0 top-[min(16vh,8rem)] m-0 mx-auto max-h-[calc(100dvh-2rem)] w-[min(calc(100%-2rem),40rem)] overflow-hidden rounded-2xl border border-outline bg-surface-5 p-0 text-label shadow-(--surface-shadow) backdrop:bg-overlay print:hidden">
+  <h2 id="docs-search-title" class="sr-only">Search documentation</h2>
+  <div class="flex items-center gap-3 border-b border-outline px-4 py-3">
+    <Icon src={svgSearch} size={22} class="shrink-0 text-muted-label" />
+    <input id="docs-search-input" type="text" role="combobox" aria-label="Search components and guides" aria-autocomplete="list" aria-controls="docs-search-results" aria-expanded="false" aria-describedby="docs-search-help" autocomplete="off" spellcheck="false" placeholder="Search components, props, or guides…" class="min-h-11 min-w-0 flex-1 border-0 bg-transparent text-base text-label outline-none placeholder:text-muted-label" />
+    <button type="button" data-search-close aria-label="Close search" class="grid size-9 shrink-0 cursor-pointer place-items-center rounded-md border-0 bg-transparent text-muted-label hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-ring"><Icon src={svgClose} size={18} /></button>
+  </div>
+  <div class="flex items-center justify-between px-4 pt-4 pb-2 text-xs font-semibold text-muted-label"><span data-search-heading>Suggested</span><span role="status" aria-live="polite" aria-atomic="true" data-search-status></span></div>
+  <div id="docs-search-results" role="listbox" aria-label="Search results" class="max-h-[min(26rem,50dvh)] overflow-y-auto overscroll-contain px-2 pb-2"></div>
+  <p data-search-empty hidden class="m-0 px-5 py-10 text-center text-sm text-muted-label">No matches. Try a component name, “modal”, “forms”, or “button props”.</p>
+  <footer id="docs-search-help" class="flex flex-wrap items-center justify-between gap-2 border-t border-outline px-4 py-3 text-xs text-muted-label"><span>↑ ↓ navigate <span class="mx-1">·</span> Enter open <span class="mx-1">·</span> Esc close</span><span>Search names, categories, and guide sections</span></footer>
+</dialog>
+<script type="application/json" id="docs-search-index" set:html={JSON.stringify(entries).replaceAll("<", "\\u003c")} />
+<script>
+  import "@/scripts/docs-search";
+</script>
+<style>
+  .docs-search[open] {
+    animation: search-enter 160ms ease-out;
+  }
+  :global(html:has(#docs-search[open])) {
+    overflow: hidden;
+  }
+  @keyframes search-enter {
+    from {
+      opacity: 0;
+      transform: translateY(-8px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .docs-search[open] {
+      animation: none;
+    }
+  }
+  @media (width <= 620px) {
+    .docs-search {
+      top: 1rem;
+    }
+  }
+</style>

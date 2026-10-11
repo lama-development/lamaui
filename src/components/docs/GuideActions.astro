@@ -1,18 +1,24 @@
 ---
+import svgFilePdf from "@phosphor-icons/core/duotone/file-pdf-duotone.svg?raw";
+import svgFileMd from "@phosphor-icons/core/duotone/file-md-duotone.svg?raw";
+import svgClipboardText from "@phosphor-icons/core/duotone/clipboard-text-duotone.svg?raw";
+import svgLink from "@phosphor-icons/core/duotone/link-duotone.svg?raw";
+import svgPrint from "@phosphor-icons/core/duotone/printer-duotone.svg?raw";
 import SplitButton from "@/components/ui/SplitButton.astro";
 ---
 
-<div class="hidden shrink-0 items-center justify-end min-[621px]:flex print:hidden">
+<div data-guide-actions class="flex shrink-0 items-center justify-end print:hidden">
   <SplitButton
     label="Download PDF"
-    icon="file-pdf"
-    class="w-64"
+    icon={svgFilePdf}
+    variant="primary"
+    class="min-[1280px]:w-full"
     data-guide-pdf
     options={[
-      { label: "Download Markdown", icon: "file-md", attributes: { "data-guide-download": true } },
-      { label: "Copy as text", icon: "clipboard-text", attributes: { "data-guide-copy": true } },
-      { label: "Copy link", icon: "link", attributes: { "data-guide-copy-link": true } },
-      { label: "Print", icon: "print", attributes: { "data-guide-print": true } }
+      { label: "Download Markdown", icon: svgFileMd, attributes: { "data-guide-download": true } },
+      { label: "Copy as text", icon: svgClipboardText, attributes: { "data-guide-copy": true } },
+      { label: "Copy link", icon: svgLink, attributes: { "data-guide-copy-link": true } },
+      { label: "Print", icon: svgPrint, attributes: { "data-guide-print": true } }
     ]}
   />
 </div>

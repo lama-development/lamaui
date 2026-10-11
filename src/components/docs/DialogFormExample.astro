@@ -1,0 +1,93 @@
+---
+import Dialog from "@/components/overlays/Dialog.astro";
+import Button from "@/components/ui/Button.astro";
+import Input from "@/components/forms/Input.astro";
+import Label from "@/components/forms/Label.astro";
+import Checkbox from "@/components/forms/Checkbox.astro";
+---
+
+<Button data-dialog-open="edit-project-demo">Edit project</Button>
+<p role="status" id="project-save-result" class="text-sm text-muted-label"></p>
+<Dialog id="edit-project-demo" title="Edit project" description="Save a project name without losing your work if the request fails.">
+  <form id="edit-project-form" class="flex flex-col gap-4">
+    <div>
+      <Label for="edit-project-name">Project name</Label>
+      <Input id="edit-project-name" name="projectName" value="Website refresh" required maxlength={80} autofocus />
+    </div>
+    <Checkbox id="simulate-save-error" label="Simulate a save failure" description="This demo waits briefly instead of contacting a server." />
+    <p id="project-save-error" role="alert" tabindex="-1" hidden class="m-0 text-sm text-destructive"></p>
+    <div class="flex flex-wrap justify-end gap-2">
+      <Button variant="secondary" data-dialog-close>Cancel</Button>
+      <Button type="submit" id="save-project-demo">Save project</Button>
+    </div>
+  </form>
+</Dialog>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>("#edit-project-demo")!;
+  const form = document.querySelector<HTMLFormElement>("#edit-project-form")!;
+  const submit = document.querySelector<HTMLButtonElement>("#save-project-demo")!;
+  const error = document.querySelector<HTMLParagraphElement>("#project-save-error")!;
+  const result = document.querySelector<HTMLParagraphElement>("#project-save-result")!;
+  let request: AbortController | undefined;
+
+  // Replace this demo function with fetch(..., { signal }) in your application.
+  const saveProject = (shouldFail: boolean, signal: AbortSignal) =>
+    new Promise<void>((resolve, reject) => {
+      const timer = window.setTimeout(() => {
+        if (shouldFail) reject(new Error("Could not save the project. Your changes are still here; try again."));
+        else resolve();
+      }, 600);
+      signal.addEventListener(
+        "abort",
+        () => {
+          window.clearTimeout(timer);
+          reject(new DOMException("Save cancelled", "AbortError"));
+        },
+        { once: true }
+      );
+    });
+
+  dialog.addEventListener("close", () => {
+    request?.abort();
+    error.hidden = true;
+  });
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (request) return;
+    const controller = new AbortController();
+    request = controller;
+    error.hidden = true;
+    result.textContent = "";
+    const name = String(new FormData(form).get("projectName") ?? "").trim();
+    if (!name) {
+      error.textContent = "Enter a project name.";
+      error.hidden = false;
+      error.focus();
+      request = undefined;
+      return;
+    }
+    submit.disabled = true;
+    submit.setAttribute("aria-busy", "true");
+    submit.textContent = "Saving…";
+    form.setAttribute("aria-busy", "true");
+    try {
+      const shouldFail = document.querySelector<HTMLInputElement>("#simulate-save-error")!.checked;
+      await saveProject(shouldFail, controller.signal);
+      if (controller.signal.aborted || !dialog.open) return;
+      result.textContent = `Saved “${name}”.`;
+      dialog.close("saved");
+    } catch (cause) {
+      if (controller.signal.aborted || !dialog.open) return;
+      error.textContent = cause instanceof Error ? cause.message : "Could not save. Try again.";
+      error.hidden = false;
+      error.focus();
+    } finally {
+      submit.disabled = false;
+      submit.removeAttribute("aria-busy");
+      submit.textContent = "Save project";
+      form.removeAttribute("aria-busy");
+      request = undefined;
+    }
+  });
+</script>

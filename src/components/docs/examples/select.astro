@@ -1,0 +1,35 @@
+---
+import Label from "@/components/forms/Label.astro";
+import Select from "@/components/forms/Select.astro";
+import Button from "@/components/ui/Button.astro";
+---
+
+<form data-native-example="select" class="grid gap-4">
+  <Label for="billing-period">Billing period</Label>
+  <Select
+    id="billing-period"
+    name="period"
+    value="monthly"
+    options={[
+      { value: "monthly", label: "Monthly" },
+      { value: "annual", label: "Annual", disabled: true }
+    ]}
+  />
+  <div class="flex flex-wrap gap-2">
+    <Button type="submit">Read form value</Button>
+    <Button type="reset" variant="secondary">Reset</Button>
+  </div>
+  <output aria-live="polite" class="block text-sm text-muted-label">Submit to inspect the value. Data stays in this preview.</output>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-native-example="select"]')!;
+  const output = form.querySelector<HTMLOutputElement>(":scope > output")!;
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    output.textContent = JSON.stringify(Object.fromEntries(new FormData(form)));
+  });
+  form.addEventListener("reset", () => {
+    output.textContent = "Form reset to its initial value.";
+  });
+</script>

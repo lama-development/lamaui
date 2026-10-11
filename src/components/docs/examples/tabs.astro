@@ -1,0 +1,32 @@
+---
+import Tabs from "@/components/navigation/Tabs.astro";
+import TabPanel from "@/components/navigation/TabPanel.astro";
+---
+
+<Tabs
+  id="settings-tabs"
+  label="Settings sections"
+  active="general"
+  tabs={[
+    { id: "general", label: "General" },
+    { id: "security", label: "Security" },
+    { id: "billing", label: "Billing", disabled: true }
+  ]}
+>
+  <TabPanel tabsId="settings-tabs" id="general" active>
+    <Tabs
+      id="nested-settings"
+      label="General settings"
+      active="profile"
+      tabs={[
+        { id: "profile", label: "Profile" },
+        { id: "notifications", label: "Notifications" }
+      ]}
+    >
+      <TabPanel tabsId="nested-settings" id="profile" active>Profile settings stay independent of the outer tab selection.</TabPanel>
+      <TabPanel tabsId="nested-settings" id="notifications">Notification settings.</TabPanel>
+    </Tabs>
+  </TabPanel>
+  <TabPanel tabsId="settings-tabs" id="security">Security settings.</TabPanel>
+  <TabPanel tabsId="settings-tabs" id="billing">Billing settings.</TabPanel>
+</Tabs>

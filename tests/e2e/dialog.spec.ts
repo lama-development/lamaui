@@ -98,3 +98,55 @@ test("locks background scrolling while open", async ({ page }) => {
   expect(await page.evaluate(() => window.scrollY)).toBe(scrollPosition);
   expect(await page.locator(".docs-content").boundingBox()).toEqual(layoutBefore);
 });
+
+test("async save reports errors, keeps values, and succeeds on retry", async ({ page }) => {
+  const opener = page.locator('[data-dialog-open="edit-project-demo"]');
+  await opener.click();
+  const dialog = page.getByRole("dialog", { name: "Edit project", exact: true });
+  const name = dialog.getByRole("textbox", { name: "Project name" });
+  await expect(name).toBeFocused();
+  await name.fill("New project name");
+  await dialog.getByRole("checkbox", { name: "Simulate a save failure" }).check();
+  await dialog.getByRole("button", { name: "Save project", exact: true }).click();
+  await expect(dialog.getByRole("button", { name: "Saving…", exact: true })).toBeDisabled();
+  await expect(dialog.locator("form")).toHaveAttribute("aria-busy", "true");
+  const error = dialog.getByRole("alert");
+  await expect(error).toHaveText("Could not save the project. Your changes are still here; try again.");
+  await expect(error).toBeFocused();
+  await expect(name).toHaveValue("New project name");
+  await expect(dialog.getByRole("button", { name: "Save project", exact: true })).toBeEnabled();
+  await dialog.getByRole("checkbox", { name: "Simulate a save failure" }).uncheck();
+  await dialog.getByRole("button", { name: "Save project", exact: true }).click();
+  await expect(dialog).toBeHidden();
+  await expect(page.locator("#project-save-result")).toHaveText("Saved “New project name”.");
+  await expect(opener).toBeFocused();
+});
+
+test("closing during an async save cancels the result and allows another attempt", async ({ page }) => {
+  const opener = page.locator('[data-dialog-open="edit-project-demo"]');
+  await opener.click();
+  const dialog = page.getByRole("dialog", { name: "Edit project", exact: true });
+  await dialog.getByRole("button", { name: "Save project", exact: true }).click();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(opener).toBeFocused();
+  await expect(page.locator("#project-save-result")).toBeEmpty();
+  await opener.click();
+  await expect(dialog.getByRole("button", { name: "Save project", exact: true })).toBeEnabled();
+  await dialog.getByRole("textbox", { name: "Project name" }).fill("Retry after cancelling");
+  await dialog.getByRole("button", { name: "Save project", exact: true }).click();
+  await expect(page.locator("#project-save-result")).toHaveText("Saved “Retry after cancelling”.");
+  await expect(dialog).toBeHidden();
+});
+
+test("required validation prevents an empty async submission", async ({ page }) => {
+  await page.locator('[data-dialog-open="edit-project-demo"]').click();
+  const dialog = page.getByRole("dialog", { name: "Edit project", exact: true });
+  const name = dialog.getByRole("textbox", { name: "Project name" });
+  await name.fill("");
+  await dialog.getByRole("button", { name: "Save project", exact: true }).click();
+  await expect(name).toBeFocused();
+  expect(await name.evaluate((input) => (input as HTMLInputElement).validity.valueMissing)).toBe(true);
+  await expect(dialog).toBeVisible();
+  await expect(dialog.locator("form")).not.toHaveAttribute("aria-busy", "true");
+});

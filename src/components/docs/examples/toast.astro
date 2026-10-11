@@ -1,0 +1,10 @@
+---
+import Button from "@/components/ui/Button.astro";
+import ToastRegion from "@/components/feedback/ToastRegion.astro";
+import Toast from "@/components/feedback/Toast.astro";
+---
+
+<Button data-toast-open="failed-toast" variant="secondary">Show error</Button>
+<ToastRegion label="Project notifications">
+  <Toast id="failed-toast" title="Save failed" variant="destructive">Check your connection and try again.</Toast>
+</ToastRegion>

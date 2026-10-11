@@ -248,28 +248,6 @@ dialog[open]::backdrop {
     transform: translateX(-2rem);
   }
 }
-@keyframes navbar-menu-in {
-  from {
-    opacity: 0;
-    transform: translateY(-0.5rem);
-  }
-}
-@keyframes llama-nod {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0);
-  }
-  25% {
-    transform: translateY(-3px) rotate(-10deg);
-  }
-  55% {
-    transform: translateY(-2px) rotate(7deg);
-  }
-  80% {
-    transform: translateY(-1px) rotate(-3deg);
-  }
-}
-
 @keyframes lamaui-pulse {
   50% {
     opacity: 0.5;
@@ -309,9 +287,6 @@ dialog[open]::backdrop {
     transition-duration: var(--spring-moderate-duration);
     transition-timing-function: var(--spring-moderate-ease);
   }
-  .lamaui-navbar-menu[data-open="true"] {
-    animation: navbar-menu-in var(--duration-normal) var(--ease-standard);
-  }
 }
 
 :where([class*="hover:bg-"], .lamaui-control, .lamaui-interactive) {
@@ -319,9 +294,6 @@ dialog[open]::backdrop {
   transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
 }
 
-.docs-mark {
-  transform-origin: 50% 85%;
-}
 .docs-brand strong {
   transition: color 240ms ease-out;
 }
@@ -332,9 +304,6 @@ dialog[open]::backdrop {
 @media (hover: hover) and (pointer: fine) {
   :where([class*="hover:bg-"], .lamaui-control, .lamaui-interactive):hover {
     transition-duration: 160ms;
-  }
-  .docs-brand:hover .docs-mark {
-    animation: llama-nod 700ms cubic-bezier(0.2, 0, 0.2, 1);
   }
   .docs-brand:hover strong {
     color: var(--accent);
@@ -353,6 +322,9 @@ dialog[open]::backdrop {
       opacity var(--duration-normal) var(--ease-standard),
       transform var(--duration-normal) var(--ease-standard),
       visibility var(--duration-normal);
+  }
+  [data-open="true"] .lamaui-accent-dock {
+    transition-duration: var(--duration-normal), var(--duration-normal), 0s;
   }
   .lamaui-accent-choice {
     transition:

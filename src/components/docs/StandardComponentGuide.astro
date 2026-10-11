@@ -1,0 +1,54 @@
+---
+import ComponentExample from "./ComponentExample.astro";
+import Table from "./ReferenceTable.astro";
+import GuideNote from "./GuideNote.astro";
+import DocsText from "./DocsText.astro";
+import type { GuideContent } from "@/lib/guide-content";
+import { componentReference } from "@/lib/component-reference";
+interface Props {
+  name: string;
+  slug: string;
+  content: GuideContent;
+}
+const { name, slug, content } = Astro.props;
+const reference = componentReference(name, content.props);
+---
+
+<div class="guide-sections">
+  <section aria-labelledby="examples" class="guide-section">
+    <h2 id="examples" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Examples</h2>
+    <div class="guide-example-list">
+      <ComponentExample {slug} title={content.example.title} description={content.behavior} />
+      {slug === "alert" && <ComponentExample slug="alert-variants" title="Status variants and custom icons" description="Choose a variant that matches the message. Override `icon`, `color`, and `background` when your content needs its own treatment." />}
+      {
+        slug === "icon" && (
+          <>
+            <ComponentExample slug="icon-sizes" title="Size and color" description="Set `size` in pixels. SVGs inherit the surrounding text color; use a text color class to change it." />
+            <ComponentExample slug="icon-weights" title="Six Phosphor weights" description="Regular icons use `regular/planet.svg?raw`. Other weights include their name in the filename, such as `duotone/planet-duotone.svg?raw`." />
+          </>
+        )
+      }
+    </div>
+  </section>
+  <section aria-labelledby="props" class="guide-section">
+    <h2 id="props" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Props</h2>
+    <Table
+      caption={`${name} props, defaults, and behavior`}
+      columns={[
+        { key: "name", label: "Prop", code: true, rowHeader: true },
+        { key: "type", label: "Type", code: true, wrap: true },
+        { key: "default", label: "Default", code: true, wrap: true },
+        { key: "description", label: "Description" }
+      ]}
+      rows={reference.props}
+    />
+    <GuideNote>{reference.forwardsAttributes ? "Other HTML attributes pass through to the underlying element. Component-owned attributes take precedence." : "Only the listed props are supported; other HTML attributes are not forwarded."}</GuideNote>
+  </section>
+  <section aria-labelledby="accessibility" class="guide-section">
+    <h2 id="accessibility" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Accessibility</h2>
+    <dl data-surface-level="2" data-surface-lift="1" class="guide-definition lamaui-surface">
+      <div><dt>Interaction</dt><dd><DocsText text={content.accessibility} /></dd></div>
+      <div><dt>Layout</dt><dd><DocsText text={content.layout} /></dd></div>
+    </dl>
+  </section>
+</div>

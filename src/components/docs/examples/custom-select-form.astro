@@ -1,0 +1,36 @@
+---
+import CustomSelect from "@/components/forms/CustomSelect.astro";
+import Button from "@/components/ui/Button.astro";
+---
+
+<form id="assignment-form" class="grid gap-4">
+  <CustomSelect
+    id="assignment-team"
+    name="team"
+    label="Team"
+    value="design"
+    options={[
+      { value: "design", label: "Design" },
+      { value: "engineering", label: "Engineering" },
+      { value: "sales", label: "Sales", disabled: true }
+    ]}
+    help="Choose the team that owns this project."
+  />
+  <div class="flex flex-wrap gap-2">
+    <Button type="submit">Read assignment</Button>
+    <Button type="reset" variant="secondary">Reset</Button>
+  </div>
+  <output id="assignment-result" aria-live="polite" class="text-sm text-muted-label">Choose a team to inspect its submitted value.</output>
+</form>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("#assignment-form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const team = new FormData(form).get("team");
+    document.querySelector("#assignment-result")!.textContent = `Submitted team: ${team}.`;
+  });
+  form?.addEventListener("reset", () => {
+    document.querySelector("#assignment-result")!.textContent = "Assignment reset.";
+  });
+</script>

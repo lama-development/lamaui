@@ -1,0 +1,194 @@
+---
+import svgReset from "@phosphor-icons/core/bold/arrow-counter-clockwise-bold.svg?raw";
+import CodeBlock from "@/components/data-display/CodeBlock.astro";
+import Icon from "@/components/ui/Icon.astro";
+import Tabs from "@/components/navigation/Tabs.astro";
+import TabPanel from "@/components/navigation/TabPanel.astro";
+import DocsText from "./DocsText.astro";
+interface Props {
+  id: string;
+  code: string;
+  label?: string;
+  resettable?: boolean;
+  title?: string;
+  description?: string;
+  note?: string;
+}
+const { id, code, label = "Example source", resettable = false, title, description, note } = Astro.props;
+---
+
+<div data-example-frame class="example-frame min-w-0">
+  {
+    (title || description) && (
+      <header class="example-heading">
+        {title && <h3>{title}</h3>}
+        {description && (
+          <p>
+            <DocsText text={description} />
+          </p>
+        )}
+      </header>
+    )
+  }
+  <Tabs
+    {id}
+    label="Example view"
+    active="preview"
+    tabs={[
+      { id: "preview", label: "Preview" },
+      { id: "code", label: "Code" }
+    ]}
+    class="example-tabs min-w-0"
+  >
+    <TabPanel tabsId={id} id="preview" active class="example-preview-panel min-w-0">
+      {
+        resettable && (
+          <div data-guide-no-export class="example-reset">
+            <button type="button" data-example-reset class="inline-flex min-h-7 items-center gap-1.5 rounded-md border-0 bg-transparent px-2 text-xs font-semibold text-muted-label hover:bg-surface-hover">
+              <Icon src={svgReset} size={16} />
+              Reset example
+            </button>
+          </div>
+        )
+      }
+      <div data-example-live data-guide-no-export data-surface-level="2" class="example-live grid min-h-36 min-w-0 content-center gap-6 p-6 print:hidden"><slot /></div>
+    </TabPanel>
+    <TabPanel tabsId={id} id="code" class="example-source-panel min-w-0">
+      <div data-example-code class="min-w-0"><CodeBlock {code} {label} /></div>
+    </TabPanel>
+  </Tabs>
+  {
+    note && (
+      <p class="example-note">
+        <DocsText text={note} />
+      </p>
+    )
+  }
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>("[data-example-reset]").forEach((button) => {
+    const live = button.closest("[data-example-frame]")!.querySelector<HTMLElement>("[data-example-live]")!;
+    const initial = Array.from(live.childNodes, (node) => node.cloneNode(true));
+    button.addEventListener("click", () => live.replaceChildren(...initial.map((node) => node.cloneNode(true))));
+  });
+</script>
+
+<style>
+  .example-heading {
+    margin-bottom: 1.25rem;
+  }
+  .example-heading h3 {
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.4;
+    font-weight: 650;
+  }
+  .example-heading p {
+    margin: 0.5rem 0 0;
+    max-width: 72ch;
+    color: var(--muted-label);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  .example-note {
+    margin: 1rem 0 0;
+    max-width: 72ch;
+    color: var(--muted-label);
+    font-size: 0.9375rem;
+    line-height: 1.65;
+  }
+  .example-live > :global(form),
+  .example-live > :global(.grid) {
+    width: 100%;
+    max-width: 36rem;
+    justify-self: center;
+  }
+  .example-live > :global(form > output) {
+    padding: 0;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+  @media (width <= 620px) {
+    .example-live {
+      padding: 1.25rem 1.125rem;
+    }
+  }
+  .example-frame :global(.example-tabs) {
+    display: grid;
+  }
+  .example-frame :global(.example-tabs > [role="tablist"]) {
+    justify-self: start;
+    gap: 0.125rem;
+    margin: 0 0 0.75rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+  }
+  .example-frame :global(.example-tabs > [role="tablist"] > [role="tab"]) {
+    min-height: 1.75rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.8125rem;
+    line-height: 1.25rem;
+  }
+  .example-frame :global(.example-tabs > [role="tablist"] > .lamaui-tab-highlight) {
+    top: 0;
+    bottom: 0;
+    border-radius: var(--radius-sm);
+  }
+  .example-frame :global(.example-tabs > div:last-child) {
+    min-width: 0;
+    margin: 0;
+  }
+  .example-frame :global(.example-preview-panel),
+  .example-frame :global(.example-source-panel) {
+    position: relative;
+    min-width: 0;
+    border: 1px solid var(--outline);
+    border-radius: var(--radius-lg);
+    corner-shape: squircle;
+    background: var(--surface-2);
+  }
+  .example-reset {
+    position: absolute;
+    top: -2.5rem;
+    right: 0;
+  }
+  .example-frame :global([data-example-code] > .code-block) {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+  .example-frame :global([data-example-code] .code-head) {
+    position: absolute;
+    top: -2.5rem;
+    right: 0;
+    min-height: 2rem;
+    padding: 0;
+  }
+  .example-frame :global([data-example-code] .code-language) {
+    display: none;
+  }
+  .example-live > :global(.lamaui-control),
+  .example-live > :global(.lamaui-split-button) {
+    justify-self: start;
+  }
+  @media print {
+    [data-example-frame] {
+      border: 0;
+    }
+    .example-frame :global(.example-tabs > [role="tablist"]),
+    .example-frame :global([data-example-code] .code-head),
+    .example-frame :global(.example-preview-panel) {
+      display: none !important;
+    }
+    @layer base {
+      .example-frame :global(.example-source-panel[hidden]) {
+        display: block !important;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,11 @@
+---
+import Label from "@/components/forms/Label.astro";
+import SearchInput from "@/components/forms/SearchInput.astro";
+import Button from "@/components/ui/Button.astro";
+---
+
+<form action="/" method="get" class="grid gap-4">
+  <Label for="search-query">Search components</Label>
+  <SearchInput id="search-query" name="q" label="Search components" placeholder="Try button, dialog, or input" minlength={2} required />
+  <Button type="submit">Search</Button>
+</form>

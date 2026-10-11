@@ -5,7 +5,7 @@ interface Props {
 const { wrap = false } = Astro.props;
 ---
 
-<code class:list={["lamaui-inline-code rounded-sm bg-muted [box-decoration-break:clone] px-1.5 py-0.5 font-mono text-[0.875em] font-normal break-normal [overflow-wrap:normal] text-label", wrap ? "whitespace-normal" : "whitespace-nowrap"]}><slot /></code>
+<code class:list={["lamaui-inline-code rounded-sm bg-muted [box-decoration-break:clone] px-1.5 py-0.5 font-mono text-[0.875em] font-normal break-normal text-label", wrap ? "[overflow-wrap:anywhere] whitespace-normal" : "[overflow-wrap:normal] whitespace-nowrap"]}><slot /></code>
 
 <style is:global>
   .lamaui-inline-code {

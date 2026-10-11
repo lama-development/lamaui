@@ -1,0 +1,18 @@
+---
+import Pagination from "@/components/navigation/Pagination.astro";
+---
+
+<div class="grid gap-6">
+  <div class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">First page</p>
+    <Pagination current={1} total={100} href="/components/pagination?page=" label="First page example" />
+  </div>
+  <div class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Middle of a large collection</p>
+    <Pagination current={50} total={100} href="/components/pagination?page=" label="Middle page example" />
+  </div>
+  <div class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Last page</p>
+    <Pagination current={100} total={100} href="/components/pagination?page=" label="Last page example" />
+  </div>
+</div>

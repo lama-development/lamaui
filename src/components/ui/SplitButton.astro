@@ -1,6 +1,7 @@
 ---
+import svgChevronDown from "@phosphor-icons/core/bold/caret-down-bold.svg?raw";
 import Button from "@/components/ui/Button.astro";
-import Icon, { type IconName } from "@/components/ui/Icon.astro";
+import Icon from "@/components/ui/Icon.astro";
 import { controlStyles, iconControlStyles, menuItemStyles, menuStyles, primaryStyles, secondaryStyles } from "@/lib/styles";
 import { cx } from "@/lib/classes";
 import type { Variant } from "@/types";
@@ -9,7 +10,7 @@ export interface SplitButtonOption {
   label: string;
   href?: string;
   download?: boolean | string;
-  icon?: IconName;
+  icon?: string;
   attributes?: Record<string, any>;
 }
 
@@ -18,7 +19,7 @@ interface Props {
   options: SplitButtonOption[];
   href?: string;
   download?: boolean | string;
-  icon?: IconName;
+  icon?: string;
   variant?: Extract<Variant, "primary" | "secondary">;
   menuLabel?: string;
   class?: string;
@@ -33,19 +34,19 @@ const variantStyles = variant === "primary" ? primaryStyles : secondaryStyles;
   <Button {...rest} {variant} {href} {download} {icon} class="flex-1 rounded-r-none">{label}</Button>
   <details class="group -ml-px" data-split-menu data-animated-menu>
     <summary class={cx(controlStyles, variantStyles, iconControlStyles, "lamaui-split-trigger h-full list-none rounded-l-none [&::-webkit-details-marker]:hidden")} aria-label={menuLabel} title={menuLabel}>
-      <Icon name="chevron-down" size={16} class="details-chevron group-open:rotate-180" />
+      <Icon src={svgChevronDown} size={16} class="details-chevron group-open:rotate-180" />
     </summary>
     <div data-surface-level="2" data-surface-lift="1" class={cx(menuStyles, "t-dropdown right-0 mt-2 grid w-full min-w-52 gap-0.5")} data-origin="top-right">
       {
         options.map((option) =>
           option.href ? (
             <a {...option.attributes} href={option.href} download={option.download} class={menuItemStyles}>
-              {option.icon && <Icon name={option.icon} size={18} />}
+              {option.icon && <Icon src={option.icon} size={18} />}
               <span>{option.label}</span>
             </a>
           ) : (
             <button {...option.attributes} type="button" class={cx(menuItemStyles, "border-0 bg-transparent font-[inherit]")}>
-              {option.icon && <Icon name={option.icon} size={18} />}
+              {option.icon && <Icon src={option.icon} size={18} />}
               <span>{option.label}</span>
             </button>
           )

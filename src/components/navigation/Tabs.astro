@@ -8,17 +8,19 @@ interface Props {
   tabs: Tab[];
   active?: string;
   id?: string;
+  label?: string;
   class?: string;
 }
-const { tabs, active = tabs[0]?.id, id = "tabs", class: className } = Astro.props;
+const { tabs, active, id = "tabs", label = "Tabs", class: className } = Astro.props;
+const selected = tabs.find((tab) => tab.id === active && !tab.disabled)?.id ?? tabs.find((tab) => !tab.disabled)?.id;
 ---
 
 <div data-tabs class={className}>
-  <div role="tablist" aria-label="Tabs" data-fluid-hover class="lamaui-tabs relative isolate inline-flex max-w-full gap-1 overflow-x-auto rounded-lg border border-outline bg-muted p-1">
-    <span class="lamaui-tab-highlight absolute top-1 bottom-1 left-0 rounded-[calc(var(--radius-lg)-0.25rem)] bg-surface shadow-(--shadow-sm)" aria-hidden="true"></span>
+  <div role="tablist" aria-label={label} data-fluid-hover class="lamaui-tabs relative isolate inline-flex max-w-full gap-1 overflow-x-auto rounded-lg border border-(--tab-border) bg-(--tab-track) p-1">
+    <span class="lamaui-tab-highlight absolute top-1 bottom-1 left-0 z-1 rounded-[calc(var(--radius-lg)-0.25rem)] bg-(--tab-selected)" aria-hidden="true"></span>
     {
       tabs.map((tab) => (
-        <button id={`${id}-${tab.id}-tab`} type="button" role="tab" aria-selected={tab.id === active} aria-controls={`${id}-${tab.id}-panel`} tabindex={tab.id === active ? 0 : -1} disabled={tab.disabled} class="lamaui-tab relative z-1 min-h-10 shrink-0 rounded-[calc(var(--radius-lg)-0.25rem)] border-0 bg-transparent px-3 py-2 text-sm font-semibold text-muted-label disabled:opacity-[0.4] aria-selected:text-label" data-tab={tab.id}>
+        <button id={`${id}-${tab.id}-tab`} type="button" role="tab" aria-selected={tab.id === selected} aria-controls={`${id}-${tab.id}-panel`} tabindex={tab.id === selected ? 0 : -1} disabled={tab.disabled} class="lamaui-tab relative z-2 min-h-10 shrink-0 rounded-[calc(var(--radius-lg)-0.25rem)] border-0 bg-transparent px-3 py-2 text-sm font-semibold text-(--tab-muted-label) disabled:opacity-[0.4] aria-selected:text-(--tab-label)" data-tab={tab.id}>
           {tab.label}
         </button>
       ))
@@ -29,5 +31,24 @@ const { tabs, active = tabs[0]?.id, id = "tabs", class: className } = Astro.prop
 <style>
   .lamaui-tab-highlight {
     pointer-events: none;
+    box-shadow:
+      inset 0 0 0 1px var(--tab-selected-border),
+      var(--shadow-sm);
+  }
+  .lamaui-tabs :global(.lamaui-fluid-hover) {
+    position: absolute;
+    z-index: 0;
+    background: var(--tab-hover);
+  }
+  .lamaui-tabs :global(.lamaui-fluid-hover[data-visible="true"]) {
+    opacity: 1;
+  }
+  .lamaui-tab:not(:disabled):hover {
+    color: var(--tab-label);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lamaui-tab:not(:disabled):not([aria-selected="true"]):hover {
+      background: var(--tab-hover);
+    }
   }
 </style>

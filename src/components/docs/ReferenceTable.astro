@@ -1,0 +1,96 @@
+---
+import Table from "@/components/data-display/Table.astro";
+interface Props {
+  columns: { key: string; label: string; code?: boolean; wrap?: boolean; rowHeader?: boolean }[];
+  rows: Record<string, string | number | null | undefined>[];
+  caption: string;
+}
+const { columns, rows, caption } = Astro.props;
+---
+
+<div data-reference-label={caption} class:list={["guide-reference", columns.length === 4 && "guide-reference-four"]}>
+  <Table {caption} columns={columns.map((column) => ({ ...column, rowHeader: column.key === "name" }))} {rows} />
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-reference-label]").forEach((root) => {
+    const scroller = root.querySelector<HTMLElement>(".lamaui-table")!;
+    scroller.setAttribute("role", "region");
+    scroller.setAttribute("aria-label", root.dataset.referenceLabel!);
+    const sync = () => {
+      scroller.tabIndex = scroller.scrollWidth > scroller.clientWidth + 1 ? 0 : -1;
+    };
+    new ResizeObserver(sync).observe(scroller);
+    sync();
+  });
+</script>
+
+<style>
+  .guide-reference {
+    min-width: 0;
+  }
+  .guide-reference :global(.lamaui-table-scroll[data-edge-scroll]) {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+  .guide-reference :global(.lamaui-table-scroll > .lamaui-table) {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow: auto;
+    overscroll-behavior-x: contain;
+  }
+  .guide-reference :global(.lamaui-table:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .guide-reference :global(table) {
+    min-width: 40rem;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+  .guide-reference-four :global(table) {
+    table-layout: fixed;
+    min-width: 44rem;
+  }
+  .guide-reference-four :global(tr > :nth-child(1)) {
+    width: 18%;
+  }
+  .guide-reference-four :global(tr > :nth-child(2)) {
+    width: 26%;
+  }
+  .guide-reference-four :global(tr > :nth-child(3)) {
+    width: 18%;
+  }
+  .guide-reference-four :global(tr > :nth-child(4)) {
+    width: 38%;
+  }
+  .guide-reference :global(thead th) {
+    font-size: 0.875rem;
+    color: var(--muted-label);
+  }
+  .guide-reference :global(tr > *) {
+    padding: 1rem;
+  }
+  .guide-reference :global(tbody td:last-child) {
+    color: var(--muted-label);
+  }
+  .guide-reference :global(tbody th code) {
+    white-space: nowrap;
+  }
+  .guide-reference :global(code) {
+    display: inline;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    white-space: normal;
+    overflow-wrap: normal;
+    word-break: normal;
+    box-decoration-break: clone;
+  }
+</style>

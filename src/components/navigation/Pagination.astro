@@ -7,15 +7,39 @@ interface Props {
   label?: string;
 }
 const { current, total, href = "?page=", label = "Pagination" } = Astro.props;
-const pages = Array.from({ length: total }, (_, i) => i + 1);
+const pageCount = Number.isFinite(total) ? Math.max(0, Math.floor(total)) : 0;
+const currentPage = Number.isFinite(current) ? Math.min(pageCount, Math.max(1, Math.floor(current))) : 1;
+const start = Math.max(2, Math.min(currentPage - 1, pageCount - 4));
+const end = Math.min(pageCount - 1, Math.max(currentPage + 1, 5));
+const pages: (number | "ellipsis")[] = [];
+if (pageCount > 0) pages.push(1);
+if (start > 2) pages.push("ellipsis");
+for (let page = start; page <= end; page++) pages.push(page);
+if (end < pageCount - 1) pages.push("ellipsis");
+if (pageCount > 1) pages.push(pageCount);
+const styles = `${controlStyles} ${ghostStyles} ${smallControlStyles} min-w-10`;
 ---
 
-<nav aria-label={label} class="flex flex-wrap items-center gap-1">
-  <a href={`${href}${Math.max(1, current - 1)}`} aria-disabled={current === 1} class={`${controlStyles} ${ghostStyles} ${smallControlStyles}`}>←</a>{
-    pages.map((page) => (
-      <a href={`${href}${page}`} aria-current={page === current ? "page" : undefined} class={`${controlStyles} ${ghostStyles} ${smallControlStyles} min-w-10 aria-[current=page]:bg-accent aria-[current=page]:text-accent-label`}>
-        {page}
+{
+  pageCount > 0 && (
+    <nav aria-label={label} class="flex flex-wrap items-center gap-1">
+      <a href={currentPage > 1 ? `${href}${currentPage - 1}` : undefined} role="link" aria-label="Previous page" aria-disabled={currentPage === 1 || undefined} tabindex={currentPage === 1 ? -1 : undefined} class={styles}>
+        ←
       </a>
-    ))
-  }<a href={`${href}${Math.min(total, current + 1)}`} aria-disabled={current === total} class={`${controlStyles} ${ghostStyles} ${smallControlStyles}`}>→</a>
-</nav>
+      {pages.map((page) =>
+        page === "ellipsis" ? (
+          <span aria-hidden="true" class="grid min-h-10 min-w-6 place-items-center text-muted-label">
+            …
+          </span>
+        ) : (
+          <a href={`${href}${page}`} aria-label={`Page ${page}`} aria-current={page === currentPage ? "page" : undefined} class={`${styles} aria-[current=page]:bg-accent aria-[current=page]:text-accent-label`}>
+            {page}
+          </a>
+        )
+      )}
+      <a href={currentPage < pageCount ? `${href}${currentPage + 1}` : undefined} role="link" aria-label="Next page" aria-disabled={currentPage === pageCount || undefined} tabindex={currentPage === pageCount ? -1 : undefined} class={styles}>
+        →
+      </a>
+    </nav>
+  )
+}

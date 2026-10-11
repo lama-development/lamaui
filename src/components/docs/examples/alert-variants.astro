@@ -1,0 +1,12 @@
+---
+import heart from "@phosphor-icons/core/duotone/heart-duotone.svg?raw";
+import Alert from "@/components/feedback/Alert.astro";
+---
+
+<div class="grid gap-4">
+  <Alert title="Information">Your changes are saved locally.</Alert>
+  <Alert variant="success" title="Published">The new version is available.</Alert>
+  <Alert variant="warning" title="Review required">Two fields need attention.</Alert>
+  <Alert variant="destructive" title="Could not save">Try again in a moment.</Alert>
+  <Alert icon={heart} color="var(--accent)" background="var(--accent-subtle)" title="Thanks for your support">This message uses a Phosphor icon and theme colors.</Alert>
+</div>

@@ -41,6 +41,13 @@
   --outline: color-mix(in srgb, var(--accent) 6%, light-dark(#e4e6e9, #2a292d));
   --card-outline: color-mix(in srgb, var(--accent) 8%, light-dark(#e4e6e9, #2a292d));
   --input: var(--muted);
+  --tab-track: light-dark(#e7e7eb, #28282e);
+  --tab-border: light-dark(#d5d5db, #3d3d45);
+  --tab-selected: light-dark(#ffffff, #50505a);
+  --tab-selected-border: light-dark(#d2d2d9, #686873);
+  --tab-hover: light-dark(#d4d4dc, #3b3b44);
+  --tab-label: light-dark(#242428, #f4f4f5);
+  --tab-muted-label: light-dark(#606068, #c2c2c9);
   --destructive: light-dark(#c62828, #ff5c5c);
   --destructive-label: light-dark(#ffffff, #121417);
   --destructive-subtle: light-dark(#fdecec, #351719);
