@@ -6,10 +6,13 @@ dist/
 
 # dependencies
 node_modules/
+.npm-cache/
 
 # browser test artifacts
 playwright-report/
 test-results/
+tests/fixtures/*/dist/
+tests/fixtures/*/.astro/
 
 # logs
 npm-debug.log*

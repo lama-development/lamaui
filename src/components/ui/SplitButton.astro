@@ -1,10 +1,10 @@
 ---
-import svgChevronDown from "@phosphor-icons/core/bold/caret-down-bold.svg?raw";
-import Button from "@/components/ui/Button.astro";
-import Icon from "@/components/ui/Icon.astro";
-import { controlStyles, iconControlStyles, menuItemStyles, menuStyles, primaryStyles, secondaryStyles } from "@/lib/styles";
-import { cx } from "@/lib/classes";
-import type { Variant } from "@/types";
+import { svgChevronDown } from "../../icons/package";
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+import { controlStyles, iconControlStyles, menuItemStyles, menuStyles, primaryStyles, secondaryStyles } from "../../lib/styles";
+import { cx } from "../../lib/classes";
+import type { Variant } from "../../types";
 
 export interface SplitButtonOption {
   label: string;
@@ -64,7 +64,7 @@ const variantStyles = variant === "primary" ? primaryStyles : secondaryStyles;
 </style>
 
 <script>
-  import { requestDetailsMenuClose } from "@/scripts/details-menu";
+  import { requestDetailsMenuClose } from "../../scripts/details-menu";
 
   document.querySelectorAll<HTMLElement>("[data-split-button]").forEach((root) => {
     const details = root.querySelector<HTMLDetailsElement>("[data-split-menu]");

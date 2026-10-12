@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 
+const normalizeLineEndings = (value: string) => value.replaceAll("\r\n", "\n");
+
 test("narrow reference tables preserve code values and support keyboard scrolling", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/components/custom-select");
@@ -22,6 +24,29 @@ test("component cards keep their neutral border on hover", async ({ page }) => {
   await card.hover();
   await card.evaluate((element) => element.getAnimations().forEach((animation) => animation.finish()));
   await expect.poll(() => card.evaluate((element) => getComputedStyle(element).borderColor)).toBe(border);
+});
+
+test("single examples and data types avoid redundant subsection headings", async ({ page }) => {
+  await page.goto("/components/breadcrumb");
+  const example = page.locator('section[aria-labelledby="examples"]');
+  await expect(example.getByRole("heading", { level: 2, name: "A longer hierarchy" })).toBeVisible();
+  await expect(example.getByRole("heading", { level: 3 })).toHaveCount(0);
+
+  const dataTypes = page.locator('section[aria-labelledby="data-types"]');
+  await expect(dataTypes.getByRole("heading", { level: 2, name: "Data types" })).toBeVisible();
+  await expect(dataTypes).toContainText("The Item object uses the following properties.");
+  await expect(dataTypes.getByRole("heading", { level: 3 })).toHaveCount(0);
+});
+
+test("guide body descriptions fill their available width", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/components/icon");
+  for (const selector of [".docs-page-header p", ".example-heading p", ".guide-note"]) {
+    const description = page.locator(selector).last();
+    await expect(description).toBeVisible();
+    expect(await description.evaluate((element) => getComputedStyle(element).maxWidth)).toBe("none");
+    expect(Math.abs((await description.boundingBox())!.width - (await description.locator("..").boundingBox())!.width)).toBeLessThan(1);
+  }
 });
 
 test("live form examples validate, expose submitted values, and reset", async ({ page }) => {
@@ -100,22 +125,27 @@ test("Preview and Code tabs preserve the example state and copy its source", asy
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("/components/checkbox");
   const frame = page.locator("[data-example-frame]");
+  const tablist = frame.getByRole("tablist", { name: "Example view" });
   const previewTab = frame.getByRole("tab", { name: "Preview", exact: true });
   const codeTab = frame.getByRole("tab", { name: "Code", exact: true });
   const source = frame.locator("[data-example-code]");
   const checkbox = frame.getByRole("checkbox");
   await checkbox.check();
   await expect(previewTab).toHaveAttribute("aria-selected", "true");
+  expect(await tablist.evaluate((element) => getComputedStyle(element).borderTopWidth)).toBe("1px");
+  expect(await tablist.evaluate((element) => getComputedStyle(element).backgroundColor)).not.toBe("rgba(0, 0, 0, 0)");
+  expect((await tablist.boundingBox())!.height).toBeLessThanOrEqual(38);
   await expect(source).toBeHidden();
   await codeTab.click();
   await expect(codeTab).toHaveAttribute("aria-selected", "true");
   await expect(source).toBeVisible();
   await expect(frame.locator("[data-example-live]")).toBeHidden();
   const code = await source.locator("code").textContent();
-  expect(code).toContain("import Checkbox from");
+  expect(code).toContain("Checkbox");
+  expect(code).toContain('from "lamaui"');
   expect(code).toContain("new FormData(form)");
   await source.getByRole("button", { name: "Copy code", exact: true }).click();
-  await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(code);
+  await expect.poll(async () => normalizeLineEndings(await page.evaluate(() => navigator.clipboard.readText()))).toBe(normalizeLineEndings(code ?? ""));
   await codeTab.focus();
   await page.keyboard.press("ArrowLeft");
   await expect(previewTab).toBeFocused();
@@ -156,29 +186,21 @@ test("the mobile contents card contains only links and navigates directly", asyn
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test("component source opens separately, copies correctly, and restores focus", async ({ page, context }) => {
-  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
-  await page.goto("/components/icon-button");
-  const trigger = page.getByRole("button", { name: "View source", exact: true });
-  await trigger.click();
-  const source = page.getByRole("dialog", { name: "IconButton source", exact: true });
-  await expect(source).toBeVisible();
-  const code = await source.locator("code").textContent();
-  expect(code).toContain("label: string");
-  await source.getByRole("button", { name: "Copy code", exact: true }).click();
-  await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(code);
-  await page.keyboard.press("Escape");
-  await expect(source).not.toBeVisible();
-  await expect(trigger).toBeFocused();
-});
-
 test("the PDF action stays pinned and exports example source with Preview selected", async ({ page }) => {
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/components/checkbox");
-    const action = page.getByRole("button", { name: "Download PDF", exact: true });
+    const action = width === 1440 ? page.getByRole("button", { name: "Download PDF", exact: true }) : page.locator('summary[aria-label="Guide actions"]');
     await expect(action).toBeVisible();
-    expect((await action.boundingBox())!.y).toBeLessThan((await page.getByRole("heading", { level: 1 }).boundingBox())!.y);
+    if (width === 390) {
+      expect((await action.boundingBox())!.width).toBeLessThanOrEqual(48);
+      await action.click();
+      const menu = page.getByRole("menu", { name: "Guide actions" });
+      await expect(menu.getByRole("menuitem")).toHaveCount(5);
+      await page.keyboard.press("Escape");
+      await expect(action).toBeFocused();
+    }
+    expect((await action.boundingBox())!.y).toBeLessThanOrEqual((await page.getByRole("heading", { level: 1 }).boundingBox())!.y);
     await page.evaluate(() => window.scrollTo({ top: 1200, behavior: "instant" }));
     await expect.poll(async () => (await action.boundingBox())!.y).toBeGreaterThanOrEqual(0);
     await expect.poll(async () => (await action.boundingBox())!.y).toBeLessThan(100);
@@ -192,7 +214,8 @@ test("the PDF action stays pinned and exports example source with Preview select
       expect(contentsBounds.y).toBeLessThan(actionBounds.y + actionBounds.height + 24);
     }
   }
-  const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("button", { name: "Download PDF", exact: true }).click()]);
+  await page.locator('summary[aria-label="Guide actions"]').click();
+  const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("menuitem", { name: "Download PDF", exact: true }).click()]);
   expect(download.suggestedFilename()).toBe("checkbox.pdf");
   const pdf = readFileSync((await download.path())!).toString("latin1");
   expect(pdf).toMatch(/^%PDF-/);

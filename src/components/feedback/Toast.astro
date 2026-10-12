@@ -1,9 +1,7 @@
 ---
-import svgClose from "@phosphor-icons/core/bold/x-bold.svg?raw";
-import svgCheck from "@phosphor-icons/core/bold/check-bold.svg?raw";
-import svgFeedback from "@phosphor-icons/core/duotone/chat-circle-text-duotone.svg?raw";
-import { toastCloseStyles } from "@/lib/styles";
-import Icon from "@/components/ui/Icon.astro";
+import { svgClose, svgCheck, svgFeedback } from "../../icons/package";
+import { toastCloseStyles } from "../../lib/styles";
+import Icon from "../ui/Icon.astro";
 interface Props {
   id?: string;
   title?: string;
@@ -21,3 +19,7 @@ const { id = "lamaui-toast", title = "Saved", variant = "success", class: classN
     </div>
   </div><button type="button" class={toastCloseStyles} aria-label="Dismiss notification" data-toast-close><Icon src={svgClose} size={16} /></button>
 </div>
+
+<script>
+  import "../../scripts/toast";
+</script>

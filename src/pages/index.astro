@@ -1,6 +1,6 @@
 ---
 import CategoryIcon from "@/components/docs/CategoryIcon.astro";
-import svgChevronRight from "@phosphor-icons/core/bold/caret-right-bold.svg?raw";
+import { svgChevronRight } from "@icons/docs";
 import DocsLayout from "@/layouts/DocsLayout.astro";
 import Icon from "@/components/ui/Icon.astro";
 import Chip from "@/components/data-display/Chip.astro";
@@ -9,12 +9,14 @@ import TabPanel from "@/components/navigation/TabPanel.astro";
 import CatalogPreview from "@/components/docs/CatalogPreview.astro";
 import { componentGroups, components } from "@/lib/components";
 import "@/styles/docs.css";
+
+const description = "Astro primitives for controls, surfaces, layout, and interaction.";
 ---
 
-<DocsLayout>
-  <header class="docs-page-header mb-8 [&_h1]:m-0 [&_h1]:text-[clamp(2rem,4vw,2.75rem)] [&_h1]:leading-[1.08] [&_h1]:tracking-[-0.035em] [&_p]:m-[0.75rem_0_0] [&_p]:max-w-2xl [&_p]:text-muted-label">
+<DocsLayout description={description}>
+  <header class="docs-page-header mb-8 [&_h1]:m-0 [&_h1]:text-[clamp(2rem,4vw,2.75rem)] [&_h1]:leading-[1.08] [&_h1]:tracking-[-0.035em] [&_p]:m-[0.75rem_0_0] [&_p]:w-full [&_p]:max-w-none [&_p]:text-muted-label">
     <h1>Components</h1>
-    <p>Astro primitives for controls, surfaces, layout, and interaction.</p>
+    <p>{description}</p>
   </header>
 
   <section id="catalog" class="catalog" data-catalog aria-label="Component library">

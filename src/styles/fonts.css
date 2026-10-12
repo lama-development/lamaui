@@ -20,7 +20,7 @@
 
 @font-face {
   font-family: "Google Sans Flex";
-  src: url("/fonts/google-sans-flex.woff2") format("woff2");
+  src: url("../assets/fonts/google-sans-flex.woff2") format("woff2");
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;

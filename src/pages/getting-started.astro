@@ -1,0 +1,72 @@
+---
+import CodeBlock from "@/components/data-display/CodeBlock.astro";
+import InlineCode from "@/components/data-display/InlineCode.astro";
+import Button from "@/components/ui/Button.astro";
+import ComponentGuide from "@/components/docs/ComponentGuide.astro";
+import DocsLayout from "@/layouts/DocsLayout.astro";
+
+const description = "Install LamaUI once, add its styles, and use your first Astro component.";
+const sections = [
+  { id: "install-lamaui", label: "Install LamaUI" },
+  { id: "add-styles", label: "Add the styles" },
+  { id: "use-component", label: "Use a component" },
+  { id: "ready", label: "You’re ready" }
+];
+const installCode = "npm install lamaui";
+const layoutCode = `---
+// src/layouts/Layout.astro
+import "lamaui/styles.css";
+---
+
+<html lang="en">
+  <body><slot /></body>
+</html>`;
+const componentCode = `---
+import { Button } from "lamaui";
+---
+
+<Button>Save changes</Button>`;
+---
+
+<DocsLayout title="Getting started - LamaUI" {description} currentPage="getting-started">
+  <ComponentGuide title="Getting started" slug="getting-started" {description} {sections}>
+    <header slot="header" data-guide-no-export class="docs-page-header mb-10 [&_h1]:m-0 [&_h1]:text-[clamp(2rem,4vw,2.75rem)] [&_h1]:leading-[1.08] [&_h1]:tracking-[-0.035em] [&_p]:m-[0.75rem_0_0] [&_p]:w-full [&_p]:max-w-none [&_p]:text-muted-label">
+      <h1>Getting started</h1>
+      <p>Set up LamaUI once for your project. After that, every component is ready to import whenever you need it.</p>
+    </header>
+
+    <ol class="m-0 grid w-full list-none gap-14 p-0">
+      <li>
+        <section aria-labelledby="install-lamaui">
+          <h2 id="install-lamaui" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight"><span class="text-muted-label">1.</span> Install LamaUI</h2>
+          <p class="mt-2 mb-5 w-full max-w-none leading-relaxed text-muted-label">Run this once from your Astro project. LamaUI requires Astro and Tailwind CSS 4.</p>
+          <CodeBlock code={installCode} language="bash" label="Terminal" />
+        </section>
+      </li>
+
+      <li>
+        <section aria-labelledby="add-styles">
+          <h2 id="add-styles" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight"><span class="text-muted-label">2.</span> Add the styles</h2>
+          <p class="mt-2 mb-5 w-full max-w-none leading-relaxed text-muted-label">Import the stylesheet once in your root layout. You do not need to repeat it on individual pages or components.</p>
+          <CodeBlock code={layoutCode} label="Layout.astro" />
+        </section>
+      </li>
+
+      <li>
+        <section aria-labelledby="use-component">
+          <h2 id="use-component" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight"><span class="text-muted-label">3.</span> Use a component</h2>
+          <p class="mt-2 mb-5 w-full max-w-none leading-relaxed text-muted-label">Import any component by name from <InlineCode>lamaui</InlineCode>. There is nothing else to download or unlock.</p>
+          <CodeBlock code={componentCode} label="Page.astro" />
+        </section>
+      </li>
+    </ol>
+
+    <aside data-surface-level="2" class="mt-14 flex w-full flex-wrap items-center justify-between gap-5 rounded-xl border border-outline bg-surface p-6 sm:p-8">
+      <div>
+        <h2 id="ready" class="m-0 scroll-mt-24 text-xl">You’re ready</h2>
+        <p class="mt-2 mb-0 text-muted-label">All components are now available from the same package.</p>
+      </div>
+      <Button href="/">Browse components</Button>
+    </aside>
+  </ComponentGuide>
+</DocsLayout>

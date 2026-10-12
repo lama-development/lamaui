@@ -22,7 +22,6 @@ const { title, slug, description, sections } = Astro.props;
     </template>
   </ToastRegion>
   <div class="guide-layout">
-    <div class="guide-breadcrumb print:hidden"><slot name="breadcrumb" /></div>
     <article class="guide-content min-w-0" data-guide-content><slot name="header" /><GuideTableOfContents {sections} variant="mobile" /><slot /></article>
     <aside class="guide-rail print:hidden">
       <GuideActions />
@@ -37,16 +36,10 @@ const { title, slug, description, sections } = Astro.props;
 <style is:global>
   .guide-layout {
     display: grid;
-    grid-template-areas: "breadcrumb" "rail" "content";
+    grid-template-areas: "rail" "content";
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto 2.75rem 1fr;
+    grid-template-rows: 2.75rem 1fr;
     gap: 1rem;
-  }
-  .guide-breadcrumb {
-    grid-area: breadcrumb;
-    display: flex;
-    align-items: center;
-    min-width: 0;
   }
   .guide-content {
     grid-area: content;
@@ -79,9 +72,6 @@ const { title, slug, description, sections } = Astro.props;
     display: grid;
     min-width: 0;
     gap: 2.75rem;
-  }
-  .guide-installation > p {
-    max-width: 72ch;
   }
   .guide-content :is(.guide-note, .example-heading, .example-note, .guide-definition) .lamaui-inline-code {
     padding: 0.125rem 0.3rem;
@@ -156,7 +146,6 @@ const { title, slug, description, sections } = Astro.props;
   }
   .guide-rail {
     grid-area: rail;
-    grid-row: 2 / -1;
     position: sticky;
     top: 1rem;
     z-index: 30;
@@ -185,16 +174,12 @@ const { title, slug, description, sections } = Astro.props;
   }
   @media (width >= 1280px) {
     .guide-layout {
-      grid-template-areas: "breadcrumb rail" "content rail";
+      grid-template-areas: "content rail";
       grid-template-columns: minmax(0, 1fr) 14rem;
-      grid-template-rows: auto 1fr;
-      gap: 1.5rem 2rem;
-    }
-    .guide-breadcrumb {
-      min-height: 2.75rem;
+      grid-template-rows: auto;
+      gap: 2rem;
     }
     .guide-rail {
-      grid-row: 1 / -1;
       top: 2rem;
       background: transparent;
       box-shadow: none;
@@ -209,7 +194,6 @@ const { title, slug, description, sections } = Astro.props;
     .guide-layout {
       display: block;
     }
-    .guide-breadcrumb,
     .guide-rail {
       display: none;
     }

@@ -1,10 +1,9 @@
 ---
-import svgFilePdf from "@phosphor-icons/core/duotone/file-pdf-duotone.svg?raw";
-import svgFileMd from "@phosphor-icons/core/duotone/file-md-duotone.svg?raw";
-import svgClipboardText from "@phosphor-icons/core/duotone/clipboard-text-duotone.svg?raw";
-import svgLink from "@phosphor-icons/core/duotone/link-duotone.svg?raw";
-import svgPrint from "@phosphor-icons/core/duotone/printer-duotone.svg?raw";
+import { svgFilePdf, svgFileMd, svgClipboardText, svgLink, svgMore, svgPrint } from "@icons/docs";
+import DropdownMenu from "@/components/navigation/DropdownMenu.astro";
+import Icon from "@/components/ui/Icon.astro";
 import SplitButton from "@/components/ui/SplitButton.astro";
+import { menuItemStyles } from "@/lib/styles";
 ---
 
 <div data-guide-actions class="flex shrink-0 items-center justify-end print:hidden">
@@ -12,7 +11,7 @@ import SplitButton from "@/components/ui/SplitButton.astro";
     label="Download PDF"
     icon={svgFilePdf}
     variant="primary"
-    class="min-[1280px]:w-full"
+    class="hidden min-[1280px]:inline-flex min-[1280px]:w-full"
     data-guide-pdf
     options={[
       { label: "Download Markdown", icon: svgFileMd, attributes: { "data-guide-download": true } },
@@ -21,4 +20,11 @@ import SplitButton from "@/components/ui/SplitButton.astro";
       { label: "Print", icon: svgPrint, attributes: { "data-guide-print": true } }
     ]}
   />
+  <DropdownMenu label="Guide actions" icon={svgMore} iconOnly align="end" class="min-[1280px]:hidden">
+    <button type="button" role="menuitem" tabindex="-1" class={menuItemStyles} data-guide-pdf><Icon src={svgFilePdf} size={18} /><span>Download PDF</span></button>
+    <button type="button" role="menuitem" tabindex="-1" class={menuItemStyles} data-guide-download><Icon src={svgFileMd} size={18} /><span>Download Markdown</span></button>
+    <button type="button" role="menuitem" tabindex="-1" class={menuItemStyles} data-guide-copy><Icon src={svgClipboardText} size={18} /><span>Copy as text</span></button>
+    <button type="button" role="menuitem" tabindex="-1" class={menuItemStyles} data-guide-copy-link><Icon src={svgLink} size={18} /><span>Copy link</span></button>
+    <button type="button" role="menuitem" tabindex="-1" class={menuItemStyles} data-guide-print><Icon src={svgPrint} size={18} /><span>Print</span></button>
+  </DropdownMenu>
 </div>

@@ -1,7 +1,7 @@
 ---
-import svgClose from "@phosphor-icons/core/bold/x-bold.svg?raw";
-import { controlStyles, ghostStyles, iconControlStyles } from "@/lib/styles";
-import Icon from "@/components/ui/Icon.astro";
+import { svgClose } from "../../icons/package";
+import { controlStyles, ghostStyles, iconControlStyles } from "../../lib/styles";
+import Icon from "../ui/Icon.astro";
 interface Props {
   id: string;
   title: string;
@@ -24,3 +24,7 @@ const titleId = `${id}-title`;
     </div><div class="lamaui-drawer-body min-h-0 flex-1 overflow-auto p-5"><slot /></div>
   </div>
 </dialog>
+
+<script>
+  import "../../scripts/drawer";
+</script>

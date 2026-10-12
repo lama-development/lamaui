@@ -1,0 +1,13 @@
+export { default as svgCheck } from "@phosphor-icons/core/bold/check-bold.svg?raw";
+export { default as svgChevronDown } from "@phosphor-icons/core/bold/caret-down-bold.svg?raw";
+export { default as svgClose } from "@phosphor-icons/core/bold/x-bold.svg?raw";
+export { default as svgCode } from "@phosphor-icons/core/bold/code-bold.svg?raw";
+export { default as svgCopy } from "@phosphor-icons/core/duotone/copy-duotone.svg?raw";
+export { default as svgEye } from "@phosphor-icons/core/duotone/eye-duotone.svg?raw";
+export { default as svgEyeSlash } from "@phosphor-icons/core/duotone/eye-slash-duotone.svg?raw";
+export { default as svgFeedback } from "@phosphor-icons/core/duotone/chat-circle-text-duotone.svg?raw";
+export { default as svgMoon } from "@phosphor-icons/core/duotone/moon-duotone.svg?raw";
+export { default as svgSearch } from "@phosphor-icons/core/duotone/magnifying-glass-duotone.svg?raw";
+export { default as svgSun } from "@phosphor-icons/core/duotone/sun-duotone.svg?raw";
+export { default as svgSystem } from "@phosphor-icons/core/duotone/desktop-duotone.svg?raw";
+export { default as svgWarning } from "@phosphor-icons/core/bold/warning-circle-bold.svg?raw";

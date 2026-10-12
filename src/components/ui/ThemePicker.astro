@@ -1,10 +1,8 @@
 ---
-import svgSystem from "@phosphor-icons/core/duotone/desktop-duotone.svg?raw";
-import svgSun from "@phosphor-icons/core/duotone/sun-duotone.svg?raw";
-import svgMoon from "@phosphor-icons/core/duotone/moon-duotone.svg?raw";
-import { controlStyles, ghostStyles, iconControlStyles } from "@/lib/styles";
-import Icon from "@/components/ui/Icon.astro";
-import Tooltip from "@/components/overlays/Tooltip.astro";
+import { svgSystem, svgSun, svgMoon } from "../../icons/package";
+import { controlStyles, ghostStyles, iconControlStyles } from "../../lib/styles";
+import Icon from "./Icon.astro";
+import Tooltip from "../overlays/Tooltip.astro";
 interface Props {
   label?: string;
   class?: string;

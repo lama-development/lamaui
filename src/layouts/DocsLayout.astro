@@ -1,26 +1,23 @@
 ---
 import CategoryIcon from "@/components/docs/CategoryIcon.astro";
-import svgSearch from "@phosphor-icons/core/duotone/magnifying-glass-duotone.svg?raw";
-import svgMenu from "@phosphor-icons/core/bold/list-bold.svg?raw";
-import svgClose from "@phosphor-icons/core/bold/x-bold.svg?raw";
-import svgHome from "@phosphor-icons/core/duotone/house-duotone.svg?raw";
-import svgChevronDown from "@phosphor-icons/core/bold/caret-down-bold.svg?raw";
-import svgExternal from "@phosphor-icons/core/duotone/arrow-square-out-duotone.svg?raw";
+import { svgSearch, svgMenu, svgClose, svgPuzzle, svgHouse, svgChevronDown, svgExternal } from "@icons/docs";
 import { controlStyles, ghostStyles, iconControlStyles } from "@/lib/styles";
 import "@/styles/global.css";
+import googleSansFlexUrl from "@/assets/fonts/google-sans-flex.woff2?url";
 import Icon from "@/components/ui/Icon.astro";
 import AccentPicker from "@/components/ui/AccentPicker.astro";
 import ThemePicker from "@/components/ui/ThemePicker.astro";
 import DocsSearch from "@/components/docs/DocsSearch.astro";
 import Llama from "@/assets/icons/llama.svg";
 import { componentGroups } from "@/lib/components";
-import { version } from "../../package.json";
+import { version } from "@package";
 interface Props {
   title?: string;
   description?: string;
   currentSlug?: string;
+  currentPage?: "overview" | "getting-started";
 }
-const { title = "LamaUI - Components", description = "Reusable Astro components extracted from a focused dashboard design language.", currentSlug } = Astro.props;
+const { title = "LamaUI - Components", description = "Reusable Astro components extracted from a focused dashboard design language.", currentSlug, currentPage = currentSlug ? undefined : "overview" } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
@@ -35,7 +32,7 @@ const year = new Date().getFullYear();
     <link rel="shortcut icon" href="/favicons/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
     <link rel="manifest" href="/favicons/site.webmanifest" />
-    <link rel="preload" href="/fonts/google-sans-flex.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={googleSansFlexUrl} as="font" type="font/woff2" crossorigin />
     <script is:inline>
       (() => {
         try {
@@ -67,37 +64,48 @@ const year = new Date().getFullYear();
           <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} docs-sidebar-close min-[861px]:hidden!`} aria-label="Close navigation" data-docs-close><Icon src={svgClose} /></button>
         </div>
         <button type="button" class="mt-3 flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-md border border-outline bg-surface px-3 text-sm text-muted-label hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-ring" aria-haspopup="dialog" aria-controls="docs-search" aria-expanded="false" aria-label="Search documentation" aria-keyshortcuts="Meta+K Control+K" data-search-open><Icon src={svgSearch} size={18} /><span class="flex-1 text-left">Search docs…</span><kbd data-search-shortcut class="rounded border border-outline px-1.5 py-0.5 text-[0.6875rem]">⌘ K</kbd></button>
-        <nav class="docs-nav scrollbar-gutter:stable -me-3 min-h-0 flex-1 overflow-auto py-3 pe-3 [&>_*_+_*]:mt-1" aria-label="Components">
-          <a href="/" aria-current={!currentSlug ? "page" : undefined} class="docs-nav-row flex min-h-11 cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-label no-underline [corner-shape:squircle] hover:bg-surface-hover hover:text-label aria-[current=page]:bg-accent-subtle aria-[current=page]:font-semibold aria-[current=page]:text-accent hover:aria-[current=page]:bg-accent-subtle hover:aria-[current=page]:text-accent [&_span]:flex-1 [&_svg]:flex-none"><Icon src={svgHome} /><span>Overview</span></a>
-          {
-            componentGroups.map((group) => {
-              const containsCurrent = group.components.some((item) => item.slug === currentSlug);
-              return (
-                <div class="docs-nav-group [&_li_a]:flex [&_li_a]:min-h-9 [&_li_a]:items-center [&_li_a]:rounded-[0.625rem] [&_li_a]:p-[0.375rem_0.75rem] [&_li_a]:text-sm [&_li_a]:leading-tight [&_li_a]:text-muted-label [&_li_a]:no-underline [&_li_a:hover]:bg-surface-hover [&_li_a:hover]:text-label [&_li_a[aria-current=page]]:bg-accent-subtle [&_li_a[aria-current=page]]:font-semibold [&_li_a[aria-current=page]]:text-accent [&_li_a[aria-current=page]:hover]:bg-accent-subtle [&_li_a[aria-current=page]:hover]:text-accent [&_li+li]:mt-1 [&_ul]:m-0 [&_ul]:list-none [&_ul]:p-[0.25rem_0_0.375rem_2rem] [&[data-open=true]_.docs-nav-chevron]:transform-[rotate(180deg)]" data-open={String(containsCurrent)}>
-                  <button type="button" class:list={["docs-nav-row flex min-h-11 w-full cursor-pointer items-center gap-3 rounded-md border-0 bg-transparent px-3 py-2 text-left text-sm text-muted-label no-underline [corner-shape:squircle] hover:bg-surface-hover hover:text-label [&_span]:flex-1 [&_svg]:flex-none", containsCurrent && "font-semibold text-accent hover:text-accent"]} aria-expanded={containsCurrent} aria-controls={`docs-nav-${group.slug}`} data-docs-group-toggle>
-                    <>
-                      <CategoryIcon group={group.slug} />
-                      <span>{group.name}</span>
-                      <Icon src={svgChevronDown} size={16} class="docs-nav-chevron" />
-                    </>
-                  </button>
-                  <div id={`docs-nav-${group.slug}`} class="docs-nav-panel" inert={!containsCurrent}>
-                    <div class="docs-nav-panel-inner">
-                      <ul>
-                        {group.components.map((item) => (
-                          <li>
-                            <a href={`/components/${item.slug}`} aria-current={item.slug === currentSlug ? "page" : undefined}>
-                              {item.name}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
+        <nav class="docs-nav -me-3 min-h-0 flex-1 scrollbar-gutter-stable overflow-auto py-3 pe-3" aria-label="Documentation">
+          <div aria-labelledby="docs-nav-start">
+            <p id="docs-nav-start" class="m-0 px-3 pt-1 pb-1.5 text-sm font-semibold text-label">Start</p>
+            <div class="grid gap-1">
+              <a href="/getting-started" aria-current={currentPage === "getting-started" ? "page" : undefined} class="docs-nav-row flex min-h-11 cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-label no-underline [corner-shape:squircle] hover:bg-surface-hover hover:text-label aria-[current=page]:bg-accent-subtle aria-[current=page]:font-semibold aria-[current=page]:text-accent hover:aria-[current=page]:bg-accent-subtle hover:aria-[current=page]:text-accent [&_span]:flex-1 [&_svg]:flex-none"><Icon src={svgHouse} /><span>Getting started</span></a>
+              <a href="/" aria-current={currentPage === "overview" ? "page" : undefined} class="docs-nav-row flex min-h-11 cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-label no-underline [corner-shape:squircle] hover:bg-surface-hover hover:text-label aria-[current=page]:bg-accent-subtle aria-[current=page]:font-semibold aria-[current=page]:text-accent hover:aria-[current=page]:bg-accent-subtle hover:aria-[current=page]:text-accent [&_span]:flex-1 [&_svg]:flex-none"><Icon src={svgPuzzle} /><span>All components</span></a>
+            </div>
+          </div>
+          <div class="mt-5" aria-labelledby="docs-nav-components">
+            <p id="docs-nav-components" class="m-0 px-3 pb-1.5 text-sm font-semibold text-label">Components</p>
+            <div class="grid gap-1">
+              {
+                componentGroups.map((group) => {
+                  const containsCurrent = group.components.some((item) => item.slug === currentSlug);
+                  return (
+                    <div class="docs-nav-group [&_li_a]:flex [&_li_a]:min-h-9 [&_li_a]:items-center [&_li_a]:rounded-[0.625rem] [&_li_a]:p-[0.375rem_0.75rem] [&_li_a]:text-sm [&_li_a]:leading-tight [&_li_a]:text-muted-label [&_li_a]:no-underline [&_li_a:hover]:bg-surface-hover [&_li_a:hover]:text-label [&_li_a[aria-current=page]]:bg-accent-subtle [&_li_a[aria-current=page]]:font-semibold [&_li_a[aria-current=page]]:text-accent [&_li_a[aria-current=page]:hover]:bg-accent-subtle [&_li_a[aria-current=page]:hover]:text-accent [&_li+li]:mt-1 [&_ul]:m-0 [&_ul]:list-none [&_ul]:p-[0.25rem_0_0.375rem_2rem] [&[data-open=true]_.docs-nav-chevron]:transform-[rotate(180deg)]" data-open={String(containsCurrent)}>
+                      <button type="button" class:list={["docs-nav-row flex min-h-11 w-full cursor-pointer items-center gap-3 rounded-md border-0 bg-transparent px-3 py-2 text-left text-sm text-muted-label no-underline [corner-shape:squircle] hover:bg-surface-hover hover:text-label [&_span]:flex-1 [&_svg]:flex-none", containsCurrent && "font-semibold text-accent hover:text-accent"]} aria-expanded={containsCurrent} aria-controls={`docs-nav-${group.slug}`} data-docs-group-toggle>
+                        <>
+                          <CategoryIcon group={group.slug} />
+                          <span>{group.name}</span>
+                          <Icon src={svgChevronDown} size={16} class="docs-nav-chevron" />
+                        </>
+                      </button>
+                      <div id={`docs-nav-${group.slug}`} class="docs-nav-panel" inert={!containsCurrent}>
+                        <div class="docs-nav-panel-inner">
+                          <ul>
+                            {group.components.map((item) => (
+                              <li>
+                                <a href={`/components/${item.slug}`} aria-current={item.slug === currentSlug ? "page" : undefined}>
+                                  {item.name}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })
-          }
+                  );
+                })
+              }
+            </div>
+          </div>
         </nav>
         <div class="docs-sidebar-foot relative z-1 -mx-3 flex flex-none items-center gap-2 border-t border-outline px-3 pt-3">
           <ThemePicker />

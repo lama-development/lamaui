@@ -16,15 +16,17 @@ const selected = tabs.find((tab) => tab.id === active && !tab.disabled)?.id ?? t
 ---
 
 <div data-tabs class={className}>
-  <div role="tablist" aria-label={label} data-fluid-hover class="lamaui-tabs relative isolate inline-flex max-w-full gap-1 overflow-x-auto rounded-lg border border-(--tab-border) bg-(--tab-track) p-1">
-    <span class="lamaui-tab-highlight absolute top-1 bottom-1 left-0 z-1 rounded-[calc(var(--radius-lg)-0.25rem)] bg-(--tab-selected)" aria-hidden="true"></span>
-    {
-      tabs.map((tab) => (
-        <button id={`${id}-${tab.id}-tab`} type="button" role="tab" aria-selected={tab.id === selected} aria-controls={`${id}-${tab.id}-panel`} tabindex={tab.id === selected ? 0 : -1} disabled={tab.disabled} class="lamaui-tab relative z-2 min-h-10 shrink-0 rounded-[calc(var(--radius-lg)-0.25rem)] border-0 bg-transparent px-3 py-2 text-sm font-semibold text-(--tab-muted-label) disabled:opacity-[0.4] aria-selected:text-(--tab-label)" data-tab={tab.id}>
-          {tab.label}
-        </button>
-      ))
-    }
+  <div class="lamaui-tabs-scroll max-w-full overflow-x-auto">
+    <div role="tablist" aria-label={label} data-fluid-hover class="lamaui-tabs relative isolate inline-flex min-w-max gap-1 rounded-lg border border-(--tab-border) bg-(--tab-track) p-1">
+      <span class="lamaui-tab-highlight absolute top-1 bottom-1 left-0 z-1 rounded-[calc(var(--radius-lg)-0.25rem)] bg-(--tab-selected)" aria-hidden="true"></span>
+      {
+        tabs.map((tab) => (
+          <button id={`${id}-${tab.id}-tab`} type="button" role="tab" aria-selected={tab.id === selected} aria-controls={`${id}-${tab.id}-panel`} tabindex={tab.id === selected ? 0 : -1} disabled={tab.disabled} class="lamaui-tab relative z-2 min-h-10 shrink-0 rounded-[calc(var(--radius-lg)-0.25rem)] border-0 bg-transparent px-3 py-2 text-sm font-semibold text-(--tab-muted-label) disabled:opacity-[0.4] aria-selected:text-(--tab-label)" data-tab={tab.id}>
+            {tab.label}
+          </button>
+        ))
+      }
+    </div>
   </div><div class="mt-4"><slot /></div>
 </div>
 
@@ -52,3 +54,7 @@ const selected = tabs.find((tab) => tab.id === active && !tab.disabled)?.id ?? t
     }
   }
 </style>
+
+<script>
+  import "../../scripts/tabs";
+</script>

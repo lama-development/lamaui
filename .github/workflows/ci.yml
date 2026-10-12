@@ -41,6 +41,15 @@ jobs:
       - name: Check Astro and TypeScript
         run: npm run check
 
+      - name: Check package boundaries
+        run: npm run check:package
+
+      - name: Build package consumer fixture
+        run: npm run test:consumer
+
+      - name: Validate package contents
+        run: npm run test:package
+
       - name: Build documentation
         run: npm run build
 

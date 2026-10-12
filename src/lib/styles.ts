@@ -1,4 +1,4 @@
-import { cx } from "@/lib/classes";
+import { cx } from "./classes";
 // Shared Tailwind recipes; keep classes literal for build-time discovery.
 // The lamaui-* markers support composed controls and selector-based interactions.
 export const controlStyles = cx("lamaui-control inline-flex cursor-pointer items-center justify-center gap-2 rounded-md border border-transparent leading-[1.2] font-semibold no-underline [corner-shape:squircle] disabled:pointer-events-none disabled:opacity-[.48] aria-disabled:pointer-events-none aria-disabled:opacity-[.48] [&:active:not(:disabled)]:scale-[.97] [&:not(.lamaui-sm):not(.lamaui-lg)]:min-h-(--control-md) [&:not(.lamaui-sm):not(.lamaui-lg):not(.lamaui-icon)]:px-4 [&:not(.lamaui-sm):not(.lamaui-lg):not(.lamaui-icon)]:py-2.5");

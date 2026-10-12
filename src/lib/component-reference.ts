@@ -1,8 +1,10 @@
 // This module runs only while Astro builds the documentation.
 import ts from "typescript";
-import sharedTypeSource from "../types/index.ts?raw";
+import docsIconSource from "@icons/docs.ts?raw";
+import sharedTypeSource from "@shared-types/index.ts?raw";
 const sharedTypeFile = ts.createSourceFile("types.ts", sharedTypeSource, ts.ScriptTarget.Latest, true);
 const sharedTypes = new Map(sharedTypeFile.statements.filter(ts.isTypeAliasDeclaration).map((node) => [node.name.text, node.type.getText(sharedTypeFile)]));
+const docsIcons = new Map(Array.from(docsIconSource.matchAll(/export \{ default as (\w+) \} from "([^"]+)";/g), (match) => [match[1], match[2]]));
 const sources = import.meta.glob<string>("../components/{ui,forms,navigation,data-display,feedback,overlays,layout}/*.astro", { query: "?raw", import: "default", eager: true });
 const sourceFor = (name: string) => {
   const match = Object.entries(sources).find(([path]) => path.endsWith(`/${name}.astro`));
@@ -26,6 +28,7 @@ const descriptions: Record<string, string> = {
   loading: "Shows progress and prevents repeated activation.",
   fullWidth: "Makes the control fill its container.",
   icon: "Decorative SVG markup imported with ?raw; accepts any Phosphor icon.",
+  iconOnly: "Visually hides the label while preserving it as the icon-only trigger’s accessible name.",
   iconPosition: "Places the icon before or after the label.",
   options: "Available choices; see the item type below.",
   value: "Initial field value or displayed measurement.",
@@ -110,7 +113,6 @@ export interface ComponentReference {
   path: string;
   props: PropRow[];
   types: { name: string; props: PropRow[] }[];
-  slots: string[];
   forwardsAttributes: boolean;
   source: string;
 }
@@ -152,15 +154,42 @@ export function componentReference(name: string, overrides: Record<string, strin
     if (name === "IconButton") rows = rows.map((row) => (row.name === "type" ? { ...row, default: '"button"' } : row.name === "disabled" ? { ...row, default: "false" } : row));
     if (base === "Input") rows = rows.filter((row) => row.name !== "type");
   }
-  const slots = Array.from(source.matchAll(/<slot(?:\s[^>]*?)?(?:\sname="([^"]+)")?[^>]*\/>/g), (match) => match[0].match(/name="([^"]+)"/)?.[1] ?? "default");
-  return { path, props: rows, types: declarations.filter((node) => node.name.text !== "Props" && membersOf(node).length).map((node) => ({ name: node.name.text, props: rowsFor(node, false) })), slots: [...new Set(slots)], forwardsAttributes: source.includes("...rest}") || name === "NumberInput", source };
+  return { path, props: rows, types: declarations.filter((node) => node.name.text !== "Props" && membersOf(node).length).map((node) => ({ name: node.name.text, props: rowsFor(node, false) })), forwardsAttributes: source.includes("...rest}") || name === "NumberInput", source };
 }
 export function withImports(code: string) {
-  const tags = [...new Set(Array.from(code.matchAll(/<([A-Z][A-Za-z]+)(?:\s|\/|>)/g), (match) => match[1]))];
+  const normalized = code
+    .replace(/import\s+\{([^}]+)\}\s+from\s+["']@icons\/docs["'];?/g, (_, names: string) =>
+      names
+        .split(",")
+        .map((name) => name.trim())
+        .map((name) => {
+          const path = docsIcons.get(name);
+          if (!path) throw new Error(`Missing documentation icon export: ${name}`);
+          return `import ${name} from "${path}";`;
+        })
+        .join("\n")
+    )
+    .replace(/import\s+[A-Z][A-Za-z]+\s+from\s+["']@\/components\/[^"']+["'];?\r?\n?/g, "")
+    .replaceAll('from "@/lib/styles"', 'from "lamaui/styles"')
+    .replaceAll("from '@/lib/styles'", "from 'lamaui/styles'");
+  const tags = [...new Set(Array.from(normalized.matchAll(/<([A-Z][A-Za-z]+)(?:\s|\/|>)/g), (match) => match[1]))];
   const knownTags = tags.filter((name) => Object.keys(sources).some((path) => path.endsWith(`/${name}.astro`)));
-  const imports = knownTags.filter((name) => !new RegExp(`import\\s+${name}\\s+from`).test(code)).map((name) => `import ${name} from "${sourceFor(name).path}";`);
-  const firstTag = code.search(/<(?:[A-Za-z]|!)/);
-  if (firstTag < 0) return code;
-  const frontmatter = code.slice(0, firstTag).trim();
-  return `---\n${[...imports, frontmatter].filter(Boolean).join("\n")}\n---\n\n${code.slice(firstTag)}`;
+  const packageImports = knownTags.filter((name) => !new RegExp(`import[^{\n]*(?:\\b${name}\\b)[^\n]*from\\s+["']lamaui["']`).test(normalized));
+  let frontmatter = "";
+  let body = normalized;
+  if (normalized.trimStart().startsWith("---")) {
+    const start = normalized.indexOf("---");
+    const end = normalized.indexOf("\n---", start + 3);
+    if (end >= 0) {
+      frontmatter = normalized.slice(start + 3, end).trim();
+      body = normalized.slice(end + 4).trimStart();
+    }
+  } else {
+    const firstTag = normalized.search(/<(?:[A-Za-z]|!)/);
+    if (firstTag < 0) return normalized;
+    frontmatter = normalized.slice(0, firstTag).trim();
+    body = normalized.slice(firstTag);
+  }
+  const packageLine = packageImports.length ? `import { ${packageImports.join(", ")} } from "lamaui";` : "";
+  return `---\n${[packageLine, frontmatter].filter(Boolean).join("\n")}\n---\n\n${body}`;
 }

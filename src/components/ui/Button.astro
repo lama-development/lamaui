@@ -1,9 +1,9 @@
 ---
-import { controlStyles, primaryStyles, secondaryStyles, outlineStyles, ghostStyles, destructiveStyles, smallControlStyles, largeControlStyles } from "@/lib/styles";
-import Spinner from "@/components/feedback/Spinner.astro";
-import Icon from "@/components/ui/Icon.astro";
-import type { Size, Variant } from "@/types";
-import { cx } from "@/lib/classes";
+import { controlStyles, primaryStyles, secondaryStyles, outlineStyles, ghostStyles, destructiveStyles, smallControlStyles, largeControlStyles } from "../../lib/styles";
+import Spinner from "../feedback/Spinner.astro";
+import Icon from "./Icon.astro";
+import type { Size, Variant } from "../../types";
+import { cx } from "../../lib/classes";
 import type { HTMLAttributes } from "astro/types";
 type Props = Omit<HTMLAttributes<"button"> & HTMLAttributes<"a">, "type"> & {
   variant?: Variant;

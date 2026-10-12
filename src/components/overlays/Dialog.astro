@@ -1,7 +1,7 @@
 ---
-import svgClose from "@phosphor-icons/core/bold/x-bold.svg?raw";
-import { dialogCloseStyles } from "@/lib/styles";
-import Icon from "@/components/ui/Icon.astro";
+import { svgClose } from "../../icons/package";
+import { dialogCloseStyles } from "../../lib/styles";
+import Icon from "../ui/Icon.astro";
 import type { HTMLAttributes } from "astro/types";
 type Props = HTMLAttributes<"dialog"> & {
   id: string;
@@ -31,3 +31,7 @@ const descriptionId = description ? `${id}-description` : undefined;
     </header><slot />
   </div>
 </dialog>
+
+<script>
+  import "../../scripts/dialog";
+</script>

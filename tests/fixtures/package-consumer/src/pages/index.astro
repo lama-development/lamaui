@@ -1,0 +1,20 @@
+---
+import "lamaui/styles.css";
+import { Button } from "lamaui";
+import Dialog from "lamaui/overlays/Dialog";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>LamaUI package smoke test</title>
+  </head>
+  <body data-surface-level="1">
+    <Button data-dialog-open="package-dialog">Open dialog</Button>
+    <Dialog id="package-dialog" title="Package import works">
+      <Button data-dialog-close>Close</Button>
+    </Dialog>
+  </body>
+</html>

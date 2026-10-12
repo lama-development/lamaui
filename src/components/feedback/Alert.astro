@@ -1,11 +1,8 @@
 ---
-import svgClose from "@phosphor-icons/core/bold/x-bold.svg?raw";
-import svgFeedback from "@phosphor-icons/core/duotone/chat-circle-text-duotone.svg?raw";
-import svgCheck from "@phosphor-icons/core/bold/check-bold.svg?raw";
-import svgWarning from "@phosphor-icons/core/bold/warning-circle-bold.svg?raw";
-import { alertCloseStyles } from "@/lib/styles";
-import type { Status } from "@/types";
-import Icon from "@/components/ui/Icon.astro";
+import { svgClose, svgFeedback, svgCheck, svgWarning } from "../../icons/package";
+import { alertCloseStyles } from "../../lib/styles";
+import type { Status } from "../../types";
+import Icon from "../ui/Icon.astro";
 interface Props {
   variant?: Exclude<Status, "neutral">;
   title?: string;
@@ -41,3 +38,7 @@ const alertStyle = `color:${color ?? colors[variant][0]};background:${background
     )
   }
 </div>
+
+<script>
+  import "../../scripts/alert";
+</script>

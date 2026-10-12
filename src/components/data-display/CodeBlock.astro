@@ -1,12 +1,10 @@
 ---
-import svgCode from "@phosphor-icons/core/bold/code-bold.svg?raw";
-import svgWrap from "@/assets/icons/wrap-off.svg?raw";
-import svgWrapOn from "@/assets/icons/wrap-on.svg?raw";
-import svgCopy from "@phosphor-icons/core/duotone/copy-duotone.svg?raw";
-import svgCheck from "@phosphor-icons/core/bold/check-bold.svg?raw";
+import { svgCode, svgCopy, svgCheck } from "../../icons/package";
+import svgWrap from "../../assets/icons/wrap-off.svg?raw";
+import svgWrapOn from "../../assets/icons/wrap-on.svg?raw";
 import { codeToHtml } from "shiki";
-import Icon from "@/components/ui/Icon.astro";
-import Tooltip from "@/components/overlays/Tooltip.astro";
+import Icon from "../ui/Icon.astro";
+import Tooltip from "../overlays/Tooltip.astro";
 interface Props {
   code: string;
   language?: string;
@@ -91,6 +89,10 @@ const highlighted = await codeToHtml(code, {
     }
   }
 </style>
+
+<script>
+  import "../../scripts/code-block";
+</script>
 <style is:global>
   @media print {
     .code-render pre,

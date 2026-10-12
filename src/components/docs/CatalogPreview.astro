@@ -1,25 +1,5 @@
 ---
-import svgHome from "@phosphor-icons/core/duotone/house-duotone.svg?raw";
-import svgHeart from "@phosphor-icons/core/duotone/heart-duotone.svg?raw";
-import svgSettings from "@phosphor-icons/core/duotone/gear-six-duotone.svg?raw";
-import svgMail from "@phosphor-icons/core/duotone/envelope-duotone.svg?raw";
-import svgPin from "@phosphor-icons/core/duotone/push-pin-duotone.svg?raw";
-import svgPlus from "@phosphor-icons/core/bold/plus-bold.svg?raw";
-import svgDownload from "@phosphor-icons/core/duotone/download-simple-duotone.svg?raw";
-import svgChevronDown from "@phosphor-icons/core/bold/caret-down-bold.svg?raw";
-import svgMore from "@phosphor-icons/core/bold/dots-three-bold.svg?raw";
-import svgSystem from "@phosphor-icons/core/duotone/desktop-duotone.svg?raw";
-import svgSun from "@phosphor-icons/core/duotone/sun-duotone.svg?raw";
-import svgMoon from "@phosphor-icons/core/duotone/moon-duotone.svg?raw";
-import svgCheck from "@phosphor-icons/core/bold/check-bold.svg?raw";
-import svgSearch from "@phosphor-icons/core/duotone/magnifying-glass-duotone.svg?raw";
-import svgEye from "@phosphor-icons/core/duotone/eye-duotone.svg?raw";
-import svgCode from "@phosphor-icons/core/bold/code-bold.svg?raw";
-import svgCopy from "@phosphor-icons/core/duotone/copy-duotone.svg?raw";
-import svgExport from "@phosphor-icons/core/duotone/export-duotone.svg?raw";
-import svgLayout from "@phosphor-icons/core/duotone/layout-duotone.svg?raw";
-import svgChevronRight from "@phosphor-icons/core/bold/caret-right-bold.svg?raw";
-import svgClose from "@phosphor-icons/core/bold/x-bold.svg?raw";
+import { svgHouse, svgHeart, svgSettings, svgMail, svgPin, svgPlus, svgDownload, svgChevronDown, svgMore, svgSystem, svgSun, svgMoon, svgCheck, svgSearch, svgEye, svgCode, svgCopy, svgExport, svgLayout, svgChevronRight, svgClose } from "@icons/docs";
 import Icon from "@/components/ui/Icon.astro";
 import ButtonGroup from "@/components/ui/ButtonGroup.astro";
 import { controlStyles, secondaryStyles, smallControlStyles } from "@/lib/styles";
@@ -35,7 +15,7 @@ const { slug, group } = Astro.props;
     slug === "icon" && (
       <div class="cp-icons">
         <>
-          <Icon src={svgHome} />
+          <Icon src={svgHouse} />
           <Icon src={svgHeart} />
           <Icon src={svgSettings} />
           <Icon src={svgMail} />
@@ -256,7 +236,7 @@ const { slug, group } = Astro.props;
     slug === "breadcrumb" && (
       <div class="cp-row cp-breadcrumb">
         <>
-          <Icon src={svgHome} size={14} />
+          <Icon src={svgHouse} size={14} />
           <span>/</span>
           <span>Workspace</span>
           <span>/</span>

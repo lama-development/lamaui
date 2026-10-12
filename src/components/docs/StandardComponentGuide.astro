@@ -12,13 +12,20 @@ interface Props {
 }
 const { name, slug, content } = Astro.props;
 const reference = componentReference(name, content.props);
+const hasMultipleExamples = slug === "alert" || slug === "icon";
 ---
 
 <div class="guide-sections">
   <section aria-labelledby="examples" class="guide-section">
-    <h2 id="examples" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Examples</h2>
+    {
+      hasMultipleExamples && (
+        <h2 id="examples" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">
+          Examples
+        </h2>
+      )
+    }
     <div class="guide-example-list">
-      <ComponentExample {slug} title={content.example.title} description={content.behavior} />
+      <ComponentExample {slug} title={content.example.title} headingLevel={hasMultipleExamples ? "h3" : "h2"} headingId={hasMultipleExamples ? undefined : "examples"} description={content.behavior} />
       {slug === "alert" && <ComponentExample slug="alert-variants" title="Status variants and custom icons" description="Choose a variant that matches the message. Override `icon`, `color`, and `background` when your content needs its own treatment." />}
       {
         slug === "icon" && (

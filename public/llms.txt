@@ -1,0 +1,28 @@
+# LamaUI
+
+LamaUI provides accessible, styled Astro components for actions, forms, navigation, data display, feedback, overlays, and layout.
+
+## Install
+
+`npm install lamaui`
+
+Import `lamaui/styles.css` once in the root Astro layout. Then import any component from `lamaui`:
+
+`import { Button, Dialog } from "lamaui";`
+
+All components are available after the single package installation. There is no per-component unlock step.
+
+## Behavior
+
+Interactive components load their own browser behavior. Dialog, Drawer, Tooltip, Tabs, Toggle, PasswordInput, Slider, Toast, Alert, CodeBlock, CustomSelect, DropdownMenu, and Popover do not require a shared runtime import.
+
+`lamaui/effects` is optional and only adds theme initialization, ripple, fluid-hover, and surface-elevation effects.
+
+## Authoring rules
+
+- Use native semantic elements and visible labels.
+- Give every ID-based component instance a unique ID.
+- Use `data-dialog-open="id"` to open Dialog or Drawer and `data-dialog-close` on closing controls.
+- Import SVG icons with Vite's `?raw` suffix and pass trusted markup to `Icon` or an `icon` prop.
+- Treat component props as initial server-rendered state, not reactive client bindings.
+- Keep application requests, persistence, authorization, and server validation in the consuming application.

@@ -22,19 +22,22 @@ const component = (name: string, slug: string, description: string, usage?: stri
 
 export const componentGroups: ComponentGroup[] = [
   {
+    name: "Foundations",
+    slug: "foundations",
+    icon: "foundations",
+    components: [component("Icon", "icon", "Renders imported SVGs with consistent sizing and color.", 'import svgSettings from "@phosphor-icons/core/duotone/gear-six-duotone.svg?raw";\n<Icon src={svgSettings} size={20} />'), component("ThemePicker", "theme-picker", "Chooses System, Light, or Dark with compact icon buttons.", 'import ThemePicker from "@/components/ui/ThemePicker.astro";\n\n<ThemePicker label="Color theme" />'), component("AccentPicker", "accent-picker", "Selects and persists an accent color from named presets.")]
+  },
+  {
     name: "Actions",
     slug: "actions",
     icon: "actions",
     components: [
-      component("Icon", "icon", "Renders imported SVGs with consistent sizing and color.", 'import svgSettings from "@phosphor-icons/core/duotone/gear-six-duotone.svg?raw";\n<Icon src={svgSettings} size={20} />'),
       component("Button", "button", "Triggers an action or links to another view, with optional leading or trailing icons.", 'import svgPlus from "@phosphor-icons/core/bold/plus-bold.svg?raw";\nimport Button from "@/components/ui/Button.astro";\n\n<Button variant="primary" icon={svgPlus}>Create</Button>'),
       component("SplitButton", "split-button", "Combines a primary action with a menu of closely related alternatives.", 'import svgFilePdf from "@phosphor-icons/core/duotone/file-pdf-duotone.svg?raw";\nimport svgFileMd from "@phosphor-icons/core/duotone/file-md-duotone.svg?raw";\nimport svgClipboardText from "@phosphor-icons/core/duotone/clipboard-text-duotone.svg?raw";\n<SplitButton\n  label="Download PDF"\n  icon={svgFilePdf}\n  href="/report.pdf"\n  download\n  options={[\n    { label: "Download Markdown", href: "/report.md", download: true, icon: svgFileMd },\n    { label: "Copy as text", icon: svgClipboardText }\n  ]}\n/>'),
       component("IconButton", "icon-button", "A compact action with an accessible text label.", 'import svgCopy from "@phosphor-icons/core/duotone/copy-duotone.svg?raw";\n<IconButton label="Copy"><Icon src={svgCopy} /></IconButton>'),
       component("ButtonGroup", "button-group", "Joins related actions into one control group."),
       component("Toggle", "toggle", "A button that represents an on or off state."),
-      component("ToggleGroup", "toggle-group", "A coordinated set of mutually exclusive toggles."),
-      component("AccentPicker", "accent-picker", "Selects and persists an accent color from named presets."),
-      component("ThemePicker", "theme-picker", "Chooses System, Light, or Dark with compact icon buttons.", 'import ThemePicker from "@/components/ui/ThemePicker.astro";\n\n<ThemePicker label="Color theme" />')
+      component("ToggleGroup", "toggle-group", "A coordinated set of mutually exclusive toggles.")
     ]
   },
   {

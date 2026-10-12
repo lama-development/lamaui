@@ -1,5 +1,5 @@
 ---
-import InlineCode from "@/components/data-display/InlineCode.astro";
+import InlineCode from "./InlineCode.astro";
 import type { HTMLAttributes } from "astro/types";
 interface Column {
   key: string;
@@ -66,5 +66,5 @@ const padding = { compact: "px-3 py-2", comfortable: "px-4 py-3", spacious: "px-
 </div>
 
 <script>
-  import "@/scripts/table-scroll";
+  import "../../scripts/table-scroll";
 </script>

@@ -1,7 +1,6 @@
 ---
 import StandardComponentGuide from "@/components/docs/StandardComponentGuide.astro";
-import ComponentSetup from "@/components/docs/ComponentSetup.astro";
-import ComponentSlots from "@/components/docs/ComponentSlots.astro";
+import ComponentDataTypes from "@/components/docs/ComponentDataTypes.astro";
 import GuideNote from "@/components/docs/GuideNote.astro";
 import InlineCode from "@/components/data-display/InlineCode.astro";
 import { guideContent } from "@/lib/guide-content";
@@ -19,7 +18,6 @@ import ComponentPagination from "@/components/docs/ComponentPagination.astro";
 import DocsLayout from "@/layouts/DocsLayout.astro";
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/data-display/CodeBlock.astro";
-import Breadcrumb from "@/components/navigation/Breadcrumb.astro";
 import { components, type ComponentDoc } from "@/lib/components";
 
 export function getStaticPaths() {
@@ -38,16 +36,14 @@ const dedicated = new Set(["button", "table", "dialog", "drawer", "popover", "to
 if (!content && !dedicated.has(component.slug)) throw new Error(`Missing guide for ${component.name}`);
 // Validate every reference at build time, including the dedicated guides.
 const reference = componentReference(component.name, content?.props);
-const hasContentReference = reference.slots.length > 0 || reference.types.length > 0;
-const contentLabel = reference.types.length ? (reference.slots.length ? "Slots and data types" : "Data types") : "Slots";
-const sections = [{ id: "preview", label: "Preview" }, { id: "setup", label: "Installation" }, { id: "quick-start", label: "Quick start" }, { id: "examples", label: "Examples" }, { id: "props", label: "Props" }, { id: "accessibility", label: "Accessibility" }, ...(hasContentReference ? [{ id: "slots", label: contentLabel }] : [])];
+const hasDataTypes = reference.types.length > 0;
+const sections = [{ id: "preview", label: "Preview" }, { id: "usage", label: "Usage" }, { id: "examples", label: "Examples" }, { id: "props", label: "Props" }, { id: "accessibility", label: "Accessibility" }, ...(hasDataTypes ? [{ id: "data-types", label: "Data types" }] : [])];
 const usage = withImports(content?.usage ?? component.usage);
 ---
 
 <DocsLayout title={`${component.name} - LamaUI`} description={component.description} currentSlug={component.slug}>
   <ComponentGuide title={component.name} slug={component.slug} description={component.description} {sections}>
-    <Breadcrumb slot="breadcrumb" items={[{ label: "Components", href: "/" }, { label: component.group, href: `/#${component.groupSlug}` }, { label: component.name }]} />
-    <header slot="header" data-guide-no-export class="docs-page-header mb-8 [&_h1]:m-0 [&_h1]:text-[clamp(2.25rem,4vw,2.75rem)] [&_h1]:leading-[1.08] [&_h1]:tracking-[-0.035em] [&_p]:m-[0.75rem_0_0] [&_p]:max-w-4xl [&_p]:text-[1.0625rem] [&_p]:leading-relaxed [&_p]:text-muted-label">
+    <header slot="header" data-guide-no-export class="docs-page-header mb-8 [&_h1]:m-0 [&_h1]:text-[clamp(2.25rem,4vw,2.75rem)] [&_h1]:leading-[1.08] [&_h1]:tracking-[-0.035em] [&_p]:m-[0.75rem_0_0] [&_p]:w-full [&_p]:max-w-none [&_p]:text-[1.0625rem] [&_p]:leading-relaxed [&_p]:text-muted-label">
       <h1>{component.name}</h1>
       <p>{component.description}</p>
     </header>
@@ -59,21 +55,17 @@ const usage = withImports(content?.usage ?? component.usage);
       <ComponentPreview slug={component.slug} />
     </section>
 
-    <ComponentSetup name={component.name} />
-
-    <section class="guide-section mt-14" aria-labelledby="quick-start">
-      <h2 id="quick-start" class="scroll-mt-24">Quick start</h2>
+    <section class="guide-section mt-14" aria-labelledby="usage">
+      <h2 id="usage" class="scroll-mt-24">Usage</h2>
       {
         component.slug === "icon" && (
-          <div class="mb-4">
-            <GuideNote>
-              Lama uses{" "}
-              <a href="https://phosphoricons.com/" target="_blank" rel="noopener noreferrer" class="font-semibold text-label underline underline-offset-4">
-                Phosphor icons<span class="sr-only"> (opens in a new tab)</span>
-              </a>
-              . Run <InlineCode wrap>npm install @phosphor-icons/core</InlineCode>, choose any icon from their catalog, and import its SVG with <InlineCode>?raw</InlineCode>. There is no Lama icon list to maintain.
-            </GuideNote>
-          </div>
+          <GuideNote>
+            Lama uses{" "}
+            <a href="https://phosphoricons.com/" target="_blank" rel="noopener noreferrer" class="font-semibold text-label underline underline-offset-4">
+              Phosphor icons<span class="sr-only"> (opens in a new tab)</span>
+            </a>
+            . Run <InlineCode wrap>npm install @phosphor-icons/core</InlineCode>, choose any icon from their catalog, and import its SVG with <InlineCode>?raw</InlineCode>. There is no Lama icon list to maintain.
+          </GuideNote>
         )
       }
       <CodeBlock code={usage} label="Usage" />
@@ -90,7 +82,7 @@ const usage = withImports(content?.usage ?? component.usage);
     {component.slug === "dropdown-menu" && <DropdownMenuGuide />}
     {component.slug === "custom-select" && <CustomSelectGuide />}
 
-    {hasContentReference && <ComponentSlots name={component.name} />}
+    {hasDataTypes && <ComponentDataTypes name={component.name} />}
 
     <div data-guide-no-export class="print:hidden"><ComponentPagination {previous} {next} /></div>
   </ComponentGuide>

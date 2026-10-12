@@ -7,16 +7,15 @@ import Table from "./ReferenceTable.astro";
 const props = [
   { name: "label", type: "string", default: "Required", description: "Visible trigger text and accessible name for the menu." },
   { name: "align", type: '"start" | "end"', default: '"start"', description: "Aligns the panel to the trigger’s left or right edge." },
+  { name: "icon", type: "string", default: "—", description: "Optional raw SVG displayed before the trigger label." },
+  { name: "iconOnly", type: "boolean", default: "false", description: "Visually hides the label and uses it as the icon-only trigger’s accessible name." },
   { name: "class", type: "string", default: "—", description: "Additional classes applied to the outer details element." }
 ];
 ---
 
 <div class="guide-sections">
   <section aria-labelledby="examples" class="guide-section">
-    <header>
-      <h2 id="examples" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Examples</h2>
-    </header>
-    <ComponentExample slug="dropdown-actions" title={"Contextual actions"} description={"Use a dropdown for a short list of contextual actions. The default slot accepts buttons, links, and separators. Use CustomSelect when choosing a form value, and Popover for forms or other rich content."} note={"Attach application handlers to the slotted buttons. Selecting an enabled item closes the menu and restores trigger focus; links retain their normal navigation. DropdownMenu does not perform the action or confirm deletion for you."} />
+    <ComponentExample slug="dropdown-actions" title="Contextual actions" headingLevel="h2" headingId="examples" description="Use a dropdown for a short list of contextual actions. Add buttons, links, and separators inside it. Use CustomSelect when choosing a form value, and Popover for forms or other rich content." note="Attach application handlers to the menu buttons. Selecting an enabled item closes the menu and restores trigger focus; links retain their normal navigation. DropdownMenu does not perform the action or confirm deletion for you." />
   </section>
 
   <section aria-labelledby="props" class="guide-section">

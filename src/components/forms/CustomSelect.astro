@@ -1,8 +1,7 @@
 ---
-import svgChevronDown from "@phosphor-icons/core/bold/caret-down-bold.svg?raw";
-import svgCheck from "@phosphor-icons/core/bold/check-bold.svg?raw";
-import { fieldStyles, menuItemStyles, menuStyles } from "@/lib/styles";
-import Icon from "@/components/ui/Icon.astro";
+import { svgChevronDown, svgCheck } from "../../icons/package";
+import { fieldStyles, menuItemStyles, menuStyles } from "../../lib/styles";
+import Icon from "../ui/Icon.astro";
 import Label from "./Label.astro";
 interface Option {
   value: string;
@@ -64,5 +63,5 @@ const messageId = help || error ? `${id}-message` : undefined;
   }
 </div>
 <script>
-  import "@/scripts/custom-select";
+  import "../../scripts/custom-select";
 </script>

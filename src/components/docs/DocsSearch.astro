@@ -1,26 +1,25 @@
 ---
-import svgSearch from "@phosphor-icons/core/duotone/magnifying-glass-duotone.svg?raw";
-import svgClose from "@phosphor-icons/core/bold/x-bold.svg?raw";
+import { svgSearch, svgClose } from "@icons/docs";
 import Icon from "@/components/ui/Icon.astro";
 import { components } from "@/lib/components";
 import { guideContent } from "@/lib/guide-content";
 import { componentReference } from "@/lib/component-reference";
 import { searchAliases, type SearchEntry } from "@/lib/search";
 const sections = [
-  { id: "quick-start", title: "Quick start", keywords: "usage import install getting started" },
-  { id: "setup", title: "Installation", keywords: "setup install styles runtime integration dependencies" },
+  { id: "usage", title: "Usage", keywords: "usage import example component" },
   { id: "examples", title: "Examples", keywords: "variants composition demo" },
   { id: "props", title: "Props", keywords: "api reference attributes options defaults" },
   { id: "accessibility", title: "Accessibility", keywords: "keyboard focus aria responsive reduced motion" },
-  { id: "slots", title: "Slots and data types", keywords: "children content interfaces types" }
+  { id: "data-types", title: "Data types", keywords: "interfaces types structured data" }
 ];
 const entries: SearchEntry[] = [
   { title: "All components", component: "All components", group: "Documentation", href: "/", description: "Browse every reusable building block.", keywords: "overview catalog primitives" },
+  { title: "Getting started", component: "Getting started", group: "Documentation", href: "/getting-started", description: "Install LamaUI once and use your first component.", keywords: "setup install styles requirements npm integration" },
   ...components.flatMap((component) => {
     const content = guideContent[component.slug];
     const reference = componentReference(component.name, content?.props);
     const base = { component: component.name, group: component.group, description: component.description, keywords: searchAliases(component.slug) };
-    const availableSections = sections.filter((section) => section.id !== "slots" || reference.slots.length > 0 || reference.types.length > 0);
+    const availableSections = sections.filter((section) => section.id !== "data-types" || reference.types.length > 0);
     return [{ ...base, title: component.name, href: `/components/${component.slug}` }, ...availableSections.map((section) => ({ ...base, title: `${component.name} · ${section.title}`, section: section.title, href: `/components/${component.slug}#${section.id}`, description: section.id === "examples" ? (content?.example.description ?? component.description) : section.id === "accessibility" ? (content?.accessibility ?? component.description) : component.description, keywords: `${base.keywords} ${section.keywords} ${section.id === "props" ? reference.props.map((prop) => prop.name).join(" ") : ""}` }))];
   })
 ];

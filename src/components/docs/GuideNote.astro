@@ -1,19 +1,41 @@
 ---
+import { svgInfo } from "@icons/docs";
+import Icon from "@/components/ui/Icon.astro";
+
 interface Props {
   title?: string;
+  variant?: "plain" | "info";
 }
-const { title } = Astro.props;
+const { title, variant = "plain" } = Astro.props;
 ---
 
-<div class="guide-note">
-  {title && <h3>{title}</h3>}
-  <div class="guide-note-content"><slot /></div>
+<div class:list={["guide-note", variant === "info" && "guide-note-info"]} role={variant === "info" ? "note" : undefined}>
+  {variant === "info" && <Icon src={svgInfo} size={20} class="guide-note-icon" aria-hidden="true" />}
+  <div class="guide-note-body">
+    {title && <h3>{title}</h3>}
+    <div class="guide-note-content"><slot /></div>
+  </div>
 </div>
 
 <style>
   .guide-note {
+    width: 100%;
     min-width: 0;
-    max-width: 72ch;
+    max-width: none;
+  }
+  .guide-note-info {
+    display: grid;
+    grid-template-columns: 1.25rem minmax(0, 1fr);
+    gap: 0.625rem;
+    align-items: start;
+    padding: 0.75rem;
+    border: 1px solid color-mix(in srgb, var(--info) 18%, transparent);
+    border-radius: var(--radius-md);
+    background: var(--info-subtle);
+    color: var(--info);
+  }
+  .guide-note-info :global(.guide-note-icon) {
+    margin-top: -0.0625rem;
   }
   h3 {
     margin: 0 0 0.5rem;
@@ -22,6 +44,11 @@ const { title } = Astro.props;
   }
   .guide-note-content {
     color: var(--muted-label);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  .guide-note-info .guide-note-content {
+    color: inherit;
     font-size: 1rem;
     line-height: 1.65;
   }

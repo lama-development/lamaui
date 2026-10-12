@@ -1,17 +1,5 @@
 ---
-import svgReset from "@phosphor-icons/core/bold/arrow-counter-clockwise-bold.svg?raw";
-import svgPlus from "@phosphor-icons/core/bold/plus-bold.svg?raw";
-import svgCopy from "@phosphor-icons/core/duotone/copy-duotone.svg?raw";
-import svgMore from "@phosphor-icons/core/bold/dots-three-bold.svg?raw";
-import svgPin from "@phosphor-icons/core/duotone/push-pin-duotone.svg?raw";
-import svgSettings from "@phosphor-icons/core/duotone/gear-six-duotone.svg?raw";
-import svgClose from "@phosphor-icons/core/bold/x-bold.svg?raw";
-import svgExternal from "@phosphor-icons/core/duotone/arrow-square-out-duotone.svg?raw";
-import svgDownload from "@phosphor-icons/core/duotone/download-simple-duotone.svg?raw";
-import svgForms from "@phosphor-icons/core/duotone/note-pencil-duotone.svg?raw";
-import svgCode from "@phosphor-icons/core/bold/code-bold.svg?raw";
-import svgSearch from "@phosphor-icons/core/duotone/magnifying-glass-duotone.svg?raw";
-import svgFileMd from "@phosphor-icons/core/duotone/file-md-duotone.svg?raw";
+import { svgReset, svgPlus, svgCopy, svgMore, svgPin, svgSettings, svgClose, svgExternal, svgDownload, svgForms, svgCode, svgSearch, svgFileMd } from "@icons/docs";
 import PhosphorPreview from "./examples/icon-weights.astro";
 import { menuItemStyles } from "@/lib/styles";
 import InlineCode from "@/components/data-display/InlineCode.astro";
@@ -80,7 +68,7 @@ const selectOptions = [
 ];
 ---
 
-<div data-surface-level="2" class="component-preview relative flex min-h-56 w-full min-w-0 items-center justify-center rounded-lg border border-outline bg-surface-2 p-10 [corner-shape:squircle] [@media(width<=620px)]:min-h-40 [@media(width<=620px)]:p-6">
+<div data-surface-level="2" class="component-preview relative flex min-h-56 w-full min-w-0 items-center justify-center rounded-lg border border-dashed border-outline bg-surface-2 p-10 [corner-shape:squircle] [@media(width<=620px)]:min-h-40 [@media(width<=620px)]:p-6">
   {
     ["alert", "tag"].includes(slug) && (
       <div class="absolute top-2 right-2 z-10">
@@ -115,7 +103,7 @@ const selectOptions = [
           download
           options={[
             { label: "Download Markdown", icon: svgFileMd, href: "/examples/report.md", download: true },
-            { label: "View usage", icon: svgCode, href: "#quick-start" }
+            { label: "View usage", icon: svgCode, href: "#usage" }
           ]}
         />
       )
@@ -358,7 +346,7 @@ const selectOptions = [
             </button>
           </DropdownMenu>
           <DropdownMenu label="More options" align="end">
-            <a role="menuitem" tabindex="-1" href="#quick-start" class={menuItemStyles}>
+            <a role="menuitem" tabindex="-1" href="#usage" class={menuItemStyles}>
               View usage
             </a>
             <a role="menuitem" tabindex="-1" href="#accessibility" class={menuItemStyles}>

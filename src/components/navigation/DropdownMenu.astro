@@ -1,18 +1,27 @@
 ---
-import svgChevronDown from "@phosphor-icons/core/bold/caret-down-bold.svg?raw";
-import { controlStyles, menuStyles, secondaryStyles } from "@/lib/styles";
-import Icon from "@/components/ui/Icon.astro";
+import { svgChevronDown } from "../../icons/package";
+import { controlStyles, iconControlStyles, menuStyles, secondaryStyles } from "../../lib/styles";
+import { cx } from "../../lib/classes";
+import Icon from "../ui/Icon.astro";
 interface Props {
   label: string;
   align?: "start" | "end";
+  icon?: string;
+  iconOnly?: boolean;
   class?: string;
 }
-const { label, align = "start", class: className } = Astro.props;
+const { label, align = "start", icon, iconOnly = false, class: className } = Astro.props;
 const id = `dropdown-${crypto.randomUUID()}`;
 ---
 
-<details class:list={["group relative inline-block", className]} data-animated-menu data-dropdown-menu><summary id={`${id}-trigger`} aria-haspopup="menu" aria-controls={id} aria-expanded="false" class={`${controlStyles} ${secondaryStyles} list-none`}>{label}<Icon src={svgChevronDown} size={16} class="details-chevron group-open:rotate-180" /></summary><div id={id} role="menu" aria-labelledby={`${id}-trigger`} data-surface-level="2" data-surface-lift="1" data-fluid-hover data-origin={align === "end" ? "top-right" : "top-left"} class:list={[`${menuStyles} t-dropdown top-full mt-2 max-w-[calc(100vw-4rem)]`, align === "end" ? "right-0" : "left-0"]}><slot /></div></details>
+<details class:list={["group relative inline-block", className]} data-animated-menu data-dropdown-menu>
+  <summary id={`${id}-trigger`} aria-haspopup="menu" aria-controls={id} aria-expanded="false" aria-label={iconOnly ? label : undefined} title={iconOnly ? label : undefined} class={cx(controlStyles, secondaryStyles, iconOnly && iconControlStyles, "list-none")}>
+    {icon && <Icon src={icon} size={18} />}
+    <span class:list={{ "sr-only": iconOnly }}>{label}</span>
+    {!iconOnly && <Icon src={svgChevronDown} size={16} class="details-chevron group-open:rotate-180" />}
+  </summary><div id={id} role="menu" aria-labelledby={`${id}-trigger`} data-surface-level="2" data-surface-lift="1" data-fluid-hover data-origin={align === "end" ? "top-right" : "top-left"} class:list={[`${menuStyles} t-dropdown top-full mt-2 max-w-[calc(100vw-4rem)]`, align === "end" ? "right-0" : "left-0"]}><slot /></div>
+</details>
 
 <script>
-  import "@/scripts/dropdown-menu";
+  import "../../scripts/dropdown-menu";
 </script>

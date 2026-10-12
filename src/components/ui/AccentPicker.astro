@@ -1,6 +1,6 @@
 ---
-import { accentPresets } from "@/lib/accents";
-import { controlStyles, ghostStyles, iconControlStyles } from "@/lib/styles";
+import { accentPresets } from "../../lib/accents";
+import { controlStyles, ghostStyles, iconControlStyles } from "../../lib/styles";
 interface Props {
   id?: string;
 }
@@ -22,7 +22,7 @@ const { id = "accent-picker" } = Astro.props;
   </div>
 </div>
 <script>
-  import { accentPresets } from "@/lib/accents";
+  import { accentPresets } from "../../lib/accents";
   const validAccent = (value: string | null) => accentPresets.some((preset) => preset.value === value);
   const syncAccent = (value: string | null) => {
     const accent = validAccent(value) ? value! : "lime";

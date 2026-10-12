@@ -6,9 +6,24 @@
 .catalog-panel {
   min-width: 0;
 }
-.catalog-tabs > .lamaui-tabs {
+.catalog-tabs > .lamaui-tabs-scroll > .lamaui-tabs {
   display: flex;
   width: fit-content;
+}
+@media (max-width: 860px) {
+  .catalog-tabs {
+    --catalog-tabs-edge-inset: calc((100vw - 100%) / 2);
+  }
+  .catalog-tabs > .lamaui-tabs-scroll {
+    width: calc(100% + 2 * var(--catalog-tabs-edge-inset));
+    max-width: none;
+    margin-inline-start: calc(-1 * var(--catalog-tabs-edge-inset));
+    padding-inline: var(--catalog-tabs-edge-inset);
+    scrollbar-width: none;
+  }
+  .catalog-tabs > .lamaui-tabs-scroll::-webkit-scrollbar {
+    display: none;
+  }
 }
 .catalog-tabs > div:last-child {
   margin-top: 2rem;

@@ -1,9 +1,12 @@
 import { expect, test } from "@playwright/test";
-import { components, componentGroups } from "../../src/lib/components";
+import { components, componentGroups } from "@lib/components";
 
 test("category tabs show their components and All restores their original order", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   const catalog = page.locator("[data-catalog]");
+  await expect(page.locator(".guide-rail, [data-guide-toc], [data-guide-actions]")).toHaveCount(0);
+  expect(Math.abs((await catalog.boundingBox())!.width - (await page.locator(".docs-content").boundingBox())!.width)).toBeLessThan(1);
   await expect(catalog.getByRole("searchbox")).toHaveCount(0);
   const tabs = catalog.getByRole("tablist", { name: "Component category" });
   const cards = catalog.locator("[data-catalog-card]:visible");
@@ -59,6 +62,46 @@ test("category tabs support keyboard selection and keep spacing consistent", asy
     await expect(tabs.getByRole("tab", { name: "Layout", exact: true })).toBeFocused();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
   }
+});
+
+test("category tabs reach the trailing viewport edge on narrow screens", async ({ page }) => {
+  for (const width of [320, 390, 768]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    const content = page.locator(".docs-content");
+    const scroller = page.locator(".catalog-tabs > .lamaui-tabs-scroll");
+    const [contentBox, scrollerBox] = await Promise.all([content.boundingBox(), scroller.boundingBox()]);
+    expect(scrollerBox!.x).toBeCloseTo(0, 1);
+    expect(scrollerBox!.x + scrollerBox!.width).toBeCloseTo(width, 1);
+    const initialTrackLeft = await scroller.locator('[role="tablist"]').evaluate((element) => element.getBoundingClientRect().left);
+    expect(initialTrackLeft).toBeCloseTo(contentBox!.x, 1);
+    const scrolledTrackLeft = await scroller.evaluate((element, inset) => {
+      element.scrollLeft = inset;
+      return element.querySelector<HTMLElement>('[role="tablist"]')!.getBoundingClientRect().left;
+    }, contentBox!.x);
+    expect(scrolledTrackLeft).toBeCloseTo(0, 1);
+    const endState = await scroller.evaluate((element) => {
+      element.scrollLeft = element.scrollWidth;
+      const track = element.querySelector<HTMLElement>('[role="tablist"]')!;
+      const lastTab = element.querySelector<HTMLElement>('[role="tab"]:last-of-type')!;
+      const trackRight = track.getBoundingClientRect().right;
+      return {
+        outerGap: window.innerWidth - trackRight,
+        innerGap: trackRight - lastTab.getBoundingClientRect().right,
+        scrollbarWidth: getComputedStyle(element).scrollbarWidth
+      };
+    });
+    expect(Math.abs(endState.outerGap - contentBox!.x)).toBeLessThanOrEqual(1.1);
+    expect(endState.innerGap).toBeGreaterThanOrEqual(4);
+    expect(endState.innerGap).toBeLessThanOrEqual(6);
+    expect(endState.scrollbarWidth).toBe("none");
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  }
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const tabsBox = await page.getByRole("tablist", { name: "Component category" }).boundingBox();
+  expect(tabsBox!.x + tabsBox!.width).toBeLessThan(1440);
 });
 
 for (const reducedMotion of ["no-preference", "reduce"] as const) {
@@ -134,6 +177,45 @@ test("category selection survives reload and return navigation from a guide", as
   await page.goBack();
   await expect(forms).toHaveAttribute("aria-selected", "true");
   await expect(catalog.locator("[data-catalog-card]:visible")).toHaveCount(componentGroups.find((group) => group.slug === "forms")!.components.length);
+});
+
+test("sidebar separates start pages from component categories", async ({ page }) => {
+  await page.goto("/");
+  const navigation = page.getByRole("navigation", { name: "Documentation" });
+  await expect(navigation.getByText("Start", { exact: true })).toBeVisible();
+  await expect(navigation.getByText("Components", { exact: true })).toBeVisible();
+  const startLinks = navigation.locator('[aria-labelledby="docs-nav-start"] a');
+  await expect(startLinks).toHaveCount(2);
+  expect(await startLinks.allTextContents()).toEqual(["Getting started", "All components"]);
+
+  const foundations = navigation.getByRole("button", { name: "Foundations", exact: true });
+  const actions = navigation.getByRole("button", { name: "Actions", exact: true });
+  await foundations.click();
+  await expect(foundations).toHaveAttribute("aria-expanded", "true");
+  const foundationsPanel = navigation.locator("#docs-nav-foundations");
+  expect(await foundationsPanel.getByRole("link").allTextContents()).toEqual(["Icon", "ThemePicker", "AccentPicker"]);
+  await actions.click();
+  await expect(actions).toHaveAttribute("aria-expanded", "true");
+  await expect(foundations).toHaveAttribute("aria-expanded", "false");
+});
+
+test("sidebar reserves scrollbar space without resizing its items", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1600 });
+  await page.goto("/");
+  const navigation = page.getByRole("navigation", { name: "Documentation" });
+  const row = navigation.getByRole("link", { name: "Getting started", exact: true });
+  await expect(navigation).toHaveCSS("scrollbar-gutter", "stable");
+  expect(await navigation.evaluate((element) => element.scrollHeight <= element.clientHeight)).toBe(true);
+  const before = (await row.boundingBox())!.width;
+  await navigation.evaluate((element) => {
+    const spacer = document.createElement("div");
+    spacer.dataset.testScrollbarSpacer = "";
+    spacer.style.height = "2000px";
+    spacer.style.flex = "none";
+    element.append(spacer);
+  });
+  expect(await navigation.evaluate((element) => element.scrollHeight > element.clientHeight)).toBe(true);
+  expect(Math.abs((await row.boundingBox())!.width - before)).toBeLessThan(1);
 });
 
 test("mobile navigation contains focus, leaves search in control, and restores focus", async ({ page }) => {

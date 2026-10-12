@@ -98,7 +98,7 @@ test("links keep their navigation behavior", async ({ page }) => {
   const trigger = page.locator(".component-preview summary", { hasText: "More options" });
   await trigger.click();
   await page.keyboard.press("Space");
-  await expect(page).toHaveURL(/#quick-start$/);
+  await expect(page).toHaveURL(/#usage$/);
   await expect(trigger).toHaveAttribute("aria-expanded", "false");
 });
 

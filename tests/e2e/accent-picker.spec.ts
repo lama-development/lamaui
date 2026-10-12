@@ -27,3 +27,34 @@ for (const width of [1440, 390]) {
     await expect(trigger).toHaveAttribute("aria-expanded", "false");
   });
 }
+
+test("tabs keep their neutral palette when the accent changes", async ({ page }) => {
+  await page.goto("/components/tabs");
+  const tablist = page.locator(".component-preview").getByRole("tablist", { name: "Tabs", exact: true });
+  const colors = async () =>
+    tablist.evaluate((element) => {
+      const highlight = element.querySelector<HTMLElement>(".lamaui-tab-highlight")!;
+      const selectedTab = element.querySelector<HTMLElement>('[aria-selected="true"]')!;
+      return {
+        track: getComputedStyle(element).backgroundColor,
+        border: getComputedStyle(element).borderTopColor,
+        selected: getComputedStyle(highlight).backgroundColor,
+        selectedText: getComputedStyle(selectedTab).color
+      };
+    });
+  const settle = () =>
+    tablist.evaluate(async (element) => {
+      await Promise.all(element.getAnimations({ subtree: true }).map((animation) => animation.finished.catch(() => undefined)));
+    });
+
+  for (const theme of ["light", "dark"]) {
+    await page.locator("html").evaluate((element, value) => {
+      element.dataset.theme = value;
+      delete element.dataset.accent;
+    }, theme);
+    await settle();
+    const before = await colors();
+    await page.locator("html").evaluate((element) => (element.dataset.accent = "blue"));
+    await expect.poll(colors).toEqual(before);
+  }
+});

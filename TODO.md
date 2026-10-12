@@ -25,7 +25,9 @@
 
 ## Release readiness
 
-- [ ] Decide whether LamaUI will remain an internal source library or become an installable package.
-- [ ] Define the public component API and export surface before the first stable release.
+- [x] Make the installable Astro package the primary distribution model, with source registry support remaining optional.
+- [x] Define the public component API, package exports, self-contained assets, and component-owned runtime boundary.
 - [x] Add CI checks for formatting, Astro diagnostics, production builds, and browser tests.
+- [ ] Confirm the final npm package name and publish the first prerelease.
+- [ ] Add an optional source-ejection registry after the package API stabilizes.
 - [ ] Add a changelog and release process.

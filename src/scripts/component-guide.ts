@@ -1,5 +1,5 @@
 import { requestDetailsMenuClose } from "@/scripts/details-menu";
-import linkIcon from "@phosphor-icons/core/duotone/link-duotone.svg?raw";
+import { linkIcon } from "@icons/docs";
 
 function inline(node: Node): string {
   if (node.nodeType === Node.TEXT_NODE) return node.textContent || "";
@@ -48,7 +48,7 @@ function markdown(node: Element): string {
 document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
   const content = root.querySelector<HTMLElement>("[data-guide-content]");
   const toastRegion = root.querySelector<HTMLElement>("[data-guide-toast-region]");
-  const actionMenus = Array.from(root.querySelectorAll<HTMLDetailsElement>("[data-guide-actions] [data-split-menu]"));
+  const actionMenus = Array.from(root.querySelectorAll<HTMLDetailsElement>("[data-guide-actions] :is([data-split-menu], [data-dropdown-menu])"));
   if (!content) return;
   const documentMarkdown = () => `# ${root.dataset.guideTitle}\n\n${root.dataset.guideDescription}\n\n${markdown(content)}Source: ${location.origin}${location.pathname}\n`;
   const closeActionMenus = (restoreFocus = false) => {

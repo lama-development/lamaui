@@ -1,0 +1,75 @@
+---
+import Table from "./ReferenceTable.astro";
+import { componentReference } from "@/lib/component-reference";
+
+interface Props {
+  name: string;
+}
+
+const { name } = Astro.props;
+const types = componentReference(name).types;
+const hasMultipleTypes = types.length > 1;
+---
+
+<section aria-labelledby="data-types" class="guide-section mt-14">
+  <header class="guide-section-intro">
+    <h2 id="data-types" class="m-0 scroll-mt-24 text-[1.375rem] font-semibold tracking-tight">Data types</h2>
+    {
+      !hasMultipleTypes && (
+        <p>
+          The <code>{types[0].name}</code> object uses the following properties.
+        </p>
+      )
+    }
+  </header>
+  <div class="data-type-list">
+    {
+      types.map((type) => (
+        <div class="data-type-block">
+          {hasMultipleTypes && <h3 class="m-0 text-base font-semibold">{type.name}</h3>}
+          <Table
+            caption={`${name} ${type.name} properties`}
+            columns={[
+              { key: "name", label: "Property", code: true, rowHeader: true },
+              { key: "type", label: "Type", code: true, wrap: true },
+              { key: "default", label: "Presence", code: true },
+              { key: "description", label: "Description" }
+            ]}
+            rows={type.props}
+          />
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .guide-section-intro {
+    display: grid;
+    gap: 0.625rem;
+  }
+  .guide-section-intro p {
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    color: var(--muted-label);
+    font-size: 1rem;
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+  .guide-section-intro code {
+    color: var(--label);
+    font-size: 0.875em;
+  }
+  .data-type-list,
+  .data-type-block {
+    display: grid;
+    min-width: 0;
+  }
+  .data-type-list {
+    gap: 2.5rem;
+  }
+  .data-type-block {
+    gap: 1rem;
+  }
+</style>

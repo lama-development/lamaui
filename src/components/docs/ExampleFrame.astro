@@ -1,27 +1,32 @@
 ---
-import svgReset from "@phosphor-icons/core/bold/arrow-counter-clockwise-bold.svg?raw";
+import { svgReset } from "@icons/docs";
 import CodeBlock from "@/components/data-display/CodeBlock.astro";
 import Icon from "@/components/ui/Icon.astro";
 import Tabs from "@/components/navigation/Tabs.astro";
 import TabPanel from "@/components/navigation/TabPanel.astro";
 import DocsText from "./DocsText.astro";
+import { withImports } from "@/lib/component-reference";
 interface Props {
   id: string;
   code: string;
   label?: string;
   resettable?: boolean;
   title?: string;
+  headingLevel?: "h2" | "h3";
+  headingId?: string;
   description?: string;
   note?: string;
 }
-const { id, code, label = "Example source", resettable = false, title, description, note } = Astro.props;
+const { id, code, label = "Example source", resettable = false, title, headingLevel = "h3", headingId, description, note } = Astro.props;
+const Heading = headingLevel;
+const displayCode = withImports(code);
 ---
 
 <div data-example-frame class="example-frame min-w-0">
   {
     (title || description) && (
       <header class="example-heading">
-        {title && <h3>{title}</h3>}
+        {title && <Heading id={headingId}>{title}</Heading>}
         {description && (
           <p>
             <DocsText text={description} />
@@ -54,7 +59,7 @@ const { id, code, label = "Example source", resettable = false, title, descripti
       <div data-example-live data-guide-no-export data-surface-level="2" class="example-live grid min-h-36 min-w-0 content-center gap-6 p-6 print:hidden"><slot /></div>
     </TabPanel>
     <TabPanel tabsId={id} id="code" class="example-source-panel min-w-0">
-      <div data-example-code class="min-w-0"><CodeBlock {code} {label} /></div>
+      <div data-example-code class="min-w-0"><CodeBlock code={displayCode} {label} /></div>
     </TabPanel>
   </Tabs>
   {
@@ -78,22 +83,32 @@ const { id, code, label = "Example source", resettable = false, title, descripti
   .example-heading {
     margin-bottom: 1.25rem;
   }
-  .example-heading h3 {
+  .example-heading :is(h2, h3) {
     margin: 0;
     font-size: 1.125rem;
     line-height: 1.4;
     font-weight: 650;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .example-heading h2 {
+    font-size: 1.375rem;
+    line-height: 1.35;
+    letter-spacing: -0.025em;
   }
   .example-heading p {
     margin: 0.5rem 0 0;
-    max-width: 72ch;
+    width: 100%;
+    max-width: none;
     color: var(--muted-label);
     font-size: 1rem;
     line-height: 1.65;
+    text-wrap: pretty;
   }
   .example-note {
     margin: 1rem 0 0;
-    max-width: 72ch;
+    width: 100%;
+    max-width: none;
     color: var(--muted-label);
     font-size: 0.9375rem;
     line-height: 1.65;
@@ -118,26 +133,30 @@ const { id, code, label = "Example source", resettable = false, title, descripti
   .example-frame :global(.example-tabs) {
     display: grid;
   }
-  .example-frame :global(.example-tabs > [role="tablist"]) {
+  .example-frame :global(.example-tabs > .lamaui-tabs-scroll) {
     justify-self: start;
-    gap: 0.125rem;
     margin: 0 0 0.75rem;
-    padding: 0;
-    border: 0;
-    background: transparent;
     overflow: visible;
   }
-  .example-frame :global(.example-tabs > [role="tablist"] > [role="tab"]) {
+  .example-frame :global(.example-tabs > .lamaui-tabs-scroll > [role="tablist"]) {
+    gap: 0.125rem;
+    padding: 0.1875rem;
+    border: 1px solid var(--tab-border);
+    border-radius: 0.625rem;
+    background: var(--tab-track);
+    overflow: visible;
+  }
+  .example-frame :global(.example-tabs > .lamaui-tabs-scroll > [role="tablist"] > [role="tab"]) {
     min-height: 1.75rem;
     padding: 0.25rem 0.625rem;
-    border-radius: var(--radius-sm);
+    border-radius: 0.4375rem;
     font-size: 0.8125rem;
     line-height: 1.25rem;
   }
-  .example-frame :global(.example-tabs > [role="tablist"] > .lamaui-tab-highlight) {
-    top: 0;
-    bottom: 0;
-    border-radius: var(--radius-sm);
+  .example-frame :global(.example-tabs > .lamaui-tabs-scroll > [role="tablist"] > .lamaui-tab-highlight) {
+    top: 0.1875rem;
+    bottom: 0.1875rem;
+    border-radius: 0.4375rem;
   }
   .example-frame :global(.example-tabs > div:last-child) {
     min-width: 0;
@@ -154,7 +173,7 @@ const { id, code, label = "Example source", resettable = false, title, descripti
   }
   .example-reset {
     position: absolute;
-    top: -2.5rem;
+    top: -3rem;
     right: 0;
   }
   .example-frame :global([data-example-code] > .code-block) {
@@ -164,7 +183,7 @@ const { id, code, label = "Example source", resettable = false, title, descripti
   }
   .example-frame :global([data-example-code] .code-head) {
     position: absolute;
-    top: -2.5rem;
+    top: -3rem;
     right: 0;
     min-height: 2rem;
     padding: 0;
@@ -180,7 +199,7 @@ const { id, code, label = "Example source", resettable = false, title, descripti
     [data-example-frame] {
       border: 0;
     }
-    .example-frame :global(.example-tabs > [role="tablist"]),
+    .example-frame :global(.example-tabs > .lamaui-tabs-scroll),
     .example-frame :global([data-example-code] .code-head),
     .example-frame :global(.example-preview-panel) {
       display: none !important;
