@@ -35,14 +35,18 @@ const { title, slug, description, sections } = Astro.props;
 
 <style is:global>
   .guide-layout {
+    position: relative;
     display: grid;
-    grid-template-areas: "rail" "content";
+    grid-template-areas: "content";
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: 2.75rem 1fr;
-    gap: 1rem;
+    grid-template-rows: auto;
+    gap: 0;
   }
   .guide-content {
     grid-area: content;
+  }
+  .guide-content > .docs-page-header {
+    padding-inline-end: 3.5rem;
   }
   .guide-content h2[id] {
     scroll-margin-top: 6rem;
@@ -146,30 +150,20 @@ const { title, slug, description, sections } = Astro.props;
   }
   .guide-rail {
     grid-area: rail;
-    position: sticky;
-    top: 1rem;
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
     z-index: 30;
     align-self: start;
     display: grid;
     gap: 0.75rem;
     min-width: 0;
-    background: var(--page);
-    box-shadow: 0 -1rem 0 var(--page);
+    background: transparent;
+    box-shadow: none;
   }
   @media (width <= 860px) {
-    .guide-rail {
-      top: 4.5rem;
-    }
-    body:has(.docs-mobile-header[data-scroll-hidden]) .guide-rail {
-      top: 1rem;
-    }
     .guide-content h2[id] {
-      scroll-margin-top: 9rem;
-    }
-  }
-  @media (width <= 860px) and (prefers-reduced-motion: no-preference) {
-    .guide-rail {
-      transition: top 220ms cubic-bezier(0.2, 0, 0, 1);
+      scroll-margin-top: 6rem;
     }
   }
   @media (width >= 1280px) {
@@ -180,9 +174,13 @@ const { title, slug, description, sections } = Astro.props;
       gap: 2rem;
     }
     .guide-rail {
+      position: sticky;
       top: 2rem;
       background: transparent;
       box-shadow: none;
+    }
+    .guide-content > .docs-page-header {
+      padding-inline-end: 0;
     }
     .guide-rail [data-guide-toc] {
       max-height: calc(100dvh - 8rem);

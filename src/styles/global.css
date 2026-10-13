@@ -266,9 +266,8 @@
   .lamaui-table-scroll[data-edge-scroll] {
     box-sizing: border-box;
     width: calc(100% + var(--table-inset-start) + var(--table-inset-end));
-    margin-left: calc(-1 * var(--table-inset-start));
-    padding-left: var(--table-inset-start);
-    padding-right: var(--table-inset-end);
+    margin-inline-start: calc(-1 * var(--table-inset-start));
+    padding-inline: var(--table-inset-start) var(--table-inset-end);
     overflow-x: auto;
     overscroll-behavior-x: contain;
   }

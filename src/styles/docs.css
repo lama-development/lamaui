@@ -2,39 +2,73 @@
 .catalog {
   scroll-margin-top: 5rem;
 }
-.catalog-tabs,
-.catalog-panel {
+.catalog-tabs {
+  --tab-track: var(--surface-1);
+  --tab-border: var(--outline);
+  --tab-selected: var(--surface-2);
+  --tab-selected-border: var(--card-outline);
+  --tab-hover: var(--surface-2-hover);
+  --tab-label: var(--label);
+  --tab-muted-label: var(--muted-label);
   min-width: 0;
 }
 .catalog-tabs > .lamaui-tabs-scroll > .lamaui-tabs {
   display: flex;
   width: fit-content;
 }
+.catalog-tabs .lamaui-tab-highlight {
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 1px var(--tab-selected-border),
+    var(--shadow-sm);
+}
+.catalog-tabs .lamaui-tabs .lamaui-fluid-hover {
+  position: absolute;
+  z-index: 0;
+  background: var(--tab-hover);
+}
+.catalog-tabs .lamaui-tabs .lamaui-fluid-hover[data-visible="true"] {
+  opacity: 1;
+}
+.catalog-tabs .lamaui-tab:is(:hover, [aria-current="location"]) {
+  color: var(--tab-label);
+}
 @media (max-width: 860px) {
   .catalog-tabs {
     --catalog-tabs-edge-inset: calc((100vw - 100%) / 2);
+    position: sticky;
+    top: 3.5rem;
+    z-index: 30;
+    transition: top var(--spring-slow-duration) var(--spring-moderate-ease);
   }
   .catalog-tabs > .lamaui-tabs-scroll {
     width: calc(100% + 2 * var(--catalog-tabs-edge-inset));
     max-width: none;
     margin-inline-start: calc(-1 * var(--catalog-tabs-edge-inset));
     padding-inline: var(--catalog-tabs-edge-inset);
+    padding-block: 0.5rem;
     scrollbar-width: none;
+  }
+  body:has(.docs-mobile-header[data-scroll-hidden]) .catalog-tabs {
+    top: 0;
   }
   .catalog-tabs > .lamaui-tabs-scroll::-webkit-scrollbar {
     display: none;
   }
 }
-.catalog-tabs > div:last-child {
-  margin-top: 2rem;
-}
 .catalog-groups {
+  margin-top: 2rem;
   display: grid;
   min-width: 0;
   gap: 2.5rem;
 }
 .docs-category {
-  scroll-margin-top: 5rem;
+  scroll-margin-top: 0;
+}
+@media (max-width: 860px) {
+  .docs-category {
+    scroll-margin-top: 2rem;
+  }
 }
 .docs-component-grid {
   display: grid;
@@ -52,9 +86,19 @@
   background: var(--surface);
   color: var(--label);
   text-decoration: none;
+  background-clip: padding-box;
+}
+.docs-component-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 .docs-component-card:hover {
   background: var(--surface-hover);
+}
+@media (prefers-reduced-motion: reduce) {
+  .catalog-tabs .lamaui-tab:not([aria-current="location"]):hover {
+    background: var(--tab-hover);
+  }
 }
 .catalog-card-copy {
   padding: 1rem 1.125rem 1.25rem;

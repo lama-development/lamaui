@@ -7,19 +7,43 @@ test("narrow reference tables preserve code values and support keyboard scrollin
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/components/custom-select");
   const reference = page.getByRole("region", { name: "CustomSelect props", exact: true });
+  const content = page.locator(".docs-content");
   await expect(reference).toHaveAttribute("tabindex", "0");
+  await expect(reference).toHaveAttribute("data-edge-scroll", "");
   expect(await reference.evaluate((element) => element.scrollWidth > element.clientWidth)).toBe(true);
+  const [contentBox, referenceBox] = await Promise.all([content.boundingBox(), reference.boundingBox()]);
+  expect(referenceBox!.x).toBeCloseTo(0, 1);
+  expect(referenceBox!.x + referenceBox!.width).toBeCloseTo(390, 1);
+  const table = reference.locator(".lamaui-table");
+  expect(await reference.evaluate((element) => getComputedStyle(element).scrollbarWidth)).toBe("none");
+  expect(await table.evaluate((element) => getComputedStyle(element).scrollbarWidth)).toBe("none");
+  expect((await table.boundingBox())!.x).toBeCloseTo(contentBox!.x, 1);
   await reference.focus();
   await page.keyboard.press("ArrowRight");
   await expect.poll(() => reference.evaluate((element) => element.scrollLeft)).toBeGreaterThan(0);
   await reference.evaluate((element) => (element.scrollLeft = element.scrollWidth));
   await expect(reference.getByRole("columnheader", { name: "Description" })).toBeInViewport();
+  expect(390 - ((await table.boundingBox())!.x + (await table.boundingBox())!.width)).toBeCloseTo(contentBox!.x, 1);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
 });
 
-test("component cards keep their neutral border on hover", async ({ page }) => {
+test("component cards share one outer corner shape and keep their neutral border on hover", async ({ page }) => {
   await page.goto("/");
-  const card = page.locator(".docs-component-card").first();
+  const cards = page.locator(".docs-component-card");
+  const card = cards.first();
+  const corners = await cards.evaluateAll((elements) =>
+    elements.map((element) => {
+      const preview = element.querySelector<HTMLElement>(".catalog-preview")!;
+      return {
+        cardRadius: getComputedStyle(element).borderRadius,
+        cardOverflow: getComputedStyle(element).overflow,
+        previewStartRadius: getComputedStyle(preview).borderStartStartRadius,
+        previewEndRadius: getComputedStyle(preview).borderStartEndRadius
+      };
+    })
+  );
+  expect(new Set(corners.map(({ cardRadius }) => cardRadius))).toEqual(new Set(["16px"]));
+  expect(corners.every(({ cardOverflow, previewStartRadius, previewEndRadius }) => cardOverflow === "hidden" && previewStartRadius === "0px" && previewEndRadius === "0px")).toBe(true);
   const border = await card.evaluate((element) => getComputedStyle(element).borderColor);
   await card.hover();
   await card.evaluate((element) => element.getAnimations().forEach((animation) => animation.finish()));
@@ -186,25 +210,27 @@ test("the mobile contents card contains only links and navigates directly", asyn
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
 
-test("the PDF action stays pinned and exports example source with Preview selected", async ({ page }) => {
+test("guide actions stay beside the title on mobile and the desktop PDF action stays pinned", async ({ page }) => {
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/components/checkbox");
     const action = width === 1440 ? page.getByRole("button", { name: "Download PDF", exact: true }) : page.locator('summary[aria-label="Guide actions"]');
     await expect(action).toBeVisible();
     if (width === 390) {
+      await expect(page.getByRole("button", { name: "Download PDF", exact: true })).toBeHidden();
       expect((await action.boundingBox())!.width).toBeLessThanOrEqual(48);
       await action.click();
       const menu = page.getByRole("menu", { name: "Guide actions" });
-      await expect(menu.getByRole("menuitem")).toHaveCount(5);
+      await expect(menu.getByRole("menuitem")).toHaveCount(4);
+      await expect(menu.getByRole("menuitem", { name: "Download PDF", exact: true })).toHaveCount(0);
       await page.keyboard.press("Escape");
       await expect(action).toBeFocused();
     }
     expect((await action.boundingBox())!.y).toBeLessThanOrEqual((await page.getByRole("heading", { level: 1 }).boundingBox())!.y);
     await page.evaluate(() => window.scrollTo({ top: 1200, behavior: "instant" }));
-    await expect.poll(async () => (await action.boundingBox())!.y).toBeGreaterThanOrEqual(0);
-    await expect.poll(async () => (await action.boundingBox())!.y).toBeLessThan(100);
     if (width === 1440) {
+      await expect.poll(async () => (await action.boundingBox())!.y).toBeGreaterThanOrEqual(0);
+      await expect.poll(async () => (await action.boundingBox())!.y).toBeLessThan(100);
       const contents = page.locator("[data-guide-toc]:visible");
       await expect(contents).not.toContainText("On this page");
       await expect(contents.locator("svg,hr")).toHaveCount(0);
@@ -212,14 +238,10 @@ test("the PDF action stays pinned and exports example source with Preview select
       const contentsBounds = (await contents.boundingBox())!;
       expect(contentsBounds.y).toBeGreaterThan(actionBounds.y + actionBounds.height);
       expect(contentsBounds.y).toBeLessThan(actionBounds.y + actionBounds.height + 24);
+    } else {
+      await expect.poll(async () => (await action.boundingBox())!.y).toBeLessThan(0);
     }
   }
-  await page.locator('summary[aria-label="Guide actions"]').click();
-  const [download] = await Promise.all([page.waitForEvent("download"), page.getByRole("menuitem", { name: "Download PDF", exact: true }).click()]);
-  expect(download.suggestedFilename()).toBe("checkbox.pdf");
-  const pdf = readFileSync((await download.path())!).toString("latin1");
-  expect(pdf).toMatch(/^%PDF-/);
-  expect(pdf).toContain("data-native-example");
 });
 
 test("a dropdown action opens an operable confirmation dialog", async ({ page }) => {

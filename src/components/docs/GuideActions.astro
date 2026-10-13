@@ -11,7 +11,7 @@ import { menuItemStyles } from "@/lib/styles";
     label="Download PDF"
     icon={svgFilePdf}
     variant="primary"
-    class="hidden min-[1280px]:inline-flex min-[1280px]:w-full"
+    class="guide-pdf-action"
     data-guide-pdf
     options={[
       { label: "Download Markdown", icon: svgFileMd, attributes: { "data-guide-download": true } },
@@ -20,11 +20,25 @@ import { menuItemStyles } from "@/lib/styles";
       { label: "Print", icon: svgPrint, attributes: { "data-guide-print": true } }
     ]}
   />
-  <DropdownMenu label="Guide actions" icon={svgMore} iconOnly align="end" class="min-[1280px]:hidden">
-    <button type="button" role="menuitem" tabindex="-1" class={menuItemStyles} data-guide-pdf><Icon src={svgFilePdf} size={18} /><span>Download PDF</span></button>
+  <DropdownMenu label="Guide actions" icon={svgMore} iconOnly align="end" class="guide-more-action">
     <button type="button" role="menuitem" tabindex="-1" class={menuItemStyles} data-guide-download><Icon src={svgFileMd} size={18} /><span>Download Markdown</span></button>
     <button type="button" role="menuitem" tabindex="-1" class={menuItemStyles} data-guide-copy><Icon src={svgClipboardText} size={18} /><span>Copy as text</span></button>
     <button type="button" role="menuitem" tabindex="-1" class={menuItemStyles} data-guide-copy-link><Icon src={svgLink} size={18} /><span>Copy link</span></button>
     <button type="button" role="menuitem" tabindex="-1" class={menuItemStyles} data-guide-print><Icon src={svgPrint} size={18} /><span>Print</span></button>
   </DropdownMenu>
 </div>
+
+<style is:global>
+  .guide-pdf-action {
+    display: none;
+  }
+  @media (width >= 1280px) {
+    .guide-pdf-action {
+      display: inline-flex;
+      width: 100%;
+    }
+    .guide-more-action {
+      display: none;
+    }
+  }
+</style>

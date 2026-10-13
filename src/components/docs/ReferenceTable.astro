@@ -14,14 +14,25 @@ const { columns, rows, caption } = Astro.props;
 
 <script>
   document.querySelectorAll<HTMLElement>("[data-reference-label]").forEach((root) => {
-    const scroller = root.querySelector<HTMLElement>(".lamaui-table")!;
-    scroller.setAttribute("role", "region");
-    scroller.setAttribute("aria-label", root.dataset.referenceLabel!);
+    const shell = root.querySelector<HTMLElement>(".lamaui-table-scroll")!;
+    const surface = root.querySelector<HTMLElement>(".lamaui-table")!;
+    const candidates = [shell, surface];
     const sync = () => {
+      const edgeScroller = shell.hasAttribute("data-edge-scroll") && shell.scrollWidth > shell.clientWidth + 1;
+      const scroller = edgeScroller ? shell : surface;
+      candidates.forEach((candidate) => {
+        candidate.removeAttribute("role");
+        candidate.removeAttribute("aria-label");
+        candidate.removeAttribute("tabindex");
+      });
+      scroller.setAttribute("role", "region");
+      scroller.setAttribute("aria-label", root.dataset.referenceLabel!);
       scroller.tabIndex = scroller.scrollWidth > scroller.clientWidth + 1 ? 0 : -1;
     };
-    new ResizeObserver(sync).observe(scroller);
-    sync();
+    const resizeObserver = new ResizeObserver(sync);
+    candidates.forEach((candidate) => resizeObserver.observe(candidate));
+    new MutationObserver(sync).observe(shell, { attributes: true, attributeFilter: ["data-edge-scroll"] });
+    requestAnimationFrame(sync);
   });
 </script>
 
@@ -29,22 +40,21 @@ const { columns, rows, caption } = Astro.props;
   .guide-reference {
     min-width: 0;
   }
-  .guide-reference :global(.lamaui-table-scroll[data-edge-scroll]) {
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
-  }
-  .guide-reference :global(.lamaui-table-scroll > .lamaui-table) {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    overflow: auto;
-    overscroll-behavior-x: contain;
+  @media (width > 860px) {
+    .guide-reference :global(.lamaui-table-scroll > .lamaui-table) {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      overscroll-behavior-x: contain;
+    }
   }
   .guide-reference :global(.lamaui-table:focus-visible) {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
+  }
+  .guide-reference :global(.lamaui-table-scroll:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
   }
   .guide-reference :global(table) {
     min-width: 40rem;

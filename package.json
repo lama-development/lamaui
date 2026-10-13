@@ -34,6 +34,7 @@
     "src/lib/classes.ts",
     "src/lib/styles.ts",
     "src/scripts/alert.ts",
+    "src/scripts/accent-picker.ts",
     "src/scripts/browser-theme.ts",
     "src/scripts/code-block.ts",
     "src/scripts/components.ts",

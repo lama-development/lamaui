@@ -68,3 +68,16 @@ const padding = { compact: "px-3 py-2", comfortable: "px-4 py-3", spacious: "px-
 <script>
   import "../../scripts/table-scroll";
 </script>
+
+<style>
+  .lamaui-table-scroll,
+  .lamaui-table {
+    scrollbar-width: none;
+  }
+  .lamaui-table-scroll::-webkit-scrollbar,
+  .lamaui-table::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+</style>

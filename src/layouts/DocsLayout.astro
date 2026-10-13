@@ -3,7 +3,7 @@ import CategoryIcon from "@/components/docs/CategoryIcon.astro";
 import { svgSearch, svgMenu, svgClose, svgPuzzle, svgHouse, svgChevronDown, svgExternal } from "@icons/docs";
 import { controlStyles, ghostStyles, iconControlStyles } from "@/lib/styles";
 import "@/styles/global.css";
-import googleSansFlexUrl from "@/assets/fonts/google-sans-flex.woff2?url";
+import fontUrl from "@/assets/fonts/google-sans-flex.woff2?url";
 import Icon from "@/components/ui/Icon.astro";
 import AccentPicker from "@/components/ui/AccentPicker.astro";
 import ThemePicker from "@/components/ui/ThemePicker.astro";
@@ -32,7 +32,7 @@ const year = new Date().getFullYear();
     <link rel="shortcut icon" href="/favicons/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
     <link rel="manifest" href="/favicons/site.webmanifest" />
-    <link rel="preload" href={googleSansFlexUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={fontUrl} as="font" type="font/woff2" crossorigin />
     <script is:inline>
       (() => {
         try {
@@ -57,7 +57,7 @@ const year = new Date().getFullYear();
         <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles}`} aria-label="Open navigation" aria-controls="docs-navigation" aria-expanded="false" data-docs-open><Icon src={svgMenu} /></button>
       </div>
     </header>
-    <aside data-surface-level="2" id="docs-navigation" class="docs-sidebar fixed inset-[0_auto_0_0] z-50 w-60 border-r border-outline bg-surface-2 print:hidden [@media(width<=860px)]:z-80 [@media(width<=860px)]:transform-[translateX(-105%)] [@media(width<=860px)]:shadow-(--shadow-lg) [@media(width<=860px)]:data-[open=true]:transform-[translateX(0)]" data-open="false" aria-label="Documentation navigation">
+    <aside data-surface-level="2" id="docs-navigation" class="docs-sidebar fixed inset-[0_auto_0_0] z-50 w-60 border-r border-outline bg-surface-2 print:hidden [@media(width<=860px)]:z-80 [@media(width<=860px)]:w-[min(18rem,calc(100vw-2rem))] [@media(width<=860px)]:transform-[translateX(-105%)] [@media(width<=860px)]:shadow-(--shadow-lg) [@media(width<=860px)]:data-[open=true]:transform-[translateX(0)]" data-open="false" aria-label="Documentation navigation">
       <div class="docs-sidebar-inner flex h-full min-h-0 flex-col px-3 pb-3">
         <div class="docs-sidebar-head -mx-3 flex min-h-14 flex-none items-center gap-2 border-b border-outline px-3 py-1.5">
           <a href="/" aria-label="LamaUI home" class="docs-brand flex min-w-0 flex-1 items-center gap-2.5 rounded-md text-label no-underline [&_strong]:block [&_strong]:text-lg [&_strong]:leading-none"><Llama class="docs-mark size-8 flex-none" width={32} height={32} aria-hidden="true" focusable="false" /><strong>LamaUI</strong></a>
@@ -69,7 +69,7 @@ const year = new Date().getFullYear();
             <p id="docs-nav-start" class="m-0 px-3 pt-1 pb-1.5 text-sm font-semibold text-label">Start</p>
             <div class="grid gap-1">
               <a href="/getting-started" aria-current={currentPage === "getting-started" ? "page" : undefined} class="docs-nav-row flex min-h-11 cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-label no-underline [corner-shape:squircle] hover:bg-surface-hover hover:text-label aria-[current=page]:bg-accent-subtle aria-[current=page]:font-semibold aria-[current=page]:text-accent hover:aria-[current=page]:bg-accent-subtle hover:aria-[current=page]:text-accent [&_span]:flex-1 [&_svg]:flex-none"><Icon src={svgHouse} /><span>Getting started</span></a>
-              <a href="/" aria-current={currentPage === "overview" ? "page" : undefined} class="docs-nav-row flex min-h-11 cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-label no-underline [corner-shape:squircle] hover:bg-surface-hover hover:text-label aria-[current=page]:bg-accent-subtle aria-[current=page]:font-semibold aria-[current=page]:text-accent hover:aria-[current=page]:bg-accent-subtle hover:aria-[current=page]:text-accent [&_span]:flex-1 [&_svg]:flex-none"><Icon src={svgPuzzle} /><span>All components</span></a>
+              <a href="/" aria-current={currentPage === "overview" ? "page" : undefined} class="docs-nav-row flex min-h-11 cursor-pointer items-center gap-3 rounded-md px-3 py-2 text-sm text-muted-label no-underline [corner-shape:squircle] hover:bg-surface-hover hover:text-label aria-[current=page]:bg-accent-subtle aria-[current=page]:font-semibold aria-[current=page]:text-accent hover:aria-[current=page]:bg-accent-subtle hover:aria-[current=page]:text-accent [&_span]:flex-1 [&_svg]:flex-none"><Icon src={svgPuzzle} /><span>Components</span></a>
             </div>
           </div>
           <div class="mt-5" aria-labelledby="docs-nav-components">

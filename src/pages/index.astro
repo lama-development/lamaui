@@ -4,10 +4,8 @@ import { svgChevronRight } from "@icons/docs";
 import DocsLayout from "@/layouts/DocsLayout.astro";
 import Icon from "@/components/ui/Icon.astro";
 import Chip from "@/components/data-display/Chip.astro";
-import Tabs from "@/components/navigation/Tabs.astro";
-import TabPanel from "@/components/navigation/TabPanel.astro";
 import CatalogPreview from "@/components/docs/CatalogPreview.astro";
-import { componentGroups, components } from "@/lib/components";
+import { componentGroups } from "@/lib/components";
 import "@/styles/docs.css";
 
 const description = "Astro primitives for controls, surfaces, layout, and interaction.";
@@ -20,51 +18,53 @@ const description = "Astro primitives for controls, surfaces, layout, and intera
   </header>
 
   <section id="catalog" class="catalog" data-catalog aria-label="Component library">
-    <span class="sr-only" role="status" aria-live="polite" data-catalog-status>{components.length} components</span>
-    <Tabs id="catalog-categories" label="Component category" active="all" tabs={[{ id: "all", label: "All components" }, ...componentGroups.map((group) => ({ id: group.slug, label: group.name }))]} class="catalog-tabs">
-      <TabPanel tabsId="catalog-categories" id="all" active class="catalog-panel">
-        <div class="catalog-groups" data-category-slot="all">
+    <nav class="catalog-tabs" aria-label="Component categories" data-catalog-nav>
+      <div class="lamaui-tabs-scroll max-w-full overflow-x-auto">
+        <div data-fluid-hover class="lamaui-tabs relative isolate flex w-fit min-w-max gap-1 rounded-lg border border-(--tab-border) bg-(--tab-track) p-1">
+          <span class="lamaui-tab-highlight absolute top-1 bottom-1 left-0 z-1 rounded-[calc(var(--radius-lg)-0.25rem)] bg-(--tab-selected)" aria-hidden="true"></span>
           {
-            componentGroups.map((group) => (
-              <section id={group.slug} class="docs-category" aria-labelledby={`${group.slug}-heading`} data-catalog-group={group.slug}>
-                <div class="docs-category-head mb-4 flex flex-wrap items-center gap-2.5">
-                  <div class="flex items-center gap-2">
-                    <CategoryIcon group={group.slug} size={20} class="text-muted-label" aria-hidden="true" />
-                    <h2 id={`${group.slug}-heading`} class="m-0 text-lg leading-tight">
-                      {group.name}
-                    </h2>
-                  </div>
-                  <Chip variant="accent">
-                    <span data-category-count>{group.components.length}</span> components
-                  </Chip>
-                </div>
-                <div class="docs-component-grid">
-                  {group.components.map((item) => (
-                    <a href={`/components/${item.slug}`} data-surface-level="2" data-surface-lift="1" class="docs-component-card" data-catalog-card data-name={item.name} data-description={item.description} data-category={group.slug}>
-                      <CatalogPreview slug={item.slug} group={group.slug} />
-                      <div class="catalog-card-copy">
-                        <div class="catalog-card-title">
-                          <h3>{item.name}</h3>
-                          <Icon src={svgChevronRight} size={18} />
-                        </div>
-                        <p>{item.description}</p>
-                      </div>
-                    </a>
-                  ))}
-                </div>
-              </section>
+            componentGroups.map((group, index) => (
+              <a href={`#${group.slug}`} class="lamaui-tab relative z-2 flex min-h-10 shrink-0 items-center rounded-[calc(var(--radius-lg)-0.25rem)] px-3 py-2 text-sm font-semibold text-(--tab-muted-label) no-underline" data-catalog-link={group.slug} aria-current={index === 0 ? "location" : undefined}>
+                {group.name}
+              </a>
             ))
           }
         </div>
-      </TabPanel>
+      </div>
+    </nav>
+    <div class="catalog-groups">
       {
         componentGroups.map((group) => (
-          <TabPanel tabsId="catalog-categories" id={group.slug} class="catalog-panel">
-            <div class="catalog-groups" data-category-slot={group.slug} />
-          </TabPanel>
+          <section id={group.slug} class="docs-category" aria-labelledby={`${group.slug}-heading`} data-catalog-group={group.slug}>
+            <div class="docs-category-head mb-4 flex flex-wrap items-center gap-2.5">
+              <div class="flex items-center gap-2">
+                <CategoryIcon group={group.slug} size={20} class="text-muted-label" aria-hidden="true" />
+                <h2 id={`${group.slug}-heading`} class="m-0 text-lg leading-tight">
+                  {group.name}
+                </h2>
+              </div>
+              <Chip variant="accent">
+                <span data-category-count>{group.components.length}</span> components
+              </Chip>
+            </div>
+            <div class="docs-component-grid">
+              {group.components.map((item) => (
+                <a href={`/components/${item.slug}`} data-surface-level="2" data-surface-lift="1" class="docs-component-card" data-catalog-card data-name={item.name} data-description={item.description} data-category={group.slug}>
+                  <CatalogPreview slug={item.slug} group={group.slug} />
+                  <div class="catalog-card-copy">
+                    <div class="catalog-card-title">
+                      <h3>{item.name}</h3>
+                      <Icon src={svgChevronRight} size={18} />
+                    </div>
+                    <p>{item.description}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
         ))
       }
-    </Tabs>
+    </div>
   </section>
 </DocsLayout>
 

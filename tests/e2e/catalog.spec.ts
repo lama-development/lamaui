@@ -1,70 +1,94 @@
 import { expect, test } from "@playwright/test";
 import { components, componentGroups } from "@lib/components";
 
-test("category tabs show their components and All restores their original order", async ({ page }) => {
+test("category links keep every component visible and navigate to sections", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
   const catalog = page.locator("[data-catalog]");
   await expect(page.locator(".guide-rail, [data-guide-toc], [data-guide-actions]")).toHaveCount(0);
   expect(Math.abs((await catalog.boundingBox())!.width - (await page.locator(".docs-content").boundingBox())!.width)).toBeLessThan(1);
   await expect(catalog.getByRole("searchbox")).toHaveCount(0);
-  const tabs = catalog.getByRole("tablist", { name: "Component category" });
+  const navigation = catalog.getByRole("navigation", { name: "Component categories" });
   const cards = catalog.locator("[data-catalog-card]:visible");
   const original = await cards.evaluateAll((items) => items.map((item) => item.getAttribute("data-name")));
-  for (const group of componentGroups) {
-    const tab = tabs.getByRole("tab", { name: group.name, exact: true });
-    await tab.click();
-    await expect(tab).toHaveAttribute("aria-selected", "true");
-    await expect(cards).toHaveCount(group.components.length);
-    await expect(catalog.getByRole("tabpanel")).toHaveCount(1);
-    await expect(catalog.getByRole("tabpanel")).toHaveAttribute("id", (await tab.getAttribute("aria-controls"))!);
-    await expect(catalog.getByRole("status")).toHaveText(`${group.components.length} components in ${group.name}`);
-    expect(new URL(page.url()).searchParams.get("category")).toBe(group.slug);
-  }
-  await tabs.getByRole("tab", { name: "All components", exact: true }).click();
+  await expect(navigation.getByRole("link")).toHaveCount(componentGroups.length);
+  await expect(navigation.getByRole("link", { name: "Components", exact: true })).toHaveCount(0);
   await expect(cards).toHaveCount(components.length);
+  for (const group of componentGroups) {
+    const link = navigation.getByRole("link", { name: group.name, exact: true });
+    await expect(link).toHaveAttribute("href", `#${group.slug}`);
+    await link.click();
+    await expect(page).toHaveURL(new RegExp(`#${group.slug}$`));
+    await expect(link).toHaveAttribute("aria-current", "location");
+    await expect(catalog.locator(`#${group.slug}-heading`)).toBeInViewport();
+    await expect(cards).toHaveCount(components.length);
+  }
   expect(await cards.evaluateAll((items) => items.map((item) => item.getAttribute("data-name")))).toEqual(original);
-  await expect(catalog.locator("[data-catalog-card]")).toHaveCount(components.length);
-  await expect(page).toHaveURL(/\/$/);
 });
 
-test("category tabs support keyboard selection and keep spacing consistent", async ({ page }) => {
+test("category links follow native keyboard order and keep section spacing consistent", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   for (const width of [390, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
     const catalog = page.locator("[data-catalog]");
-    const tabs = catalog.getByRole("tablist", { name: "Component category" });
-    const all = tabs.getByRole("tab", { name: "All components", exact: true });
-    const position = () =>
-      catalog
-        .locator("[data-catalog-group]:visible")
-        .first()
-        .evaluate((section) => {
-          const list = section.closest("[data-tabs]")!.querySelector('[role="tablist"]')!;
-          return section.getBoundingClientRect().top - list.getBoundingClientRect().bottom;
-        });
-    const gap = await position();
-    await all.focus();
-    for (const group of componentGroups) {
-      await page.keyboard.press("ArrowRight");
-      const tab = tabs.getByRole("tab", { name: group.name, exact: true });
-      await expect(tab).toBeFocused();
-      await expect(tab).toHaveAttribute("aria-selected", "true");
-      await expect.poll(position).toBeCloseTo(gap, 1);
+    const navigation = catalog.getByRole("navigation", { name: "Component categories" });
+    const first = navigation.getByRole("link", { name: componentGroups[0].name, exact: true });
+    await first.focus();
+    await expect(first).toHaveAttribute("aria-current", "location");
+    for (const group of componentGroups.slice(1)) {
+      await page.keyboard.press("Tab");
+      await expect(navigation.getByRole("link", { name: group.name, exact: true })).toBeFocused();
     }
-    await page.keyboard.press("Home");
-    await expect(all).toBeFocused();
     await expect(catalog.locator("[data-catalog-group]:visible")).toHaveCount(componentGroups.length);
     const sections = await catalog.locator("[data-catalog-group]").evaluateAll((items) => items.map((item) => ({ top: item.getBoundingClientRect().top, bottom: item.getBoundingClientRect().bottom })));
     for (let i = 1; i < sections.length; i++) expect(sections[i].top - sections[i - 1].bottom).toBeCloseTo(40, 1);
-    await page.keyboard.press("End");
-    await expect(tabs.getByRole("tab", { name: "Layout", exact: true })).toBeFocused();
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
   }
 });
 
-test("category tabs reach the trailing viewport edge on narrow screens", async ({ page }) => {
+test("category navigation marks the section currently being viewed", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    const navigation = page.getByRole("navigation", { name: "Component categories" });
+    for (const slug of ["actions", "forms", "data-display", "layout"]) {
+      await page.locator(`#${slug}`).evaluate((section) => section.scrollIntoView());
+      const link = navigation.locator(`[data-catalog-link="${slug}"]`);
+      await expect(link).toHaveAttribute("aria-current", "location");
+      await expect(navigation.locator('[aria-current="location"]')).toHaveCount(1);
+      if (width < 861) await expect(link).toBeInViewport();
+    }
+  }
+});
+
+test("category navigation uses the same surfaces as catalog cards", async ({ page }) => {
+  for (const colorScheme of ["light", "dark"] as const) {
+    await page.emulateMedia({ colorScheme, reducedMotion: "reduce" });
+    await page.goto("/");
+    const colors = await page.locator("[data-catalog-nav]").evaluate((navigation) => {
+      const track = navigation.querySelector<HTMLElement>(".lamaui-tabs")!;
+      const highlight = navigation.querySelector<HTMLElement>(".lamaui-tab-highlight")!;
+      const card = document.querySelector<HTMLElement>(".docs-component-card")!;
+      const preview = card.querySelector<HTMLElement>(".catalog-preview")!;
+      return {
+        track: getComputedStyle(track).backgroundColor,
+        highlight: getComputedStyle(highlight).backgroundColor,
+        border: getComputedStyle(track).borderColor,
+        card: getComputedStyle(card).backgroundColor,
+        cardBorder: getComputedStyle(card).borderColor,
+        preview: getComputedStyle(preview).backgroundColor
+      };
+    });
+    expect(colors.highlight).toBe(colors.card);
+    expect(colors.track).toBe(colors.preview);
+    expect(colors.border).toBe(colors.cardBorder);
+  }
+});
+
+test("category navigation reaches the trailing viewport edge on narrow screens", async ({ page }) => {
   for (const width of [320, 390, 768]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
@@ -73,21 +97,21 @@ test("category tabs reach the trailing viewport edge on narrow screens", async (
     const [contentBox, scrollerBox] = await Promise.all([content.boundingBox(), scroller.boundingBox()]);
     expect(scrollerBox!.x).toBeCloseTo(0, 1);
     expect(scrollerBox!.x + scrollerBox!.width).toBeCloseTo(width, 1);
-    const initialTrackLeft = await scroller.locator('[role="tablist"]').evaluate((element) => element.getBoundingClientRect().left);
+    const initialTrackLeft = await scroller.locator(".lamaui-tabs").evaluate((element) => element.getBoundingClientRect().left);
     expect(initialTrackLeft).toBeCloseTo(contentBox!.x, 1);
     const scrolledTrackLeft = await scroller.evaluate((element, inset) => {
       element.scrollLeft = inset;
-      return element.querySelector<HTMLElement>('[role="tablist"]')!.getBoundingClientRect().left;
+      return element.querySelector<HTMLElement>(".lamaui-tabs")!.getBoundingClientRect().left;
     }, contentBox!.x);
     expect(scrolledTrackLeft).toBeCloseTo(0, 1);
     const endState = await scroller.evaluate((element) => {
       element.scrollLeft = element.scrollWidth;
-      const track = element.querySelector<HTMLElement>('[role="tablist"]')!;
-      const lastTab = element.querySelector<HTMLElement>('[role="tab"]:last-of-type')!;
+      const track = element.querySelector<HTMLElement>(".lamaui-tabs")!;
+      const lastLink = element.querySelector<HTMLElement>("[data-catalog-link]:last-of-type")!;
       const trackRight = track.getBoundingClientRect().right;
       return {
         outerGap: window.innerWidth - trackRight,
-        innerGap: trackRight - lastTab.getBoundingClientRect().right,
+        innerGap: trackRight - lastLink.getBoundingClientRect().right,
         scrollbarWidth: getComputedStyle(element).scrollbarWidth
       };
     });
@@ -96,54 +120,107 @@ test("category tabs reach the trailing viewport edge on narrow screens", async (
     expect(endState.innerGap).toBeLessThanOrEqual(6);
     expect(endState.scrollbarWidth).toBe("none");
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+
+    const forms = page.getByRole("navigation", { name: "Component categories" }).getByRole("link", { name: "Forms", exact: true });
+    await forms.click();
+    await expect(forms).toBeInViewport();
+    await page.evaluate(() => window.scrollTo({ top: 900, behavior: "instant" }));
+    await expect.poll(async () => Math.round((await scroller.boundingBox())!.y)).toBeLessThanOrEqual(56);
   }
 
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/");
-  const tabsBox = await page.getByRole("tablist", { name: "Component category" }).boundingBox();
+  const tabsBox = await page.getByRole("navigation", { name: "Component categories" }).locator(".lamaui-tabs").boundingBox();
   expect(tabsBox!.x + tabsBox!.width).toBeLessThan(1440);
 });
 
+test("sticky category tabs follow the mobile navbar motion", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.goto("/");
+
+  const header = page.locator(".docs-mobile-header");
+  const scroller = page.locator(".catalog-tabs > .lamaui-tabs-scroll");
+  await page.evaluate(() => window.scrollTo({ top: 900, behavior: "instant" }));
+  await expect(header).toHaveAttribute("data-scroll-hidden", "");
+
+  await header.evaluate(async (element) => {
+    element.removeAttribute("data-scroll-hidden");
+    await Promise.all(element.getAnimations().map((animation) => animation.finished));
+  });
+  await expect.poll(async () => (await scroller.boundingBox())!.y).toBeCloseTo(56, 1);
+
+  const motion = await scroller.evaluate(async (element) => {
+    const navbar = document.querySelector<HTMLElement>(".docs-mobile-header")!;
+    const navigation = document.querySelector<HTMLElement>("[data-catalog-nav]")!;
+    const startY = element.getBoundingClientRect().y;
+    navbar.setAttribute("data-scroll-hidden", "");
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+
+    const tabTransition = navigation.getAnimations().find((animation) => animation instanceof CSSTransition && animation.transitionProperty === "top");
+    const navbarTransition = navbar.getAnimations().find((animation) => animation instanceof CSSTransition && animation.transitionProperty === "transform");
+    await new Promise<void>((resolve) => window.setTimeout(resolve, 80));
+    const duringY = element.getBoundingClientRect().y;
+    const tabTiming = tabTransition?.effect?.getTiming();
+    const navbarTiming = navbarTransition?.effect?.getTiming();
+    await Promise.all([tabTransition?.finished, navbarTransition?.finished]);
+
+    return {
+      startY,
+      duringY,
+      endY: element.getBoundingClientRect().y,
+      tabDuration: tabTiming?.duration,
+      navbarDuration: navbarTiming?.duration,
+      tabEasing: tabTiming?.easing,
+      navbarEasing: navbarTiming?.easing
+    };
+  });
+
+  expect(motion.startY).toBeCloseTo(56, 1);
+  expect(motion.duringY).toBeLessThan(motion.startY);
+  expect(motion.duringY).toBeGreaterThan(0);
+  expect(motion.endY).toBeCloseTo(0, 1);
+  expect(motion.tabDuration).toBe(240);
+  expect(motion.tabDuration).toBe(motion.navbarDuration);
+  expect(motion.tabEasing).toBe(motion.navbarEasing);
+});
+
 for (const reducedMotion of ["no-preference", "reduce"] as const) {
-  test(`category indicator preserves its transition with ${reducedMotion} motion`, async ({ page }) => {
+  test(`category anchor indicator follows the current section with ${reducedMotion} motion`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion });
     for (const width of [390, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       await page.goto("/");
-      const result = await page.locator("[data-catalog] > [data-tabs]").evaluate(async (root) => {
+      const result = await page.locator("[data-catalog-nav]").evaluate(async (root) => {
         const indicator = root.querySelector<HTMLElement>(".lamaui-tab-highlight")!;
-        const tab = root.querySelector<HTMLButtonElement>('[data-tab="forms"]')!;
+        const link = root.querySelector<HTMLAnchorElement>('[data-catalog-link="forms"]')!;
         await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
-        const before = root.getBoundingClientRect().height;
-        tab.click();
-        // Resolve styles so the transition starts before resize notifications.
+        link.addEventListener("click", (event) => event.preventDefault(), { once: true });
+        link.click();
         getComputedStyle(indicator).transform;
         await new Promise<void>((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => resolve())));
         const transition = indicator.getAnimations().find((animation) => animation instanceof CSSTransition && animation.transitionProperty === "transform");
         const running = transition?.playState === "running";
         await transition?.finished;
         return {
-          resized: root.getBoundingClientRect().height !== before,
           running,
-          aligned: Math.abs(indicator.getBoundingClientRect().left - tab.getBoundingClientRect().left) < 1,
-          widthMatches: Math.abs(indicator.getBoundingClientRect().width - tab.getBoundingClientRect().width) < 1
+          current: link.getAttribute("aria-current"),
+          aligned: Math.abs(indicator.getBoundingClientRect().left - link.getBoundingClientRect().left) < 1,
+          widthMatches: Math.abs(indicator.getBoundingClientRect().width - link.getBoundingClientRect().width) < 1
         };
       });
-      expect(result.resized).toBe(true);
       expect(result.running).toBe(reducedMotion === "no-preference");
+      expect(result.current).toBe("location");
       expect(result.aligned).toBe(true);
       expect(result.widthMatches).toBe(true);
     }
   });
 }
 
-test("fluid tab hover follows the pointer without changing selection", async ({ page }) => {
+test("fluid category and tab hover follows the pointer without changing selection", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "no-preference" });
   await page.setViewportSize({ width: 1440, height: 900 });
-  for (const example of [
-    { path: "/", label: "Component category", targets: ["Actions", "Forms"] },
-    { path: "/components/tabs", label: "Settings sections", targets: ["Security", "General"] }
-  ]) {
+  for (const example of [{ path: "/components/tabs", label: "Settings sections", targets: ["Security", "General"] }]) {
     await page.goto(example.path);
     const tabs = page.getByRole("tablist", { name: example.label, exact: true });
     await tabs.scrollIntoViewIfNeeded();
@@ -162,31 +239,44 @@ test("fluid tab hover follows the pointer without changing selection", async ({ 
     await page.mouse.move(0, 0);
     await expect(tabs.locator('.lamaui-fluid-hover[data-visible="true"]')).toHaveCount(0);
   }
+
+  await page.goto("/");
+  const navigation = page.getByRole("navigation", { name: "Component categories" });
+  const initial = await navigation.locator('[aria-current="location"]').getAttribute("href");
+  for (const name of ["Actions", "Forms"]) {
+    const target = navigation.getByRole("link", { name, exact: true });
+    await target.hover();
+    const hover = navigation.locator(".lamaui-fluid-hover");
+    await expect(hover).toHaveAttribute("data-visible", "true");
+    await expect.poll(async () => Math.abs((await hover.boundingBox())!.x - (await target.boundingBox())!.x)).toBeLessThan(1);
+    await expect(navigation.locator('[aria-current="location"]')).toHaveAttribute("href", initial!);
+  }
 });
 
-test("category selection survives reload and return navigation from a guide", async ({ page }) => {
+test("category anchor survives legacy URLs, reload, and return navigation", async ({ page }) => {
   await page.goto("/?category=forms&q=PasswordInput#catalog");
   const catalog = page.locator("[data-catalog]");
-  const forms = catalog.getByRole("tab", { name: "Forms", exact: true });
-  await expect(forms).toHaveAttribute("aria-selected", "true");
+  const forms = catalog.getByRole("navigation", { name: "Component categories" }).getByRole("link", { name: "Forms", exact: true });
+  await expect(forms).toHaveAttribute("aria-current", "location");
   expect(new URL(page.url()).searchParams.has("q")).toBe(false);
+  await expect(page).toHaveURL(/#forms$/);
   await page.reload();
-  await expect(forms).toHaveAttribute("aria-selected", "true");
+  await expect(forms).toHaveAttribute("aria-current", "location");
   await catalog.locator('[data-catalog-card][data-name="PasswordInput"]').click();
   await expect(page).toHaveURL(/\/components\/password-input$/);
   await page.goBack();
-  await expect(forms).toHaveAttribute("aria-selected", "true");
-  await expect(catalog.locator("[data-catalog-card]:visible")).toHaveCount(componentGroups.find((group) => group.slug === "forms")!.components.length);
+  await expect(forms).toHaveAttribute("aria-current", "location");
+  await expect(catalog.locator("[data-catalog-card]:visible")).toHaveCount(components.length);
 });
 
 test("sidebar separates start pages from component categories", async ({ page }) => {
   await page.goto("/");
   const navigation = page.getByRole("navigation", { name: "Documentation" });
   await expect(navigation.getByText("Start", { exact: true })).toBeVisible();
-  await expect(navigation.getByText("Components", { exact: true })).toBeVisible();
+  await expect(navigation.locator("#docs-nav-components")).toHaveText("Components");
   const startLinks = navigation.locator('[aria-labelledby="docs-nav-start"] a');
   await expect(startLinks).toHaveCount(2);
-  expect(await startLinks.allTextContents()).toEqual(["Getting started", "All components"]);
+  expect(await startLinks.allTextContents()).toEqual(["Getting started", "Components"]);
 
   const foundations = navigation.getByRole("button", { name: "Foundations", exact: true });
   const actions = navigation.getByRole("button", { name: "Actions", exact: true });
@@ -267,8 +357,9 @@ for (const width of [320, 390, 768, 1024, 1440]) {
       const catalog = page.locator("[data-catalog]");
       await expect(catalog).toBeAttached();
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
-      await catalog.getByRole("tab", { name: "Forms", exact: true }).click();
-      await expect(page.locator("[data-catalog-card]:visible")).toHaveCount(componentGroups.find((group) => group.slug === "forms")!.components.length);
+      await catalog.getByRole("navigation", { name: "Component categories" }).getByRole("link", { name: "Forms", exact: true }).click();
+      await expect(page).toHaveURL(/#forms$/);
+      await expect(page.locator("[data-catalog-card]:visible")).toHaveCount(components.length);
       expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
     });
   }
