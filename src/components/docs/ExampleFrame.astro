@@ -138,6 +138,17 @@ const displayCode = withImports(code);
     margin: 0 0 0.75rem;
     overflow: visible;
   }
+  @media (width <= 620px) {
+    .example-frame :global(.example-tabs > .lamaui-tabs-scroll) {
+      width: 100%;
+    }
+    .example-frame :global(.example-tabs > .lamaui-tabs-scroll > [role="tablist"]) {
+      width: 100%;
+    }
+    .example-frame :global(.example-tabs > .lamaui-tabs-scroll > [role="tablist"] > [role="tab"]) {
+      flex: 1;
+    }
+  }
   .example-frame :global(.example-tabs > .lamaui-tabs-scroll > [role="tablist"]) {
     gap: 0.125rem;
     padding: 0.1875rem;

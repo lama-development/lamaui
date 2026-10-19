@@ -15,6 +15,7 @@ test.beforeEach(async ({ page }) => {
 test("opens with an accessible name, description, and initial focus", async ({ page }) => {
   const { dialog } = await openDialog(page);
 
+  await expect(dialog).not.toHaveCSS("box-shadow", "none");
   await expect(dialog).toHaveAttribute("aria-labelledby", "preview-dialog-title");
   await expect(dialog).toHaveAttribute("aria-describedby", "preview-dialog-description");
   await expect(dialog.getByText("This creates a new component version.")).toBeVisible();

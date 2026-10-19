@@ -37,7 +37,7 @@ if (!content && !dedicated.has(component.slug)) throw new Error(`Missing guide f
 // Validate every reference at build time, including the dedicated guides.
 const reference = componentReference(component.name, content?.props);
 const hasDataTypes = reference.types.length > 0;
-const sections = [{ id: "preview", label: "Preview" }, { id: "usage", label: "Usage" }, { id: "examples", label: "Examples" }, { id: "props", label: "Props" }, { id: "accessibility", label: "Accessibility" }, ...(hasDataTypes ? [{ id: "data-types", label: "Data types" }] : [])];
+const sections = [{ id: "component-overview", label: "Overview" }, { id: "usage", label: "Usage" }, { id: "examples", label: "Examples" }, { id: "props", label: "Props" }, { id: "accessibility", label: "Accessibility" }, ...(hasDataTypes ? [{ id: "data-types", label: "Data types" }] : [])];
 const usage = withImports(content?.usage ?? component.usage);
 ---
 
@@ -48,10 +48,11 @@ const usage = withImports(content?.usage ?? component.usage);
       <p>{component.description}</p>
     </header>
 
-    <section data-guide-no-export class="guide-section mt-10 print:hidden" aria-labelledby="preview">
-      <div class="flex items-center gap-2">
-        <h2 id="preview" class="m-0 scroll-mt-24">Preview</h2>
-      </div>
+    <section data-guide-no-export class="guide-section mt-10 print:hidden" aria-labelledby="component-overview">
+      <header>
+        <h2 id="component-overview">Overview</h2>
+        <p>Explore the component’s primary states and behavior.</p>
+      </header>
       <ComponentPreview slug={component.slug} />
     </section>
 

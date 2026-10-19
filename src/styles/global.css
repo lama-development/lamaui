@@ -45,17 +45,13 @@
 }
 
 @layer components {
-  /* Standalone data panels share the surface shadow. Their containing panel
-     provides elevation when they are nested, avoiding stacked shadows. */
+  /* Static surfaces communicate hierarchy through color and borders. Shadows
+     are reserved for components that float over other content. */
   :is(.lamaui-table, .code-block)[data-surface-level] {
-    box-shadow: var(--surface-shadow);
-  }
-  [data-surface-level]:not([data-surface-level="1"]) :is(.lamaui-table, .code-block) {
     box-shadow: none;
   }
   :is(.lamaui-surface, .lamaui-card, .lamaui-menu, .lamaui-dialog, .lamaui-drawer, .lamaui-toast)[data-surface-level] {
     background-color: var(--surface);
-    box-shadow: var(--surface-shadow);
   }
   [data-surface-level="1"] {
     --surface: var(--surface-1);

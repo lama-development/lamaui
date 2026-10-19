@@ -12,7 +12,7 @@ const { id, title, side = "right", class: className } = Astro.props;
 const titleId = `${id}-title`;
 ---
 
-<dialog {id} aria-labelledby={titleId} data-drawer data-drawer-side={side} data-surface-level="3" data-surface-lift="2" class:list={["lamaui-drawer fixed inset-y-0 h-dvh max-h-none w-[min(26rem,90vw)] border-0 bg-surface-elevated p-0 text-label shadow-(--surface-shadow) backdrop:bg-overlay", side === "right" ? "mr-0 ml-auto" : "mr-auto ml-0", className]}>
+<dialog {id} aria-labelledby={titleId} data-drawer data-drawer-side={side} data-surface-level="3" data-surface-lift="2" class:list={["lamaui-drawer fixed inset-y-0 h-dvh max-h-none w-[min(26rem,90vw)] border-0 bg-surface-elevated p-0 text-label shadow-(--shadow-overlay) backdrop:bg-overlay", side === "right" ? "mr-0 ml-auto" : "mr-auto ml-0", className]}>
   <div class="lamaui-drawer-shell flex h-full flex-col">
     <div class="lamaui-drawer-drag-area flex-none" data-drawer-drag-zone>
       <div class="lamaui-drawer-drag-zone" aria-hidden="true">

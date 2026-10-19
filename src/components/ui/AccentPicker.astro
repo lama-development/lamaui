@@ -11,11 +11,11 @@ const { id = "accent-picker" } = Astro.props;
   <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} rounded-[calc(var(--radius-lg)-0.3125rem)]`} aria-label="Choose accent color, current: Lime" title="Accent color: Lime" aria-expanded="false" aria-controls={`${id}-colors`} data-accent-trigger>
     <span class="size-5 rounded-full border border-black/10 bg-accent" aria-hidden="true"></span>
   </button>
-  <div id={`${id}-colors`} data-surface-level="3" data-surface-lift="1" class="lamaui-accent-dock lamaui-surface absolute right-0 bottom-[calc(100%+0.5rem)] z-10 flex w-max flex-col gap-1 rounded-lg border border-outline p-1 [corner-shape:squircle]" role="group" data-fluid-hover aria-label="Accent color" inert data-accent-dock>
+  <div id={`${id}-colors`} data-surface-level="3" data-surface-lift="1" class="lamaui-accent-dock lamaui-surface absolute right-0 bottom-[calc(100%+0.5rem)] z-10 flex w-max flex-col gap-1 rounded-lg border border-outline p-1 shadow-(--shadow-dropdown) [corner-shape:squircle]" role="group" data-fluid-hover aria-label="Accent color" inert data-accent-dock>
     {
       accentPresets.map((preset, index) => (
         <button type="button" class="lamaui-accent-choice relative flex size-(--control-md) flex-none cursor-pointer items-center justify-center rounded-[calc(var(--radius-lg)-0.3125rem)] border border-transparent bg-transparent [corner-shape:squircle] hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" style={`--swatch-index:${index}`} aria-label={`${preset.label} accent`} aria-pressed={preset.value === "lime"} data-accent-choice={preset.value}>
-          <span class="lamaui-accent-swatch block size-5 rounded-full border border-black/10 shadow-(--shadow-sm)" style={`background: light-dark(${preset.light}, ${preset.dark})`} aria-hidden="true" />
+          <span class="lamaui-accent-swatch block size-5 rounded-full border border-black/10" style={`background: light-dark(${preset.light}, ${preset.dark})`} aria-hidden="true" />
         </button>
       ))
     }

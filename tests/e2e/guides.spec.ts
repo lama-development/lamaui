@@ -68,6 +68,7 @@ for (const component of components) {
       expect(appearance.background).not.toBe("rgba(0, 0, 0, 0)");
     }
     await expect(article.locator(".component-preview")).toHaveCSS("border-top-style", "dashed");
+    await expect(article.locator(".component-preview")).toHaveCSS("box-shadow", "none");
     const download = page.locator(".guide-rail").getByRole("button", { name: "Download PDF", exact: true });
     await expect(download).toBeVisible();
     await expect(page.locator(".guide-breadcrumb")).toHaveCount(0);
@@ -87,6 +88,18 @@ for (const component of components) {
     expect(errors).toEqual([]);
   });
 }
+
+test("static surfaces use color and borders without elevation shadows", async ({ page }) => {
+  await page.goto("/components/card");
+  const card = page.locator(".component-preview .lamaui-card").first();
+  await expect(card).toHaveCSS("border-top-width", "1px");
+  await expect(card).toHaveCSS("box-shadow", "none");
+
+  await page.goto("/components/table");
+  const table = page.locator(".component-preview .lamaui-table").first();
+  await expect(table).toHaveCSS("border-top-width", "1px");
+  await expect(table).toHaveCSS("box-shadow", "none");
+});
 
 test("getting started centralizes one-time project setup", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });

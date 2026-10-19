@@ -25,7 +25,7 @@ const hasMultipleExamples = slug === "alert" || slug === "icon";
       )
     }
     <div class="guide-example-list">
-      <ComponentExample {slug} title={content.example.title} headingLevel={hasMultipleExamples ? "h3" : "h2"} headingId={hasMultipleExamples ? undefined : "examples"} description={content.behavior} />
+      <ComponentExample {slug} title={hasMultipleExamples ? content.example.title : `Practical example: ${content.example.title}`} headingLevel={hasMultipleExamples ? "h3" : "h2"} headingId={hasMultipleExamples ? undefined : "examples"} description={content.behavior} />
       {slug === "alert" && <ComponentExample slug="alert-variants" title="Status variants and custom icons" description="Choose a variant that matches the message. Override `icon`, `color`, and `background` when your content needs its own treatment." />}
       {
         slug === "icon" && (

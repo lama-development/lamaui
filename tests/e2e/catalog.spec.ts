@@ -289,6 +289,17 @@ test("sidebar separates start pages from component categories", async ({ page })
   await expect(foundations).toHaveAttribute("aria-expanded", "false");
 });
 
+test("sidebar uses seamless gradient separators", async ({ page }) => {
+  await page.goto("/");
+  const sidebar = page.locator(".docs-sidebar");
+  await expect(sidebar).toHaveCSS("border-right-width", "1px");
+  await expect(sidebar.locator(".docs-sidebar-head")).toHaveCSS("border-bottom-width", "0px");
+  await expect(sidebar.locator(".docs-sidebar-search-row")).toHaveCSS("border-bottom-width", "1px");
+  await expect(sidebar.locator(".docs-sidebar-foot")).toHaveCSS("border-top-width", "0px");
+  expect(await sidebar.locator(".docs-sidebar-head").evaluate((element) => getComputedStyle(element, "::after").backgroundImage)).toBe("none");
+  expect(await sidebar.locator(".docs-sidebar-foot").evaluate((element) => getComputedStyle(element, "::before").backgroundImage)).toContain("linear-gradient");
+});
+
 test("sidebar reserves scrollbar space without resizing its items", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1600 });
   await page.goto("/");

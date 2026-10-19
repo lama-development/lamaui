@@ -79,20 +79,48 @@ test("broad searches show distinct components instead of repeated guide sections
 test("mobile trigger, focus containment, outside dismissal, and narrow layout", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/");
-  const trigger = page.locator(".docs-mobile-header [data-search-open]");
+  await page.getByRole("button", { name: "Open navigation" }).click();
+  const trigger = page.locator(".docs-sidebar [data-search-open]");
   await trigger.click();
   await expect(palette(page)).toBeVisible();
   const input = palette(page).getByRole("combobox");
+  await expect(input).toHaveAttribute("placeholder", "Search docs…");
+  await expect(palette(page)).toHaveAttribute("data-surface-level", "3");
+  await expect(palette(page).locator(".search-key")).toHaveCount(4);
+  await expect(palette(page).locator(".search-key-enter")).toHaveText("Enter");
+  await expect(palette(page).locator(".search-result-key")).toHaveCount(0);
+  await expect(palette(page).getByRole("option").first()).toHaveClass(/aria-selected:bg-\[var\(--search-result-hover\)\]/);
+  await expect(palette(page).getByRole("option").first()).not.toHaveClass(/aria-selected:bg-accent-subtle/);
+  await expect(palette(page).locator(".search-shortcut-label").first()).toBeHidden();
+  await expect(palette(page).locator(".search-result-description").first()).toBeHidden();
   await input.press("Shift+Tab");
   await expect(palette(page).getByRole("button", { name: "Close search" })).toBeFocused();
   await page.keyboard.press("Tab");
   await expect(input).toBeFocused();
   const box = await palette(page).boundingBox();
+  expect((await palette(page).locator(".search-input-row").boundingBox())!.height).toBeLessThanOrEqual(58);
+  expect((await palette(page).getByRole("option").first().boundingBox())!.height).toBeGreaterThanOrEqual(56);
   expect(box!.x).toBeGreaterThanOrEqual(0);
   expect(box!.x + box!.width).toBeLessThanOrEqual(390);
+  expect(await palette(page).evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
   await page.mouse.click(2, 2);
   await expect(palette(page)).not.toBeVisible();
   await expect(trigger).toBeFocused();
+});
+
+test("light-mode results use a visible neutral fluid hover", async ({ page }) => {
+  await page.goto("/");
+  await page.keyboard.press("Control+k");
+  const dialog = palette(page);
+  const results = dialog.getByRole("listbox");
+  const option = dialog.getByRole("option").nth(1);
+  await expect(results).toHaveAttribute("data-fluid-hover", "");
+  await option.hover();
+  const dialogBackground = await dialog.evaluate((element) => getComputedStyle(element).backgroundColor);
+  const optionBackground = await option.evaluate((element) => getComputedStyle(element).backgroundColor);
+  expect(optionBackground).not.toBe(dialogBackground);
+  expect(optionBackground).not.toBe("rgba(0, 0, 0, 0)");
+  await expect(dialog.locator('.lamaui-fluid-hover[data-visible="true"]')).toHaveCount(1);
 });
 
 test("search leaves another open modal in control", async ({ page }) => {
@@ -104,17 +132,14 @@ test("search leaves another open modal in control", async ({ page }) => {
 });
 
 for (const width of [320, 390, 860]) {
-  test(`mobile header groups search and navigation on the right at ${width}px`, async ({ page }) => {
+  test(`mobile shell has no navbar and keeps its navigation trigger reachable at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 844 });
     await page.goto("/");
-    const header = page.locator(".docs-mobile-header");
-    const search = await header.locator("[data-search-open]").boundingBox();
-    const menu = await header.locator("[data-docs-open]").boundingBox();
-    const brand = await header.locator(".docs-brand").boundingBox();
-    expect(menu!.x - (search!.x + search!.width)).toBeGreaterThanOrEqual(0);
-    expect(menu!.x - (search!.x + search!.width)).toBeLessThanOrEqual(8);
-    expect(menu!.x + menu!.width).toBeGreaterThanOrEqual(width - 16);
-    expect(brand!.x + brand!.width).toBeLessThanOrEqual(search!.x);
-    expect(search!.width).toBeGreaterThanOrEqual(44);
+    await expect(page.locator(".docs-mobile-header, .docs-desktop-header")).toHaveCount(0);
+    const menu = await page.locator(".docs-mobile-menu").boundingBox();
+    expect(menu!.x + menu!.width).toBeLessThanOrEqual(width - 16 + 1);
+    expect(menu!.y + menu!.height).toBeLessThanOrEqual(844 - 16 + 1);
+    expect(menu!.width).toBeGreaterThanOrEqual(44);
+    expect(menu!.height).toBeGreaterThanOrEqual(44);
   });
 }

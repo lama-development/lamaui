@@ -12,6 +12,7 @@ for (const key of ["Enter", "Space", "ArrowDown", "ArrowUp"]) {
     await expect(trigger).toHaveAttribute("aria-expanded", "true");
     const menu = page.getByRole("menu", { name: "Actions", exact: true });
     await expect(menu).toBeVisible();
+    await expect(menu).not.toHaveCSS("box-shadow", "none");
     await expect(menu.getByRole("menuitem", { name: key === "ArrowUp" ? "Delete" : "Duplicate", exact: true })).toBeFocused();
     await expect(trigger).toHaveAttribute("aria-controls", (await menu.getAttribute("id")) as string);
   });

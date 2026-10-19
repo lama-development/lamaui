@@ -83,6 +83,8 @@
   --shadow-md: 0 10px 28px rgb(5 12 20 / 10%);
   --shadow-dropdown: 0 4px 8px light-dark(rgb(5 12 20 / 12%), rgb(0 0 0 / 28%)), 0 16px 40px light-dark(rgb(5 12 20 / 22%), rgb(0 0 0 / 48%));
   --shadow-lg: 0 20px 48px rgb(5 12 20 / 16%);
+  --shadow-floating: 0 4px 10px light-dark(rgb(5 12 20 / 10%), rgb(0 0 0 / 28%)), 0 16px 36px light-dark(rgb(5 12 20 / 12%), rgb(0 0 0 / 36%));
+  --shadow-overlay: 0 8px 20px light-dark(rgb(5 12 20 / 12%), rgb(0 0 0 / 34%)), 0 28px 64px light-dark(rgb(5 12 20 / 16%), rgb(0 0 0 / 48%));
   --shadow-control: inset 0 -2px 0 rgb(0 0 0 / 12%), 0 1px 2px rgb(0 0 0 / 10%);
   --surface-shadow-1: none;
   --surface-shadow-2: 0 1px 2px light-dark(rgb(5 12 20 / 8%), rgb(0 0 0 / 24%));

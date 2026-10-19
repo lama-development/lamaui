@@ -5,7 +5,7 @@ export const controlStyles = cx("lamaui-control inline-flex cursor-pointer items
 
 export const fieldStyles = cx("lamaui-field min-h-(--control-md) w-full rounded-md border border-outline bg-input px-[.85rem] py-[.65rem] text-label outline-none [corner-shape:squircle] placeholder:text-[color-mix(in_srgb,var(--muted-label)_65%,transparent)] focus:border-accent focus:shadow-[0_0_0_3px_var(--accent-ring)] disabled:cursor-not-allowed disabled:opacity-[.52] aria-invalid:border-destructive aria-invalid:shadow-[0_0_0_3px_color-mix(in_srgb,var(--destructive)_22%,transparent)] [&.lamaui-password-field]:pr-11 [&.lamaui-search-field]:pl-10");
 
-export const cardStyles = cx("lamaui-card rounded-lg border border-card-outline bg-card-surface shadow-(--surface-shadow) [corner-shape:squircle]");
+export const cardStyles = cx("lamaui-card rounded-lg border border-card-outline bg-card-surface [corner-shape:squircle]");
 
 export const interactiveStyles = cx("lamaui-interactive hover:bg-surface-hover");
 

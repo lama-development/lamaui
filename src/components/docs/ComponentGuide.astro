@@ -65,6 +65,13 @@ const { title, slug, description, sections } = Astro.props;
   .guide-content .guide-section > header {
     margin: 0;
   }
+  .guide-content .guide-section > header > p {
+    margin: 0.5rem 0 0;
+    max-width: 48rem;
+    color: var(--muted-label);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
   .guide-content .guide-section h2 {
     margin: 0;
     font-size: 1.5rem;
@@ -76,6 +83,10 @@ const { title, slug, description, sections } = Astro.props;
     display: grid;
     min-width: 0;
     gap: 2.75rem;
+  }
+  .guide-content .guide-section > h2,
+  .guide-content .guide-section > header > h2 {
+    margin: 0;
   }
   .guide-content :is(.guide-note, .example-heading, .example-note, .guide-definition) .lamaui-inline-code {
     padding: 0.125rem 0.3rem;
@@ -146,6 +157,9 @@ const { title, slug, description, sections } = Astro.props;
     }
     .guide-content .guide-example-list {
       gap: 2.25rem;
+    }
+    .guide-content .guide-section {
+      gap: 1rem;
     }
   }
   .guide-rail {
