@@ -12,6 +12,8 @@ interface FluidHoverState {
 }
 
 const states = new Map<HTMLElement, FluidHoverState>();
+let pointer: { x: number; y: number } | undefined;
+const usesLocalCoordinates = (group: HTMLElement) => group.matches(".lamaui-tabs, [data-fluid-hover-local]");
 
 function eligibleItems(group: HTMLElement) {
   return Array.from(group.querySelectorAll<HTMLElement>(itemSelector)).filter((item) => item.closest(groupSelector) === group && !item.matches(':disabled, [aria-disabled="true"], .lamaui-choice:has(:disabled)') && !item.closest("[inert]") && item.getClientRects().length > 0);
@@ -37,7 +39,7 @@ function createState(group: HTMLElement) {
   const layer = document.createElement("span");
   layer.className = "lamaui-fluid-hover";
   layer.setAttribute("aria-hidden", "true");
-  (group.matches(".lamaui-tabs") ? group : (group.closest("dialog[open]") ?? document.body)).append(layer);
+  (usesLocalCoordinates(group) ? group : (group.closest("dialog[open]") ?? document.body)).append(layer);
   const state: FluidHoverState = { group, layer, current: null };
   states.set(group, state);
   return state;
@@ -48,7 +50,7 @@ function move(state: FluidHoverState, item: HTMLElement) {
   state.current = item;
   const rect = item.getBoundingClientRect();
   const styles = getComputedStyle(item);
-  const local = state.group.matches(".lamaui-tabs");
+  const local = usesLocalCoordinates(state.group);
   copyEffectShape(state.layer, styles);
   Object.assign(state.layer.style, {
     left: `${local ? item.offsetLeft : rect.left}px`,
@@ -76,6 +78,7 @@ function hide(state: FluidHoverState, immediately = false) {
 
 document.addEventListener("pointermove", (event) => {
   if (!hoverEnabled.matches || event.pointerType !== "mouse" || !(event.target instanceof Element)) return;
+  pointer = { x: event.clientX, y: event.clientY };
   const group = event.target.closest<HTMLElement>(groupSelector);
   // Sidebar hover layers live above the page; do not let them cover an open color dock.
   if (group?.matches(".docs-nav") && group.closest(".docs-sidebar")?.querySelector('[data-accent-picker][data-open="true"]')) {
@@ -104,7 +107,27 @@ function clear() {
   for (const state of [...states.values()]) hide(state, true);
 }
 
-document.addEventListener("scroll", clear, { capture: true, passive: true });
+document.addEventListener(
+  "scroll",
+  (event) => {
+    for (const state of [...states.values()]) {
+      const target = pointer && document.elementFromPoint(pointer.x, pointer.y);
+      if (!(event.target instanceof Element) || !state.group.contains(event.target) || !(target instanceof Element) || target.closest(groupSelector) !== state.group) {
+        hide(state, true);
+        continue;
+      }
+      // Scroll anchoring and wheel scrolling can move a row without pointermove.
+      // Keep the layer on the row now under the pointer instead of losing it.
+      const item = pointer && nearestItem(state.group, pointer.x, pointer.y);
+      if (!item) hide(state, true);
+      else {
+        state.current = null;
+        move(state, item);
+      }
+    }
+  },
+  { capture: true, passive: true }
+);
 window.addEventListener("resize", clear);
 window.addEventListener("blur", clear);
 hoverEnabled.addEventListener("change", clear);
@@ -116,6 +139,6 @@ new MutationObserver((records) => {
     return;
   }
   for (const state of [...states.values()]) {
-    if (!state.group.isConnected || state.group.closest("[inert], [hidden]") || getComputedStyle(state.group).visibility === "hidden") hide(state, true);
+    if (!state.group.isConnected || !state.layer.isConnected || state.group.closest("[inert], [hidden]") || getComputedStyle(state.group).visibility === "hidden") hide(state, true);
   }
 }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ["inert", "hidden", "data-open"], childList: true });

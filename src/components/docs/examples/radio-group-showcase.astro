@@ -1,0 +1,26 @@
+---
+import RadioGroup from "@/components/forms/RadioGroup.astro";
+---
+
+<div class="grid w-full max-w-md min-w-0 gap-6 justify-self-center">
+  <RadioGroup
+    name="workspace"
+    label="Workspace type"
+    value="team"
+    options={[
+      { value: "personal", label: "Personal" },
+      { value: "team", label: "Team", description: "Shared with your organization" },
+      { value: "enterprise", label: "Enterprise", disabled: true }
+    ]}
+  />
+  <RadioGroup
+    name="preview-billing"
+    label="Inline choices"
+    value="monthly"
+    inline
+    options={[
+      { value: "monthly", label: "Monthly" },
+      { value: "yearly", label: "Yearly" }
+    ]}
+  />
+</div>

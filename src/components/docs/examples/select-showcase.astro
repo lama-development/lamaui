@@ -1,0 +1,22 @@
+---
+import { svgForms, svgCode, svgSearch } from "@icons/docs";
+import FormField from "@/components/forms/FormField.astro";
+import Select from "@/components/forms/Select.astro";
+const selectOptions = [
+  { value: "design", label: "Design", icon: svgForms },
+  { value: "engineering", label: "Engineering", icon: svgCode },
+  { value: "research", label: "Research", icon: svgSearch }
+];
+---
+
+<div class="grid w-full max-w-md min-w-0 gap-5 justify-self-center">
+  <FormField id="preview-select" label="Team">
+    <Select id="preview-select" options={selectOptions} value="design" />
+  </FormField>
+  <FormField id="preview-select-invalid" label="Review team" error="Choose a team before continuing.">
+    <Select id="preview-select-invalid" options={selectOptions} placeholder="Choose a team" aria-invalid="true" aria-describedby="preview-select-invalid-message" />
+  </FormField>
+  <FormField id="preview-select-disabled" label="Unavailable selection">
+    <Select id="preview-select-disabled" options={selectOptions} value="engineering" disabled />
+  </FormField>
+</div>

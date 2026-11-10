@@ -23,10 +23,10 @@ const props = [
     </header>
 
     <div class="guide-example-list">
-      <ComponentExample slug="dialog-basic" title={"Basic dialog"} />
+      <ComponentExample slug="dialog-basic" title={"Basic dialog"} codeOnly />
 
-      <ComponentExample slug="dialog-destructive" title={"Destructive confirmation"} description={"State the consequence in the title and repeat it on the destructive action. Keep Cancel available."} />
-      <ComponentExample slug="dialog-sizes" title={"Sizes and long content"} description={"Choose sm for a confirmation, md for a short task, and lg for a wider form. The dialog keeps a one-rem viewport inset and scrolls vertically when content is long. Keep the title and actions concise; do not put a second fixed-height scroller around the entire body."} />
+      <ComponentExample slug="dialog-destructive" title={"Destructive confirmation"} description={"State the consequence in the title and repeat it on the destructive action. Keep Cancel available."} codeOnly />
+      <ComponentExample slug="dialog-sizes" title={"Sizes and long content"} description={"Choose sm for a confirmation, md for a short task, and lg for a wider form. The dialog keeps a one-rem viewport inset and scrolls vertically when content is long. Keep the title and actions concise; do not put a second fixed-height scroller around the entire body."} codeOnly />
       <ComponentExample slug="dialog-native-form" title={"Native form confirmation"} description={'A form with method="dialog" closes the modal after native validation and sets returnValue from the submit button’s value. It does not send an HTTP request. Use this for local decisions, then handle the dialog’s close event in your application.'} />
       <ExampleFrame id="example-dialog-async" code={formExampleSource} title={"Asynchronous save and retry"} description={"Try a successful save, then enable the simulated failure to test retry. The example uses a short local delay and makes no network request. Replace saveProject with your API call and check the HTTP response before closing. Keep the dialog open on errors, preserve entered values, announce the failure, and re-enable submission. Cancel and Escape remain available and abort the pending request."} note={'Use type="submit" for the save button and do not add data-dialog-close to it. Native required and maxlength constraints run before the submit event. Server validation remains necessary. Mark pending work busy, prevent duplicate submissions, focus an actionable error, and only call close after success.'}><DialogFormExample /></ExampleFrame>
     </div>

@@ -1,0 +1,21 @@
+---
+import { svgCopy, svgExternal } from "@icons/docs";
+import IconButton from "@/components/ui/IconButton.astro";
+import Icon from "@/components/ui/Icon.astro";
+import Tooltip from "@/components/overlays/Tooltip.astro";
+---
+
+<div class="w-full max-w-3xl min-w-0 justify-self-center">
+  <div class="flex flex-wrap items-center justify-center gap-3">
+    <Tooltip text="Copy component" position="top">
+      <IconButton label="Copy component" variant="secondary">
+        <Icon src={svgCopy} />
+      </IconButton>
+    </Tooltip>
+    <Tooltip text="Open documentation" position="bottom">
+      <IconButton label="Open documentation" variant="secondary">
+        <Icon src={svgExternal} />
+      </IconButton>
+    </Tooltip>
+  </div>
+</div>

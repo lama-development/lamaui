@@ -1,0 +1,9 @@
+---
+import Slider from "@/components/forms/Slider.astro";
+---
+
+<div class="grid w-full max-w-md min-w-0 gap-6 justify-self-center">
+  <Slider label="Interface density" value={62} />
+  <Slider label="Team seats" min={1} max={20} value={5} />
+  <Slider label="Volume in steps of ten" min={0} max={100} step={10} value={30} />
+</div>

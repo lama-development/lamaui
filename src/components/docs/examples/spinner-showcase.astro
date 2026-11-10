@@ -1,0 +1,15 @@
+---
+import Button from "@/components/ui/Button.astro";
+import Spinner from "@/components/feedback/Spinner.astro";
+---
+
+<div class="w-full max-w-3xl min-w-0 justify-self-center">
+  <div class="demo-row flex flex-wrap items-center gap-2.5">
+    <Spinner size="sm" />
+    <Spinner />
+    <Spinner size="lg" />
+    <Button variant="secondary">
+      <Spinner size="sm" /> Saving
+    </Button>
+  </div>
+</div>

@@ -3,7 +3,7 @@
   scroll-margin-top: 5rem;
 }
 .catalog-tabs {
-  --tab-track: var(--surface-1);
+  --tab-track: var(--muted);
   --tab-border: var(--outline);
   --tab-selected: var(--surface-2);
   --tab-selected-border: var(--card-outline);

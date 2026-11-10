@@ -6,7 +6,7 @@ interface Props {
 const { sections, horizontal = false } = Astro.props;
 ---
 
-<nav aria-label="On this page" data-fluid-hover class:list={["min-w-0", horizontal && "overflow-x-auto"]}>
+<nav aria-label="On this page" data-fluid-hover data-guide-horizontal={horizontal || undefined} class:list={["min-w-0", horizontal && "overflow-x-auto overscroll-x-contain"]}>
   <ul class:list={["m-0 list-none p-0", horizontal ? "flex w-max gap-1" : "grid gap-1"]}>
     {
       sections.map((section) => (

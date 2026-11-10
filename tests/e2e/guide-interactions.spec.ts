@@ -148,7 +148,7 @@ test("Phosphor SVG imports render without an icon registry and copy with their i
 test("Preview and Code tabs preserve the example state and copy its source", async ({ page, context }) => {
   await context.grantPermissions(["clipboard-read", "clipboard-write"]);
   await page.goto("/components/checkbox");
-  const frame = page.locator("[data-example-frame]");
+  const frame = page.locator("[data-example-frame]:has(#example-checkbox-preview-panel)");
   const tablist = frame.getByRole("tablist", { name: "Example view" });
   const previewTab = frame.getByRole("tab", { name: "Preview", exact: true });
   const codeTab = frame.getByRole("tab", { name: "Code", exact: true });
@@ -183,12 +183,13 @@ test("Preview and Code tabs preserve the example state and copy its source", asy
 test("a dismissed example can be restored and dismissed again", async ({ page }) => {
   await page.goto("/components/alert");
   const frame = page.locator("[data-example-frame]").first();
-  await frame.getByRole("button", { name: "Dismiss alert" }).click();
-  await expect(frame.getByRole("status")).toHaveCount(0);
+  const alert = frame.locator("#preview-alert");
+  await alert.getByRole("button", { name: "Dismiss alert" }).click();
+  await expect(alert).toHaveCount(0);
   await frame.getByRole("button", { name: "Reset example" }).click();
-  await expect(frame.getByRole("status")).toBeVisible();
-  await frame.getByRole("button", { name: "Dismiss alert" }).click();
-  await expect(frame.getByRole("status")).toHaveCount(0);
+  await expect(alert).toBeVisible();
+  await alert.getByRole("button", { name: "Dismiss alert" }).click();
+  await expect(alert).toHaveCount(0);
 });
 
 test("disabled password fields keep the visibility control disabled", async ({ page }) => {
@@ -208,6 +209,39 @@ test("the mobile contents card contains only links and navigates directly", asyn
   await expect(page).toHaveURL(/#examples$/);
   await expect(card.getByRole("link", { name: "Examples", exact: true })).toHaveAttribute("aria-current", "location");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test("long component titles clear the actions button on small phones", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 844 });
+  for (const slug of ["description-list", "custom-select", "password-input"]) {
+    await page.goto(`/components/${slug}`);
+    const title = page.getByRole("heading", { level: 1 });
+    const action = page.locator('summary[aria-label="Guide actions"]');
+    const textRight = await title.evaluate((element) => {
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      return range.getBoundingClientRect().right;
+    });
+    expect(textRight).toBeLessThan((await action.boundingBox())!.x);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320);
+  }
+});
+
+test("the mobile section index keeps the active section visible without moving the page", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 844 });
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/components/input");
+  await page.locator("#accessibility").evaluate((element) => element.scrollIntoView());
+  const scroller = page.locator("[data-guide-horizontal]");
+  const active = scroller.getByRole("link", { name: "Accessibility", exact: true });
+  await expect(active).toHaveAttribute("aria-current", "location");
+  await expect
+    .poll(async () => {
+      const [outer, item] = await Promise.all([scroller.boundingBox(), active.boundingBox()]);
+      return !!outer && !!item && item.x >= outer.x - 1 && item.x + item.width <= outer.x + outer.width + 1;
+    })
+    .toBe(true);
+  expect(await page.evaluate(() => window.scrollY)).toBeGreaterThan(300);
 });
 
 test("guide actions stay beside the title on mobile and the desktop PDF action stays pinned", async ({ page }) => {

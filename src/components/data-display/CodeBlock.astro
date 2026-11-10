@@ -11,7 +11,7 @@ interface Props {
   label?: string;
 }
 const { code, language = "astro", label = language } = Astro.props;
-const actionStyles = "code-action inline-flex w-8 h-8 flex-none items-center justify-center gap-1 border-0 rounded-lg bg-transparent text-muted-label p-0 [&>_span]:flex [&>_span]:items-center hover:bg-surface-hover hover:text-label aria-pressed:bg-surface-hover aria-pressed:text-label active:transform-[scale(0.96)]";
+const actionStyles = "code-action inline-flex w-10 h-10 flex-none items-center justify-center gap-1 border-0 rounded-lg bg-transparent text-muted-label p-0 [&>_span]:flex [&>_span]:items-center hover:bg-surface-hover hover:text-label aria-pressed:bg-surface-hover aria-pressed:text-label active:transform-[scale(0.96)]";
 const highlighted = await codeToHtml(code, {
   lang: language as any,
   themes: { light: "gruvbox-light-hard", dark: "gruvbox-dark-hard" },
@@ -19,10 +19,10 @@ const highlighted = await codeToHtml(code, {
 });
 ---
 
-<figure data-surface-level="2" data-surface-lift="1" class="code-block m-0 overflow-hidden rounded-md border border-outline bg-surface print:break-inside-avoid print:[&_.shiki]:break-all print:[&_.shiki]:whitespace-pre-wrap" data-code-block>
-  <figcaption class="code-head flex min-h-12 items-center justify-between gap-4 pt-2.5 pr-3 pb-1.5 pl-4 text-muted-label">
-    <span class="code-language inline-flex min-w-0 items-center gap-2 [font:600_0.875rem/1_var(--font-sans)]"><Icon src={svgCode} size={20} /><span>{label}</span></span>
-    <span class="code-actions flex items-center gap-1 print:hidden">
+<figure aria-label={label} data-surface-level="2" data-surface-lift="1" class="code-block m-0 overflow-hidden rounded-md border border-outline bg-surface print:break-inside-avoid print:[&_.shiki]:break-all print:[&_.shiki]:whitespace-pre-wrap" data-code-block>
+  <figcaption class="code-head flex min-h-14 flex-wrap items-center justify-between gap-x-3 gap-y-1 px-3 py-2 text-muted-label">
+    <span class="code-language inline-flex min-w-0 flex-[1_1_7rem] items-center gap-2 [font:600_0.8125rem/1.4_var(--font-sans)] [&>svg]:shrink-0"><Icon src={svgCode} size={18} /><span class="min-w-0 wrap-anywhere">{language}</span></span>
+    <span class="code-actions ml-auto flex flex-none items-center gap-1 print:hidden">
       <Tooltip text="Wrap lines" position="bottom">
         <button type="button" class={actionStyles} aria-label="Wrap lines" aria-pressed="false" data-code-wrap><span data-wrap-off><Icon src={svgWrap} size={20} /></span><span data-wrap-on hidden><Icon src={svgWrapOn} size={20} /></span></button>
       </Tooltip>
@@ -30,15 +30,20 @@ const highlighted = await codeToHtml(code, {
         <button type="button" class:list={[actionStyles, "code-copy"]} aria-label="Copy code" data-copy-code>
           <span data-copy-default><Icon src={svgCopy} size={20} /></span>
           <span data-copy-success hidden><Icon src={svgCheck} size={20} /></span>
-          <span class="sr-only" data-copy-label>Copy</span>
+          <span class="text-sm font-medium whitespace-nowrap" data-copy-label>Copy</span>
         </button>
       </Tooltip>
     </span>
   </figcaption>
-  <div class="code-render overflow-auto print:overflow-visible" set:html={highlighted} />
+  <div class="code-render max-h-128 overflow-auto overscroll-contain print:max-h-none print:overflow-visible" set:html={highlighted} />
 </figure>
 
 <style is:global>
+  .code-copy {
+    width: auto;
+    gap: 0.375rem;
+    padding: 0 0.5rem;
+  }
   .code-render pre,
   .code-render code {
     margin: 0;

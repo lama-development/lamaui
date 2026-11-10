@@ -1,0 +1,16 @@
+---
+import FormField from "@/components/forms/FormField.astro";
+import Input from "@/components/forms/Input.astro";
+---
+
+<div class="grid w-full max-w-md min-w-0 gap-5 justify-self-center">
+  <FormField id="field-demo" label="Full name" help="Use the name shown on your profile.">
+    <Input id="field-demo" value="Ari Lane" />
+  </FormField>
+  <FormField id="field-required-demo" label="Work email" required help="Use your company email address.">
+    <Input id="field-required-demo" type="email" placeholder="name@company.com" required aria-describedby="field-required-demo-message" />
+  </FormField>
+  <FormField id="field-invalid-demo" label="Project name" error="A project with this name already exists.">
+    <Input id="field-invalid-demo" value="Website" invalid aria-describedby="field-invalid-demo-message" />
+  </FormField>
+</div>

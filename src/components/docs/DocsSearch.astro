@@ -33,7 +33,7 @@ const entries: SearchEntry[] = [
     <button type="button" data-search-close aria-label="Close search" class="grid size-9 shrink-0 cursor-pointer place-items-center rounded-md border-0 bg-transparent text-muted-label hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-ring"><Icon src={svgClose} size={18} /></button>
   </div>
   <div class="flex items-center justify-between px-4 pt-3 pb-2 text-xs font-semibold text-muted-label"><span data-search-heading>Suggested</span><span role="status" aria-live="polite" aria-atomic="true" data-search-status></span></div>
-  <div id="docs-search-results" role="listbox" aria-label="Search results" data-fluid-hover class="max-h-[min(26rem,50dvh)] overflow-y-auto overscroll-contain px-2 pb-3"></div>
+  <div id="docs-search-results" role="listbox" aria-label="Search results" data-fluid-hover data-fluid-hover-local class="relative isolate max-h-[min(26rem,50dvh)] overflow-y-auto overscroll-contain px-2 pb-3"></div>
   <p data-search-empty hidden class="m-0 px-5 py-10 text-center text-sm text-muted-label">No matches. Try a component name, “modal”, “forms”, or “button props”.</p>
   <footer id="docs-search-help" class="search-shortcuts flex items-center justify-center gap-5 border-t border-outline px-4 py-3 text-xs text-muted-label">
     <span class="search-shortcut inline-flex items-center gap-1.5">
@@ -60,6 +60,14 @@ const entries: SearchEntry[] = [
   }
   .docs-search {
     --search-result-hover: color-mix(in srgb, var(--label) 9%, var(--surface-3));
+  }
+  .docs-search :global(.lamaui-fluid-hover) {
+    position: absolute;
+    z-index: 0;
+    background: var(--search-result-hover);
+  }
+  .docs-search :global(.lamaui-fluid-hover[data-visible="true"]) {
+    opacity: 1;
   }
   .search-key {
     display: inline-grid;

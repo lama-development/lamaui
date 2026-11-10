@@ -1,0 +1,41 @@
+---
+import Button from "@/components/ui/Button.astro";
+import { svgPlus, svgExternal } from "@icons/docs";
+---
+
+<div class="grid w-full max-w-xl gap-8 justify-self-center">
+  <section aria-label="Button variants" class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Variants</p>
+    <div class="flex flex-wrap items-center gap-3">
+      <Button>Primary</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="destructive">Delete</Button>
+    </div>
+  </section>
+  <section aria-label="Button sizes" class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Sizes</p>
+    <div class="flex flex-wrap items-center gap-3">
+      <Button size="sm">Small</Button>
+      <Button>Medium</Button>
+      <Button size="lg">Large</Button>
+    </div>
+  </section>
+  <section aria-label="Button icons and links" class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Icons and links</p>
+    <div class="flex flex-wrap items-center gap-3">
+      <Button icon={svgPlus}>Create</Button>
+      <Button variant="secondary" href="#usage" icon={svgExternal} iconPosition="end">View usage</Button>
+    </div>
+  </section>
+  <section aria-label="Button states" class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">States</p>
+    <div class="flex flex-wrap items-center gap-3">
+      <Button disabled>Disabled</Button>
+      <Button loading>Saving…</Button>
+      <Button variant="secondary" loading>Uploading…</Button>
+      <Button href="#usage" disabled variant="outline">Disabled link</Button>
+    </div>
+  </section>
+</div>

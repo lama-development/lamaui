@@ -13,6 +13,7 @@ interface Props {
 const { name, slug, content } = Astro.props;
 const reference = componentReference(name, content.props);
 const hasMultipleExamples = slug === "alert" || slug === "icon";
+const liveExamples = new Set(["label", "form-field", "input", "textarea", "select", "checkbox", "radio-group", "switch", "slider", "search-input", "password-input", "number-input", "tabs", "tab-panel"]);
 ---
 
 <div class="guide-sections">
@@ -25,13 +26,13 @@ const hasMultipleExamples = slug === "alert" || slug === "icon";
       )
     }
     <div class="guide-example-list">
-      <ComponentExample {slug} title={hasMultipleExamples ? content.example.title : `Practical example: ${content.example.title}`} headingLevel={hasMultipleExamples ? "h3" : "h2"} headingId={hasMultipleExamples ? undefined : "examples"} description={content.behavior} />
-      {slug === "alert" && <ComponentExample slug="alert-variants" title="Status variants and custom icons" description="Choose a variant that matches the message. Override `icon`, `color`, and `background` when your content needs its own treatment." />}
+      <ComponentExample {slug} title={content.example.title} headingLevel={hasMultipleExamples ? "h3" : "h2"} headingId={hasMultipleExamples ? undefined : "examples"} description={content.behavior} codeOnly={!liveExamples.has(slug)} />
+      {slug === "alert" && <ComponentExample slug="alert-variants" title="Status variants and custom icons" description="Choose a variant that matches the message. Override `icon`, `color`, and `background` when your content needs its own treatment." codeOnly />}
       {
         slug === "icon" && (
           <>
-            <ComponentExample slug="icon-sizes" title="Size and color" description="Set `size` in pixels. SVGs inherit the surrounding text color; use a text color class to change it." />
-            <ComponentExample slug="icon-weights" title="Six Phosphor weights" description="Regular icons use `regular/planet.svg?raw`. Other weights include their name in the filename, such as `duotone/planet-duotone.svg?raw`." />
+            <ComponentExample slug="icon-sizes" title="Size and color" description="Set `size` in pixels. SVGs inherit the surrounding text color; use a text color class to change it." codeOnly />
+            <ComponentExample slug="icon-weights" title="Six Phosphor weights" description="Regular icons use `regular/planet.svg?raw`. Other weights include their name in the filename, such as `duotone/planet-duotone.svg?raw`." codeOnly />
           </>
         )
       }

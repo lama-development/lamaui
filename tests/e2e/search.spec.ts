@@ -132,14 +132,21 @@ test("search leaves another open modal in control", async ({ page }) => {
 });
 
 for (const width of [320, 390, 860]) {
-  test(`mobile shell has no navbar and keeps its navigation trigger reachable at ${width}px`, async ({ page }) => {
+  test(`mobile header keeps search and navigation reachable at ${width}px`, async ({ page }) => {
     await page.setViewportSize({ width, height: 844 });
     await page.goto("/");
-    await expect(page.locator(".docs-mobile-header, .docs-desktop-header")).toHaveCount(0);
-    const menu = await page.locator(".docs-mobile-menu").boundingBox();
-    expect(menu!.x + menu!.width).toBeLessThanOrEqual(width - 16 + 1);
-    expect(menu!.y + menu!.height).toBeLessThanOrEqual(844 - 16 + 1);
+    const header = page.locator(".docs-mobile-header");
+    await expect(header).toBeVisible();
+    await expect(header.getByRole("button", { name: "Search documentation" })).toBeVisible();
+    const trigger = header.getByRole("button", { name: "Open navigation" });
+    const menu = await trigger.boundingBox();
+    expect(menu!.x + menu!.width).toBeLessThanOrEqual(width);
+    expect(menu!.y).toBeGreaterThanOrEqual(0);
     expect(menu!.width).toBeGreaterThanOrEqual(44);
     expect(menu!.height).toBeGreaterThanOrEqual(44);
+    await trigger.click();
+    await expect(page.locator("#docs-navigation")).toHaveAttribute("data-open", "true");
+    await page.keyboard.press("Escape");
+    await expect(trigger).toBeFocused();
   });
 }

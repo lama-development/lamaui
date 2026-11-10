@@ -1,0 +1,13 @@
+---
+import FormField from "@/components/forms/FormField.astro";
+import SearchInput from "@/components/forms/SearchInput.astro";
+---
+
+<div class="grid w-full max-w-md min-w-0 gap-5 justify-self-center">
+  <FormField id="preview-search" label="Search components">
+    <SearchInput id="preview-search" label="Search components" placeholder="Search by name…" />
+  </FormField>
+  <FormField id="preview-search-disabled" label="Unavailable search">
+    <SearchInput id="preview-search-disabled" label="Unavailable search" placeholder="Search is unavailable" disabled />
+  </FormField>
+</div>

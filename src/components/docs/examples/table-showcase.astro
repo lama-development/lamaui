@@ -1,0 +1,39 @@
+---
+import Table from "@/components/data-display/Table.astro";
+const columns = [
+  { key: "name", label: "Name", rowHeader: true },
+  { key: "role", label: "Role" },
+  { key: "projects", label: "Projects", align: "right" as const }
+];
+const rows = [
+  { name: "Ari Lane", role: "Designer", projects: 8 },
+  { name: "Mina Park", role: "Engineer", projects: 12 }
+];
+---
+
+<div class="grid w-full max-w-3xl min-w-0 gap-8 justify-self-center">
+  <section aria-label="Table styles" class="grid gap-6">
+    <div class="grid min-w-0 gap-3">
+      <p class="m-0 text-sm font-semibold text-muted-label">Default</p>
+      <Table columns={columns} rows={rows} caption="Members" hoverable />
+    </div>
+    <div class="grid min-w-0 gap-3">
+      <p class="m-0 text-sm font-semibold text-muted-label">Striped rows and column borders</p>
+      <Table columns={columns} rows={rows} caption="Members with striped rows and column borders" striped columnBorders />
+    </div>
+  </section>
+  <section aria-label="Table density" class="grid gap-6">
+    <div class="grid min-w-0 gap-3">
+      <p class="m-0 text-sm font-semibold text-muted-label">Compact spacing</p>
+      <Table columns={columns} rows={rows} caption="Members with compact spacing" density="compact" />
+    </div>
+    <div class="grid min-w-0 gap-3">
+      <p class="m-0 text-sm font-semibold text-muted-label">Spacious spacing</p>
+      <Table columns={columns} rows={rows} caption="Members with spacious spacing" density="spacious" />
+    </div>
+  </section>
+  <section aria-label="Empty table" class="grid min-w-0 gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Empty state</p>
+    <Table columns={columns} rows={[]} caption="No members yet" emptyMessage="Invite your first team member to get started." />
+  </section>
+</div>

@@ -1,0 +1,16 @@
+---
+import FormField from "@/components/forms/FormField.astro";
+import Textarea from "@/components/forms/Textarea.astro";
+---
+
+<div class="grid w-full max-w-md min-w-0 gap-5 justify-self-center">
+  <FormField id="preview-textarea" label="Project notes" help="Drag the lower corner to resize the field.">
+    <Textarea id="preview-textarea" rows={4} aria-describedby="preview-textarea-message" placeholder="Write a short note…"> Add a note for your team. </Textarea>
+  </FormField>
+  <FormField id="preview-textarea-invalid" label="Summary" error="Add a short summary before publishing.">
+    <Textarea id="preview-textarea-invalid" rows={3} invalid aria-describedby="preview-textarea-invalid-message" placeholder="Describe the project…" />
+  </FormField>
+  <FormField id="preview-textarea-disabled" label="Archived notes">
+    <Textarea id="preview-textarea-disabled" rows={3} disabled>These notes are read-only while the project is archived.</Textarea>
+  </FormField>
+</div>

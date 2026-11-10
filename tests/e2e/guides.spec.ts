@@ -67,8 +67,26 @@ for (const component of components) {
       expect(appearance.border).toBe("1px");
       expect(appearance.background).not.toBe("rgba(0, 0, 0, 0)");
     }
-    await expect(article.locator(".component-preview")).toHaveCSS("border-top-style", "dashed");
-    await expect(article.locator(".component-preview")).toHaveCSS("box-shadow", "none");
+    const showcase = article.locator('section[aria-labelledby="component-overview"]');
+    const showcaseTabs = showcase.getByRole("tablist", { name: "Example view", exact: true });
+    await expect(showcaseTabs).toHaveCount(1);
+    await expect(showcase.locator(".component-preview")).toBeVisible();
+    await showcaseTabs.getByRole("tab", { name: "Code", exact: true }).click();
+    const showcaseSource = showcase.locator("[data-example-code]");
+    await expect(showcaseSource).toBeVisible();
+    await expect(showcaseSource.locator(".code-language").first()).toHaveText("astro");
+    const showcaseCode = await showcaseSource.locator(".code-render").first().innerText();
+    expect(showcaseCode).toContain('from "lamaui"');
+    expect(showcaseCode).toContain(`<${component.name}`);
+    expect(showcaseCode).not.toContain("@/components/");
+    expect(showcaseCode).not.toContain("@icons/");
+    await showcaseTabs.getByRole("tab", { name: "Preview", exact: true }).click();
+    if (component.slug === "button") {
+      await expect(showcase.getByRole("region", { name: "Button variants", exact: true })).toBeVisible();
+      await expect(showcase.getByRole("region", { name: "Button sizes", exact: true })).toBeVisible();
+      await expect(showcase.getByRole("region", { name: "Button states", exact: true })).toBeVisible();
+      await expect(article.locator('section[aria-labelledby="examples"] [role="tablist"]')).toHaveCount(1);
+    }
     const download = page.locator(".guide-rail").getByRole("button", { name: "Download PDF", exact: true });
     await expect(download).toBeVisible();
     await expect(page.locator(".guide-breadcrumb")).toHaveCount(0);
@@ -84,6 +102,12 @@ for (const component of components) {
     for (const width of [320, 390, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      await showcaseTabs.getByRole("tab", { name: "Code", exact: true }).click();
+      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBe(true);
+      const [tabsBox, actionsBox] = await Promise.all([showcaseTabs.boundingBox(), showcaseSource.locator(".code-actions").first().boundingBox()]);
+      expect(actionsBox!.y).toBeGreaterThan(tabsBox!.y + tabsBox!.height);
+      expect(actionsBox!.x + actionsBox!.width).toBeLessThanOrEqual(width);
+      await showcaseTabs.getByRole("tab", { name: "Preview", exact: true }).click();
     }
     expect(errors).toEqual([]);
   });

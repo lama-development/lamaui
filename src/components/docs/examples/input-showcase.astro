@@ -1,0 +1,16 @@
+---
+import FormField from "@/components/forms/FormField.astro";
+import Input from "@/components/forms/Input.astro";
+---
+
+<div class="grid w-full max-w-md min-w-0 gap-5 justify-self-center">
+  <FormField id="preview-input" label="Project name">
+    <Input id="preview-input" placeholder="Enter a project name" />
+  </FormField>
+  <FormField id="preview-input-invalid" label="Work email" error="Enter a valid email address.">
+    <Input id="preview-input-invalid" type="email" value="not-an-email" invalid aria-describedby="preview-input-invalid-message" />
+  </FormField>
+  <FormField id="preview-input-disabled" label="Unavailable field">
+    <Input id="preview-input-disabled" value="Managed by your organization" disabled />
+  </FormField>
+</div>

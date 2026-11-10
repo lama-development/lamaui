@@ -1,0 +1,35 @@
+---
+import { svgForms, svgCode, svgSearch } from "@icons/docs";
+import Button from "@/components/ui/Button.astro";
+import CustomSelect from "@/components/forms/CustomSelect.astro";
+const selectOptions = [
+  { value: "design", label: "Design", icon: svgForms },
+  { value: "engineering", label: "Engineering", icon: svgCode },
+  { value: "research", label: "Research", icon: svgSearch }
+];
+---
+
+<div class="w-full max-w-3xl min-w-0 justify-self-center">
+  <form data-select-demo class="grid w-full max-w-2xl gap-5 sm:grid-cols-2">
+    <CustomSelect id="team-select" name="team" label="Team" options={[...selectOptions, { value: "sales", label: "Sales", disabled: true }, { value: "support", label: "Support" }, { value: "strategy", label: "Strategy" }]} value="design" help="Choose the team that owns this project." />
+    <CustomSelect id="review-select" name="reviewer" label="Review team" options={selectOptions} value="engineering" placement="top" error="Choose a team with an available reviewer." />
+    <div class="flex flex-wrap gap-2 sm:col-span-2">
+      <Button type="submit">Save assignment</Button>
+      <Button type="reset" variant="secondary"> Reset assignment </Button>
+    </div>
+    <output data-select-demo-result aria-live="polite" class="rounded-md bg-surface p-3 text-[0.9375rem] leading-relaxed text-muted-label sm:col-span-2"> Choose a team, then save the assignment. </output>
+  </form>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>("[data-select-demo]").forEach((form) => {
+    const result = form.querySelector<HTMLOutputElement>("[data-select-demo-result]")!;
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      result.textContent = `Assigned to ${new FormData(form).get("team")}.`;
+    });
+    form.addEventListener("reset", () => {
+      result.textContent = "Choose a team, then save the assignment.";
+    });
+  });
+</script>

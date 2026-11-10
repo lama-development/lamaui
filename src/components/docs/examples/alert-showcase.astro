@@ -1,0 +1,10 @@
+---
+import Alert from "@/components/feedback/Alert.astro";
+---
+
+<div class="grid w-full max-w-3xl min-w-0 gap-4 justify-self-center">
+  <Alert id="preview-alert" title="Changes saved" dismissible> Your changes are available to the team. </Alert>
+  <Alert variant="success" title="Published">The new version is available to your team.</Alert>
+  <Alert variant="warning" title="Review required">Two fields need attention before publishing.</Alert>
+  <Alert variant="destructive" title="Could not save">Your changes are still here. Try again.</Alert>
+</div>

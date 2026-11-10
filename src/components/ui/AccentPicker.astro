@@ -3,15 +3,16 @@ import { accentPresets } from "../../lib/accents";
 import { controlStyles, ghostStyles, iconControlStyles } from "../../lib/styles";
 interface Props {
   id?: string;
+  placement?: "top" | "bottom" | "left" | "right";
 }
-const { id = "accent-picker" } = Astro.props;
+const { id = "accent-picker", placement = "top" } = Astro.props;
 ---
 
-<div data-surface-level="2" data-surface-lift="1" class="lamaui-accent-picker lamaui-surface relative inline-flex w-max flex-none rounded-lg border border-outline p-1 [corner-shape:squircle]" data-accent-picker data-fluid-hover>
+<div data-surface-level="2" data-surface-lift="1" class="lamaui-accent-picker lamaui-surface relative inline-flex w-max flex-none rounded-lg border border-outline p-1 [corner-shape:squircle]" data-accent-picker data-accent-placement={placement} data-placement={placement} data-fluid-hover>
   <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} rounded-[calc(var(--radius-lg)-0.3125rem)]`} aria-label="Choose accent color, current: Lime" title="Accent color: Lime" aria-expanded="false" aria-controls={`${id}-colors`} data-accent-trigger>
     <span class="size-5 rounded-full border border-black/10 bg-accent" aria-hidden="true"></span>
   </button>
-  <div id={`${id}-colors`} data-surface-level="3" data-surface-lift="1" class="lamaui-accent-dock lamaui-surface absolute right-0 bottom-[calc(100%+0.5rem)] z-10 flex w-max flex-col gap-1 rounded-lg border border-outline p-1 shadow-(--shadow-dropdown) [corner-shape:squircle]" role="group" data-fluid-hover aria-label="Accent color" inert data-accent-dock>
+  <div id={`${id}-colors`} data-surface-level="3" data-surface-lift="1" class="lamaui-accent-dock lamaui-surface absolute z-10 flex w-max flex-col gap-1 rounded-lg border border-outline p-1 shadow-(--shadow-dropdown) [corner-shape:squircle]" role="group" data-fluid-hover aria-label="Accent color" hidden inert data-accent-dock>
     {
       accentPresets.map((preset, index) => (
         <button type="button" class="lamaui-accent-choice relative flex size-(--control-md) flex-none cursor-pointer items-center justify-center rounded-[calc(var(--radius-lg)-0.3125rem)] border border-transparent bg-transparent [corner-shape:squircle] hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" style={`--swatch-index:${index}`} aria-label={`${preset.label} accent`} aria-pressed={preset.value === "lime"} data-accent-choice={preset.value}>
@@ -27,19 +28,45 @@ const { id = "accent-picker" } = Astro.props;
 
 <style>
   .lamaui-accent-dock {
+    --dock-enter-x: 0px;
+    --dock-enter-y: 0.5rem;
+    --dock-scale-x: 1;
+    --dock-scale-y: 0.72;
+    max-width: calc(100vw - 1rem);
+    max-height: calc(100dvh - 1rem);
+    overflow: auto;
+    overscroll-behavior: contain;
     visibility: hidden;
     opacity: 0;
-    transform: translateY(0.5rem) scaleY(0.72);
+    transform: translate(var(--dock-enter-x), var(--dock-enter-y)) scale(var(--dock-scale-x), var(--dock-scale-y));
     transform-origin: bottom center;
+  }
+  [data-placement="bottom"] .lamaui-accent-dock {
+    --dock-enter-y: -0.5rem;
+    transform-origin: top center;
+  }
+  :is([data-placement="left"], [data-placement="right"]) .lamaui-accent-dock {
+    --dock-enter-y: 0px;
+    --dock-scale-x: 0.72;
+    --dock-scale-y: 1;
+    flex-direction: row;
+  }
+  [data-placement="left"] .lamaui-accent-dock {
+    --dock-enter-x: 0.5rem;
+    transform-origin: right center;
+  }
+  [data-placement="right"] .lamaui-accent-dock {
+    --dock-enter-x: -0.5rem;
+    transform-origin: left center;
   }
   [data-open="true"] .lamaui-accent-dock {
     visibility: visible;
     opacity: 1;
-    transform: translateY(0) scaleY(1);
+    transform: translate(0, 0) scale(1);
   }
   .lamaui-accent-choice {
     opacity: 0;
-    transform: translateY(0.5rem) scale(0.9);
+    transform: translate(var(--dock-enter-x), var(--dock-enter-y)) scale(0.9);
   }
   [data-open="true"] .lamaui-accent-choice {
     opacity: 1;

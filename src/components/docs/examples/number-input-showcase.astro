@@ -1,0 +1,13 @@
+---
+import FormField from "@/components/forms/FormField.astro";
+import NumberInput from "@/components/forms/NumberInput.astro";
+---
+
+<div class="grid w-full max-w-md min-w-0 gap-5 justify-self-center">
+  <FormField id="preview-quantity" label="Quantity" help="Choose between 1 and 20.">
+    <NumberInput id="preview-quantity" min={1} max={20} value={4} aria-describedby="preview-quantity-message" />
+  </FormField>
+  <FormField id="preview-quantity-disabled" label="Unavailable quantity">
+    <NumberInput id="preview-quantity-disabled" value={10} disabled />
+  </FormField>
+</div>

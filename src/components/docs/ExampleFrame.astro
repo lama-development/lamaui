@@ -16,8 +16,10 @@ interface Props {
   headingId?: string;
   description?: string;
   note?: string;
+  codeOnly?: boolean;
+  previewClass?: string;
 }
-const { id, code, label = "Example source", resettable = false, title, headingLevel = "h3", headingId, description, note } = Astro.props;
+const { id, code, label = "Example source", resettable = false, title, headingLevel = "h3", headingId, description, note, codeOnly = false, previewClass } = Astro.props;
 const Heading = headingLevel;
 const displayCode = withImports(code);
 ---
@@ -35,33 +37,41 @@ const displayCode = withImports(code);
       </header>
     )
   }
-  <Tabs
-    {id}
-    label="Example view"
-    active="preview"
-    tabs={[
-      { id: "preview", label: "Preview" },
-      { id: "code", label: "Code" }
-    ]}
-    class="example-tabs min-w-0"
-  >
-    <TabPanel tabsId={id} id="preview" active class="example-preview-panel min-w-0">
-      {
-        resettable && (
-          <div data-guide-no-export class="example-reset">
-            <button type="button" data-example-reset class="inline-flex min-h-7 items-center gap-1.5 rounded-md border-0 bg-transparent px-2 text-xs font-semibold text-muted-label hover:bg-surface-hover">
-              <Icon src={svgReset} size={16} />
-              Reset example
-            </button>
+  {
+    codeOnly ? (
+      <CodeBlock code={displayCode} {label} />
+    ) : (
+      <Tabs
+        {id}
+        label="Example view"
+        active="preview"
+        tabs={[
+          { id: "preview", label: "Preview" },
+          { id: "code", label: "Code" }
+        ]}
+        class="example-tabs min-w-0"
+      >
+        <TabPanel tabsId={id} id="preview" active class="example-preview-panel min-w-0">
+          {resettable && (
+            <div data-guide-no-export class="example-reset">
+              <button type="button" data-example-reset class="inline-flex min-h-7 items-center gap-1.5 rounded-md border-0 bg-transparent px-2 text-xs font-semibold text-muted-label hover:bg-surface-hover">
+                <Icon src={svgReset} size={16} />
+                Reset example
+              </button>
+            </div>
+          )}
+          <div data-example-live data-guide-no-export data-surface-level="2" class:list={["example-live grid min-h-36 min-w-0 content-center gap-6 p-6 print:hidden", previewClass]}>
+            <slot />
           </div>
-        )
-      }
-      <div data-example-live data-guide-no-export data-surface-level="2" class="example-live grid min-h-36 min-w-0 content-center gap-6 p-6 print:hidden"><slot /></div>
-    </TabPanel>
-    <TabPanel tabsId={id} id="code" class="example-source-panel min-w-0">
-      <div data-example-code class="min-w-0"><CodeBlock code={displayCode} {label} /></div>
-    </TabPanel>
-  </Tabs>
+        </TabPanel>
+        <TabPanel tabsId={id} id="code" class="example-source-panel min-w-0">
+          <div data-example-code class="min-w-0">
+            <CodeBlock code={displayCode} {label} />
+          </div>
+        </TabPanel>
+      </Tabs>
+    )
+  }
   {
     note && (
       <p class="example-note">
@@ -113,8 +123,8 @@ const displayCode = withImports(code);
     font-size: 0.9375rem;
     line-height: 1.65;
   }
-  .example-live > :global(form),
-  .example-live > :global(.grid) {
+  .example-live:not(.component-preview) > :global(form),
+  .example-live:not(.component-preview) > :global(.grid) {
     width: 100%;
     max-width: 36rem;
     justify-self: center;
@@ -132,24 +142,20 @@ const displayCode = withImports(code);
   }
   .example-frame :global(.example-tabs) {
     display: grid;
+    gap: 0.75rem;
   }
   .example-frame :global(.example-tabs > .lamaui-tabs-scroll) {
     justify-self: start;
-    margin: 0 0 0.75rem;
     overflow: visible;
   }
-  @media (width <= 620px) {
-    .example-frame :global(.example-tabs > .lamaui-tabs-scroll) {
-      width: 100%;
-    }
-    .example-frame :global(.example-tabs > .lamaui-tabs-scroll > [role="tablist"]) {
-      width: 100%;
-    }
-    .example-frame :global(.example-tabs > .lamaui-tabs-scroll > [role="tablist"] > [role="tab"]) {
-      flex: 1;
-    }
-  }
   .example-frame :global(.example-tabs > .lamaui-tabs-scroll > [role="tablist"]) {
+    --tab-track: var(--muted);
+    --tab-border: var(--outline);
+    --tab-selected: var(--surface-2);
+    --tab-selected-border: var(--card-outline);
+    --tab-hover: var(--surface-2-hover);
+    --tab-label: var(--label);
+    --tab-muted-label: var(--muted-label);
     gap: 0.125rem;
     padding: 0.1875rem;
     border: 1px solid var(--tab-border);
@@ -175,41 +181,24 @@ const displayCode = withImports(code);
   }
   .example-frame :global(.example-preview-panel),
   .example-frame :global(.example-source-panel) {
-    position: relative;
     min-width: 0;
+  }
+  .example-frame :global(.example-preview-panel) {
     border: 1px solid var(--outline);
     border-radius: var(--radius-lg);
     corner-shape: squircle;
     background: var(--surface-2);
   }
   .example-reset {
-    position: absolute;
-    top: -3rem;
-    right: 0;
-  }
-  .example-frame :global([data-example-code] > .code-block) {
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-  }
-  .example-frame :global([data-example-code] .code-head) {
-    position: absolute;
-    top: -3rem;
-    right: 0;
-    min-height: 2rem;
-    padding: 0;
-  }
-  .example-frame :global([data-example-code] .code-language) {
-    display: none;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.5rem 0.75rem 0;
   }
   .example-live > :global(.lamaui-control),
   .example-live > :global(.lamaui-split-button) {
     justify-self: start;
   }
   @media print {
-    [data-example-frame] {
-      border: 0;
-    }
     .example-frame :global(.example-tabs > .lamaui-tabs-scroll),
     .example-frame :global([data-example-code] .code-head),
     .example-frame :global(.example-preview-panel) {

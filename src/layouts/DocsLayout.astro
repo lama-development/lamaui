@@ -64,7 +64,7 @@ const year = new Date().getFullYear();
           <button type="button" class={`${controlStyles} ${ghostStyles} ${iconControlStyles} docs-sidebar-close min-[861px]:hidden!`} aria-label="Close navigation" data-docs-close><Icon src={svgClose} /></button>
         </div>
         <div class="docs-sidebar-search-row -mx-3 border-b border-outline px-3 pt-1 pb-2">
-          <button type="button" class="flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-md border border-outline bg-surface px-3 text-sm text-muted-label hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-ring" aria-haspopup="dialog" aria-controls="docs-search" aria-expanded="false" aria-label="Search documentation" aria-keyshortcuts="Meta+K Control+K" data-search-open><Icon src={svgSearch} size={18} /><span class="flex-1 text-left">Search docs…</span><kbd data-search-shortcut class="rounded border border-outline px-1.5 py-0.5 text-[0.6875rem]">⌘ K</kbd></button>
+          <button type="button" class="flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-md border border-outline bg-muted px-3 text-sm text-muted-label hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-ring" aria-haspopup="dialog" aria-controls="docs-search" aria-expanded="false" aria-label="Search documentation" aria-keyshortcuts="Meta+K Control+K" data-search-open><Icon src={svgSearch} size={18} /><span class="flex-1 text-left">Search docs…</span><kbd data-search-shortcut class="rounded border border-outline bg-surface-2 px-1.5 py-0.5 text-[0.6875rem]">⌘ K</kbd></button>
         </div>
         <nav class="docs-nav -me-3 min-h-0 flex-1 scrollbar-gutter-stable overflow-auto py-3 pe-3" aria-label="Documentation">
           <div aria-labelledby="docs-nav-start">
@@ -229,15 +229,6 @@ const year = new Date().getFullYear();
             const panel = $(".docs-nav-panel", other);
             if (panel) panel.inert = !open;
           });
-        });
-      });
-      $$("[data-preview-reset]").forEach((button) => {
-        const preview = button.closest(".component-preview");
-        const tagRow = $(".tag-row", preview);
-        const initialTags = tagRow ? Array.from(tagRow.childNodes, (node) => node.cloneNode(true)) : [];
-        button.addEventListener("click", () => {
-          $$("[data-dismiss-hide]", preview).forEach((alert) => (alert.hidden = false));
-          if (tagRow) tagRow.replaceChildren(...initialTags.map((node) => node.cloneNode(true)));
         });
       });
     </script>

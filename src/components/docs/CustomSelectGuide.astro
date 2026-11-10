@@ -59,16 +59,3 @@ const columns = [
     </dl>
   </section>
 </div>
-
-<script>
-  document.querySelectorAll<HTMLFormElement>("[data-select-demo]").forEach((form) => {
-    const result = form.querySelector<HTMLOutputElement>("[data-select-demo-result]")!;
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      result.textContent = `Assigned to ${new FormData(form).get("team")}.`;
-    });
-    form.addEventListener("reset", () => {
-      result.textContent = "Choose a team, then save the assignment.";
-    });
-  });
-</script>

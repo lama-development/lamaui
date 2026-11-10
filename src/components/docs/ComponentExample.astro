@@ -3,10 +3,13 @@ import ExampleFrame from "./ExampleFrame.astro";
 interface Props {
   slug: string;
   title?: string;
+  label?: string;
   headingLevel?: "h2" | "h3";
   headingId?: string;
   description?: string;
   note?: string;
+  codeOnly?: boolean;
+  previewClass?: string;
 }
 const { slug, ...rest } = Astro.props;
 const examples = import.meta.glob<{ default: any }>("./examples/*.astro", { eager: true });
@@ -16,4 +19,4 @@ const Example = examples[path]?.default;
 if (!Example) throw new Error(`Missing executable example for ${slug}`);
 ---
 
-<ExampleFrame id={`example-${slug}`} code={sources[path]} resettable={slug === "alert"} {...rest}><Example /></ExampleFrame>
+<ExampleFrame id={`example-${slug}`} code={sources[path]} resettable={["alert", "alert-showcase", "tag-showcase"].includes(slug)} {...rest}><Example /></ExampleFrame>

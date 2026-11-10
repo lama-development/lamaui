@@ -190,8 +190,17 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
     const atBottom = scroller.scrollTop > 0 && scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - 2;
     const active = atBottom ? headings.at(-1) : headings.filter((heading) => heading.getBoundingClientRect().top <= scrollPadding + (parseFloat(getComputedStyle(heading).scrollMarginTop) || 0) + 1).at(-1) || headings[0];
     links.forEach((link) => {
-      if (link.dataset.guideAnchor === active?.id) link.setAttribute("aria-current", "location");
-      else link.removeAttribute("aria-current");
+      if (link.dataset.guideAnchor === active?.id) {
+        const changed = link.getAttribute("aria-current") !== "location";
+        link.setAttribute("aria-current", "location");
+        const scroller = link.closest<HTMLElement>("[data-guide-horizontal]");
+        if (changed && scroller && scroller.scrollWidth > scroller.clientWidth) {
+          const bounds = scroller.getBoundingClientRect();
+          const item = link.getBoundingClientRect();
+          const offset = item.left < bounds.left ? item.left - bounds.left : item.right > bounds.right ? item.right - bounds.right : 0;
+          if (offset) scroller.scrollLeft += offset;
+        }
+      } else link.removeAttribute("aria-current");
     });
   };
   window.addEventListener(

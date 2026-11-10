@@ -45,8 +45,14 @@ const { title, slug, description, sections } = Astro.props;
   .guide-content {
     grid-area: content;
   }
-  .guide-content > .docs-page-header {
+  .guide-content > .docs-page-header h1 {
     padding-inline-end: 3.5rem;
+    overflow-wrap: anywhere;
+  }
+  @media (width <= 620px) {
+    .guide-content > .docs-page-header h1 {
+      font-size: clamp(1.75rem, 8vw, 2.75rem);
+    }
   }
   .guide-content h2[id] {
     scroll-margin-top: 6rem;
@@ -92,22 +98,6 @@ const { title, slug, description, sections } = Astro.props;
     padding: 0.125rem 0.3rem;
     background: var(--surface-hover);
     box-shadow: none;
-  }
-  .guide-content .code-copy {
-    width: auto;
-    gap: 0.375rem;
-    padding: 0 0.5rem;
-  }
-  .guide-content .code-copy [data-copy-label] {
-    position: static;
-    width: auto;
-    height: auto;
-    margin: 0;
-    overflow: visible;
-    clip: auto;
-    clip-path: none;
-    white-space: nowrap;
-    font: 500 0.875rem/1.25 var(--font-sans);
   }
   .guide-content .guide-definition {
     margin: 0;
@@ -193,7 +183,7 @@ const { title, slug, description, sections } = Astro.props;
       background: transparent;
       box-shadow: none;
     }
-    .guide-content > .docs-page-header {
+    .guide-content > .docs-page-header h1 {
       padding-inline-end: 0;
     }
     .guide-rail [data-guide-toc] {

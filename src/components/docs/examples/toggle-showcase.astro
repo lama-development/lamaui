@@ -1,0 +1,15 @@
+---
+import { svgPin } from "@icons/docs";
+import Toggle from "@/components/ui/Toggle.astro";
+import Icon from "@/components/ui/Icon.astro";
+---
+
+<div class="w-full max-w-3xl min-w-0 justify-self-center">
+  <div class="demo-row flex flex-wrap items-center gap-2.5">
+    <Toggle pressed>
+      <Icon src={svgPin} size={18} /> Pinned
+    </Toggle>
+    <Toggle>Compact view</Toggle>
+    <Toggle disabled>Unavailable</Toggle>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+---
+import { svgDownload, svgCode, svgFileMd } from "@icons/docs";
+import SplitButton from "@/components/ui/SplitButton.astro";
+---
+
+<div class="w-full max-w-3xl min-w-0 justify-self-center">
+  <SplitButton
+    label="Download sample"
+    icon={svgDownload}
+    href="/examples/report.txt"
+    download
+    options={[
+      { label: "Download Markdown", icon: svgFileMd, href: "/examples/report.md", download: true },
+      { label: "View usage", icon: svgCode, href: "#usage" }
+    ]}
+  />
+</div>

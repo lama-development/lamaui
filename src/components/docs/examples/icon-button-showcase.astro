@@ -1,0 +1,33 @@
+---
+import { svgPlus, svgCopy, svgMore } from "@icons/docs";
+import IconButton from "@/components/ui/IconButton.astro";
+import Icon from "@/components/ui/Icon.astro";
+---
+
+<div class="grid w-full max-w-3xl min-w-0 gap-8 justify-self-center">
+  <section aria-label="Icon button variants" class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Variants</p>
+    <div class="flex flex-wrap items-center gap-3">
+      <IconButton label="Add" variant="primary"><Icon src={svgPlus} /></IconButton>
+      <IconButton label="Copy" variant="secondary"><Icon src={svgCopy} /></IconButton>
+      <IconButton label="Copy outline" variant="outline"><Icon src={svgCopy} /></IconButton>
+      <IconButton label="More actions"><Icon src={svgMore} /></IconButton>
+      <IconButton label="Remove item" variant="destructive"><Icon src={svgPlus} class="rotate-45" /></IconButton>
+    </div>
+  </section>
+  <section aria-label="Icon button sizes" class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Sizes</p>
+    <div class="flex flex-wrap items-center gap-3">
+      <IconButton label="Small action" size="sm" variant="secondary"><Icon src={svgPlus} size={16} /></IconButton>
+      <IconButton label="Medium action" variant="secondary"><Icon src={svgPlus} size={20} /></IconButton>
+      <IconButton label="Large action" size="lg" variant="secondary"><Icon src={svgPlus} size={24} /></IconButton>
+    </div>
+  </section>
+  <section aria-label="Icon button states" class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">States</p>
+    <div class="flex flex-wrap items-center gap-3">
+      <IconButton label="Unavailable action" variant="secondary" disabled><Icon src={svgCopy} /></IconButton>
+      <IconButton label="Saving" variant="secondary" loading><Icon src={svgCopy} /></IconButton>
+    </div>
+  </section>
+</div>

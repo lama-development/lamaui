@@ -1,6 +1,6 @@
 ---
 import "lamaui/styles.css";
-import { Button } from "lamaui";
+import { Button, AccentPicker } from "lamaui";
 import Dialog from "lamaui/overlays/Dialog";
 ---
 
@@ -12,6 +12,7 @@ import Dialog from "lamaui/overlays/Dialog";
     <title>LamaUI package smoke test</title>
   </head>
   <body data-surface-level="1">
+    <AccentPicker id="package-accent" placement="right" />
     <Button data-dialog-open="package-dialog">Open dialog</Button>
     <Dialog id="package-dialog" title="Package import works">
       <Button data-dialog-close>Close</Button>

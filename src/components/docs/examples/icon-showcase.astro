@@ -1,0 +1,45 @@
+---
+import { thin, light, regular, bold, fill, duotone, rocket, bell } from "@icons/docs";
+import Icon from "@/components/ui/Icon.astro";
+import Button from "@/components/ui/Button.astro";
+import IconButton from "@/components/ui/IconButton.astro";
+const weights = [
+  { label: "Thin", src: thin },
+  { label: "Light", src: light },
+  { label: "Regular", src: regular },
+  { label: "Bold", src: bold },
+  { label: "Fill", src: fill },
+  { label: "Duotone", src: duotone }
+];
+---
+
+<div class="grid w-full max-w-3xl min-w-0 gap-8 justify-self-center">
+  <section aria-label="Icon weights" class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Weights</p>
+    <div data-phosphor-preview class="grid grid-cols-3 gap-x-6 gap-y-8 sm:grid-cols-6">
+      {
+        weights.map(({ label, src }) => (
+          <div class="grid justify-items-center gap-3">
+            <Icon {src} size={32} />
+            <span class="text-sm font-medium text-muted-label">{label}</span>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+  <section aria-label="Icon sizes" class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Sizes and color</p>
+    <div class="flex flex-wrap items-center gap-6">
+      <Icon src={duotone} size={16} />
+      <Icon src={duotone} size={24} />
+      <Icon src={duotone} size={32} class="text-accent" />
+    </div>
+  </section>
+  <section aria-label="Icons in controls" class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">In controls</p>
+    <div class="flex flex-wrap items-center gap-3">
+      <Button icon={rocket}>Launch project</Button>
+      <IconButton label="Notifications" variant="secondary"><Icon src={bell} /></IconButton>
+    </div>
+  </section>
+</div>

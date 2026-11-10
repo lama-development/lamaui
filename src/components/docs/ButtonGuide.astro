@@ -21,7 +21,7 @@ const examples = [
   { title: "Icons and links", description: "Add an icon before or after the label. Set `href` to navigate. For icon-only actions, use `IconButton`." },
   { title: "States", description: "Disable unavailable actions. Set `loading` while a request is running to show a spinner and prevent repeated clicks." },
   { title: "Full width", description: "Width follows the parent container." },
-  { title: "Forms", description: 'Set `type="submit"` to submit a form. The default is `type="button"`.' }
+  { title: "Forms", description: 'Set `type="submit"` to submit a form. Try the example to see the submitted name and value. The default is `type="button"`.' }
 ];
 ---
 
@@ -29,7 +29,7 @@ const examples = [
   <section aria-labelledby="examples" class="guide-section">
     <h2 id="examples" class="m-0 text-[1.375rem] font-semibold tracking-tight">Examples</h2>
     <div class="guide-example-list">
-      {examples.map((example) => <ComponentExample slug={`button-${example.title.toLowerCase().replaceAll(" ", "-")}`} title={example.title} description={example.description} />)}
+      {examples.map((example) => <ComponentExample slug={`button-${example.title.toLowerCase().replaceAll(" ", "-")}`} title={example.title} description={example.description} label={`Button ${example.title.toLowerCase()}`} codeOnly={example.title !== "Forms"} />)}
     </div>
   </section>
   <section aria-labelledby="props" class="guide-section">

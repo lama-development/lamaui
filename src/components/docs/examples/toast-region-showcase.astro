@@ -1,0 +1,18 @@
+---
+import Button from "@/components/ui/Button.astro";
+import Toast from "@/components/feedback/Toast.astro";
+import ToastRegion from "@/components/feedback/ToastRegion.astro";
+---
+
+<div class="grid w-full max-w-3xl min-w-0 gap-8 justify-self-center">
+  <div class="flex flex-wrap items-center gap-3">
+    <Button data-toast-open="preview-region-toast">Show notification</Button>
+    <Button variant="secondary" data-toast-open="preview-region-warning">Show warning</Button>
+    <Button variant="secondary" data-toast-open="preview-region-error">Show error</Button>
+  </div>
+  <ToastRegion label="Preview notifications">
+    <Toast id="preview-region-toast" title="Project saved">Your changes are available to the team.</Toast>
+    <Toast id="preview-region-warning" variant="warning" title="Review required">The project has unpublished changes.</Toast>
+    <Toast id="preview-region-error" variant="destructive" title="Save failed">Check your connection and try again.</Toast>
+  </ToastRegion>
+</div>

@@ -1,0 +1,27 @@
+---
+import Tabs from "@/components/navigation/Tabs.astro";
+import TabPanel from "@/components/navigation/TabPanel.astro";
+import Card from "@/components/data-display/Card.astro";
+---
+
+<div class="w-full max-w-3xl min-w-0 justify-self-center">
+  <Tabs
+    id="preview-tabs"
+    tabs={[
+      { id: "overview", label: "Overview" },
+      { id: "activity", label: "Activity" },
+      { id: "settings", label: "Settings" }
+    ]}
+    active="overview"
+  >
+    <TabPanel id="overview" tabsId="preview-tabs" active>
+      <Card title="Overview">The selected tab controls this panel.</Card>
+    </TabPanel>
+    <TabPanel id="activity" tabsId="preview-tabs">
+      <Card title="Activity">Recent changes appear here.</Card>
+    </TabPanel>
+    <TabPanel id="settings" tabsId="preview-tabs">
+      <Card title="Settings">Workspace preferences appear here.</Card>
+    </TabPanel>
+  </Tabs>
+</div>

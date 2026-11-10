@@ -66,7 +66,7 @@ function render() {
     option.id = `docs-search-result-${index}`;
     option.role = "option";
     option.tabIndex = -1;
-    option.className = "group flex cursor-pointer items-center rounded-lg px-3 py-3 text-label no-underline aria-selected:bg-[var(--search-result-hover)] hover:bg-[var(--search-result-hover)]";
+    option.className = "group relative z-1 flex cursor-pointer items-center rounded-lg px-3 py-3 text-label no-underline aria-selected:bg-[var(--search-result-hover)] hover:bg-[var(--search-result-hover)]";
     const content = document.createElement("div");
     content.className = "min-w-0 flex-1";
     const title = document.createElement("div");

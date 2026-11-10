@@ -1,0 +1,18 @@
+---
+import Button from "@/components/ui/Button.astro";
+import Toast from "@/components/feedback/Toast.astro";
+import ToastRegion from "@/components/feedback/ToastRegion.astro";
+---
+
+<div class="grid w-full max-w-3xl min-w-0 gap-8 justify-self-center">
+  <div class="flex flex-wrap items-center gap-3">
+    <Button data-toast-open="preview-toast">Show toast</Button>
+    <Button variant="secondary" data-toast-open="preview-warning-toast">Show warning</Button>
+    <Button variant="secondary" data-toast-open="preview-error-toast">Show error</Button>
+  </div>
+  <ToastRegion label="Preview notifications">
+    <Toast id="preview-toast" title="Preferences saved">Your changes are ready.</Toast>
+    <Toast id="preview-warning-toast" variant="warning" title="Review required">Some changes need attention.</Toast>
+    <Toast id="preview-error-toast" variant="destructive" title="Could not save">Your changes are still here. Try again.</Toast>
+  </ToastRegion>
+</div>

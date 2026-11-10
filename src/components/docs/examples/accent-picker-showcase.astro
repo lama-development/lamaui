@@ -1,0 +1,22 @@
+---
+import AccentPicker from "@/components/ui/AccentPicker.astro";
+---
+
+<div class="grid w-full max-w-3xl min-w-0 grid-cols-2 gap-x-6 gap-y-10 justify-self-center">
+  <section aria-label="Open above" class="grid justify-items-center gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Above</p>
+    <AccentPicker id="preview-accent" placement="top" />
+  </section>
+  <section aria-label="Open below" class="grid justify-items-center gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Below</p>
+    <AccentPicker id="preview-accent-bottom" placement="bottom" />
+  </section>
+  <section aria-label="Open to the left" class="grid justify-items-center gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Left</p>
+    <AccentPicker id="preview-accent-left" placement="left" />
+  </section>
+  <section aria-label="Open to the right" class="grid justify-items-center gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Right</p>
+    <AccentPicker id="preview-accent-right" placement="right" />
+  </section>
+</div>

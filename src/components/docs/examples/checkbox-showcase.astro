@@ -1,0 +1,12 @@
+---
+import Checkbox from "@/components/forms/Checkbox.astro";
+import Stack from "@/components/layout/Stack.astro";
+---
+
+<div class="w-full max-w-md min-w-0 justify-self-center">
+  <Stack gap={4}>
+    <Checkbox id="email-updates" label="Email updates" description="Receive important workspace changes." checked />
+    <Checkbox id="disabled-check" label="Unavailable option" disabled />
+    <Checkbox id="optional-check" label="Product news" description="Occasional updates about new features." />
+  </Stack>
+</div>

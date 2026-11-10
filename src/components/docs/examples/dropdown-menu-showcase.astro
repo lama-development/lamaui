@@ -1,0 +1,31 @@
+---
+import { svgCopy, svgSettings, svgClose } from "@icons/docs";
+import { menuItemStyles } from "@/lib/styles";
+import Icon from "@/components/ui/Icon.astro";
+import DropdownMenu from "@/components/navigation/DropdownMenu.astro";
+---
+
+<div class="w-full max-w-3xl min-w-0 justify-self-center">
+  <div class="flex flex-wrap items-center gap-3">
+    <DropdownMenu label="Actions">
+      <button type="button" role="menuitem" tabindex="-1" class={menuItemStyles}>
+        <Icon src={svgCopy} size={18} />
+        Duplicate
+      </button>
+      <button type="button" role="menuitem" tabindex="-1" disabled class={`${menuItemStyles} opacity-50`}> Archive (unavailable) </button>
+      <button type="button" role="menuitem" tabindex="-1" class={menuItemStyles}>
+        <Icon src={svgSettings} size={18} />
+        Settings
+      </button>
+      <div role="separator" class="my-1 border-t border-outline"></div>
+      <button type="button" role="menuitem" tabindex="-1" class={`${menuItemStyles} text-destructive`}>
+        <Icon src={svgClose} size={18} />
+        Delete
+      </button>
+    </DropdownMenu>
+    <DropdownMenu label="More options" align="end">
+      <a role="menuitem" tabindex="-1" href="#usage" class={menuItemStyles}> View usage </a>
+      <a role="menuitem" tabindex="-1" href="#accessibility" class={menuItemStyles}> Keyboard help </a>
+    </DropdownMenu>
+  </div>
+</div>

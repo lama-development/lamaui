@@ -1,0 +1,46 @@
+---
+import Button from "@/components/ui/Button.astro";
+import Dialog from "@/components/overlays/Dialog.astro";
+---
+
+<div class="grid w-full max-w-3xl min-w-0 gap-8 justify-self-center">
+  <section aria-label="Dialog examples" class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Confirmation</p>
+    <div class="flex flex-wrap items-center gap-3">
+      <Button data-dialog-open="preview-dialog">Open dialog</Button>
+      <Button variant="destructive" data-dialog-open="preview-delete-dialog">Delete project</Button>
+    </div>
+    <Dialog id="preview-dialog" title="Publish changes?" description="This creates a new component version.">
+      <div class="flex justify-end gap-2">
+        <Button variant="ghost" data-dialog-close>Cancel</Button>
+        <Button data-dialog-close>Publish</Button>
+      </div>
+    </Dialog>
+    <Dialog id="preview-delete-dialog" title="Delete this project?" description="Deleting a project permanently removes its files." size="sm">
+      <div class="flex flex-wrap justify-end gap-2">
+        <Button variant="secondary" data-dialog-close autofocus>Cancel</Button>
+        <Button variant="destructive" data-dialog-close>Delete project</Button>
+      </div>
+    </Dialog>
+  </section>
+  <section aria-label="Dialog sizes" class="grid gap-3">
+    <p class="m-0 text-sm font-semibold text-muted-label">Sizes</p>
+    <div class="flex flex-wrap items-center gap-3">
+      <Button variant="secondary" data-dialog-open="preview-small-dialog">Small</Button>
+      <Button variant="secondary" data-dialog-open="preview-medium-dialog">Medium</Button>
+      <Button variant="secondary" data-dialog-open="preview-large-dialog">Large</Button>
+    </div>
+    <Dialog id="preview-small-dialog" title="Small dialog" size="sm">
+      <p>Use a small dialog for a short decision.</p>
+      <Button data-dialog-close>Done</Button>
+    </Dialog>
+    <Dialog id="preview-medium-dialog" title="Medium dialog">
+      <p>Use the default size for a short task.</p>
+      <Button data-dialog-close>Done</Button>
+    </Dialog>
+    <Dialog id="preview-large-dialog" title="Large dialog" size="lg">
+      <p>A larger dialog leaves room for detailed content and longer forms.</p>
+      <Button data-dialog-close>Done</Button>
+    </Dialog>
+  </section>
+</div>
