@@ -1,4 +1,5 @@
 ---
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
 import ExampleFrame from "./ExampleFrame.astro";
 interface Props {
   slug: string;
@@ -12,7 +13,7 @@ interface Props {
   previewClass?: string;
 }
 const { slug, ...rest } = Astro.props;
-const examples = import.meta.glob<{ default: any }>("./examples/*.astro", { eager: true });
+const examples = import.meta.glob<{ default: AstroComponentFactory }>("./examples/*.astro", { eager: true });
 const sources = import.meta.glob<string>("./examples/*.astro", { query: "?raw", import: "default", eager: true });
 const path = `./examples/${slug}.astro`;
 const Example = examples[path]?.default;

@@ -1,14 +1,27 @@
-import { readdir, readFile } from "node:fs/promises";
-import { join, relative, resolve, sep } from "node:path";
+import { readdir, readFile, stat } from "node:fs/promises";
+import { dirname, join, relative, resolve, sep } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
-const componentsRoot = join(root, "src", "components");
-const publicDirectories = ["data-display", "feedback", "forms", "layout", "navigation", "overlays", "ui"];
+const normalize = (path) => relative(root, path).split(sep).join("/");
+const manifest = JSON.parse(await readFile(join(root, "package.json"), "utf8"));
+const config = JSON.parse(await readFile(join(root, "tsconfig.json"), "utf8"));
+const aliases = Object.keys(config.compilerOptions.paths).map((alias) => alias.replace(/\*$/, ""));
 
-const componentFiles = (await Promise.all(publicDirectories.map(async (directory) => (await readdir(join(componentsRoot, directory), { withFileTypes: true })).filter((entry) => entry.isFile() && entry.name.endsWith(".astro")).map((entry) => `./components/${directory}/${entry.name}`)))).flat().sort();
+async function filesWithin(path) {
+  if ((await stat(path)).isFile()) return [path];
+  const entries = await readdir(path, { withFileTypes: true });
+  return (await Promise.all(entries.map((entry) => filesWithin(join(path, entry.name))))).flat();
+}
 
+// Validate the publish manifest, including helpers, icons, types and styles.
+const packagedFiles = new Set((await Promise.all(manifest.files.map((path) => filesWithin(join(root, path))))).flat());
+const publicFiles = [...packagedFiles].filter((path) => /\.(astro|ts|css)$/.test(path));
+const componentFiles = publicFiles
+  .filter((path) => path.endsWith(".astro"))
+  .map((path) => `./${relative(join(root, "src"), path).split(sep).join("/")}`)
+  .sort();
 const index = await readFile(join(root, "src", "index.ts"), "utf8");
-const exportedFiles = Array.from(index.matchAll(/export \{ default as [A-Za-z]+ \} from "(\.\/components\/[^"]+\.astro)";/g), (match) => match[1]).sort();
+const exportedFiles = Array.from(index.matchAll(/export \{ default as \w+ \} from "(\.\/components\/[^"]+\.astro)";/g), (match) => match[1]).sort();
 
 if (JSON.stringify(componentFiles) !== JSON.stringify(exportedFiles)) {
   const missing = componentFiles.filter((file) => !exportedFiles.includes(file));
@@ -16,15 +29,27 @@ if (JSON.stringify(componentFiles) !== JSON.stringify(exportedFiles)) {
   throw new Error(`Package exports are out of sync. Missing: ${missing.join(", ") || "none"}. Stale: ${stale.join(", ") || "none"}.`);
 }
 
-const scriptNames = (await readdir(join(root, "src", "scripts"))).filter((name) => name.endsWith(".ts") && !["catalog.ts", "component-guide.ts", "docs-search.ts", "navbar-scroll.ts"].includes(name));
-const publicFiles = [...componentFiles.map((path) => join(root, "src", path.slice(2))), join(root, "src", "index.ts"), join(root, "src", "lib", "accents.ts"), join(root, "src", "lib", "classes.ts"), join(root, "src", "lib", "styles.ts"), ...scriptNames.map((name) => join(root, "src", "scripts", name))];
-
-const aliasLeaks = [];
+const problems = [];
 for (const file of publicFiles) {
   const source = await readFile(file, "utf8");
-  if (source.includes('"@/') || source.includes("'@/")) aliasLeaks.push(relative(root, file).split(sep).join("/"));
+  // Include side-effect/dynamic imports and CSS dependencies; strip Vite queries.
+  const imports = /(?:\bfrom\s*|\bimport\s*(?:\(\s*)?|@(?:import|source)\s*|url\(\s*)["']([^"']+)["']/g;
+  for (const [, specifier] of source.matchAll(imports)) {
+    if (aliases.some((alias) => specifier === alias || specifier.startsWith(alias.endsWith("/") ? alias : `${alias}/`))) {
+      problems.push(`${normalize(file)} uses documentation alias ${specifier}`);
+      continue;
+    }
+    if (!specifier.startsWith(".")) continue;
+    const target = resolve(dirname(file), specifier.split("?")[0]);
+    const candidates = [target, ...[".ts", ".astro", ".css", "/index.ts"].map((suffix) => target + suffix)];
+    const included = candidates.some((candidate) => packagedFiles.has(candidate)) || [...packagedFiles].some((path) => path.startsWith(`${target}${sep}`));
+    if (!included) problems.push(`${normalize(file)} references unpackaged file ${specifier}`);
+  }
 }
 
-if (aliasLeaks.length) throw new Error(`Public package files must use relative imports: ${aliasLeaks.join(", ")}`);
-
-console.log(`Validated ${componentFiles.length} component exports and ${publicFiles.length} public source files.`);
+const globalStyles = await readFile(join(root, "src", "styles", "global.css"), "utf8");
+for (const source of ["../components", "../lib/styles.ts"]) {
+  if (!globalStyles.includes(`@source "${source}";`)) problems.push(`Register ${source} for Tailwind package class discovery`);
+}
+if (problems.length) throw new Error(`Package boundaries failed:\n${problems.join("\n")}`);
+console.log(`Validated ${componentFiles.length} component exports and ${publicFiles.length} packaged source files.`);

@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @source "../components";
+@source "../lib/styles.ts";
 @import "./theme.css";
 @import "./fonts.css";
 @import "./animations.css";

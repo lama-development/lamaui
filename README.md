@@ -86,7 +86,7 @@ Open `http://localhost:4321`.
 | `npm run check:package`   | Check exports and public import boundaries |
 | `npm run build`           | Generate the static documentation site     |
 | `npm run preview`         | Preview the production build               |
-| `npm run test:consumer`   | Build a clean app through package exports  |
+| `npm run test:consumer`   | Build an isolated app from published files |
 | `npm run test:package`    | Inspect the files included in the package  |
 | `npm run test:e2e`        | Run Chromium browser tests                 |
 | `npm run test:e2e:headed` | Run browser tests with the browser visible |

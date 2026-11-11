@@ -29,7 +29,8 @@ for (const width of [320, 390, 768, 1440]) {
       await expect(source.locator("pre")).toHaveCSS("white-space", "pre-wrap");
       const code = await source.locator("code").textContent();
       await source.getByRole("button", { name: "Copy code", exact: true }).click();
-      await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(code);
+      // Windows clipboard reads use CRLF even when the source contains LF.
+      await expect.poll(() => page.evaluate(async () => (await navigator.clipboard.readText()).replaceAll("\r\n", "\n"))).toBe(code?.replaceAll("\r\n", "\n"));
 
       await tabs.getByRole("tab", { name: "Preview", exact: true }).click();
       await expect(frame.locator("[data-example-live]")).toBeVisible();

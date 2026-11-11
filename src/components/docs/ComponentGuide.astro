@@ -54,7 +54,7 @@ const { title, slug, description, sections } = Astro.props;
       font-size: clamp(1.75rem, 8vw, 2.75rem);
     }
   }
-  .guide-content h2[id] {
+  .guide-content :is(h2, h3)[id] {
     scroll-margin-top: 6rem;
   }
   .guide-content .guide-sections {
@@ -76,14 +76,26 @@ const { title, slug, description, sections } = Astro.props;
     max-width: 48rem;
     color: var(--muted-label);
     font-size: 1rem;
-    line-height: 1.65;
+    line-height: 1.55;
   }
-  .guide-content .guide-section h2 {
+  /* One type scale for documentation headings, excluding the components
+     being demonstrated inside live previews. */
+  .guide-content :is(h2, h3):not(:where(.sr-only, [data-example-live] *, [data-example-code] *)) {
     margin: 0;
+    color: var(--heading);
+    overflow-wrap: anywhere;
+  }
+  .guide-content h2:not(:where(.sr-only, [data-example-live] *, [data-example-code] *)) {
     font-size: 1.5rem;
     font-weight: 650;
-    line-height: 1.35;
-    letter-spacing: -0.025em;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+  }
+  .guide-content h3:not(:where(.sr-only, [data-example-live] *, [data-example-code] *)) {
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: -0.01em;
   }
   .guide-content .guide-example-list {
     display: grid;
@@ -119,13 +131,13 @@ const { title, slug, description, sections } = Astro.props;
   .guide-definition dt {
     font-size: 1rem;
     font-weight: 650;
-    line-height: 1.65;
+    line-height: 1.5;
   }
   .guide-definition dd {
     margin: 0;
     color: var(--muted-label);
     font-size: 1rem;
-    line-height: 1.65;
+    line-height: 1.6;
   }
   .guide-definition a {
     color: var(--label);
@@ -219,6 +231,7 @@ const { title, slug, description, sections } = Astro.props;
     border-radius: 0.25rem;
   }
   [data-guide-content] .guide-heading-link:focus-visible {
+    color: var(--accent-hover);
     outline: 2px solid var(--accent);
     outline-offset: 4px;
   }
@@ -227,12 +240,16 @@ const { title, slug, description, sections } = Astro.props;
     width: 1rem;
     height: 1rem;
     flex-shrink: 0;
-    color: var(--muted-label);
+    color: inherit;
     opacity: 0;
   }
   [data-guide-content] .guide-heading-link-icon svg {
     width: 100%;
     height: 100%;
+  }
+  [data-guide-content] .guide-heading-text {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
   @media (prefers-reduced-motion: no-preference) {
     [data-guide-content] .guide-heading-link-icon {
@@ -240,11 +257,20 @@ const { title, slug, description, sections } = Astro.props;
         opacity 150ms ease,
         color 150ms ease;
     }
+    [data-guide-content] .guide-heading-link {
+      transition: color 150ms ease;
+    }
   }
-  [data-guide-content] .guide-heading-link:hover .guide-heading-link-icon,
   [data-guide-content] .guide-heading-link:focus-visible .guide-heading-link-icon {
-    color: var(--accent);
     opacity: 1;
+  }
+  @media (hover: hover) {
+    [data-guide-content] .guide-heading-link:hover {
+      color: var(--accent-hover);
+    }
+    [data-guide-content] .guide-heading-link:hover .guide-heading-link-icon {
+      opacity: 1;
+    }
   }
   @media (hover: none) {
     [data-guide-content] .guide-heading-link-icon {

@@ -1,11 +1,11 @@
 ---
+import type { HTMLAttributes } from "astro/types";
 import { fieldStyles } from "../../lib/styles";
-interface Props {
+interface Props extends HTMLAttributes<"input"> {
   id?: string;
-  type?: any;
+  type?: HTMLAttributes<"input">["type"];
   invalid?: boolean;
   class?: string;
-  [key: string]: any;
 }
 const { type = "text", invalid = false, class: className, ...rest } = Astro.props;
 ---

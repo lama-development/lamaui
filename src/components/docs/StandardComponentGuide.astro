@@ -12,8 +12,8 @@ interface Props {
 }
 const { name, slug, content } = Astro.props;
 const reference = componentReference(name, content.props);
-const hasMultipleExamples = slug === "alert" || slug === "icon";
-const liveExamples = new Set(["label", "form-field", "input", "textarea", "select", "checkbox", "radio-group", "switch", "slider", "search-input", "password-input", "number-input", "tabs", "tab-panel"]);
+const hasMultipleExamples = slug === "alert" || slug === "icon" || slug === "accordion";
+const liveExamples = new Set(["accordion", "label", "form-field", "input", "textarea", "select", "checkbox", "radio-group", "switch", "slider", "search-input", "password-input", "number-input", "tabs", "tab-panel"]);
 ---
 
 <div class="guide-sections">
@@ -27,6 +27,7 @@ const liveExamples = new Set(["label", "form-field", "input", "textarea", "selec
     }
     <div class="guide-example-list">
       <ComponentExample {slug} title={content.example.title} headingLevel={hasMultipleExamples ? "h3" : "h2"} headingId={hasMultipleExamples ? undefined : "examples"} description={content.behavior} codeOnly={!liveExamples.has(slug)} />
+      {slug === "accordion" && <ComponentExample slug="accordion-multiple" title="Keep several sections open" description="Omit `singleOpen` when readers need to compare answers. Set `open` on any items that should start expanded." />}
       {slug === "alert" && <ComponentExample slug="alert-variants" title="Status variants and custom icons" description="Choose a variant that matches the message. Override `icon`, `color`, and `background` when your content needs its own treatment." codeOnly />}
       {
         slug === "icon" && (

@@ -2,18 +2,18 @@
 import { svgCode, svgCopy, svgCheck } from "../../icons/package";
 import svgWrap from "../../assets/icons/wrap-off.svg?raw";
 import svgWrapOn from "../../assets/icons/wrap-on.svg?raw";
-import { codeToHtml } from "shiki";
+import { codeToHtml, type BundledLanguage, type SpecialLanguage } from "shiki";
 import Icon from "../ui/Icon.astro";
 import Tooltip from "../overlays/Tooltip.astro";
 interface Props {
   code: string;
-  language?: string;
+  language?: BundledLanguage | SpecialLanguage;
   label?: string;
 }
 const { code, language = "astro", label = language } = Astro.props;
 const actionStyles = "code-action inline-flex w-10 h-10 flex-none items-center justify-center gap-1 border-0 rounded-lg bg-transparent text-muted-label p-0 [&>_span]:flex [&>_span]:items-center hover:bg-surface-hover hover:text-label aria-pressed:bg-surface-hover aria-pressed:text-label active:transform-[scale(0.96)]";
 const highlighted = await codeToHtml(code, {
-  lang: language as any,
+  lang: language,
   themes: { light: "gruvbox-light-hard", dark: "gruvbox-dark-hard" },
   defaultColor: false
 });

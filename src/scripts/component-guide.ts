@@ -18,6 +18,8 @@ function markdown(node: Element): string {
   if (!(node instanceof HTMLElement) || (node.hidden && !node.classList.contains("example-source-panel")) || node.matches("[data-guide-no-export],button,svg,figcaption,[role=tablist]")) return "";
   if (/^H[1-6]$/.test(node.tagName)) return `${"#".repeat(Number(node.tagName[1]))} ${inline(node).trim()}\n\n`;
   if (node.tagName === "P") return `${inline(node).trim()}\n\n`;
+  if (node.tagName === "SUMMARY") return `### ${inline(node).trim()}\n\n`;
+  if (node.classList.contains("guide-note-content")) return `${inline(node).trim()}\n\n`;
   if (node.tagName === "PRE") return `\`\`\`astro\n${node.textContent?.trim()}\n\`\`\`\n\n`;
   if (node.tagName === "UL" || node.tagName === "OL")
     return (
@@ -74,17 +76,21 @@ document.querySelectorAll<HTMLElement>("[data-guide]").forEach((root) => {
     requestAnimationFrame(() => toast.classList.add("is-open"));
     if (!error) window.setTimeout(() => toast.dispatchEvent(new CustomEvent("toast:dismiss", { bubbles: true })), 5000);
   };
-  const documentedSectionIds = new Set(Array.from(root.querySelectorAll<HTMLElement>("[data-guide-anchor]")).map((link) => link.dataset.guideAnchor));
-  content.querySelectorAll<HTMLElement>("h2[id]").forEach((heading) => {
-    if (!documentedSectionIds.has(heading.id) || heading.querySelector("[data-guide-permalink]")) return;
+  content.querySelectorAll<HTMLElement>("h2[id], h3[id]").forEach((heading) => {
+    if (heading.closest("[data-example-live], [data-example-code], [data-guide-no-export], .sr-only") || heading.querySelector("[data-guide-permalink]")) return;
     const title = heading.textContent?.trim() || "Section";
     const link = document.createElement("a");
     link.href = `#${heading.id}`;
     link.className = "guide-heading-link";
     link.dataset.guidePermalink = "";
     link.title = `Copy link to ${title}`;
-    link.setAttribute("aria-label", `${title}: copy section link`);
-    while (heading.firstChild) link.append(heading.firstChild);
+    // Keep the heading and its section named by their visible text. Describe
+    // the copy action without replacing the link's accessible name.
+    link.setAttribute("aria-description", "Copy section link");
+    const text = document.createElement("span");
+    text.className = "guide-heading-text";
+    while (heading.firstChild) text.append(heading.firstChild);
+    link.append(text);
     const icon = document.createElement("span");
     icon.className = "guide-heading-link-icon";
     icon.innerHTML = linkIcon;

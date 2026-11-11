@@ -1,0 +1,13 @@
+---
+import Accordion from "@/components/navigation/Accordion.astro";
+---
+
+<Accordion
+  id="reading-preferences"
+  label="Reading preferences"
+  items={[
+    { id: "appearance", title: "Appearance", content: "Choose a color scheme and accent color in the appearance controls.", open: true },
+    { id: "accessibility", title: "Accessibility", content: "System reduced-motion preferences are respected automatically. Keyboard users can open each section with Enter or Space.", open: true },
+    { id: "navigation", title: "Navigation", content: "Use Tab to move between summaries and any links inside expanded content." }
+  ]}
+/>

@@ -1,0 +1,153 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { svgChevronDown } from "../../icons/package";
+import { cardStyles } from "../../lib/styles";
+import Icon from "../ui/Icon.astro";
+
+export interface AccordionItem {
+  id: string;
+  title: string;
+  content?: string;
+  open?: boolean;
+}
+interface Props extends HTMLAttributes<"div"> {
+  id: string;
+  items: AccordionItem[];
+  singleOpen?: boolean;
+  label?: string;
+  class?: string;
+}
+const { id, items, singleOpen = false, label = "Accordion", class: className, ...rest } = Astro.props;
+if (!id.trim() || items.some((item) => !item.id.trim()) || new Set(items.map((item) => item.id)).size !== items.length) throw new Error("Accordion requires a unique group id and distinct, non-empty item IDs.");
+const firstOpen = items.findIndex((item) => item.open);
+---
+
+<div {...rest} {id} role="group" aria-label={label} data-surface-level="2" data-surface-lift="1" class:list={[cardStyles, "lamaui-accordion", className]}>
+  {
+    items.map((item, index) => (
+      <details id={`${id}-${item.id}`} name={singleOpen ? `${id}-items` : undefined} open={item.open && (!singleOpen || index === firstOpen)} class="lamaui-accordion-item">
+        <summary class="lamaui-accordion-trigger">
+          <>
+            <span>{item.title}</span>
+            <Icon src={svgChevronDown} size={18} class="lamaui-accordion-chevron" />
+          </>
+        </summary>
+        <div class="lamaui-accordion-content">
+          <slot name={item.id}>{item.content}</slot>
+        </div>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .lamaui-accordion {
+    min-width: 0;
+    padding-inline: 1.25rem;
+    color: var(--label);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .lamaui-accordion-item + .lamaui-accordion-item {
+    border-block-start: 1px solid var(--outline);
+  }
+  .lamaui-accordion-trigger {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    min-block-size: 3.5rem;
+    padding: 1rem 0.125rem;
+    list-style: none;
+    cursor: pointer;
+    font-weight: 600;
+    line-height: 1.5;
+    border-radius: 0.25rem;
+  }
+  .lamaui-accordion-trigger::-webkit-details-marker {
+    display: none;
+  }
+  .lamaui-accordion-trigger > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  .lamaui-accordion-trigger:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .lamaui-accordion-trigger :global(.lamaui-accordion-chevron) {
+    margin-inline-start: auto;
+    color: var(--muted-label);
+    transform: scaleY(1);
+  }
+  .lamaui-accordion-item[open] > .lamaui-accordion-trigger :global(.lamaui-accordion-chevron) {
+    transform: scaleY(-1);
+  }
+  .lamaui-accordion-content {
+    min-width: 0;
+    padding: 0 0.125rem 1.125rem;
+    color: var(--muted-label);
+    overflow-wrap: anywhere;
+  }
+  .lamaui-accordion-content > :global(:first-child) {
+    margin-block-start: 0;
+  }
+  .lamaui-accordion-content > :global(:last-child) {
+    margin-block-end: 0;
+  }
+  .lamaui-accordion-content :global(a:not(.lamaui-control)) {
+    color: var(--label);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .lamaui-accordion-content :global(a:focus-visible) {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  @media (hover: hover) {
+    .lamaui-accordion-trigger:hover,
+    .lamaui-accordion-content :global(a:not(.lamaui-control):hover) {
+      color: var(--accent-hover);
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .lamaui-accordion-trigger :global(.lamaui-accordion-chevron) {
+      transition: transform var(--acc-chevron) var(--acc-ease);
+    }
+  }
+  /* Native disclosure behavior remains available when intrinsic-size
+     transitions are unsupported, including when JavaScript is disabled. */
+  @supports (interpolate-size: allow-keywords) {
+    .lamaui-accordion-item::details-content {
+      interpolate-size: allow-keywords;
+      overflow: clip;
+      contain: layout;
+      block-size: 0;
+    }
+    .lamaui-accordion-item[open]::details-content {
+      block-size: auto;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .lamaui-accordion-item::details-content {
+        transition-property: block-size, content-visibility;
+        transition-duration: var(--acc-collapse);
+        transition-timing-function: var(--acc-ease);
+        transition-behavior: allow-discrete;
+      }
+      .lamaui-accordion-item[open]::details-content {
+        transition-duration: var(--acc-expand);
+      }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .lamaui-accordion-item::details-content,
+    .lamaui-accordion-trigger :global(.lamaui-accordion-chevron) {
+      transition: none !important;
+    }
+  }
+  @media print {
+    .lamaui-accordion-item::details-content {
+      content-visibility: visible;
+      block-size: auto;
+    }
+  }
+</style>

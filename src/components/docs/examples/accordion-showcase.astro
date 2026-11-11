@@ -1,0 +1,16 @@
+---
+import Accordion from "@/components/navigation/Accordion.astro";
+---
+
+<div class="w-full max-w-2xl justify-self-center">
+  <Accordion
+    id="project-faq"
+    label="Project questions"
+    singleOpen
+    items={[
+      { id: "included", title: "What is included?", content: "Every component includes its styles, keyboard behavior, and usage examples. Import only the components you need.", open: true },
+      { id: "customize", title: "Can I customize the appearance?", content: "Use semantic theme tokens for color and spacing, then pass classes for local layout adjustments." },
+      { id: "install", title: "Do I need an extra script?", content: "No. Accordion uses native HTML disclosures, so it works without JavaScript." }
+    ]}
+  />
+</div>

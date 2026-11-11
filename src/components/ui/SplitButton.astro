@@ -1,4 +1,5 @@
 ---
+import type { ComponentProps, HTMLAttributes } from "astro/types";
 import { svgChevronDown } from "../../icons/package";
 import Button from "./Button.astro";
 import Icon from "./Icon.astro";
@@ -11,10 +12,10 @@ export interface SplitButtonOption {
   href?: string;
   download?: boolean | string;
   icon?: string;
-  attributes?: Record<string, any>;
+  attributes?: HTMLAttributes<"a"> & HTMLAttributes<"button">;
 }
 
-interface Props {
+interface Props extends ComponentProps<typeof Button> {
   label: string;
   options: SplitButtonOption[];
   href?: string;
@@ -23,7 +24,6 @@ interface Props {
   variant?: Extract<Variant, "primary" | "secondary">;
   menuLabel?: string;
   class?: string;
-  [key: string]: any;
 }
 
 const { label, options, href, download, icon, variant = "primary", menuLabel = `More ${label} options`, class: className, ...rest } = Astro.props;

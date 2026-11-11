@@ -1,13 +1,13 @@
 ---
+import type { HTMLAttributes } from "astro/types";
 import { svgClose, svgCheck, svgFeedback } from "../../icons/package";
 import { toastCloseStyles } from "../../lib/styles";
 import Icon from "../ui/Icon.astro";
-interface Props {
+interface Props extends HTMLAttributes<"div"> {
   id?: string;
   title?: string;
   variant?: "success" | "warning" | "destructive";
   class?: string;
-  [key: string]: any;
 }
 const { id = "lamaui-toast", title = "Saved", variant = "success", class: className, ...rest } = Astro.props;
 ---

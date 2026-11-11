@@ -103,21 +103,11 @@
 .catalog-card-copy {
   padding: 1rem 1.125rem 1.25rem;
 }
-.catalog-card-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-}
 .catalog-card-title h3 {
   margin: 0;
   font-size: 1rem;
   line-height: 1.25;
   overflow-wrap: anywhere;
-}
-.catalog-card-title > svg {
-  flex: none;
-  color: var(--muted-label);
 }
 .catalog-card-copy p {
   margin: 0.5rem 0 0;

@@ -1,0 +1,65 @@
+---
+import { relatedComponents } from "@/lib/guide-navigation";
+import Card from "@/components/data-display/Card.astro";
+interface Props {
+  slug: string;
+}
+const related = relatedComponents(Astro.props.slug);
+---
+
+<section class="guide-section mt-14" aria-labelledby="related-components">
+  <header>
+    <h2 id="related-components">Related components</h2>
+    <p>Compare alternatives or find the pieces to use together.</p>
+  </header>
+  <ul class="related-grid m-0 list-none p-0">
+    {
+      related.map((component) => (
+        <li class="min-w-0">
+          <a href={`/components/${component.slug}`} class="related-card" aria-labelledby={`related-${component.slug}-title`} aria-describedby={`related-${component.slug}-description`}>
+            <Card interactive padding="sm" class="h-full">
+              <span id={`related-${component.slug}-title`} class="related-card-title block text-base leading-snug font-semibold">
+                {component.name}
+              </span>
+              <p id={`related-${component.slug}-description`} class="m-0 mt-1.5 text-base leading-[1.55] text-muted-label">
+                {component.reason}
+              </p>
+            </Card>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</section>
+
+<style>
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+    gap: 0.75rem;
+  }
+  .related-card {
+    display: block;
+    height: 100%;
+    border-radius: var(--radius-lg);
+    color: var(--label);
+    text-decoration: none;
+  }
+  .related-card:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .related-card:focus-visible .related-card-title {
+    color: var(--accent-hover);
+  }
+  @media (hover: hover) {
+    .related-card:hover .related-card-title {
+      color: var(--accent-hover);
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .related-card-title {
+      transition: color 120ms ease-out;
+    }
+  }
+</style>

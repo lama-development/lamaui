@@ -1,11 +1,11 @@
 ---
-interface Props {
+import type { HTMLAttributes } from "astro/types";
+interface Props extends HTMLAttributes<"input"> {
   id: string;
   label: string;
   description?: string;
   checked?: boolean;
   disabled?: boolean;
-  [key: string]: any;
 }
 const { id, label, description, checked = false, disabled = false, ...rest } = Astro.props;
 ---

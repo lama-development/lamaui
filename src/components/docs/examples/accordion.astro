@@ -1,0 +1,16 @@
+---
+import Accordion from "@/components/navigation/Accordion.astro";
+---
+
+<Accordion
+  id="workspace-questions"
+  label="Workspace questions"
+  singleOpen
+  items={[
+    { id: "access", title: "Who can access this workspace?", open: true },
+    { id: "invite", title: "How do I invite a teammate?", content: "Open workspace settings, choose Members, and send an invitation to their email address." },
+    { id: "leave", title: "Can I leave a workspace?", content: "Yes. Open your membership settings and choose Leave workspace. Transfer ownership first if you are the workspace owner." }
+  ]}
+>
+  <p slot="access">Only invited members can access a private workspace. Use <a href="/components/alert">Alert</a> for important information that should stay visible.</p>
+</Accordion>

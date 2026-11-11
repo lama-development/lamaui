@@ -12,6 +12,27 @@ const { slug, group } = Astro.props;
 
 <div class="catalog-preview" data-preview-kind={slug} aria-hidden="true">
   {
+    slug === "accordion" && (
+      <div class="cp-accordion">
+        <>
+          <div>
+            <>
+              <strong>What is included?</strong>
+              <Icon src={svgChevronDown} size={13} />
+            </>
+          </div>
+          <p>Components, styles, and examples.</p>
+          <div>
+            <>
+              <strong>Can I customize it?</strong>
+              <Icon src={svgChevronDown} size={13} />
+            </>
+          </div>
+        </>
+      </div>
+    )
+  }
+  {
     slug === "icon" && (
       <div class="cp-icons">
         <>
@@ -558,6 +579,22 @@ const { slug, group } = Astro.props;
 </div>
 
 <style>
+  .cp-accordion {
+    width: min(100%, 210px);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .cp-accordion > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-block: 8px;
+    border-block-start: 1px solid var(--outline);
+  }
+  .cp-accordion > p {
+    margin: 0 0 8px;
+    color: var(--muted-label);
+  }
   .catalog-preview {
     --docs-preview: var(--muted);
     --docs-panel: var(--surface-2);

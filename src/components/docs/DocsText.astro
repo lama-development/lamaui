@@ -1,10 +1,27 @@
 ---
 import InlineCode from "@/components/data-display/InlineCode.astro";
+import { components } from "@/lib/components";
 interface Props {
   text: string;
 }
 const { text } = Astro.props;
-const parts = text.split("`");
+const names = new Map(components.map((component) => [component.name, `/components/${component.slug}`]));
+const mentions = new RegExp(`\\b(${[...names.keys()].sort((a, b) => b.length - a.length).join("|")})\\b`, "g");
+const currentPath = Astro.url.pathname.replace(/\/$/, "");
+const parts = text.split("`").flatMap((part, index) => (index % 2 ? [{ text: part, code: true }] : part.split(mentions).map((text) => ({ text, code: false }))));
 ---
 
-{parts.map((part, index) => (index % 2 ? <InlineCode>{part}</InlineCode> : part))}
+{
+  parts.map((part) => {
+    const href = names.get(part.text);
+    return href && href !== currentPath ? (
+      <a href={href} class="docs-link font-medium">
+        {part.code ? <InlineCode>{part.text}</InlineCode> : part.text}
+      </a>
+    ) : part.code ? (
+      <InlineCode>{part.text}</InlineCode>
+    ) : (
+      part.text
+    );
+  })
+}

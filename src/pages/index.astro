@@ -1,8 +1,6 @@
 ---
 import CategoryIcon from "@/components/docs/CategoryIcon.astro";
-import { svgChevronRight } from "@icons/docs";
 import DocsLayout from "@/layouts/DocsLayout.astro";
-import Icon from "@/components/ui/Icon.astro";
 import Chip from "@/components/data-display/Chip.astro";
 import CatalogPreview from "@/components/docs/CatalogPreview.astro";
 import { componentGroups } from "@/lib/components";
@@ -15,6 +13,7 @@ const description = "Astro primitives for controls, surfaces, layout, and intera
   <header class="docs-page-header mb-8 [&_h1]:m-0 [&_h1]:text-[clamp(2rem,4vw,2.75rem)] [&_h1]:leading-[1.08] [&_h1]:tracking-[-0.035em] [&_p]:m-[0.75rem_0_0] [&_p]:w-full [&_p]:max-w-none [&_p]:text-muted-label">
     <h1>Components</h1>
     <p>{description}</p>
+    <p>New to LamaUI? <a href="/getting-started" class="docs-link font-medium">Install the package and build your first component</a>.</p>
   </header>
 
   <section id="catalog" class="catalog" data-catalog aria-label="Component library">
@@ -54,7 +53,6 @@ const description = "Astro primitives for controls, surfaces, layout, and intera
                   <div class="catalog-card-copy">
                     <div class="catalog-card-title">
                       <h3>{item.name}</h3>
-                      <Icon src={svgChevronRight} size={18} />
                     </div>
                     <p>{item.description}</p>
                   </div>

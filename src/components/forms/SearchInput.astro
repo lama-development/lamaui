@@ -1,11 +1,11 @@
 ---
+import type { ComponentProps } from "astro/types";
 import { svgSearch } from "../../icons/package";
 import Input from "./Input.astro";
 import Icon from "../ui/Icon.astro";
-interface Props {
+interface Props extends Omit<ComponentProps<typeof Input>, "type"> {
   label?: string;
   class?: string;
-  [key: string]: any;
 }
 const { label = "Search", class: className, ...rest } = Astro.props;
 ---

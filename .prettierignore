@@ -2,3 +2,8 @@ dist
 node_modules
 .astro
 .openai
+.npm-cache
+playwright-report
+test-results*
+tests/fixtures/*/dist
+tests/fixtures/*/.astro

@@ -1,16 +1,16 @@
 ---
+import type { HTMLAttributes } from "astro/types";
 import { fieldStyles } from "../../lib/styles";
 interface Option {
   value: string;
   label: string;
   disabled?: boolean;
 }
-interface Props {
+interface Props extends HTMLAttributes<"select"> {
   options: Option[];
   value?: string;
   placeholder?: string;
   class?: string;
-  [key: string]: any;
 }
 const { options, value, placeholder, class: className, ...rest } = Astro.props;
 ---

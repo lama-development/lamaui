@@ -25,20 +25,13 @@ export const componentGroups: ComponentGroup[] = [
     name: "Foundations",
     slug: "foundations",
     icon: "foundations",
-    components: [component("Icon", "icon", "Renders imported SVGs with consistent sizing and color.", 'import svgSettings from "@phosphor-icons/core/duotone/gear-six-duotone.svg?raw";\n<Icon src={svgSettings} size={20} />'), component("ThemePicker", "theme-picker", "Chooses System, Light, or Dark with compact icon buttons.", 'import ThemePicker from "@/components/ui/ThemePicker.astro";\n\n<ThemePicker label="Color theme" />'), component("AccentPicker", "accent-picker", "Selects and persists an accent color from named presets.")]
+    components: [component("Icon", "icon", "Renders imported SVGs with consistent sizing and color."), component("ThemePicker", "theme-picker", "Chooses System, Light, or Dark with compact icon buttons."), component("AccentPicker", "accent-picker", "Selects and persists an accent color from named presets.")]
   },
   {
     name: "Actions",
     slug: "actions",
     icon: "actions",
-    components: [
-      component("Button", "button", "Triggers an action or links to another view, with optional leading or trailing icons.", 'import Button from "@/components/ui/Button.astro";\n\n<Button>Save changes</Button>'),
-      component("SplitButton", "split-button", "Combines a primary action with a menu of closely related alternatives.", 'import svgFilePdf from "@phosphor-icons/core/duotone/file-pdf-duotone.svg?raw";\nimport svgFileMd from "@phosphor-icons/core/duotone/file-md-duotone.svg?raw";\nimport svgClipboardText from "@phosphor-icons/core/duotone/clipboard-text-duotone.svg?raw";\n<SplitButton\n  label="Download PDF"\n  icon={svgFilePdf}\n  href="/report.pdf"\n  download\n  options={[\n    { label: "Download Markdown", href: "/report.md", download: true, icon: svgFileMd },\n    { label: "Copy as text", icon: svgClipboardText }\n  ]}\n/>'),
-      component("IconButton", "icon-button", "A compact action with an accessible text label.", 'import svgCopy from "@phosphor-icons/core/duotone/copy-duotone.svg?raw";\n<IconButton label="Copy"><Icon src={svgCopy} /></IconButton>'),
-      component("ButtonGroup", "button-group", "Joins related actions into one control group."),
-      component("Toggle", "toggle", "A button that represents an on or off state."),
-      component("ToggleGroup", "toggle-group", "A coordinated set of mutually exclusive toggles.")
-    ]
+    components: [component("Button", "button", "Triggers an action or links to another view, with optional leading or trailing icons.", 'import Button from "@/components/ui/Button.astro";\n\n<Button>Save changes</Button>'), component("SplitButton", "split-button", "Combines a primary action with a menu of closely related alternatives."), component("IconButton", "icon-button", "A compact action with an accessible text label."), component("ButtonGroup", "button-group", "Joins related actions into one control group."), component("Toggle", "toggle", "A button that represents an on or off state."), component("ToggleGroup", "toggle-group", "A coordinated set of mutually exclusive toggles.")]
   },
   {
     name: "Forms",
@@ -47,7 +40,7 @@ export const componentGroups: ComponentGroup[] = [
     components: [
       component("Label", "label", "Labels a form control with optional required state."),
       component("FormField", "form-field", "Combines a label, control, help text, and validation message."),
-      component("Input", "input", "A single-line text field with consistent focus and error states.", '<Input id="email" type="email" placeholder="name@company.com" />'),
+      component("Input", "input", "A single-line text field with consistent focus and error states."),
       component("Textarea", "textarea", "A resizable multi-line text field."),
       component("Select", "select", "A styled native select for simple choices."),
       component("CustomSelect", "custom-select", "An animated, keyboard-accessible listbox with option icons.", 'import svgForms from "@phosphor-icons/core/duotone/note-pencil-duotone.svg?raw";\nimport svgCode from "@phosphor-icons/core/bold/code-bold.svg?raw";\nimport svgSearch from "@phosphor-icons/core/duotone/magnifying-glass-duotone.svg?raw";\nimport CustomSelect from "@/components/forms/CustomSelect.astro";\n\n<CustomSelect\n  id="team"\n  name="team"\n  label="Team"\n  value="design"\n  help="Choose the team that owns this project."\n  options={[\n    { value: "design", label: "Design", icon: svgForms },\n    { value: "engineering", label: "Engineering", icon: svgCode },\n    { value: "research", label: "Research", icon: svgSearch }\n  ]}\n/>'),
@@ -64,7 +57,15 @@ export const componentGroups: ComponentGroup[] = [
     name: "Navigation",
     slug: "navigation",
     icon: "navigation",
-    components: [component("Breadcrumb", "breadcrumb", "Shows location within a page hierarchy."), component("Tabs", "tabs", "Switches between related content panels with arrow-key support."), component("TabPanel", "tab-panel", "The accessible content region controlled by a tab."), component("Pagination", "pagination", "Moves between pages in a collection."), component("Stepper", "stepper", "Communicates progress through a multi-step flow."), component("DropdownMenu", "dropdown-menu", "Presents contextual actions from a compact trigger.", 'import DropdownMenu from "@/components/navigation/DropdownMenu.astro";\nimport { menuItemStyles } from "@/lib/styles";\n\n<DropdownMenu label="Document actions">\n  <button type="button" role="menuitem" tabindex="-1" class={menuItemStyles}>Duplicate</button>\n  <a role="menuitem" tabindex="-1" href="/documents" class={menuItemStyles}>All documents</a>\n</DropdownMenu>')]
+    components: [
+      component("Accordion", "accordion", "Reveals related content in expandable sections."),
+      component("Breadcrumb", "breadcrumb", "Shows location within a page hierarchy."),
+      component("Tabs", "tabs", "Switches between related content panels with arrow-key support."),
+      component("TabPanel", "tab-panel", "The accessible content region controlled by a tab."),
+      component("Pagination", "pagination", "Moves between pages in a collection."),
+      component("Stepper", "stepper", "Communicates progress through a multi-step flow."),
+      component("DropdownMenu", "dropdown-menu", "Presents contextual actions from a compact trigger.", 'import DropdownMenu from "@/components/navigation/DropdownMenu.astro";\nimport { menuItemStyles } from "@/lib/styles";\n\n<DropdownMenu label="Document actions">\n  <button type="button" role="menuitem" tabindex="-1" class={menuItemStyles}>Duplicate</button>\n  <a role="menuitem" tabindex="-1" href="/documents" class={menuItemStyles}>All documents</a>\n</DropdownMenu>')
+    ]
   },
   {
     name: "Data display",
@@ -85,7 +86,7 @@ export const componentGroups: ComponentGroup[] = [
       component("CodeBlock", "code-block", "Displays code with library-consistent styling.")
     ]
   },
-  { name: "Feedback", slug: "feedback", icon: "feedback", components: [component("Alert", "alert", "Communicates persistent informational or status messages.", '<Alert variant="warning" title="Review required">\n  Two fields need attention.\n</Alert>'), component("Toast", "toast", "Shows a temporary result without interrupting work."), component("ToastRegion", "toast-region", "Positions and stacks toast notifications within the viewport."), component("Spinner", "spinner", "Indicates indeterminate background activity.")] },
+  { name: "Feedback", slug: "feedback", icon: "feedback", components: [component("Alert", "alert", "Communicates persistent informational or status messages."), component("Toast", "toast", "Shows a temporary result without interrupting work."), component("ToastRegion", "toast-region", "Positions and stacks toast notifications within the viewport."), component("Spinner", "spinner", "Indicates indeterminate background activity.")] },
   {
     name: "Overlays",
     slug: "overlays",
@@ -97,8 +98,7 @@ export const componentGroups: ComponentGroup[] = [
       component("Tooltip", "tooltip", "Provides a short label for an icon or unfamiliar control.", 'import svgCopy from "@phosphor-icons/core/duotone/copy-duotone.svg?raw";\nimport Tooltip from "@/components/overlays/Tooltip.astro";\n\n<Tooltip text="Copy component">\n  <IconButton label="Copy component"><Icon src={svgCopy} /></IconButton>\n</Tooltip>')
     ]
   },
-  { name: "Layout", slug: "layout", icon: "layout", components: [component("Surface", "surface", "Creates an explicit substrate or lifts a panel relative to its nearest surface.", "<Surface level={1}>\n  <Surface lift={1}>Elevated content</Surface>\n</Surface>"), component("Container", "container", "Constrains content width and horizontal padding."), component("Stack", "stack", "Arranges children vertically with a consistent gap."), component("Inline", "inline", "Arranges children horizontally with wrapping support."), component("Grid", "grid", "Creates responsive multi-column layouts."), component("Section", "section", "Applies consistent vertical section spacing.")] }
+  { name: "Layout", slug: "layout", icon: "layout", components: [component("Surface", "surface", "Creates an explicit substrate or lifts a panel relative to its nearest surface."), component("Container", "container", "Constrains content width and horizontal padding."), component("Stack", "stack", "Arranges children vertically with a consistent gap."), component("Inline", "inline", "Arranges children horizontally with wrapping support."), component("Grid", "grid", "Creates responsive multi-column layouts."), component("Section", "section", "Applies consistent vertical section spacing.")] }
 ];
 
 export const components = componentGroups.flatMap((group) => group.components.map((item) => ({ ...item, group: group.name, groupSlug: group.slug })));
-export const getComponent = (slug: string) => components.find((item) => item.slug === slug);

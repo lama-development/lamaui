@@ -1,0 +1,38 @@
+/* Documentation prose links share one treatment; previews and navigation keep
+   the component states they demonstrate. */
+.docs-content a.docs-link,
+.docs-content :is(.guide-note-content, .guide-definition, .example-heading, .example-note) a[href]:not([data-guide-permalink]) {
+  color: var(--label);
+  text-decoration-line: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  border-radius: 0.125rem;
+  overflow-wrap: anywhere;
+}
+.docs-content a.docs-link .lamaui-inline-code,
+.docs-content :is(.guide-note-content, .guide-definition, .example-heading, .example-note) a[href]:not([data-guide-permalink]) .lamaui-inline-code {
+  color: inherit;
+}
+.docs-content a.docs-link:focus-visible,
+.docs-content :is(.guide-note-content, .guide-definition, .example-heading, .example-note) a[href]:not([data-guide-permalink]):focus-visible {
+  color: var(--accent-hover);
+  text-decoration-color: currentColor;
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+@media (hover: hover) {
+  .docs-content a.docs-link:hover,
+  .docs-content :is(.guide-note-content, .guide-definition, .example-heading, .example-note) a[href]:not([data-guide-permalink]):hover {
+    color: var(--accent-hover);
+    text-decoration-color: currentColor;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .docs-content a.docs-link,
+  .docs-content :is(.guide-note-content, .guide-definition, .example-heading, .example-note) a[href]:not([data-guide-permalink]) {
+    transition:
+      color 120ms ease-out,
+      text-decoration-color 120ms ease-out;
+  }
+}

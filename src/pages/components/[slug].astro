@@ -15,6 +15,9 @@ import DropdownMenuGuide from "@/components/docs/DropdownMenuGuide.astro";
 import TooltipGuide from "@/components/docs/TooltipGuide.astro";
 import ComponentGuide from "@/components/docs/ComponentGuide.astro";
 import ComponentPagination from "@/components/docs/ComponentPagination.astro";
+import RelatedComponents from "@/components/docs/RelatedComponents.astro";
+import DocsText from "@/components/docs/DocsText.astro";
+import { guideCautions } from "@/lib/guide-navigation";
 import DocsLayout from "@/layouts/DocsLayout.astro";
 import ComponentPreview from "@/components/docs/ComponentPreview.astro";
 import CodeBlock from "@/components/data-display/CodeBlock.astro";
@@ -37,8 +40,9 @@ if (!content && !dedicated.has(component.slug)) throw new Error(`Missing guide f
 // Validate every reference at build time, including the dedicated guides.
 const reference = componentReference(component.name, content?.props);
 const hasDataTypes = reference.types.length > 0;
-const sections = [{ id: "component-overview", label: "Preview" }, { id: "usage", label: "Usage" }, { id: "examples", label: "Examples" }, { id: "props", label: "Props" }, { id: "accessibility", label: "Accessibility" }, ...(hasDataTypes ? [{ id: "data-types", label: "Data types" }] : [])];
+const sections = [{ id: "component-overview", label: "Preview" }, { id: "usage", label: "Usage" }, { id: "examples", label: "Examples" }, { id: "props", label: "Props" }, { id: "accessibility", label: "Accessibility" }, ...(hasDataTypes ? [{ id: "data-types", label: "Data types" }] : []), { id: "related-components", label: "Related components" }];
 const usage = withImports(content?.usage ?? component.usage);
+const caution = guideCautions[component.slug];
 ---
 
 <DocsLayout title={`${component.name} - LamaUI`} description={component.description} currentSlug={component.slug}>
@@ -55,6 +59,7 @@ const usage = withImports(content?.usage ?? component.usage);
 
     <section class="guide-section mt-14" aria-labelledby="usage">
       <h2 id="usage" class="scroll-mt-24">Usage</h2>
+      <GuideNote>First time using LamaUI? <a href="/getting-started" class="docs-link font-medium">Install the package and add its styles</a> once before using this example.</GuideNote>
       {
         component.slug === "icon" && (
           <GuideNote>
@@ -67,6 +72,13 @@ const usage = withImports(content?.usage ?? component.usage);
         )
       }
       <CodeBlock code={usage} label="Usage" />
+      {
+        caution && (
+          <GuideNote variant="warning">
+            <DocsText text={caution} />
+          </GuideNote>
+        )
+      }
     </section>
 
     {content && <StandardComponentGuide name={component.name} slug={component.slug} {content} />}
@@ -81,6 +93,8 @@ const usage = withImports(content?.usage ?? component.usage);
     {component.slug === "custom-select" && <CustomSelectGuide />}
 
     {hasDataTypes && <ComponentDataTypes name={component.name} />}
+
+    <RelatedComponents slug={component.slug} />
 
     <div data-guide-no-export class="print:hidden"><ComponentPagination {previous} {next} /></div>
   </ComponentGuide>

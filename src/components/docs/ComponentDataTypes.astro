@@ -26,7 +26,7 @@ const hasMultipleTypes = types.length > 1;
     {
       types.map((type) => (
         <div class="data-type-block">
-          {hasMultipleTypes && <h3 class="m-0 text-base font-semibold">{type.name}</h3>}
+          {hasMultipleTypes && <h3 id={`type-${type.name.toLowerCase()}`}>{type.name}</h3>}
           <Table
             caption={`${name} ${type.name} properties`}
             columns={[

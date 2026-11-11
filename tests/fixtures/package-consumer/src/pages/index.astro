@@ -1,6 +1,6 @@
 ---
 import "lamaui/styles.css";
-import { Button, AccentPicker } from "lamaui";
+import { Button, AccentPicker, Accordion } from "lamaui";
 import Dialog from "lamaui/overlays/Dialog";
 ---
 
@@ -13,6 +13,14 @@ import Dialog from "lamaui/overlays/Dialog";
   </head>
   <body data-surface-level="1">
     <AccentPicker id="package-accent" placement="right" />
+    <Accordion
+      id="package-help"
+      singleOpen
+      items={[
+        { id: "one", title: "First question", content: "First answer", open: true },
+        { id: "two", title: "Second question", content: "Second answer", open: true }
+      ]}
+    />
     <Button data-dialog-open="package-dialog">Open dialog</Button>
     <Dialog id="package-dialog" title="Package import works">
       <Button data-dialog-close>Close</Button>

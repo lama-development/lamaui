@@ -1,20 +1,17 @@
 ---
 import { svgInfo } from "@icons/docs";
+import { svgWarning } from "@/icons/package";
 import Icon from "@/components/ui/Icon.astro";
 
 interface Props {
-  title?: string;
-  variant?: "plain" | "info";
+  variant?: "plain" | "info" | "warning";
 }
-const { title, variant = "plain" } = Astro.props;
+const { variant = "plain" } = Astro.props;
 ---
 
-<div class:list={["guide-note", variant === "info" && "guide-note-info"]} role={variant === "info" ? "note" : undefined}>
-  {variant === "info" && <Icon src={svgInfo} size={20} class="guide-note-icon" aria-hidden="true" />}
-  <div class="guide-note-body">
-    {title && <h3>{title}</h3>}
-    <div class="guide-note-content"><slot /></div>
-  </div>
+<div class:list={["guide-note", variant !== "plain" && "guide-note-callout", variant === "warning" && "guide-note-warning"]} role={variant !== "plain" ? "note" : undefined}>
+  {variant !== "plain" && <Icon src={variant === "warning" ? svgWarning : svgInfo} size={20} class="guide-note-icon" />}
+  <div class="guide-note-content"><slot /></div>
 </div>
 
 <style>
@@ -23,39 +20,41 @@ const { title, variant = "plain" } = Astro.props;
     min-width: 0;
     max-width: none;
   }
-  .guide-note-info {
+  .guide-note-callout {
+    --note-color: var(--info);
+    --note-background: var(--info-subtle);
     display: grid;
     grid-template-columns: 1.25rem minmax(0, 1fr);
-    gap: 0.625rem;
-    align-items: start;
-    padding: 0.75rem;
-    border: 1px solid color-mix(in srgb, var(--info) 18%, transparent);
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    border: 1px solid color-mix(in srgb, var(--note-color) 25%, transparent);
     border-radius: var(--radius-md);
-    background: var(--info-subtle);
-    color: var(--info);
+    background: var(--note-background);
+    color: var(--note-color);
   }
-  .guide-note-info :global(.guide-note-icon) {
-    margin-top: -0.0625rem;
-  }
-  h3 {
-    margin: 0 0 0.5rem;
-    font-size: 1.0625rem;
-    font-weight: 650;
+  .guide-note-warning {
+    --note-color: var(--warning);
+    --note-background: var(--warning-subtle);
   }
   .guide-note-content {
     color: var(--muted-label);
     font-size: 1rem;
-    line-height: 1.65;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
   }
-  .guide-note-info .guide-note-content {
+  .guide-note-callout .guide-note-content {
     color: inherit;
-    font-size: 1rem;
-    line-height: 1.65;
   }
   .guide-note-content > :global(:first-child) {
     margin-top: 0;
   }
   .guide-note-content > :global(:last-child) {
     margin-bottom: 0;
+  }
+  @media (width >= 640px) {
+    .guide-note-callout {
+      padding: 1.125rem 1.25rem;
+    }
   }
 </style>

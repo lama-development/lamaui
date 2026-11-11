@@ -1,4 +1,5 @@
 export { default as AccentPicker } from "./components/ui/AccentPicker.astro";
+export { default as Accordion } from "./components/navigation/Accordion.astro";
 export { default as Alert } from "./components/feedback/Alert.astro";
 export { default as Avatar } from "./components/data-display/Avatar.astro";
 export { default as AvatarGroup } from "./components/data-display/AvatarGroup.astro";
